@@ -1,0 +1,150 @@
+---
+title: "Welcome to the R Crash Course!"
+author: "A beginners guide to R from downloading R and RStuido to formatting and visualizing data"
+date: "June 2023"
+output:
+  html_document:
+    theme: journal
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+ * **When?** Tuesday June 27th to Thursday June 29, 2023: 9am - 6pm
+ * **Where?** Casa Tisaru Lepsa, Romania
+ * **What to prepare?** Please bring your laptop computer! If possible, install R and RStudio prior to the course (see [links](Links.html)). 
+ 
+## Facilitator
+[Marissa Dyck](https://github.com/marissadyck)  
+Ohio University  
+Department of Biological Sciences  
+Email: [marissadyck17@gmail.com](marissadyck17@gmail.com)
+
+## Contributors
+This workshop is based on content from an R Bootcamp run by Dr. Kevin Shoemaker at University of Nevada Reno (https://github.com/kevintshoemaker/R-Bootcamp)
+
+[Kevin Shoemaker](http://naes.unr.edu/shoemaker/)	
+University of Nevada Reno  
+Department of Natural Resources and Environmental Science       
+Email: [kshoemaker@cabnr.unr.edu](kshoemaker@cabnr.unr.edu)
+
+[Viorel Popescu](https://vioreldpopescu.com/)  
+Columbia University  
+Ecology, Evolution and Environmental Biology Department  
+Email: [vioreldpopescu@gmail.com](vioreldpopescu@gmail.com)
+
+## About
+
+The statistical programming software 'R' is one of the fundamental tools for modern data exploration and is a useful tool for data processing, statistical analysis,  and production of high-quality figures. 
+
+This workshop is designed for beginner to intermediate R users and will focus on increasing comfort and familiarity with using R and RStudio, R syntax, and troubleshooting code. We will begin with the basics (what is R? How to install R and RStudio? Navigating and understanding the layout of Rstudio) and continue onto data manipulation and formatting, visualizing data, working with packages, and troubleshooting code. The main goal of the workshop is to ensure participants have enough proficiency and confidence with data operations and programming in R to engage in productive, self-directed learning and problem-solving.  
+
+All code will be available as scripts that you can download from this website (at the top of each module page on this website) and load up in RStudio. That way you won't need to constantly copy and paste from the web!  
+
+## Before we get started...
+
+Before we dig in and get started with the modules, you should install R and RStudio. Even if you have installed R and RStudio before you should ensure you have the latest version, if you aren't sure how to check use the links to install the programs again just to be sure and we will cover how to check your version during the workshop. Here are some links to help you get started:
+
+[Download and install R](https://cran.r-project.org/)        
+[Download and install RStudio](https://www.rstudio.com/products/rstudio/download/)    (use free version!)      
+
+
+Also, it can be very helpful to print out R 'cheatsheets' and bring that with you (we will also have some available at the workshop!). Here are some links:
+
+[Base R cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf)           
+[R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)  
+[Various R cheatsheets](https://posit.co/resources/cheatsheets/?type=posit-cheatsheets&_page=2/) (I recommend 'Data tidying with tidyr', 'Data transofrmation with dpylr', and 'Data visualization with ggplot2' cheatsheets for this workshop)
+
+Okay, now we're ready to go!
+
+
+[--go to first module--](day1_1.html)
+
+
+```{r echo=FALSE}
+rmd2rscript <- function(infile="day1_1.Rmd"){    # function for converting markdown to scripts
+  outfile1 <- gsub(".Rmd",".R",infile)
+  outfile2 <- gsub(".Rmd",".txt",infile)
+  close( file( outfile1, open="w" ) )   # clear output file
+  close( file( outfile2, open="w" ) )   # clear output file
+  con1 <- file(infile,open="r")
+  con2 <- file(outfile1,"w")
+  con3 <- file(outfile2,"w")
+  stringToFind <- "```{r*"
+  isrblock <- FALSE
+  count=0
+  
+  while(length(input <- readLines(con1, n=1)) > 0){   # while there are still lines to be read
+    isrblock <- grepl(input, pattern = stringToFind, perl = TRUE)   # is it the start of an R block?
+    if(isrblock){
+      while(!grepl(newline<-readLines(con1, n=1),pattern="```",perl=TRUE)){
+        if(count>1){
+          write(newline,file=con2,append=TRUE)
+          write(newline,file=con3,append=TRUE)
+        }
+        count=count+1
+      }
+      isrblock=FALSE
+    }
+  }
+  closeAllConnections()
+}
+
+rmd2rscript2 <- function(infile="LECTURE2.Rmd"){    # function for converting markdown to scripts
+  outfile <- gsub(".Rmd",".R",infile)
+  close( file( outfile, open="w" ) )   # clear output file
+  con1 <- file(infile,open="r")
+  con2 <- file(outfile,"w")
+  stringToFind <- "```{r*"
+  stringToFind2 <- "echo"
+  isrblock <- FALSE
+  #count=0
+  blocknum=0
+  
+  while(length(input <- readLines(con1, n=1)) > 0){   # while there are still lines to be read
+    isrblock <- grepl(input, pattern = stringToFind, perl = TRUE)   # is it the start of an R block?
+    showit <- !grepl(input, pattern = stringToFind2, perl = TRUE)   # is it hidden (echo=FALSE)
+    if(isrblock){
+      blocknum=blocknum+1
+      while(!grepl(newline<-readLines(con1, n=1),pattern="```",perl=TRUE)){
+        if((blocknum>1)&((showit)|(blocknum==2))) write(newline,file=con2,append=TRUE)
+        #count=count+1
+      }
+      isrblock=FALSE
+    }
+  }
+  closeAllConnections()
+}
+
+```
+
+
+```{r echo=FALSE, eval=FALSE}
+
+rmd2rscript2("day1_1.Rmd")
+rmd2rscript2("day1_2.Rmd")
+rmd2rscript2("day1_3.Rmd")
+rmd2rscript2("day2_1.Rmd")
+rmd2rscript2("day2_2.Rmd")
+rmd2rscript2("day2_3.Rmd")
+
+## TODO: make sure there are pdf copies of all the modules... 
+
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+rmarkdown::render("index.Rmd",rmarkdown::pdf_document())
+rmarkdown::render("day1_1.Rmd",rmarkdown::pdf_document())
+rmarkdown::render("day1_2.Rmd",rmarkdown::pdf_document())
+rmarkdown::render("day1_3.Rmd",rmarkdown::pdf_document())
+
+rmarkdown::render("day2_1.Rmd",rmarkdown::pdf_document())
+rmarkdown::render("day2_2.Rmd",rmarkdown::pdf_document())
+rmarkdown::render("day2_3.Rmd",rmarkdown::pdf_document())
+
+```
+
+
+
+

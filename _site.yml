@@ -1,0 +1,56 @@
+name: "UNR R workshop, Fall 2022"
+output_dir: "."
+navbar:
+  title: "UNR R workshop, Fall 2022"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Workshop #1: getting started"
+      menu:
+        - text: "Submodule 1.1: working with objects"
+          href: module1_1.html
+        - text: "Submodule 1.2: managing data"
+          href: module1_2.html
+        - text: "Submodule 1.3: plotting in ggplot2"
+          href: module1_3.html
+        - text: "Submodule 1.4: data wrangling"
+          href: module1_4.html
+    - text: "Workshop #2: beyond the basics"
+      menu:
+        - text: "Submodule 2.1: R packages"
+          href: module2_1.html
+        - text: "Submodule 2.2: Programming in R"
+          href: module2_2.html
+        - text: "Submodule 2.3: Stats in R"
+          href: module2_3.html
+        - text: "Submodule 2.4: Spatial analysis in R"
+          href: module2_4.html
+    - text: "Data sets"
+      menu:
+        - text: "Example: tab-separated data"
+          href: data.dat
+        - text: "Example: comma-separated data"
+          href: data.csv
+        - text: "Example: whitespace-separated data"
+          href: data.txt
+        - text: "Example: missing data"
+          href: data_missing.txt
+        - text: "Meteorological Data"
+          href: MTMetStations.csv
+        - text: "Sculpin Data"
+          href: sculpineggs.csv
+        - text: "Turtle Data"
+          href: turtle_data.txt
+        - text: "Gene Data"
+          href: geneData.csv
+        - text: "Reptile Data"
+          href: reptiles.csv
+        - text: "Comm Data"
+          href: comm_data.txt
+        - text: "GIS Data"
+          href: data.zip  
+    - text: "Links"
+      href: Links.html
+      
+      
+      
