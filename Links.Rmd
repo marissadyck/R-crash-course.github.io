@@ -1,0 +1,96 @@
+---
+title: "Links"
+author: "R Workshop 2023"
+date: "June 2023"
+output: 
+  html_document: 
+    theme: journal
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Please let me know if there are other links you think should be included on this page!
+
+## Download R:
+ [CRAN website](https://cran.r-project.org/)  
+ 
+## Download RStudio:   
+ [Rstudio main site](https://www.rstudio.com/) 
+ 
+## Helpful Rstudio Links
+ [R projects (useful feature of RStudio)](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects)        
+ [Rstudio online learning resources](https://posit.co/resources/) 
+ [R help](https://www.r-project.org/help.html)
+ 
+## R Cheat Sheets 
+(print 'em out and hang by your office desk!)       
+[Base R Cheat sheet](https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf)            
+ [Short Reference Card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)  
+ [More comprehensive reference card](https://cran.r-project.org/doc/contrib/Baggott-refcard-v2.pdf) 
+ [Tidyverse cheat sheet](https://www.datacamp.com/cheat-sheet/tidyverse-cheat-sheet-for-beginners)    
+ [RStudio cheatsheets- very useful!](https://www.rstudio.com/resources/cheatsheets/)  Includes cheat sheets for R markdown, shiny, data wrangling with "dplyr" and much more! 
+ 
+## R Introductory Tutorials and Courses
+ [Datacamp's- "Intro to R"](https://www.datacamp.com/home)   
+ [Prelude in R](https://preludeinr.com)      
+ [R for beginners](https://cran.r-project.org/doc/contrib/Paradis-rdebuts_en.pdf)  
+ [YaRrr! The Pirate's Guide to R](https://bookdown.org/ndphillips/YaRrr/)  
+ [Hadley Wickhams "R for Data Science"](http://r4ds.had.co.nz/index.html)
+ [Modern Dive](https://ismayc.github.io/moderndiver-book/)     
+ [Data carpentry course](http://www.datacarpentry.org/semester-biology/)  
+ [Many other resources](https://cran.r-project.org/other-docs.html)    
+ [Many R Books (and other useful resources)](http://rbasicsworkshop.weebly.com/books.html)     
+ 
+## Tutorials for specific functions
+[Tutorial for combining graphs](http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/)    
+[Create custom theme](https://rpubs.com/mclaire19/ggplot2-custom-themes)    
+ 
+## R Examples 
+(some people learn best by just playing with existing code!)            
+ [R by example](http://www.mayin.org/ajayshah/KB/R/)     
+ [Multispecies Occupancy Modeling (with data from Romania)](https://github.com/marissadyck/Multi_occ_LWW)    
+ [Generalized Linear Mixed Effects Models (with data from Romania)](https://github.com/marissadyck/Brown_bear_predation_RO)   
+
+## GIT 
+(for sharing your code and collaborating with others!)        
+ [Excellent intro GIT tutorial](https://try.github.io/)  
+ (The last two R examples from above are in Github so this may be useful if you want to check those out)
+ 
+## R Markdown 
+(for publishing and communicating in R. This website was built in R Markdown!)          
+ [Guide for Pandoc Markdown](http://rmarkdown.rstudio.com/authoring_pandoc_markdown.html)   
+ [Website development for RMarkdown](http://rmarkdown.rstudio.com/rmarkdown_websites.html)   
+ [YAML: YAML Ain't Markup Language!](http://yaml.org/)   
+ [a nice simple Markdown syntax guide](https://confluence.atlassian.com/bitbucketserver/markdown-syntax-guide-776639995.html)  
+
+
+ 
+## Time Series Analysis
+ [A regression approach to time series analysis](http://node101.psych.cornell.edu/Darlington/series/series0.htm)  
+ 
+## Ordination
+ [Practical guide to ordination for Ecologists](http://ordination.okstate.edu/index.html)  
+ 
+## Tree-based machine learning
+ [Breiman's guide to Random Forest](http://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm)  
+
+## Structural Equation Modeling (SEM)
+[YouTube video introudction to SEM](https://stats.oarc.ucla.edu/r/seminars/rsem/)       
+[Intro to SEM by author of piecewise SEM package](https://jslefche.github.io/sem_book/)   
+[Random but relevant blog post](http://blog.efpsa.org/2015/12/14/structural-equation-modeling-what-is-it-what-does-it-have-in-common-with-hippie-music-and-why-does-it-eat-cake-to-get-rid-of-measurement-error/)  
+
+ 
+## Spatial Analysis in R
+ ["raster" package vignette](https://cran.r-project.org/web/packages/raster/raster.pdf)   
+
+## Spatial Capture Recapture (secr)  
+[secr vignette](https://cran.r-project.org/web/packages/secr/vignettes/secr-overview.pdf)   
+ ['secr' Google Group](https://groups.google.com/forum/#!forum/secrgroup)    
+ [BUGS code for secr](http://www.mikemeredith.net/blog/1309_SECR_in_JAGS_patchy_habitat.htm)
+ 
+
+[Weekly math/bio "Stats chats"](https://kevintshoemaker.github.io/StatsChats/)

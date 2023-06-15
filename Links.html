@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="R Workshop 2023" />
+
+
+<title>Links</title>
+
+<script src="site_libs/header-attrs-2.15/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R Crash Course 2023</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Day 1
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="day1_1.html">Module 1: R basics</a>
+    </li>
+    <li>
+      <a href="day1_2.html">Module 1.2: Working with data</a>
+    </li>
+    <li>
+      <a href="day1_3.html">Submodule 1.3: Data formatting</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Day 2
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="day2_1.html">Module 1: Plotting in base R</a>
+    </li>
+    <li>
+      <a href="day2_2.html">Module 2: ggplot</a>
+    </li>
+    <li>
+      <a href="day2_3.html">Module 3: Basics of regression models</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Data sets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="data/data.dat">Example: tab-separated data</a>
+    </li>
+    <li>
+      <a href="data/data.csv">Example: comma-separated data</a>
+    </li>
+    <li>
+      <a href="data/data_missing.txt">Example: missing data</a>
+    </li>
+    <li>
+      <a href="turtle_data.txt">Turtle Data</a>
+    </li>
+    <li>
+      <a href="data/bear_2008_2016.csv">Bear data</a>
+    </li>
+    <li>
+      <a href="data/Bobcat_necropsy_data.csv">Bobcat data</a>
+    </li>
+    <li>
+      <a href="reptiles.csv">Reptile Data</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Links.html">Links</a>
+</li>
+<li>
+  <a href="terms.html">Terms</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Links</h1>
+<h4 class="author">R Workshop 2023</h4>
+<h4 class="date">June 2023</h4>
+
+</div>
+
+
+<p>Please let me know if there are other links you think should be
+included on this page!</p>
+<div id="download-r" class="section level2">
+<h2>Download R:</h2>
+<p><a href="https://cran.r-project.org/">CRAN website</a></p>
+</div>
+<div id="download-rstudio" class="section level2">
+<h2>Download RStudio:</h2>
+<p><a href="https://www.rstudio.com/">Rstudio main site</a></p>
+</div>
+<div id="helpful-rstudio-links" class="section level2">
+<h2>Helpful Rstudio Links</h2>
+<p><a
+href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">R
+projects (useful feature of RStudio)</a><br />
+<a href="https://posit.co/resources/">Rstudio online learning
+resources</a> <a href="https://www.r-project.org/help.html">R
+help</a></p>
+</div>
+<div id="r-cheat-sheets" class="section level2">
+<h2>R Cheat Sheets</h2>
+<p>(print ’em out and hang by your office desk!)<br />
+<a
+href="https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf">Base
+R Cheat sheet</a><br />
+<a href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">Short
+Reference Card</a><br />
+<a
+href="https://cran.r-project.org/doc/contrib/Baggott-refcard-v2.pdf">More
+comprehensive reference card</a> <a
+href="https://www.datacamp.com/cheat-sheet/tidyverse-cheat-sheet-for-beginners">Tidyverse
+cheat sheet</a><br />
+<a href="https://www.rstudio.com/resources/cheatsheets/">RStudio
+cheatsheets- very useful!</a> Includes cheat sheets for R markdown,
+shiny, data wrangling with “dplyr” and much more!</p>
+</div>
+<div id="r-introductory-tutorials-and-courses" class="section level2">
+<h2>R Introductory Tutorials and Courses</h2>
+<p><a href="https://www.datacamp.com/home">Datacamp’s- “Intro to
+R”</a><br />
+<a href="https://preludeinr.com">Prelude in R</a><br />
+<a
+href="https://cran.r-project.org/doc/contrib/Paradis-rdebuts_en.pdf">R
+for beginners</a><br />
+<a href="https://bookdown.org/ndphillips/YaRrr/">YaRrr! The Pirate’s
+Guide to R</a><br />
+<a href="http://r4ds.had.co.nz/index.html">Hadley Wickhams “R for Data
+Science”</a> <a href="https://ismayc.github.io/moderndiver-book/">Modern
+Dive</a><br />
+<a href="http://www.datacarpentry.org/semester-biology/">Data carpentry
+course</a><br />
+<a href="https://cran.r-project.org/other-docs.html">Many other
+resources</a><br />
+<a href="http://rbasicsworkshop.weebly.com/books.html">Many R Books (and
+other useful resources)</a></p>
+</div>
+<div id="tutorials-for-specific-functions" class="section level2">
+<h2>Tutorials for specific functions</h2>
+<p><a
+href="http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/">Tutorial
+for combining graphs</a><br />
+<a href="https://rpubs.com/mclaire19/ggplot2-custom-themes">Create
+custom theme</a></p>
+</div>
+<div id="r-examples" class="section level2">
+<h2>R Examples</h2>
+<p>(some people learn best by just playing with existing code!)<br />
+<a href="http://www.mayin.org/ajayshah/KB/R/">R by example</a><br />
+<a href="https://github.com/marissadyck/Multi_occ_LWW">Multispecies
+Occupancy Modeling (with data from Romania)</a><br />
+<a
+href="https://github.com/marissadyck/Brown_bear_predation_RO">Generalized
+Linear Mixed Effects Models (with data from Romania)</a></p>
+</div>
+<div id="git" class="section level2">
+<h2>GIT</h2>
+<p>(for sharing your code and collaborating with others!)<br />
+<a href="https://try.github.io/">Excellent intro GIT tutorial</a><br />
+(The last two R examples from above are in Github so this may be useful
+if you want to check those out)</p>
+</div>
+<div id="r-markdown" class="section level2">
+<h2>R Markdown</h2>
+<p>(for publishing and communicating in R. This website was built in R
+Markdown!)<br />
+<a
+href="http://rmarkdown.rstudio.com/authoring_pandoc_markdown.html">Guide
+for Pandoc Markdown</a><br />
+<a href="http://rmarkdown.rstudio.com/rmarkdown_websites.html">Website
+development for RMarkdown</a><br />
+<a href="http://yaml.org/">YAML: YAML Ain’t Markup Language!</a><br />
+<a
+href="https://confluence.atlassian.com/bitbucketserver/markdown-syntax-guide-776639995.html">a
+nice simple Markdown syntax guide</a></p>
+</div>
+<div id="time-series-analysis" class="section level2">
+<h2>Time Series Analysis</h2>
+<p><a
+href="http://node101.psych.cornell.edu/Darlington/series/series0.htm">A
+regression approach to time series analysis</a></p>
+</div>
+<div id="ordination" class="section level2">
+<h2>Ordination</h2>
+<p><a href="http://ordination.okstate.edu/index.html">Practical guide to
+ordination for Ecologists</a></p>
+</div>
+<div id="tree-based-machine-learning" class="section level2">
+<h2>Tree-based machine learning</h2>
+<p><a
+href="http://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm">Breiman’s
+guide to Random Forest</a></p>
+</div>
+<div id="structural-equation-modeling-sem" class="section level2">
+<h2>Structural Equation Modeling (SEM)</h2>
+<p><a href="https://stats.oarc.ucla.edu/r/seminars/rsem/">YouTube video
+introudction to SEM</a><br />
+<a href="https://jslefche.github.io/sem_book/">Intro to SEM by author of
+piecewise SEM package</a><br />
+<a
+href="http://blog.efpsa.org/2015/12/14/structural-equation-modeling-what-is-it-what-does-it-have-in-common-with-hippie-music-and-why-does-it-eat-cake-to-get-rid-of-measurement-error/">Random
+but relevant blog post</a></p>
+</div>
+<div id="spatial-analysis-in-r" class="section level2">
+<h2>Spatial Analysis in R</h2>
+<p><a
+href="https://cran.r-project.org/web/packages/raster/raster.pdf">“raster”
+package vignette</a></p>
+</div>
+<div id="spatial-capture-recapture-secr" class="section level2">
+<h2>Spatial Capture Recapture (secr)</h2>
+<p><a
+href="https://cran.r-project.org/web/packages/secr/vignettes/secr-overview.pdf">secr
+vignette</a><br />
+<a href="https://groups.google.com/forum/#!forum/secrgroup">‘secr’
+Google Group</a><br />
+<a
+href="http://www.mikemeredith.net/blog/1309_SECR_in_JAGS_patchy_habitat.htm">BUGS
+code for secr</a></p>
+<p><a href="https://kevintshoemaker.github.io/StatsChats/">Weekly
+math/bio “Stats chats”</a></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
