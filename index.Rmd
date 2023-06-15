@@ -31,11 +31,6 @@ University of Nevada Reno
 Department of Natural Resources and Environmental Science       
 Email: [kshoemaker@cabnr.unr.edu](kshoemaker@cabnr.unr.edu)
 
-[Viorel Popescu](https://vioreldpopescu.com/)  
-Columbia University  
-Ecology, Evolution and Environmental Biology Department  
-Email: [vioreldpopescu@gmail.com](vioreldpopescu@gmail.com)
-
 ## About
 
 The statistical programming software 'R' is one of the fundamental tools for modern data exploration and is a useful tool for data processing, statistical analysis,  and production of high-quality figures. 
@@ -129,7 +124,6 @@ rmd2rscript2("day1_2.Rmd")
 rmd2rscript2("day1_3.Rmd")
 rmd2rscript2("day2_1.Rmd")
 rmd2rscript2("day2_2.Rmd")
-rmd2rscript2("day2_3.Rmd")
 
 ## TODO: make sure there are pdf copies of all the modules... 
 
@@ -141,7 +135,6 @@ rmarkdown::render("day1_3.Rmd",rmarkdown::pdf_document())
 
 rmarkdown::render("day2_1.Rmd",rmarkdown::pdf_document())
 rmarkdown::render("day2_2.Rmd",rmarkdown::pdf_document())
-rmarkdown::render("day2_3.Rmd",rmarkdown::pdf_document())
 
 ```
 
