@@ -24,7 +24,7 @@ navbar:
     - text: "Data sets"
       menu:
         - text: "Example: tab-separated data"
-          href: data/data.dat
+          href: data/data.txt
         - text: "Example: comma-separated data"
           href: data/data.csv
         - text: "Example: missing data"
