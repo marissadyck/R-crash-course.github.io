@@ -1,0 +1,877 @@
+---
+title: "Day 1 Module 3"
+author: "Working with data continued"
+date: "June 2023"
+output: 
+  html_document: 
+    code_folding: show
+    theme: journal
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
+library(tidyverse)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+#  R Crash Course, Day 1 Module 3
+ # Casa Tisaru Lepsa, Romania 
+
+#  Managing data
+
+library(tidyverse)
+
+```
+
+## Get materials for this module
+
+### Load script for this module
+
+1. Click [here](day1_3.R) to download the script! Save the script to the 'scripts'' folder in your project directory you set up in the previous module.
+
+2. Load your script in RStudio. To do this, open RStudio and click the **files** window and select the scripts folder and then this script.
+
+Let's get started formatting data!
+
+### Cheat sheets f
+ [tidyr and dplyr cheat sheets](https://www.rstudio.com/resources/cheatsheets/)  Scroll down to data tidying with tidyr **&** data transofrmation with dplyr
+
+## Import data
+We will continue working with the turtles dataset for part of this module, but let's use the one we altered with lowercase variable names. <span style="color: blue;">Read in the altered turtles data frame we created in module 1_2 (e.g. *turtles_tidy*) and print it to the **console**</span>.
+
+```{r class.source = 'fold-hide'}
+  # import data ----------------------
+
+# read in altered turtles data
+turtles_tidy <- read_csv('data/turtles_tidy.csv')
+
+# print data
+turtles_tidy
+```
+
+## Sorting/ordering data
+
+### Sorting data (rows)
+Sorting is another common data operation, which helps to visualize and organize data. In the **tidyverse**, sorting (by row) is accomplished using the `arrange()` **function**. 
+```{r}
+
+# Sorting/ordering data --------------------
+
+#  Sorting  
+
+# To sort a data frame by one vector (variable), you can use arrange()
+turtles_tidy %>% 
+  arrange(c_length)
+
+# or if we want in descending order...
+turtles_tidy %>% 
+  arrange(desc(c_length))
+
+# Sorting by 2 columns
+turtles_tidy %>% 
+  arrange(sex,weight)
+
+```
+ Let's practice this with the diamonds data in the *ggplot2* **package**. <span style="color: blue;"> Arrange the data by highest price to lowest price</span>.
+ 
+```{r class.source = 'fold-hide'}
+
+# practice- arrange diamonds data by highest price to lowest price
+diamonds %>% 
+  
+  # arrange by price (descending)
+  arrange(desc(price))
+```
+
+### Ordering data (columns)
+We can also reorder the columns in our dataset using `relocate()`. In the turtles_tidy data if we want 'weight' to come before 'c_length' we can reorder the columns as follows
+```{r}
+# ordering data
+
+# example with turtles_tidy data
+turtles_tidy %>% 
+  
+  # move 'weight' before 'c_length'
+  relocate(weight, 
+           .before = c_length)
+  
+# alternatively we could specify to have weight AFTER 'sex'
+turtles_tidy %>% 
+  
+  # relocate 'weight' after 'sex'
+  relocate(weight,
+           .after = sex)
+
+# if we don't specify a .before or .after argument it will move the selected column to the front of the data
+turtles_tidy %>% 
+  relocate(weight)
+```
+
+We can also reorder multiple columns at a time
+```{r}
+# ordering data
+
+# reordering multiple columns by name
+turtles_tidy %>% 
+  
+  # move 'weight', 'c_length', and 'h_width' before 'tag' and 'sex'
+  relocate(c(weight, c_length, h_width))
+  
+# alternatively we could specify which variables to relocate by their type
+turtles_tidy %>% 
+  
+  # move all numeric variables to the front
+  relocate(where(is.numeric))
+
+# or
+turtles_tidy %>% 
+  
+  # move all numeric variables after 'tag'
+  relocate(where(is.numeric),
+                 .after = tag)
+```
+
+Practice with the diamonds data in the *ggplot2* **package**. <span style="color: blue;"> Reorder the columns so that price is first.
+```{r class.source = 'fold-hide'}
+# practice with diamonds data
+
+# reorder columns so price is first
+diamonds %>% 
+  
+  # move price to front
+  relocate(price) # most parsimonious way
+
+# or
+diamonds %>% 
+  
+  # move price to front
+  relocate(price,
+           .before = carat)
+```
+
+With the turtles_tidy data let's try to move all the **factors** to the front
+```{r}
+# practice with turtles_tidy data on factors
+
+turtles_tidy %>% 
+  
+  # move factors to front
+  relocate(where(is.factor))
+```
+
+Notice this didn't change are data... It should have moved 'sex' to the front because we set it as a **factor** last time. Let's check the data structure again to be sure.
+
+```{r class.source = 'fold-hide'}
+
+# check structure of turtles_tidy
+str(turtles_tidy)
+```
+
+It is still reading 'sex' as a **character**. Sometimes R will do this but luckily you know how to change the type of variable when you read in the data. 
+
+## Data modification
+
+ <span style="color: blue;">Alter the code we used to read in the turtles_tidy data to change sex to a **factor**  the same code chunk and then check the internal data structure again.</span>.
+
+```{r class.source = 'fold-hide', echo = FALSE}
+
+
+
+# read in altered turtles data
+turtles_tidy <- read_csv('data/turtles_tidy.csv') %>% 
+  
+  # change sex to a factor
+  mutate(sex = as.factor(sex))
+
+# check structure
+str(turtles_tidy)
+```
+
+Do you notice anything else that could be a problem with the sex variable in this dataset? Maybe you noticed this in the last module already. Females has been entered two different ways ('female' and 'fem'). This is a very common problem that can arise with data, particularly when multiple people are in charge of entering the data. There are multiple ways to fix this, let's look at a few using **tidyverse**.
+
+## Modifying data
+
+### Replace
+First, we can use the `mutate()` and `replace()` **functions**. Recall that `mutate()` can create new columns or modify existing columns using existing variables in the data. Therefore, we can modify the sex column using this **function** and another **function** `replace()` which as the name suggests will replace existing values matching some criteria with a specified value.
+
+
+```{r}
+  # Data modification ----------------------
+
+  # Replace ---------------------
+
+# fix issue with multiple entries for female
+turtles_tidy <-  turtles_tidy %>% 
+  mutate(sex = replace(sex, 
+                       sex == "fem",
+                       "female"))
+
+# print
+turtles_tidy
+
+levels(turtles_tidy$sex)
+```
+
+Now notice this replaced 'fem' with 'female' when we print the data but when we look at the levels of our variable 'sex' it still shows 3 levels ('fem', 'female', 'male'). It took me a little while to figure out why this wasn't working, do you have any ideas?
+
+![](https://media2.giphy.com/media/1X7lCRp8iE0yrdZvwd/giphy.gif?cid=6c09b952tr2ap7ihs5l1syb6d6ydlvrkq5exq8cucqtt4s6v&ep=v1_gifs_search&rid=giphy.gif&ct=g)
+
+I thought it might have to do with the fact that our variable is a **factor**. How could I test this to see if this is in fact the issue?
+
+
+```{r class.source = 'fold-hide'}
+# base r
+
+# change 'sex' back to a factor then try data manipulation we can do this all in one pipe!
+turtles_tidy <- turtles_tidy %>% 
+  
+  # sex to character
+  mutate(sex = as.character(sex),
+         
+         # change fem to female with replace
+         replace(sex,
+                 sex == 'fem',
+                 'female'),
+         
+         # sex to factor
+         sex = as.factor(sex))
+
+head(turtles_tidy)
+
+levels(turtles_tidy$sex)
+
+
+
+```
+
+### Recode
+
+It turns out we were correct, the `replace()` **function** which is a bser R **funciton** wasn't working properly with a **factor**. Luckily, *dplyr* has a similar **function** to 'replace' values which works better with **factors**, it is `recode()` and here is how it works. 
+
+```{r}
+  # Recode  ----------------------
+
+# read in turtles data again and set 'sex' to factor to overwrite the changes we made with the last code chunk, and in the same code chunk we will 'recode' the 'sex' column
+
+# read in altered turtles data
+turtles_tidy <- read_csv('data/turtles_tidy.csv') %>% 
+  
+  # change sex to a factor
+  mutate(sex = as.factor(sex),
+         sex = recode(sex, 
+                       fem = 'female'))
+
+# check data
+str(turtles_tidy)
+
+levels(turtles_tidy$sex)
+```
+
+Now you might wonder why I bothered going through the trouble of first showing you `replace()` when it didn't work and the lengthy way to fix it above. 
+
+This is because all data are different and you will find when working with your own data that code which works perfectly in an example, online, or in other code you have run isn't working. And rather than get frustrated or give up and try a different **function** or **package** or even worse.... try to manually fix it in... EXCEL! You will need to learn to troubleshoot your code, and this provides a great example of that.
+
+![](https://i.pinimg.com/originals/96/11/d2/9611d2fde013a9a5fca0d2766b44d09a.jpg)
+
+### If_else
+
+Rant over, let's move on to other ways we can correct/modify entries in a column. Another useful **function** is `if_else()`. If-else statements are logical statements that can alter or replace exisiting data based on whether the value in a column matches your criteria (TRUE), does not match criteria (FALSE), or is missing data. Let's use the diamonds dataset in the *ggplt2* **package** for this example. We can use the help shortcut `?` to learn more about the data. By reading this we see that color (D-J) is a ranking from best to worst. Maybe we don't want 7 levels for this variable though, if we just want to know which ones are the worst color and which ones are not we can use `if_else()`.
+
+```{r}
+
+  # If else ----------------------
+
+# first learn morn about the diamonds dataset
+?diamonds
+
+# change color to two categories based on worst color diamonds (J)
+diamonds %>% 
+  mutate(color = if_else(color == 'J', # if color is J 
+                         'worst', # TRUE = worst
+                         'not_worst')) # FALSE = not_worst
+
+```
+
+We could also create a new column for this variable instead if we want to preserve the original data
+```{r}
+
+# create new column with two categories based on worst color diamonds (J)
+diamonds %>% 
+  mutate(color_quality = if_else(color == 'J', # if color is J 
+                         'worst', # TRUE = worst
+                         'not_worst')) # FALSE = not_worst
+
+```
+
+### Case_when
+
+A useful variation of `if_else()` is `case_when()` which allows you to use mutlile if-else statements to modify data. For example, the clarity column in the diamonds dataset isn't easy to interpret if you aren't familiar with this measurement so we can change the names to something easier to understand
+```{r}
+
+  # Case when ----------------------
+
+# create new column with two categories based on worst color diamonds (J)
+diamonds %>% 
+  mutate(clarity = case_when(clarity == 'l1' ~ 8,
+                             clarity == 'SI2' ~ 7,
+                             clarity == 'SI1' ~ 6,
+                             clarity == 'VS2' ~ 5,
+                             clarity == 'VS1' ~ 4,
+                             clarity == 'VVS2' ~ 3,
+                             clarity == 'VVS1' ~ 2,
+                             clarity == 'IF' ~ 1))
+
+```
+Now we have scared the diamonds based on clarity with 8 being the worst and 1 being the best.
+
+This is a lot of categories/levels though. Maybe if we were doing an analysis or plotting this data we would want to simplify this data and clump some of these scores together. We can do that too!
+```{r}
+
+# group the scores for clarity using case_when
+diamonds %>% 
+  mutate(clarity = case_when(clarity == 'l1' ~ 'worst',
+                             clarity == 'IF' ~ 'best',
+                             .default = 'neutral'))
+
+```
+What we did here is define the worst and best scores for clarity and then using the `.default` argument we set everything else as 'neutral'. 
+
+We can also set multiple values as the same new value. 
+```{r}
+
+# group the scores for clarity using case_when
+diamonds %>% 
+  mutate(clarity = case_when(clarity == 'l1' ~ 'poor',
+                             clarity == 'SI2' ~ 'poor',
+                             clarity == 'WS1' ~ 'good',
+                             clarity == 'IF' ~ 'good',
+                             .default = 'moderate'))
+
+```
+
+But, if we have a lot of different values we want to change to the same new value we can also define a vector with those first and then use `case_when()` to overwrite them. For example.
+```{r}
+# using a vector with case_when
+
+# define the  entries we want to be 'poor' quality
+poor_quality <- c('l1', 'SI2')
+
+# define the entries we want to be 'good' quality
+good_quality <- c('WS1', 'IF')
+
+# group the scores for clarity using case_when and %in%
+diamonds %>% 
+  mutate(clarity = case_when(clarity %in% poor_quality ~ 'poor',
+                             clarity %in% good_quality ~ 'good',
+                             .default = 'moderate'))
+
+```
+
+Finally we can also combine other boolean operations with `mutate()` to modify data. For example we could change price from a numerical variable to a categorical one based on the value in that column
+```{r}
+# using other boolean operations with mutate()
+
+# look at range for price 
+summary(diamonds$price) # let's use the mean and 1st and 3rd quartiles to set our levels
+
+# change price to factor/categorical 
+diamonds %>%
+mutate(price = case_when(price < 950 ~ 'low',
+                         price > 950 & price < 5324 ~ 'moderate',
+                         price > 5324 ~ 'high'))
+
+# or using the default argument
+diamonds %>%
+mutate(price = case_when(price < 950 ~ 'low',
+                         price > 5324 ~ 'high',
+                         .default = 'moderate'))
+```
+As you can see there are a lot of ways to modify data using `mutate()`, and these are just a few examples to get you started.
+
+> Be very careful when using the .default agrument. It will alter the value for any remaining rows including NAs.
+
+
+## Dealing w/ NAs in data
+Speaking of NAs, in many real-world datasets, observations are incomplete in some way- they are missing information. 
+
+In R, the code "NA" (not available) stands in for elements of a vector that are missing for whatever reason. Most statistical functions have ways of dealing with NAs, but you may want to modify your data yourself to deal with NAs.
+
+Let's explore a data set with missing data. 
+
+>Download this [Data with missing values](data/data_missing.txt) and save to the data folder in your **project directory**. 
+
+### Check for NAs
+Now let's explore this data set in more detail, and go over a few ways to check for NAs
+```{r}
+
+  # Dealing with NAs ----------------------
+
+  # Check for NAs ----------------------
+
+# read data
+
+# NOTE: you need to specify that this is a tab-delimited file. It is especially important to specify the delimiter for data files with missing data. If you specify the header and what the text is delimited by correctly, it will read missing data as NA. Otherwise it will fail to read data in properly.
+
+missing.df <- read_delim('data/data_missing.txt',
+                         delim = "\t")  %>% 
+  
+  # set names to lowercase
+   set_names(
+    names(.) %>%  # the period here is a placeholder for the data it tells R to use the element before the last pipe (e.g., turtles.df)
+      tolower()) 
+
+# Missing data are read as an NA
+missing.df
+
+# Can summarize your data and tell you how many NA's per col
+summary(missing.df)
+
+# ?is.na   (Boolean test!)
+is.na(missing.df)
+
+complete.cases(missing.df)   # Boolean: for each row, tests if there are no NA values
+```
+
+### Removing rows with NAs
+```{r}
+
+  # Remove NAs ----------------------
+
+# Base R function that omits (removes) rows with missing data
+na.omit(missing.df) # note this removes the entire row, so only do this if you don't want to use any data from an observation with NAs
+
+# we can also use this with %>% to remove rows with NA
+missing.df %>% 
+  
+  # remove rows with NA
+  na.omit()
+
+```
+
+### Replacing NAs
+Because R will automatically fill any missing data with NAs, sometimes we want to replace NA values with another value. For example if blank cells actually = 0. We can use `replace()`with is.na, or a special variation of the `replace()` **function**, `replace_na()` to do this.
+
+
+```{r}
+  # Replace NAs ----------------------
+
+# specifying columns
+
+# first check which columns have NA values
+is.na(missing.df) # import and export
+
+# replace NA in import with zeros using mutate() and replace_na()
+missing.df %>% 
+  
+  # replace NA with 0
+  mutate(import = replace_na(import, 0),
+         export = replace_na(export, 0))
+
+# or using tidyverse trickery (less code repetition)
+missing.df %>% 
+  
+  # replace NA w/ 0
+  mutate(across(
+    where(is.numeric),
+    ~ replace_na(., 0)))
+
+# for entire data set
+
+# replace NA in missing.df with zeros using mutate() and replace()
+missing.df %>% 
+  
+  # replace NW w/ 0
+  replace(is.na(.), 0)
+```
+
+We could also replace all values with a value calculated from the existing column data (e.g., mean, median, etc.)
+```{r}
+# Replace all missing values in the data frame with the mean for the column
+
+# check what the mean is for import and export columns
+summary(missing.df)
+
+missing.df %>% 
+  
+  # replace NA with mean value for each column
+  mutate(export = replace_na(export,
+                             mean(export,
+                                  na.rm = T)),
+         import = replace_na(import, 
+                             mean(import, 
+                                  na.rm = T)))
+
+# or using tidyverse trickery (less code repetition)
+missing.df %>% 
+  
+  # replace NA with mean value for each column
+  mutate(across(
+    where(is.numeric),
+    ~ replace_na(.,
+                 mean(.,
+                      na.rm=T))))
+
+```
+
+> There are tons of ways to replace NAs in data and we don't have time to cover them all. [Here is a link with more ways to replace NAs in data](https://sparkbyexamples.com/r-programming/replace-na-values-with-zero-in-r-dataframe/#:~:text=How%20do%20I%20replace%20NA,tidyr%3A%3Areplace_na()%20functions.) 
+
+### Changing values to NA
+What about the reverse? When we have values in our data that are meant to be NAs. This happens frequently, we type 'none', 'n/a', '-', etc. instead of NA and R reads those in as **characters** instead of missing data. We've already learned a few ways to do this with `mutate()`. Let's review with a new data set.
+
+Download the [bobcat data](data/Bobcat_necropsy_data.csv) and save it to the data folder in your **project directory**.
+
+<span style="color: blue;">In the same code chunk complete the following steps</span>
+
+* Read in the data and save it as *bobcats*
+
+* Set the column names to lowercase
+
+* Select only 'necropsy', 'necropsydata', 'age', and 'sex'
+
+* print a summary of the data
+
+```{r class.source = 'fold-hide'}
+  # Replace values with NA ----------------------
+
+bobcats <- read_csv('data/Bobcat_necropsy_data.csv') %>% 
+  
+  # set names to lowercase
+  
+  set_names(
+    names(.) %>% 
+      tolower()) %>% 
+  
+  # select specific columns
+  select(necropsy, necropsydate, age, sex)
+  
+
+summary(bobcats)
+```
+
+Now <span style="color: blue;"> using the `mutate()`  **function** set *age* as a **numeric** variable</span>.
+```{r class.source = 'fold-hide'}
+
+bobcats %>% 
+  
+  # set age to numeric
+  mutate(age = as.numeric(age))
+
+```
+When we changed 'aged' to a **numeric** variable this automatically change non-numeric entries to NAs, but if we were working with a **character** instead we could change some entries to NA using `mutate()` and `replace()`. <span style="color: blue;">Replace 'na' entries in the 'age' column</span> using`mutate()` and `replace()` or `recode()`.
+
+```{r class.source = 'fold-hide'}
+
+# replace 'na' in age using replace function
+bobcats %>% 
+  mutate(age = replace(age,
+                       age == 'na',
+                       NA))
+
+# replace na in age using recode
+bobcats %>% 
+  mutate(age = recode(age,
+                      'na' = NA))
+
+```
+But you ma notice there are still some questionable entries in the *age* column. *X* has been entered in some places and this should also be an NA. We can handle changing multiple entries by creating a vectors with the **strings** (characters) we want to replace
+
+```{r }
+
+# change multiple entries to NA
+
+# make a vector with a string of values that are meant to be NAs in data
+na_string <- c('na', 'X')
+
+# use mutate with %in% argument to replace all values in the string above with NA
+bobcats %>% 
+  mutate(age = replace(age,
+                       age %in% na_string,
+                       NA))
+  
+```
+
+## Pivot data
+Recall that the *tidyverse* **packages** are all designed to work with **tidy data**. 
+The *tidyr* package has several functions to help you get your data into this format.
+
+Use "pivot_longer()" to get all of the values and variables from multiple columns into a single column. 
+
+![](images/pivot_longer.png)
+Use "pivot_wider()" to distribute two variables in a single column into separate columns, with their data values('value')
+
+![](images/pivot_wider.png)
+Let's go through an example using `pivot_longer()` and data from the *tidyr* **package**.
+
+```{r}
+ # Pivot functions ----------------------
+
+# use data from tidyr package
+relig_income
+
+relig_income %>%
+  pivot_longer(!religion, names_to = "income", values_to = "count")
+```
+
+## Joining data
+Sometimes data you need for a singular figure or analysis have been entered in two separate data files. We can join data from matching observations (e.g., same individual, site, etc.) using join **functions** in *dplyr* based on the keys (columns) in the data.
+
+Here's  a visual representation of how the various join functions work.
+
+![](images/joins.png){width=50%}
+
+### Create fake data
+First, let's get some practice with a few **functions** we learned at the beginning of the day to create some fake environmental data for the turtles dataset.
+
+```{r}
+
+  # Joining data----------------------
+
+# create some fake data first 
+turtles_env <- tibble(
+  
+  # create variable 'tag' ranging from 1 - 105
+  tag = 1:105,
+  
+  # create variable site with 3 sites that repeat for 35 indv each
+  site = rep(c('A', 'B', 'C'), 
+             each = 35),
+  
+  # create a variable for average summer temperature in Celsius
+  avg_summer_temp = runif(105,
+                          min = 15,
+                          max = 30),
+  
+  # create a variable for average summer precipitation in mm
+  avg_summer_precip = runif(105,
+                            min = 0,
+                            max = 110)
+  
+)
+
+turtles_env
+```
+Now we can join the environmental data we just created with the turtle observation data (turtles_tidy) using the *tag* column.
+
+### Left join
+Let's start by using `left_join()` to join the two datasets together.
+```{r}
+
+  # Left join----------------------
+
+turtles_full <- turtles_tidy %>% 
+  
+  # left join with turtles_env
+  left_join(turtles_env,
+            by = 'tag')
+
+turtles_full
+```
+Notice how are dataset reamins the same length as the turtles_tidy dataset and all environmental observations that for *tags* not in the turtles_tidy dataset are dropped. This is how `left_join()` works. 
+
+If we wanted to keep all the environmental data and add the observation data we could use right join. 
+
+### Right join
+```{r}
+
+  # Right join ----------------------
+
+turtles_tidy %>% 
+  
+  # right join
+  right_join(turtles_env,
+             by = 'tag') %>% 
+  
+  # reorder by tag number so we can see what happened
+  arrange(desc(tag))
+
+
+```
+
+Now, wherever we don't have turtle observation data to match the environmental data we get NAs
+
+### Inner join
+The `inner_join()` function will join values from both datasets only where there are observations for both. With our current dataset this would perform the same as `left_join()` because there aren't any missing data for the turtles_env dataset. But if we adjust that dataset we can see the difference.
+```{r}
+
+  # Inner join ----------------------
+
+# run inner join without altering data to see what happen
+
+turtles_tidy %>% 
+  
+  inner_join(turtles_env,
+             by = 'tag')
+
+# if we remove some observations (say we didn't collect environmental data for the first 10 captures) then we can see the diff
+
+turtles_env.sub <- turtles_env %>% 
+  
+  # filter to only tags greater than 10
+  filter(tag > 10)
+
+head(turtles_env.sub)
+
+# now join with turtles_tidy
+
+turtles_tidy %>% 
+  
+  inner_join(turtles_env.sub,
+             by = 'tag')
+
+# notice fewer rows
+```
+
+### Full join
+Lastly we will look at `full_join()`, which does exactly as the name suggests, it joins all the data even if there aren't matches between the datasets
+```{r}
+
+  # Full join ----------------------
+
+turtles_tidy %>% 
+  full_join(turtles_env,
+            by = 'tag')
+```
+But what if you have different variable names for your key (e.g., tag). Well you could change the variable name in one of the datasets so they match, but you can also specify what the keys in each dataset are called
+
+### Mismatched keys
+```{r}
+
+  # Mismatched keys----------------------
+
+# rename tag in the turtles_env dataset 
+turtles_env <- turtles_env %>% 
+  rename(tag_number = tag)
+
+names(turtles_env)
+
+# now join with mismatched names
+
+turtles_tidy %>% 
+  left_join(turtles_env,
+            join_by('tag' == 'tag_number'))
+```
+
+
+## Practice Problems
+
+### 1 Remove NAs
+Using the turtles_tidy data, remove all rows with NAs and create a new dataset from this called "turtles_no_na" 
+
+```{r class.source = 'fold-hide'}
+turtles_no_na <- turtles_tidy %>% 
+  
+  # remove rows with NA
+  na.omit()
+
+turtles_no_na
+```
+
+### 2 Make a new variable
+Using the turtles_no_na data, make a new variable called "size_class" based on the "weight" variable using case_when whereby
+
+* weights less than 3 are juvenile
+
+* weights greater than 6 are adult
+
+* weights between 3 and 6 are subadult
+
+(There are two answers below because I expect people to potentially choose two ways to do this)
+```{r class.source = 'fold-hide'}
+
+turtles_tidy <- turtles_tidy %>% 
+  mutate(size.class = case_when(
+    weight < 3 ~ "juvenile",
+    weight > 6 ~ "adult",
+    TRUE  ~ "subadult"
+  ))
+
+turtles_tidy$size.class
+
+# alternatively
+turtles_tidy <- turtles_tidy %>% 
+  mutate(size_class = case_when(
+    weight < 3 ~ "juvenile",
+    weight > 6 ~ "adult",
+    weight >= 3 & weight <= 6 ~ 'subadult'
+  ))
+
+turtles_tidy$size_class
+```
+
+
+### 3 Replace values with NA
+In the turtles_tidy data replace ALL variable values for tags 104 and 105 with NAs
+```{r class.source = 'fold-hide'}
+# list of tags we do not trust the data for
+bad.tags <- c(104,105)
+
+turtles_tidy %>% 
+  mutate(
+    sex = replace(sex,
+                  tag %in% bad.tags,
+                  NA),
+    c_length = replace(c_length,
+                       tag %in% bad.tags,
+                       NA),
+    h_width = replace(h_width,
+                      tag %in% bad.tags,
+                      NA),
+    weight = replace(weight,
+                     tag %in% bad.tags,
+                     NA)
+  )
+
+# or... use some more tidyverse helper functions and tricks!
+
+turtles_tidy %>% 
+  mutate(across(
+    c("sex","c_length","h_width", "weight"),
+    ~replace(.x,
+             tag %in% bad.tags,
+             NA)))
+
+```
+
+### 4 Pivot data
+Use the below code to read in the Soils data in the carData package
+```{r}
+# Load the example data 
+
+soil <- carData::Soils    # load example data
+```
+
+* look at the first few lines of data in "soil"
+
+* Pivot the data so that columns Ca - Na are contained in one column called nutrients (again there are two possible solutions (really more than that but two I expect peopl to use))
+```{r class.source = 'fold-hide'}
+
+#See what variables it contains...
+head(soil)  
+
+# Use 'tidyverse' to reshape the data 
+
+soil_nut <- pivot_longer(soil, 
+                         cols = c("Ca","Mg","K", "Na"), 
+                         names_to = "nutrient",
+                         values_to = "value" )
+
+soil_nut
+
+# alternatively
+soil_nut <- pivot_longer(soil, 
+                         cols = Ca:Na, 
+                         names_to = "nutrient",
+                         values_to = "value" )
+
+soil_nut
+
+```
