@@ -35,8 +35,6 @@ navbar:
           href: data/bear_2008_2016.csv
         - text: "Bobcat data"
           href: data/Bobcat_necropsy_data.csv
-        - text: "Reptile Data"
-          href: reptiles.csv
     - text: "Links"
       href: Links.html
     - text: 'Terms'
