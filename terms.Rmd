@@ -1,0 +1,105 @@
+---
+title: "R terms"
+output: html_document
+date: "2023-06-06"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## A - E
+
+**Aesthetic mappings** - How variables in the data are mapped to visual properties (aesthetics) of geoms. Defined inside the `aes()` argument. These define how x and y variables are mapped as well as color, fill, point and line type for your graph. They can be defined in the initial `ggplot()` argument or inside each geom. 
+
+**Assignment operator** - '<-' syntax to assign objects to the environment, looks like left arrow.
+
+**Base R** - Refers to the built-in functions and operations that R can perform without loading any packages.
+
+**Character** - Data types that are non-numeric (contain text instead of numbers), must be contained in quotes ''.
+
+**Comments** - Text that R does not evaluate. Comments are preceded by a '#'.
+
+**Console** - Where code is evaluated and any results/outputs are printed. By default this is the bottom left panel.
+
+**Data frame** - bjects are the basic data storage object in R. Data frames are a special type of list in which each list element is a vector of equal length. Each list element in a data frame is also known as a column. 
+
+**Dimensions** - rows and columns.
+
+**Environment** - Shows you objects that are currently in your working space (environment). By default this is the first panel in the top right window.
+
+
+## F - J
+
+**Factor** - A variable used to categorize and store the data, having a limited number of different values.
+
+**Files** - You can view, access, rename, delete, etc. files from your computer. This panel by default shows you files in your current working directory. It is also one of multiple panels in the bottom right window.
+
+**Function** - Objects that contain multiple interrelated statements that are run together in a predefined order. 
+
+**Geometric objects** - Are elements that we mark on the plot (e.g., points, lines, bars).  
+
+**Help** - This panel allows you to look up R documentation for packages, functions, data, etc. By default this is the fourth panel in the lower right window.
+
+**Hex codes** - A hex code is a representation of how much red, green, and blue exist in a color. A hex code consists of six characters and can be used in the `col =` and `fill =` arguments in `ggplots()`. 
+
+**History** - Shows you everything you've evaluated during your current session. By default this is the second panel in the top right window.
+
+
+## K - O
+
+**Library** - the directory where the packages are stored. You must load packages to your library every new session.
+
+**List** - are more general than matrices. List objects are just a bunch of arbitrary R data objects (called list elements) grouped together into a single object! The elements of a list don't need to be the same length or the same type. 
+
+**List elements** - R data objects contained in a list or data frame.
+
+**Logical** - True/false data.
+
+**Matrix** - data objects have two dimensions: rows and columns. All of the elements in a matrix must be of the same type. 
+
+**Numeric** - Data type that contains numbers.
+
+**Object** - Variables that can take many types and are saved to the environment using the assignment operator.
+
+
+## P - Z
+
+**Packages** - Packages are collections of compiled code, functions, and sometimes data that you can access by installing them and then storing them to your library. You can look up packages in the third panel of the lower right window.
+
+**Plots** - This panel is where you can view plots you have created and export them (although there are better ways). By default this is the second panel in the bottom right window.
+
+**R documentation** - Files that explain the usage, arguments, and include examples for various R functions, packages, and data.
+
+**R script** - Code that you have written in R programming language.
+
+**RStudio project** - Enables your work to be bundled in a self-contained folder. When you open a project your directory will automatically be set to the location where the project is saved. Allows you to easily share code.
+
+**Scalar** - are the simplest data objects. A scalar is just a single value of any data type.
+
+**Scales** - Map data values to the visual values of an aesthetic.
+
+**Source** - Panel in RStudio where code is written and saved as an R script. By default this is the top left window.
+
+**Text string** - A character that is made of one character or contains a collection of characters. Must be contained in quotes ''.
+
+**Tibble** - A special class of data frame intended to work well with tidyverse
+
+**Tidy data** - Specific data format set to work with tidyverse packages. Each variable must have its own column, each observation must have its own row, each value must have its own cell.
+ 
+**Tidyverse** - collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structure.
+
+**Vector** - are strings (single dimensional) of values (can be numbers or characters) which are created following the syntax below. Vectors can combine multiple scalars in a single data object.
+
+**Working directory** - The file path on your computer that you are working out of. This is where R will look (unless you tell it otherwise) for data and will save any objects you export from R.
+
+
+
+   
+  
+
+  
+
+
+
