@@ -28,15 +28,16 @@ Welcome to the 2023 R Crash Course!
 
 ## Get materials for this module
 
+### Cheat Sheets
 You will be introduced to a lot of new material very quickly in this course, and you are not expected to remember everything! 'Cheat sheets' can quickly and easily refresh your memory about syntax that can be difficult to remember. So don't worry if you don't memorize everything we do together in this course- the key is that you leave here with comfort working in the RStudio environment, doing some basic data operations in R, and most importantly, learning and trying new things on your own!
 
 Below are links to good R "cheat sheets" for this module (we will add more for each module or you can see [links](Links.html) for a list of all cheat sheets):
 
-### RStudio
+RStudio
 [Rstudio cheat sheet](https://posit.co/reSources/cheatsheets/) (you will need to scroll down to find the RStudio IDE cheatsheet) 
 
-### Base R
-##### (We won't be using base R a ton but it is good to have a solid understanding of the base functions)
+Base R
+(We won't be using base R a ton but it is good to have a solid understanding of the base functions)
 [Base R Cheat sheet](https://www.i3s.unice.fr/~malapert/R/pdf/base-r.pdf)        
 [R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)
 
@@ -46,6 +47,11 @@ Before we begin let's cover what R and RStudio are, and a few useful tips and be
 ### What is R and RStudio?
 You will recall you downloaded two programs for this course, R and RStudio. R itself is the programming language we will be using and the R application you downloaded is the free software environment that allows your computer to understand the coding language and perform various functions. We almost never work directly in R because it's clunky and not straightforward; instead we work in RStudio. RStudio is a much more user friendly interface to work in. <span style="color: blue;">Open RStudio</span> on your laptop and we will go over the layout and various options in RStudio. You may also want to reference the [Rstudio IDE cheat sheet](https://posit.co/reSources/cheatsheets/) and take any notes you find helpful as we go.
 
+### Terms
+Terms that may be unfamiliar and useful to know are bolded throughout the course. You can access a list of these terms with definitions below:
+
+[Terms](terms.html)
+
 ### RStudio Layout (the four windows)
 When you open RStudio, you'll see four windows.  
 
@@ -54,7 +60,7 @@ When you open RStudio, you'll see four windows.
 #### 1. Source: 
 This is where you write your code. Code that you have written is called your **R script**. Anything you want evaluated in R that you want to be available later is written here. Your code is not evaluated until you run it, this can be done in a couple different ways. As an example type <span style="color: blue;">*2 + 2*</span> into the **source** panel, do not hit enter. Now, with your cursor still on the same line as the code you just wrote, <span style="color: blue;">click the 'Run' button</span> at the top right corner of the **source** panel, this will run your code. 
 
-```{r results=T}
+```{r results=T, echo=FALSE}
 
 2 + 2
 
@@ -67,7 +73,7 @@ Place your cursor on your line of code again and press <span style="color: blue;
 
 If you have multiple lines of code that you want to run at once, you can also highlight your code and use either of the aforementioned methods to run it. Let's try this. Type <span style="color: blue;">*4 + 4*</span> in the **source** panel below your previous line of code. Highlight both sections with your mouse and use either method to run your code, check the console.
  
- ```{r results=T}
+ ```{r results=T, echo=FALSE}
 
 2 + 2
 4 + 4
@@ -77,20 +83,20 @@ If you have multiple lines of code that you want to run at once, you can also hi
 The R **console** (what you see if you opened R directly instead of RStudio) is a **command line** interface, and is *your direct connection with R*: you give R a command at the prompt and R executes that command. The **console** is where your code is evaluated by R, it will show the code you have run followed by any output if there is one. Some code will not have an output in this panel (e.g., graphs), which we will cover more later. The **console** can also be used to write and evaluate code you only need to use once and don't want saved in your script. This is useful for looking up help files, checking the structure of your data, and simple math such as what we just did. Delete the lines of code you wrote in the **source** panel and instead type <span style="color: blue;">*2 + 2*</span> in the console and hit enter. You should get the same output as before, but now that code is not in your **R script** so it won't be evaluated every time you run your script. You can clear your **console** by clicking the broom icon in the right corner, I recommend doing this anytime you start a new analysis in R. Let's do this now, <span style="color: blue;">click the broom icon</span> and see what happens.
 
 #### Tab Panes 
-There are two panels with various tabs, the top panel is your **environment/history** and the lower panel contains the **files** window and other tabs.  
+There are two windows with various panel, the top window is your **environment/history** and the lower window contains the **files** window and other tabs.  
 
 #### 3. Environment/History:
-The first tab of this panel is the **environment**; this shows you objects that are currently in your working space (environment) such as data, vectors, and graphs. The second tab is your **history** which shows you everything you've evaluated during your current session. You should only see a few lines of simple math that we did earlier (i.e., 2 + 2 & 4 + 4), if you see anything else in your history that means you have run something else in R at an earlier time without closing the program. Similar to the **console**, you can clear both your **environment** and **history** by clicking the broom icon when each tab is selected. Let's do this now, with the **history** tab selected <span style="color: blue;">*click the broom icon*</span>, you will be prompted with a pop-up window, click yes. Now your **history** is empty. Do the same for your **environment**. 
+The first panel of this window is the **environment**; this shows you objects that are currently in your working space (environment) such as data, vectors, and graphs. The second panel is your **history** which shows you everything you've evaluated during your current session. You should only see a few lines of simple math that we did earlier (i.e., 2 + 2 & 4 + 4), if you see anything else in your history that means you have run something else in R at an earlier time without closing the program. Similar to the **console**, you can clear both your **environment** and **history** by clicking the broom icon when each tab is selected. Let's do this now, with the **history** tab selected <span style="color: blue;">*click the broom icon*</span>, you will be prompted with a pop-up window, click yes. Now your **history** is empty. Do the same for your **environment**. 
 
 There are more tabs and options in this panel, some of which we will cover later, but for now lets move on to the last panel of RStudio.
 
 #### 4. Files and others:
 
 #### Files:
-The last panel contains several tabs including the **files** tab which is useful to see your directory (files). You can check what you have named your data sets, open scripts, etc. without having to navigate out of RStudio. You can also create, delete, and rename folders and files directly in RStudio in this tab. When you click on **files** initially it will open to your current **working directory**, which is the file path on your computer that you are working out of. This is where your R outputs will be stored and should be where any files you want to access on your computer are also stored. 
+The last window contains several panels including the **files** tab which is useful to see your directory (files). You can check what you have named your data sets, open scripts, etc. without having to navigate out of RStudio. You can also create, delete, and rename folders and files directly in RStudio in this tab. When you click on **files** initially it will open to your current **working directory**, which is the file path on your computer that you are working out of. This is where your R outputs will be stored and should be where any files you want to access on your computer are also stored. 
 
 You can also check your current **working directory** by running the command `getwd()` in the **console**. Do this now, type <span style="color: blue;">*getwd()*</span> in the **console** and hit enter. 
- ```{r results=F}
+ ```{r results=F, echo=FALSE}
 
 getwd()
 
@@ -119,10 +125,11 @@ Now let's go over a few other ways to use the **help** window.
 Look at your Base R Cheat Sheet under the "Getting Help" section. This shows a few other ways you can access the **help** window. The first is by typing a `?` before a **function** and running that code. Let's try it. In the **source** panel type <span style="color: blue;">*?seq*</span> and run the code. 
 
  ```{r results=T}
+# Using the help file ----------------------
 
 ?seq
+ ```
 
-```
 This should again open up **R documentation** in the **help** window, but for a different **function**. Now we are looking at the base R function `seq()`. This is useful, but you probably wouldn't want this saved in your **R script** because it would run every time. Instead, we would probably use the **console**. Click out of the **help** window by selecting any other tab in that panel, then cut a paste your code <span style="color: blue;">*?seq*</span> to the **console** and hit enter. This will again open up the **help** window with the information for `seq()`, but now it isn't saved in your script so it won't open the window every time you run the rest of your analysis. 
 
 Let's briefly cover how to read **R documentation** 
@@ -136,13 +143,13 @@ Then a brief description of what the function does.
 Followed by the syntax to use with the function. *This is an important section to check when using a new function* it shows what order you need to provide various objects and arguments. R will read the arguments in each functions and assume they match this order unless you specify otherwise. For example
 
 ```{r}
-
+  
 # example of order of operations using seq()
 seq(from = 1,
     to = 10,
     by = 1)
 
-# is read the same as
+# the below is read the same as above
 seq(1, 10, 1)
 
 # or
@@ -236,7 +243,7 @@ Before we can start coding we need to set our **working directory** which essent
 
 Remember, you can easily check your file path in the **files** panel so you don't have to navigate out of R to do this.
 
- ```{r results=T}
+ ```{r results=T, echo = FALSE}
 
 setwd("/Users/marissadyck/Library/CloudStorage/OneDrive-OhioUniversity/R Crash Course")
 
@@ -337,7 +344,7 @@ NOTE: RStudio has a useful auto-fill feature, which can save you lots of time an
 
 In your blank script, let's define a new object. For example:
 
-```{r results=F}
+```{r results=F, echo = FALSE}
 
 # create object my_name
 my_name <- 'Marissa Dyck'  # use your name.
@@ -382,7 +389,7 @@ Here are some examples of how functions are used. Note the parentheses!
 
 ```{r results = T}
 
-# functions ------------------- 
+# Functions ------------------- 
 
 # sum
 sum(1, 2, 3, 10)    # returns: 15
@@ -432,8 +439,8 @@ Scalars are the simplest data objects. A scalar is just a single value of any da
 
 #  Create R Objects ------------------------
 
+  # Scalars----------------------
 
-# scalars 
 scalar1 <- 'this is a scalar'
 
 scalar2 <- 104
@@ -448,7 +455,9 @@ Scalars can store information of any type. In the example above, `scalar1` is a 
 **Vectors** are strings (single dimensional) of values (can be numbers or characters) which are created following the syntax below. Vectors can combine multiple scalars in a single data object. In fact, a scalar in R is really just a vector of length 1.
 
 ```{r results=T}
-# VECTORS
+  # Vectors ----------------------
+
+# create a vector of numbers 1 to 4
 vector1 <- c(1, 2, 3, 4)  
 
 # print vector1
@@ -520,7 +529,7 @@ Let's make our first matrix. One simple way to make a matrix is just by joining 
 
 ```{r}
 
-# MATRICES
+  # Matrices ----------------------
 
 # create a matrix by binding vectors, with vector d1 as column 1 and d2 as column 2
 mymat <- cbind(d1, d2)
@@ -575,7 +584,7 @@ Let's make our first list:
 
 ```{r}
 
-# LISTS
+  # lists ----------------------
 
 # create an empty list
 mylist <- list()
@@ -613,7 +622,7 @@ Let's make our first data frame.
 
 ```{r}
 
-# DATA FRAMES 
+  # Data frames ----------------------
 
  # create a data frame with two columns. Each column is a vector of length 3
 df1 <- data.frame(col1 = c(1,2,3),
@@ -643,7 +652,7 @@ One task that comes up a lot is generating sequences of numbers:
 
 ```{r}
 
-# MAKING UP DATA!  ----------------------------------
+# Making up data ----------------------------------
 
 # Generating vector sequences  
 
@@ -771,7 +780,7 @@ names(my.data)
 nrow(my.data) 
 
 # get number of columns/variables in a data frame
-ncol(my.data)     
+ncol(my.data)   
      
 
 ```
@@ -794,7 +803,7 @@ myvec <- c(1, 10)
 # answer 3 (time consuming)
 myvec <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 
-# answer 4 (unecessarily complicated for this exercise)
+# answer 4 (unecessarily complicated for this exercise but works)
 myvec <- seq(1, 10, by = 1)
 ```
 
