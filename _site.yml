@@ -22,19 +22,7 @@ navbar:
         - text: "Module 3: Basics of regression models"
           href: day2_3.html
     - text: "Data sets"
-      menu:
-        - text: "Example: tab-separated data"
-          href: data/data.txt
-        - text: "Example: comma-separated data"
-          href: data/data.csv
-        - text: "Example: missing data"
-          href: data/data_missing.txt
-        - text: "Turtle Data"
-          href: turtle_data.txt
-        - text: "Bear data"
-          href: data/bear_2008_2016.csv
-        - text: "Bobcat data"
-          href: data/Bobcat_necropsy_data.csv
+      href: data.html
     - text: "Links"
       href: Links.html
     - text: 'Terms'

@@ -1,0 +1,22 @@
+---
+title: "Data"
+author: "R Crash Course"
+output: html_document
+date: "2023-06-26"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+[Example Whitespace delimited data](data/data.txt) 
+
+[Example Comma delimited data](data/data.csv) 
+
+[Example missing data](data/data_missing.txt)
+
+[Turtle Data](data/turtle_data.txt)
+
+[Bear data](data/bear_2008_2016.csv)
+
+[Bobcat necropsy data](data/Bobcat_necropsy_data.csv)
