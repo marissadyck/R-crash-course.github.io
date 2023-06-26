@@ -41,6 +41,8 @@ All code will be available as scripts that you can download from this website (a
 
 ## Before we get started...
 
+### Install R and RStudio
+
 Before we dig in and get started with the modules, you should install R and RStudio. Even if you have installed R and RStudio before you should ensure you have the latest version, if you aren't sure how to check use the links to install the programs again just to be sure and we will cover how to check your version during the workshop. Here are some links to help you get started:
 
 [Download and install R](https://cran.r-project.org/)        
@@ -52,6 +54,10 @@ Also, it can be very helpful to print out R 'cheatsheets' and bring that with yo
 [Base R cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf)           
 [R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)  
 [Various R cheatsheets](https://posit.co/resources/cheatsheets/?type=posit-cheatsheets&_page=2/) (I recommend 'Data tidying with tidyr', 'Data transofrmation with dpylr', and 'Data visualization with ggplot2' cheatsheets for this workshop)
+
+### Take pre course survey
+
+To help me gauge everyone's experience level and the effectiveness of this course, please take a few minutes to complete the [pre-course survey](https://qfreeaccountssjc1.az1.qualtrics.com/jfe/form/SV_bOcrXH4CuosgK7s)
 
 Okay, now we're ready to go!
 
