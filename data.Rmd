@@ -19,4 +19,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 [Bear data](data/bear_2008_2016.csv)
 
+[Bear glm example raw data](data/pagube_2008_2016_spatial.csv)
+
+[Bear glm example cow data][data/cows.csv]
+
 [Bobcat necropsy data](data/Bobcat_necropsy_data.csv)
