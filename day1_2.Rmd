@@ -868,6 +868,7 @@ turtles.df %>%
   
   summarise(mean = mean(weight))
 
+ # END MAIN SCRIPT ----------------------
 ```
 
 You might notice a problem with the way the data are entered here. We will fix that in the next module.
@@ -884,7 +885,8 @@ write_csv(turtles.df,
 ```
 
 
-Download the [brown bear damage data](data/bear_2008_2016.csv) and save it in the data folder.    
+Download the [brown bear damage data](data/bear_2008_2016.csv) and save it in the data folder. 
+
 ### 2 Import and rename data
 * Import the brown bear dataset using the appropriate function from the 'readr' package and save it as bear_data.    
 * In the same code chunk set the column names to lowercase and    

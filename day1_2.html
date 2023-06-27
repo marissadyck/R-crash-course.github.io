@@ -362,42 +362,27 @@ div.tocify {
       <a href="day2_1.html">Module 1: Plotting in base R</a>
     </li>
     <li>
-      <a href="day2_2.html">Module 2: ggplot</a>
+      <a href="day2_2.html">Module 2: Basics of ggplot</a>
     </li>
     <li>
-      <a href="day2_3.html">Module 3: Basics of regression models</a>
+      <a href="day2_3.html">Module 3: Advance ggplot</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Data sets
+    Day 3
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="data/data.dat">Example: tab-separated data</a>
-    </li>
-    <li>
-      <a href="data/data.csv">Example: comma-separated data</a>
-    </li>
-    <li>
-      <a href="data/data_missing.txt">Example: missing data</a>
-    </li>
-    <li>
-      <a href="turtle_data.txt">Turtle Data</a>
-    </li>
-    <li>
-      <a href="data/bear_2008_2016.csv">Bear data</a>
-    </li>
-    <li>
-      <a href="data/Bobcat_necropsy_data.csv">Bobcat data</a>
-    </li>
-    <li>
-      <a href="reptiles.csv">Reptile Data</a>
+      <a href="day3_1.html">Module 1: GLM Example Analysis</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="data.html">Data sets</a>
 </li>
 <li>
   <a href="Links.html">Links</a>
@@ -1606,6 +1591,7 @@ turtles.df %&gt;%
 ## 2 female 10.0 
 ## 3 male    7.29
 ## 4 &lt;NA&gt;    2.35</code></pre>
+<pre class="r"><code> # END MAIN SCRIPT ----------------------</code></pre>
 <p>You might notice a problem with the way the data are entered here. We
 will fix that in the next module.</p>
 </div>
@@ -1621,15 +1607,22 @@ folder in your working directory using the ‘readr’ package and name it
 <pre class="r fold-hide"><code>write_csv(turtles.df,
           &#39;data/turtles_tidy.csv&#39;)</code></pre>
 <p>Download the <a href="data/bear_2008_2016.csv">brown bear damage
-data</a> and save it in the data folder.<br />
-### 2 Import and rename data * Import the brown bear dataset using the
-appropriate function from the ‘readr’ package and save it as
-bear_data.<br />
-* In the same code chunk set the column names to lowercase and<br />
-* change dist_to_town to m_to_town and dist_to_forest to m_to_forest (m
-for meters)<br />
-* Finally, use one of the functions we’ve covered to view/print your
-data to check that it worked.</p>
+data</a> and save it in the data folder.</p>
+</div>
+<div id="import-and-rename-data" class="section level3">
+<h3>2 Import and rename data</h3>
+<ul>
+<li>Import the brown bear dataset using the appropriate function from
+the ‘readr’ package and save it as bear_data.<br />
+</li>
+<li>In the same code chunk set the column names to lowercase and<br />
+</li>
+<li>change dist_to_town to m_to_town and dist_to_forest to m_to_forest
+(m for meters)<br />
+</li>
+<li>Finally, use one of the functions we’ve covered to view/print your
+data to check that it worked.</li>
+</ul>
 <pre class="r fold-hide"><code>bear_data &lt;- read_csv(&#39;data/bear_2008_2016.csv&#39;) %&gt;% 
   
   # set column names to lowercase
