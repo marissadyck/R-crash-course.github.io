@@ -1734,3 +1734,8 @@ bear_damage_bargraph
 
 plot_combined
 ```
+
+
+## Post course survey
+
+Before you leave today please take a few moments to complete the [post-course survey](https://qfreeaccountssjc1.az1.qualtrics.com/jfe/form/SV_8wdzQHkevQRmpkG). 
