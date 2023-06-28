@@ -42,7 +42,7 @@ library(tidyverse)
 
 Let's get started formatting data!
 
-### Cheat sheets f
+### Cheat sheets 
  [tidyr and dplyr cheat sheets](https://www.rstudio.com/resources/cheatsheets/)  Scroll down to data tidying with tidyr **&** data transofrmation with dplyr
 
 ## Import data
