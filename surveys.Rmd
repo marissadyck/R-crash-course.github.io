@@ -1,0 +1,20 @@
+---
+title: "Surveys"
+author: "R Workshop 2023"
+date: "June 2023"
+output: 
+  html_document: 
+    theme: journal
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+There are pre- and post-course surveys to help me gauge the effectiveness of this course. Please take a moment to complete each at the appropriate time.
+
+[Pre-course survey](https://qfreeaccountssjc1.az1.qualtrics.com/jfe/form/SV_bOcrXH4CuosgK7s)
+
+[Post-course survey](https://qfreeaccountssjc1.az1.qualtrics.com/jfe/form/SV_8wdzQHkevQRmpkG)
