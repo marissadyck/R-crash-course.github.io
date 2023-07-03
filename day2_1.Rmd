@@ -18,10 +18,10 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
-#  R Crash Course, Day 1 Module 3
+#  R Crash Course, Day 2 Module 1
  # Casa Tisaru Lepsa, Romania 
 
-#  Managing data
+#  Plotting in Base R
 
 library(tidyverse)
 
