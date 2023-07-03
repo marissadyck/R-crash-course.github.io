@@ -11,25 +11,25 @@ navbar:
           href: day1_1.html
         - text: "Module 2: Working with data"
           href: day1_2.html
-        - text: "Module 3: Data formatting"
+        - text: "Module 3: Data manipulation"
           href: day1_3.html
     - text: "Day 2"
       menu:
-        - text: "Module 1: Plotting in base R"
+        - text: "Module 1: Plotting in Base R"
           href: day2_1.html
         - text: "Module 2: Basics of ggplot"
           href: day2_2.html
-        - text: "Module 3: Advanced ggplot (to come)"
+        - text: "Module 3: Advanced ggplot (to be added)"
           href: day2_3.html
     - text: "Day 3"
       menu:
-        - text: "Module 1: GLM Example Analysis (to come)"
+        - text: "Module 1: GLM Example Analysis (to be added)"
           href: day3_1.html
     - text: "Data sets"
       href: data.html
     - text: "Links"
-      href: Links.html
-    - text: 'Surveys'
+      href: links.html
+    - text: "Surveys"
       href: surveys.html
     - text: 'Terms'
       href: terms.html
