@@ -75,7 +75,7 @@ To illustrate this, let's use the built in `iris` dataset, which gives the sepal
 ### Scatterplots
 Here is an example of a simple scatterplot in ggplot:  
 
-```{r echo=TRUE}
+```{r echo=TRUE, eval=TRUE}
 
 # Scatterplots ----------------------------
 
