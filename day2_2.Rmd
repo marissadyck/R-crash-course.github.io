@@ -60,8 +60,10 @@ You can then add **geometric objects** (like points) to your plot, often using f
 Below is a bare bones template of the code you need to start a plot in *ggplot*. All additions to the plot are added using `+`.
 
 ```{r eval=FALSE}
+
 ggplot(data, aes(x = x_variable, y = y_variable)) +
   geom_chooseGeom
+
 ```
 
 
@@ -73,7 +75,7 @@ To illustrate this, let's use the built in `iris` dataset, which gives the sepal
 ### Scatterplots
 Here is an example of a simple scatterplot in ggplot:  
 
-```{r}
+```{r echo=TRUE}
 
 # Scatterplots ----------------------------
 
