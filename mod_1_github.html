@@ -35,7 +35,6 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -222,9 +221,6 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
-<style type="text/css">
-.code-folding-btn { margin-bottom: 4px; }
-</style>
 
 
 
@@ -392,7 +388,7 @@ div.tocify {
       <a href="mod_4_occ.html">Module 4: Occupancy models (coming soon)</a>
     </li>
     <li>
-      <a href="mod_5_sem.html">Module 5: Structural equation models (SEMs) (coming soon)</a>
+      <a href="mod_5_sem.html">Module 5: Structural equation models (SEMs) (uder construction)</a>
     </li>
   </ul>
 </li>
@@ -404,7 +400,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="mod_1_github.html">Getting started with GitHub (coming soon)</a>
+      <a href="mod_1_github.html">Getting started with GitHub (under construction)</a>
     </li>
   </ul>
 </li>
@@ -430,14 +426,6 @@ div.tocify {
 
 <div id="header">
 
-<div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
-<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
-<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
-</ul>
-</div>
-
 
 
 <h1 class="title toc-ignore">Git</h1>
@@ -447,13 +435,80 @@ div.tocify {
 </div>
 
 
-<div id="create-an-account" class="section level1">
-<h1>Create an account</h1>
+<div id="download-github-desktop" class="section level2">
+<h2>Download GitHub Desktop</h2>
+<p>The GitHub Desktop app makes working in GitHub much easier (similar
+to RStudio and R). Click <a href="https://desktop.github.com/">here</a>
+to download the GitHub Desktop App.</p>
+</div>
+<div id="github" class="section level2">
+<h2>GitHub</h2>
+<p>GitHub is a development platform that allows you to create, store,
+change, merge, and collaborate on files or code. Any member of a team
+can access the GitHub repository (think of this as a folder for files)
+and see the most recent version of documents, data, and code in
+real-time. Then, they can make edits or changes that the other
+collaborators also see.</p>
+<p>GitHub is also useful for publishing R scripts and associated files
+(data, readme, etc.) for publications. Many journals and scientific
+funding agencies such as NSF are requesting that code and data be
+available for research projects and published manuscripts. GitHub is an
+ideal platform for academics to meet these requests as code can be made
+publicly available but managed and associated with a personal account.
+Additionally with the use of RMarkdown, Readme files, etc. we can make
+code and analyses more approachable to non R-users.</p>
+</div>
+<div id="create-and-account" class="section level2">
+<h2>Create and account</h2>
 <p>If you don’t already have a GitHub account you will need to create
-one following the steps below.</p>
+one following the steps outlined in this <a
+href="https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github">link</a>.</p>
+<p>You can also navigate directly to <a
+href="https://github.com/">github.com</a> and follow the on-screen
+instructions.</p>
+<p><img src="images/github_signup.png" /></p>
+</div>
+<div id="repositories" class="section level2">
+<h2>Repositories</h2>
+<p>Repositories are like folders that contain related items, such as the
+code, data, images, r project files, etc. needed for a
+project/analysis.</p>
+<div id="create-a-repository" class="section level3">
+<h3>Create a repository</h3>
+<p>There are two main ways to create a repository.</p>
+<ol style="list-style-type: decimal">
+<li><p>Create a repository online following GitHub instructions <a
+href="https://docs.github.com/en/get-started/start-your-journey/hello-world">here</a>.</p></li>
+<li><p>Create a repository through GitHub Desktop App following
+instructions <a
+href="https://docs.github.com/en/desktop/overview/creating-your-first-repository-using-github-desktop">here</a>.</p></li>
+</ol>
+</div>
+<div id="clone-a-repository" class="section level3">
+<h3>Clone a repository</h3>
+<p>You may be invited to work on a repository someone else has created
+(more below on collaborative repositories), to clone a repository you
+can use the GitHub desktop app following instructions <a
+href="https://docs.github.com/en/desktop/adding-and-cloning-repositories/cloning-a-repository-from-github-to-github-desktop">here</a>.</p>
+<p>You can also clone your own personal repository this way, if it was
+created online (option 1. to create a repository above) so you have
+access to manage files through GitHub desktop.</p>
+</div>
+<div id="collaborative-repositories" class="section level3">
+<h3>Collaborative repositories</h3>
+<p>When you create a repository you have the option to invite
+collaborators to contribute to that repository. This is a useful option
+for collaborative coding projects where multiple individuals may need to
+work on the same code to reach desired outcomes. Rather than emailing
+various versions of a code back and forth you can use GitHub for
+collaborative coding.</p>
+<p>To add someone to collaborate on a personal repository follow
+instructions <a
+href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-access-to-your-personal-repositories/inviting-collaborators-to-a-personal-repository">here</a>.</p>
 <center>
 <img src="images/construction_dog.jpeg" style="width:40.0%" />
 </center>
+</div>
 </div>
 
 
@@ -491,11 +546,6 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("show" === "show");
-});
-</script>
 
 <script>
 $(document).ready(function ()  {

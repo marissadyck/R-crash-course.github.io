@@ -37,11 +37,11 @@ navbar:
           href: mod_3_glmm.html
         - text: "Module 4: Occupancy models (coming soon)"
           href: mod_4_occ.html
-        - text: "Module 5: Structural equation models (SEMs) (coming soon)"
+        - text: "Module 5: Structural equation models (SEMs) (uder construction)"
           href: mod_5_sem.html
     - text: "Git"
       menu:
-        - text: "Getting started with GitHub (coming soon)"
+        - text: "Getting started with GitHub (under construction)"
           href: mod_1_github.html
     - text: "Data"
       href: data.html
