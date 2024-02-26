@@ -1,0 +1,2554 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Module 4: Data manipulation" />
+
+<meta name="date" content="2023-01-01" />
+
+<title>Intro to R</title>
+
+<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R Crash Course 2023</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Intro to R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_R101.html">Module 1: R 101</a>
+    </li>
+    <li>
+      <a href="mod_2_baseR.html">Module 2: Base R</a>
+    </li>
+    <li>
+      <a href="mod_3_data.html">Module 3: Working with data</a>
+    </li>
+    <li>
+      <a href="mod_4_data_manipulation.html">Module 4: Data manipulation</a>
+    </li>
+    <li>
+      <a href="mod_5_purrr.html">Module 5: The wonders of Purrr</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Data Visualization
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_plots_baseR.html">Module 1: Data Visualization in Base R</a>
+    </li>
+    <li>
+      <a href="mod_2_ggplot.html">Module 2: Basics of ggplot</a>
+    </li>
+    <li>
+      <a href="mod_3_ggplot_adv.html">Module 3: Advanced ggplot (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_4_beyond_ggplot.html">Module 4: Beyond ggplot</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Statistical Modeling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_lm.html">Module 1: Linear regression (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_2_glm.html">Module 2: Generalized linear models (GLMs)</a>
+    </li>
+    <li>
+      <a href="mod_3_glmm.html">Module 3: General mixed effects models (GLMMs) (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_4_occ.html">Module 4: Occupancy models (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_5_sem.html">Module 5: Structural equation models (SEMs) (coming soon)</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Git
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_github.html">Getting started with GitHub (coming soon)</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="data.html">Data</a>
+</li>
+<li>
+  <a href="links.html">Links</a>
+</li>
+<li>
+  <a href="surveys.html">Surveys</a>
+</li>
+<li>
+  <a href="terms.html">Terms</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Intro to R</h1>
+<h4 class="author">Module 4: Data manipulation</h4>
+<h4 class="date">2023</h4>
+
+</div>
+
+
+<div id="materials" class="section level2">
+<h2>Materials</h2>
+<div id="script" class="section level3">
+<h3>Script</h3>
+<ol style="list-style-type: decimal">
+<li><p>Click <a href="mod_4_data_manipulation.R">here</a> to download
+the script! Save the script to the ‘scripts’’ folder in your project
+directory you set up in the previous module.</p></li>
+<li><p>Load your script in RStudio. To do this, open RStudio and click
+the <strong>files</strong> window and select the scripts folder and then
+this script.</p></li>
+</ol>
+<p>Let’s get started formatting data!</p>
+</div>
+<div id="cheat-sheets" class="section level3">
+<h3>Cheat sheets</h3>
+<p><a href="https://www.rstudio.com/resources/cheatsheets/">tidyr and
+dplyr cheat sheets</a> Scroll down to data tidying with tidyr
+<strong>&amp;</strong> data transformation with dplyr</p>
+</div>
+</div>
+<div id="import-data" class="section level2">
+<h2>Import data</h2>
+<p>We will continue working with the turtles data set for part of this
+module, but let’s use the one we altered with lowercase and shorter
+variable names. <span style="color: blue;">Read in the altered turtles
+data frame we created in the last module (e.g. <em>turtles_tidy</em>)
+and print it to the <strong>console</strong></span>.</p>
+<pre class="r fold-hide"><code>  # import data FILL IN YOUR CODE HERE ----------------------
+
+# read in altered turtles data
+turtles_tidy &lt;- read_csv(&#39;data/processed/turtles_tidy.csv&#39;)
+
+# print data
+turtles_tidy</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##      tag sex    c_length h_width weight
+##    &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+##  1    10 male       41      7.15   7.6 
+##  2    11 female     46.4    8.18  11   
+##  3     2 &lt;NA&gt;       24.3    4.42   1.65
+##  4    15 &lt;NA&gt;       28.7    4.89   2.18
+##  5    16 &lt;NA&gt;       32      5.37   3   
+##  6     3 female     42.8    7.32   8.6 
+##  7     4 male       40      6.6    6.5 
+##  8     5 female     45      8.05  10.9 
+##  9    12 female     44      7.55   8.9 
+## 10    13 &lt;NA&gt;       28      4.85   1.97
+## # ℹ 11 more rows</code></pre>
+<pre class="r fold-hide"><code># check internal structure
+str(turtles_tidy)</code></pre>
+<pre><code>## spc_tbl_ [21 × 5] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ tag     : num [1:21] 10 11 2 15 16 3 4 5 12 13 ...
+##  $ sex     : chr [1:21] &quot;male&quot; &quot;female&quot; NA NA ...
+##  $ c_length: num [1:21] 41 46.4 24.3 28.7 32 42.8 40 45 44 28 ...
+##  $ h_width : num [1:21] 7.15 8.18 4.42 4.89 5.37 7.32 6.6 8.05 7.55 4.85 ...
+##  $ weight  : num [1:21] 7.6 11 1.65 2.18 3 8.6 6.5 10.9 8.9 1.97 ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   tag = col_double(),
+##   ..   sex = col_character(),
+##   ..   c_length = col_double(),
+##   ..   h_width = col_double(),
+##   ..   weight = col_double()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<p>If you didn’t save the turtles_tidy data, below is the code to alter
+and save the data.</p>
+<pre class="r"><code># code for altering turtle data
+turtles.df &lt;- read_delim(&#39;data/raw/turtle_data.txt&#39;,
+                         delim = &#39;\t&#39;) %&gt;% 
+  
+   # set column names to lowercase
+  set_names(
+    names(.) %&gt;%  
+      tolower()) %&gt;% 
+  
+  # rename columns to shorter names
+  rename(tag = tag_number,
+         c_length = carapace_length,
+         h_width = head_width) %&gt;% 
+  
+  # change sex to factor variable
+  mutate(sex = as.factor(sex))
+
+
+# save to data/processed folder as &#39;turtles_tidy.csv&#39;
+write_csv(turtles.df,
+          &#39;data/processed/turtles_tidy.csv&#39;)</code></pre>
+</div>
+<div id="sortingordering-data" class="section level2">
+<h2>Sorting/ordering data</h2>
+<div id="sorting-data-rows" class="section level3">
+<h3>Sorting data (rows)</h3>
+<p>Sorting is another common data operation, which helps to visualize
+and organize data. In the <strong>tidyverse</strong>, sorting (by row)
+is accomplished using the <code>arrange()</code>
+<strong>function</strong>.</p>
+<pre class="r"><code># Sorting/ordering data --------------------
+
+#  Sorting using arrange
+
+# To sort a data frame by one vector (variable), you can use arrange()
+turtles_tidy %&gt;% 
+  arrange(c_length)</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##      tag sex    c_length h_width weight
+##    &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+##  1     2 &lt;NA&gt;       24.3    4.42   1.65
+##  2    13 &lt;NA&gt;       28      4.85   1.97
+##  3    15 &lt;NA&gt;       28.7    4.89   2.18
+##  4     1 &lt;NA&gt;       29.2    5.1    2.38
+##  5    16 &lt;NA&gt;       32      5.37   3   
+##  6     8 &lt;NA&gt;       32      5.35   2.9 
+##  7     9 male       35      5.74   3.9 
+##  8    17 female     35.1    6.04   4.5 
+##  9     4 male       40      6.6    6.5 
+## 10     6 fem        40      6.53   6.2 
+## # ℹ 11 more rows</code></pre>
+<pre class="r"><code># or if we want in descending order...
+turtles_tidy %&gt;% 
+  arrange(desc(c_length))</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##      tag sex    c_length h_width weight
+##    &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+##  1    22 female     48.1    8.55   12.8
+##  2     7 female     48      8.67   13.5
+##  3    11 female     46.4    8.18   11  
+##  4     5 female     45      8.05   10.9
+##  5    12 female     44      7.55    8.9
+##  6   105 male       44      7.1     9  
+##  7   104 male       44      7.35    9  
+##  8    14 male       43      6.6     7.2
+##  9     3 female     42.8    7.32    8.6
+## 10    19 male       42.3    6.77    7.8
+## # ℹ 11 more rows</code></pre>
+<pre class="r"><code># Sorting by 2 columns - use a comma to separate columns
+turtles_tidy %&gt;% 
+  arrange(sex, weight)</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##      tag sex    c_length h_width weight
+##    &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+##  1     6 fem        40      6.53    6.2
+##  2    17 female     35.1    6.04    4.5
+##  3     3 female     42.8    7.32    8.6
+##  4    12 female     44      7.55    8.9
+##  5     5 female     45      8.05   10.9
+##  6    11 female     46.4    8.18   11  
+##  7    22 female     48.1    8.55   12.8
+##  8     7 female     48      8.67   13.5
+##  9     9 male       35      5.74    3.9
+## 10     4 male       40      6.6     6.5
+## # ℹ 11 more rows</code></pre>
+<p>Let’s practice this with the diamonds data in the <em>ggplot2</em>
+<strong>package</strong>. <span style="color: blue;"> Arrange the data
+by highest price to lowest price</span>.</p>
+<pre class="r fold-hide"><code># Practice FILL IN YOUR CODE HERE ----------------------
+
+# practice- arrange diamonds data by highest price to lowest price</code></pre>
+</div>
+<div id="ordering-data-columns" class="section level3">
+<h3>Ordering data (columns)</h3>
+<p>We can also reorder the columns in our data set using
+<code>relocate()</code> or <code>select()</code>.</p>
+<div id="select" class="section level4">
+<h4>Select</h4>
+<p>In the turtles_tidy data set if we want the columns ordered
+alphabetically we can use the <code>select()</code>
+<strong>function</strong> paired with the <code>order()</code>
+<strong>function</strong></p>
+<pre class="r"><code># order columns alphabetically with select
+turtles_tidy %&gt;% 
+  select(order(colnames(.)))   </code></pre>
+<pre><code>## # A tibble: 21 × 5
+##    c_length h_width sex      tag weight
+##       &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##  1     41      7.15 male      10   7.6 
+##  2     46.4    8.18 female    11  11   
+##  3     24.3    4.42 &lt;NA&gt;       2   1.65
+##  4     28.7    4.89 &lt;NA&gt;      15   2.18
+##  5     32      5.37 &lt;NA&gt;      16   3   
+##  6     42.8    7.32 female     3   8.6 
+##  7     40      6.6  male       4   6.5 
+##  8     45      8.05 female     5  10.9 
+##  9     44      7.55 female    12   8.9 
+## 10     28      4.85 &lt;NA&gt;      13   1.97
+## # ℹ 11 more rows</code></pre>
+<p>Here we use dplyr <code>select()</code> to tell R we want to do
+something with the columns in our data. Then we specify we want to order
+the columns using <code>order()</code>, then inside that
+<strong>function</strong> we use <code>colnames()</code> to specify that
+we want to order the columns based on their names. The ‘.’ inside the
+<code>colnames()</code> <strong>function</strong> is a placeholder for
+the data (e.g. turtles_tidy) which we are piping in above. If we weren’t
+using a <em>dplyr</em> pipe we would need to specify the data inside
+<code>colnames()</code>.</p>
+</div>
+<div id="relocate" class="section level4">
+<h4>Relocate</h4>
+<p>We can also specify the location of specific columns relative to
+other columns in our data using <code>relocate()</code>.</p>
+<p>In the turtles_tidy data if we want ‘weight’ to come before
+‘c_length’ we can reorder the columns as follows</p>
+<pre class="r"><code># ordering columns with relocate
+
+# example with turtles_tidy data
+turtles_tidy %&gt;% 
+  
+  # move &#39;weight&#39; before &#39;c_length&#39;
+  relocate(weight, 
+           .before = c_length)</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##      tag sex    weight c_length h_width
+##    &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;
+##  1    10 male     7.6      41      7.15
+##  2    11 female  11        46.4    8.18
+##  3     2 &lt;NA&gt;     1.65     24.3    4.42
+##  4    15 &lt;NA&gt;     2.18     28.7    4.89
+##  5    16 &lt;NA&gt;     3        32      5.37
+##  6     3 female   8.6      42.8    7.32
+##  7     4 male     6.5      40      6.6 
+##  8     5 female  10.9      45      8.05
+##  9    12 female   8.9      44      7.55
+## 10    13 &lt;NA&gt;     1.97     28      4.85
+## # ℹ 11 more rows</code></pre>
+<pre class="r"><code># alternatively we could specify to have weight AFTER &#39;sex&#39;
+turtles_tidy %&gt;% 
+  
+  # relocate &#39;weight&#39; after &#39;sex&#39;
+  relocate(weight,
+           .after = sex)</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##      tag sex    weight c_length h_width
+##    &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;
+##  1    10 male     7.6      41      7.15
+##  2    11 female  11        46.4    8.18
+##  3     2 &lt;NA&gt;     1.65     24.3    4.42
+##  4    15 &lt;NA&gt;     2.18     28.7    4.89
+##  5    16 &lt;NA&gt;     3        32      5.37
+##  6     3 female   8.6      42.8    7.32
+##  7     4 male     6.5      40      6.6 
+##  8     5 female  10.9      45      8.05
+##  9    12 female   8.9      44      7.55
+## 10    13 &lt;NA&gt;     1.97     28      4.85
+## # ℹ 11 more rows</code></pre>
+<pre class="r"><code># if we don&#39;t specify a .before or .after argument it will move the selected column to the front of the data
+turtles_tidy %&gt;% 
+  relocate(weight)</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##    weight   tag sex    c_length h_width
+##     &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+##  1   7.6     10 male       41      7.15
+##  2  11       11 female     46.4    8.18
+##  3   1.65     2 &lt;NA&gt;       24.3    4.42
+##  4   2.18    15 &lt;NA&gt;       28.7    4.89
+##  5   3       16 &lt;NA&gt;       32      5.37
+##  6   8.6      3 female     42.8    7.32
+##  7   6.5      4 male       40      6.6 
+##  8  10.9      5 female     45      8.05
+##  9   8.9     12 female     44      7.55
+## 10   1.97    13 &lt;NA&gt;       28      4.85
+## # ℹ 11 more rows</code></pre>
+<blockquote>
+<p>Remember unless we overwrite the data (e.g. assign it to the
+environment with <code>&lt;-</code>) none of these changes will be saved
+outside the code chunk we wrote them in.</p>
+</blockquote>
+<p>We can also reorder multiple columns at a time</p>
+<pre class="r"><code># ordering data
+
+# reordering multiple columns by name
+turtles_tidy %&gt;% 
+  
+  # move &#39;weight&#39;, &#39;c_length&#39;, and &#39;h_width&#39; before &#39;tag&#39; and &#39;sex&#39;
+  relocate(c(weight, c_length, h_width))</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##    weight c_length h_width   tag sex   
+##     &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; 
+##  1   7.6      41      7.15    10 male  
+##  2  11        46.4    8.18    11 female
+##  3   1.65     24.3    4.42     2 &lt;NA&gt;  
+##  4   2.18     28.7    4.89    15 &lt;NA&gt;  
+##  5   3        32      5.37    16 &lt;NA&gt;  
+##  6   8.6      42.8    7.32     3 female
+##  7   6.5      40      6.6      4 male  
+##  8  10.9      45      8.05     5 female
+##  9   8.9      44      7.55    12 female
+## 10   1.97     28      4.85    13 &lt;NA&gt;  
+## # ℹ 11 more rows</code></pre>
+<pre class="r"><code># alternatively we could specify which variables to relocate by their type
+turtles_tidy %&gt;% 
+  
+  # move all numeric variables to the front
+  relocate(where(is.numeric))</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##      tag c_length h_width weight sex   
+##    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; 
+##  1    10     41      7.15   7.6  male  
+##  2    11     46.4    8.18  11    female
+##  3     2     24.3    4.42   1.65 &lt;NA&gt;  
+##  4    15     28.7    4.89   2.18 &lt;NA&gt;  
+##  5    16     32      5.37   3    &lt;NA&gt;  
+##  6     3     42.8    7.32   8.6  female
+##  7     4     40      6.6    6.5  male  
+##  8     5     45      8.05  10.9  female
+##  9    12     44      7.55   8.9  female
+## 10    13     28      4.85   1.97 &lt;NA&gt;  
+## # ℹ 11 more rows</code></pre>
+<pre class="r"><code># or
+turtles_tidy %&gt;% 
+  
+  # move all numeric variables after &#39;tag&#39;
+  relocate(where(is.numeric),
+                 .after = tag)</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##      tag c_length h_width weight sex   
+##    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; 
+##  1    10     41      7.15   7.6  male  
+##  2    11     46.4    8.18  11    female
+##  3     2     24.3    4.42   1.65 &lt;NA&gt;  
+##  4    15     28.7    4.89   2.18 &lt;NA&gt;  
+##  5    16     32      5.37   3    &lt;NA&gt;  
+##  6     3     42.8    7.32   8.6  female
+##  7     4     40      6.6    6.5  male  
+##  8     5     45      8.05  10.9  female
+##  9    12     44      7.55   8.9  female
+## 10    13     28      4.85   1.97 &lt;NA&gt;  
+## # ℹ 11 more rows</code></pre>
+<p>Practice with the diamonds data in the <em>ggplot2</em>
+<strong>package</strong>. <span style="color: blue;"> Reorder the
+columns so that price is first.</p>
+<pre class="r fold-hide"><code># practice with diamonds data
+
+# reorder columns so price is first
+diamonds %&gt;% 
+  
+  # move price to front
+  relocate(price) # most parsimonious way</code></pre>
+<pre><code>## # A tibble: 53,940 × 10
+##    price carat cut       color clarity depth table     x     y     z
+##    &lt;int&gt; &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1   326  0.23 Ideal     E     SI2      61.5    55  3.95  3.98  2.43
+##  2   326  0.21 Premium   E     SI1      59.8    61  3.89  3.84  2.31
+##  3   327  0.23 Good      E     VS1      56.9    65  4.05  4.07  2.31
+##  4   334  0.29 Premium   I     VS2      62.4    58  4.2   4.23  2.63
+##  5   335  0.31 Good      J     SI2      63.3    58  4.34  4.35  2.75
+##  6   336  0.24 Very Good J     VVS2     62.8    57  3.94  3.96  2.48
+##  7   336  0.24 Very Good I     VVS1     62.3    57  3.95  3.98  2.47
+##  8   337  0.26 Very Good H     SI1      61.9    55  4.07  4.11  2.53
+##  9   337  0.22 Fair      E     VS2      65.1    61  3.87  3.78  2.49
+## 10   338  0.23 Very Good H     VS1      59.4    61  4     4.05  2.39
+## # ℹ 53,930 more rows</code></pre>
+<pre class="r fold-hide"><code># or
+diamonds %&gt;% 
+  
+  # move price to front
+  relocate(price,
+           .before = carat)</code></pre>
+<pre><code>## # A tibble: 53,940 × 10
+##    price carat cut       color clarity depth table     x     y     z
+##    &lt;int&gt; &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1   326  0.23 Ideal     E     SI2      61.5    55  3.95  3.98  2.43
+##  2   326  0.21 Premium   E     SI1      59.8    61  3.89  3.84  2.31
+##  3   327  0.23 Good      E     VS1      56.9    65  4.05  4.07  2.31
+##  4   334  0.29 Premium   I     VS2      62.4    58  4.2   4.23  2.63
+##  5   335  0.31 Good      J     SI2      63.3    58  4.34  4.35  2.75
+##  6   336  0.24 Very Good J     VVS2     62.8    57  3.94  3.96  2.48
+##  7   336  0.24 Very Good I     VVS1     62.3    57  3.95  3.98  2.47
+##  8   337  0.26 Very Good H     SI1      61.9    55  4.07  4.11  2.53
+##  9   337  0.22 Fair      E     VS2      65.1    61  3.87  3.78  2.49
+## 10   338  0.23 Very Good H     VS1      59.4    61  4     4.05  2.39
+## # ℹ 53,930 more rows</code></pre>
+<p>With the turtles_tidy data let’s try to move all the
+<strong>factors</strong> to the front</p>
+<pre class="r"><code>turtles_tidy %&gt;% 
+  
+  # move factors to front
+  relocate(where(is.factor))</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##      tag sex    c_length h_width weight
+##    &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+##  1    10 male       41      7.15   7.6 
+##  2    11 female     46.4    8.18  11   
+##  3     2 &lt;NA&gt;       24.3    4.42   1.65
+##  4    15 &lt;NA&gt;       28.7    4.89   2.18
+##  5    16 &lt;NA&gt;       32      5.37   3   
+##  6     3 female     42.8    7.32   8.6 
+##  7     4 male       40      6.6    6.5 
+##  8     5 female     45      8.05  10.9 
+##  9    12 female     44      7.55   8.9 
+## 10    13 &lt;NA&gt;       28      4.85   1.97
+## # ℹ 11 more rows</code></pre>
+<p>Notice this didn’t change our data… It should have moved ‘sex’ to the
+front because we set it as a <strong>factor</strong> last time. Let’s
+check the data structure again to be sure.</p>
+<pre class="r fold-hide"><code># check structure of turtles_tidy
+str(turtles_tidy)</code></pre>
+<pre><code>## spc_tbl_ [21 × 5] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ tag     : num [1:21] 10 11 2 15 16 3 4 5 12 13 ...
+##  $ sex     : chr [1:21] &quot;male&quot; &quot;female&quot; NA NA ...
+##  $ c_length: num [1:21] 41 46.4 24.3 28.7 32 42.8 40 45 44 28 ...
+##  $ h_width : num [1:21] 7.15 8.18 4.42 4.89 5.37 7.32 6.6 8.05 7.55 4.85 ...
+##  $ weight  : num [1:21] 7.6 11 1.65 2.18 3 8.6 6.5 10.9 8.9 1.97 ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   tag = col_double(),
+##   ..   sex = col_character(),
+##   ..   c_length = col_double(),
+##   ..   h_width = col_double(),
+##   ..   weight = col_double()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<p>It is still reading ‘sex’ as a <strong>character</strong>. Sometimes
+R will do this but luckily you know how to change the type of variable
+when you read in the data.</p>
+</div>
+</div>
+</div>
+<div id="data-manipulation" class="section level2">
+<h2>Data manipulation</h2>
+<p><span style="color: blue;">Alter the code we used to read in the
+turtles_tidy data to change sex to a <strong>factor</strong> the same
+code chunk and then check the internal data structure again.</span>.</p>
+<pre class="r fold-hide"><code># Data manipulation --------------------
+
+# FILL IN YOUR CODE HERE --------------------
+
+# first read in data for this section
+
+# read in altered turtles data
+turtles_tidy &lt;- read_csv(&#39;data/processed/turtles_tidy.csv&#39;) %&gt;% 
+  
+  # change &#39;sex&#39; to a factor
+  mutate(sex = as.factor(sex))
+
+# check internal structure
+str(turtles_tidy)</code></pre>
+<pre><code>## tibble [21 × 5] (S3: tbl_df/tbl/data.frame)
+##  $ tag     : num [1:21] 10 11 2 15 16 3 4 5 12 13 ...
+##  $ sex     : Factor w/ 3 levels &quot;fem&quot;,&quot;female&quot;,..: 3 2 NA NA NA 2 3 2 2 NA ...
+##  $ c_length: num [1:21] 41 46.4 24.3 28.7 32 42.8 40 45 44 28 ...
+##  $ h_width : num [1:21] 7.15 8.18 4.42 4.89 5.37 7.32 6.6 8.05 7.55 4.85 ...
+##  $ weight  : num [1:21] 7.6 11 1.65 2.18 3 8.6 6.5 10.9 8.9 1.97 ...</code></pre>
+<p>Do you notice anything else that could be a problem with the sex
+variable in this data set? Maybe you noticed this in the last module
+already. Females has been entered two different ways (‘female’ and
+‘fem’). This is a very common problem that can arise with data,
+particularly when multiple people are in charge of entering the data.
+There are multiple ways to fix this, let’s look at a few using
+<strong>tidyverse</strong>.</p>
+<div id="replace" class="section level3">
+<h3>Replace</h3>
+<p>First, we can use the <code>mutate()</code> and
+<code>replace()</code> <strong>functions</strong>. Recall that
+<code>mutate()</code> can create new columns or modify existing columns
+using existing variables in the data. Therefore, we can modify the sex
+column using this <strong>function</strong> and another
+<strong>function</strong>, <code>replace()</code> which as the name
+suggests will replace existing values matching some criteria with a
+specified value.</p>
+<pre class="r"><code>  # Replace ---------------------
+
+# fix issue with multiple entries for female
+turtles_tidy &lt;-  turtles_tidy %&gt;% 
+  mutate(sex = replace(sex, 
+                       sex == &quot;fem&quot;,
+                       &quot;female&quot;))
+
+# print
+turtles_tidy</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##      tag sex    c_length h_width weight
+##    &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+##  1    10 male       41      7.15   7.6 
+##  2    11 female     46.4    8.18  11   
+##  3     2 &lt;NA&gt;       24.3    4.42   1.65
+##  4    15 &lt;NA&gt;       28.7    4.89   2.18
+##  5    16 &lt;NA&gt;       32      5.37   3   
+##  6     3 female     42.8    7.32   8.6 
+##  7     4 male       40      6.6    6.5 
+##  8     5 female     45      8.05  10.9 
+##  9    12 female     44      7.55   8.9 
+## 10    13 &lt;NA&gt;       28      4.85   1.97
+## # ℹ 11 more rows</code></pre>
+<pre class="r"><code>levels(turtles_tidy$sex)</code></pre>
+<pre><code>## [1] &quot;fem&quot;    &quot;female&quot; &quot;male&quot;</code></pre>
+<p>Now notice this replaced ‘fem’ with ‘female’ when we print the data
+but when we look at the levels of our variable ‘sex’ it still shows 3
+levels (‘fem’, ‘female’, ‘male’). It took me a little while to figure
+out why this wasn’t working, do you have any ideas?</p>
+<p><img
+src="https://media2.giphy.com/media/1X7lCRp8iE0yrdZvwd/giphy.gif?cid=6c09b952tr2ap7ihs5l1syb6d6ydlvrkq5exq8cucqtt4s6v&amp;ep=v1_gifs_search&amp;rid=giphy.gif&amp;ct=g" /></p>
+<p>I thought it might have to do with the fact that our variable is a
+<strong>factor</strong>. How could I test this to see if this is in fact
+the issue?</p>
+<pre class="r fold-hide"><code># FILL IN YOUR CODE HERE --------------------
+
+# change &#39;sex&#39; back to a character then try the data manipulation again to see if anything is different. We can do this all in one pipe!
+turtles_tidy &lt;- turtles_tidy %&gt;% 
+  
+  # sex to character
+  mutate(sex = as.character(sex),
+         
+         # change fem to female with replace
+         replace(sex,
+                 sex == &#39;fem&#39;,
+                 &#39;female&#39;),
+         
+         # sex to factor
+         sex = as.factor(sex))
+
+head(turtles_tidy)</code></pre>
+<pre><code>## # A tibble: 6 × 6
+##     tag sex    c_length h_width weight `replace(sex, sex == &quot;fem&quot;, &quot;female&quot;)`
+##   &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;                                 
+## 1    10 male       41      7.15   7.6  male                                  
+## 2    11 female     46.4    8.18  11    female                                
+## 3     2 &lt;NA&gt;       24.3    4.42   1.65 &lt;NA&gt;                                  
+## 4    15 &lt;NA&gt;       28.7    4.89   2.18 &lt;NA&gt;                                  
+## 5    16 &lt;NA&gt;       32      5.37   3    &lt;NA&gt;                                  
+## 6     3 female     42.8    7.32   8.6  female</code></pre>
+<pre class="r fold-hide"><code>levels(turtles_tidy$sex)</code></pre>
+<pre><code>## [1] &quot;female&quot; &quot;male&quot;</code></pre>
+</div>
+<div id="recode" class="section level3">
+<h3>Recode</h3>
+<p>It turns out we were correct, <code>replace()</code> which is a base
+R <strong>function</strong> wasn’t working properly with a
+<strong>factor</strong>. Luckily, <em>dplyr</em> has a similar
+<strong>function</strong> to ‘replace’ values which works better with
+<strong>factors</strong>, it is <code>recode()</code> and here is how it
+works.</p>
+<pre class="r"><code>  # Recode  ----------------------
+
+# read in turtles data again and set &#39;sex&#39; to factor to overwrite the changes we made with the last code chunk, and in the same code chunk we will &#39;recode&#39; the &#39;sex&#39; column
+
+# read in altered turtles data
+turtles_tidy &lt;- read_csv(&#39;data/processed/turtles_tidy.csv&#39;) %&gt;% 
+  
+  # change sex to a factor
+  mutate(sex = as.factor(sex),
+         sex = recode(sex, 
+                       fem = &#39;female&#39;))
+
+# check data
+str(turtles_tidy)</code></pre>
+<pre><code>## tibble [21 × 5] (S3: tbl_df/tbl/data.frame)
+##  $ tag     : num [1:21] 10 11 2 15 16 3 4 5 12 13 ...
+##  $ sex     : Factor w/ 2 levels &quot;female&quot;,&quot;male&quot;: 2 1 NA NA NA 1 2 1 1 NA ...
+##  $ c_length: num [1:21] 41 46.4 24.3 28.7 32 42.8 40 45 44 28 ...
+##  $ h_width : num [1:21] 7.15 8.18 4.42 4.89 5.37 7.32 6.6 8.05 7.55 4.85 ...
+##  $ weight  : num [1:21] 7.6 11 1.65 2.18 3 8.6 6.5 10.9 8.9 1.97 ...</code></pre>
+<pre class="r"><code>levels(turtles_tidy$sex)</code></pre>
+<pre><code>## [1] &quot;female&quot; &quot;male&quot;</code></pre>
+<p>Now you might wonder why I bothered going through the trouble of
+first showing you <code>replace()</code> when it didn’t work and the
+lengthy way to fix it above.</p>
+<p>This is because all data are different and you will find when working
+with your own data that code which works perfectly in an example,
+online, or in other code you have run isn’t working. And rather than get
+frustrated or give up and try a different <strong>function</strong> or
+<strong>package</strong> or even worse…. try to manually fix it in…
+EXCEL! You will need to learn to troubleshoot your code, and this
+provides a great example of that.</p>
+<p><img
+src="https://i.pinimg.com/originals/96/11/d2/9611d2fde013a9a5fca0d2766b44d09a.jpg" /></p>
+<p>Rant over, let’s move on to other ways we can correct/modify entries
+in a column.</p>
+</div>
+<div id="if_else" class="section level3">
+<h3>If_else</h3>
+<p>Another useful <strong>function</strong> is <code>if_else()</code>.
+If-else statements are logical statements that can alter or replace
+existing data based on whether the value in a column matches your
+criteria (TRUE), does not match criteria (FALSE), or is missing
+data.</p>
+<p>Let’s use the diamonds data set in the <em>ggplot2</em>
+<strong>package</strong> for this example. We can use the help shortcut
+<code>?</code> to learn more about the data. By reading this we see that
+color (D-J) is a ranking from best to worst. Maybe we don’t want 7
+levels for this variable though, if we just want to know which ones are
+the worst color and which ones are not we can use
+<code>if_else()</code>.</p>
+<pre class="r"><code>  # If else ----------------------
+
+# first learn morn about the diamonds data set
+?diamonds
+
+# change color to two categories based on worst color diamonds (J)
+diamonds %&gt;% 
+  mutate(color = if_else(color == &#39;J&#39;, # if color is J 
+                         &#39;worst&#39;, # TRUE = worst
+                         &#39;not_worst&#39;)) # FALSE = not_worst</code></pre>
+<pre><code>## # A tibble: 53,940 × 10
+##    carat cut       color     clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt;     &lt;chr&gt;     &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  0.23 Ideal     not_worst SI2      61.5    55   326  3.95  3.98  2.43
+##  2  0.21 Premium   not_worst SI1      59.8    61   326  3.89  3.84  2.31
+##  3  0.23 Good      not_worst VS1      56.9    65   327  4.05  4.07  2.31
+##  4  0.29 Premium   not_worst VS2      62.4    58   334  4.2   4.23  2.63
+##  5  0.31 Good      worst     SI2      63.3    58   335  4.34  4.35  2.75
+##  6  0.24 Very Good worst     VVS2     62.8    57   336  3.94  3.96  2.48
+##  7  0.24 Very Good not_worst VVS1     62.3    57   336  3.95  3.98  2.47
+##  8  0.26 Very Good not_worst SI1      61.9    55   337  4.07  4.11  2.53
+##  9  0.22 Fair      not_worst VS2      65.1    61   337  3.87  3.78  2.49
+## 10  0.23 Very Good not_worst VS1      59.4    61   338  4     4.05  2.39
+## # ℹ 53,930 more rows</code></pre>
+<p>We could also create a new column for this variable instead if we
+want to preserve the original data</p>
+<pre class="r"><code># create new column with two categories based on worst color diamonds (J)
+diamonds %&gt;% 
+  mutate(color_quality = if_else(color == &#39;J&#39;, # if color is J 
+                         &#39;worst&#39;, # TRUE = worst
+                         &#39;not_worst&#39;)) # FALSE = not_worst</code></pre>
+<pre><code>## # A tibble: 53,940 × 11
+##    carat cut     color clarity depth table price     x     y     z color_quality
+##    &lt;dbl&gt; &lt;ord&gt;   &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;        
+##  1  0.23 Ideal   E     SI2      61.5    55   326  3.95  3.98  2.43 not_worst    
+##  2  0.21 Premium E     SI1      59.8    61   326  3.89  3.84  2.31 not_worst    
+##  3  0.23 Good    E     VS1      56.9    65   327  4.05  4.07  2.31 not_worst    
+##  4  0.29 Premium I     VS2      62.4    58   334  4.2   4.23  2.63 not_worst    
+##  5  0.31 Good    J     SI2      63.3    58   335  4.34  4.35  2.75 worst        
+##  6  0.24 Very G… J     VVS2     62.8    57   336  3.94  3.96  2.48 worst        
+##  7  0.24 Very G… I     VVS1     62.3    57   336  3.95  3.98  2.47 not_worst    
+##  8  0.26 Very G… H     SI1      61.9    55   337  4.07  4.11  2.53 not_worst    
+##  9  0.22 Fair    E     VS2      65.1    61   337  3.87  3.78  2.49 not_worst    
+## 10  0.23 Very G… H     VS1      59.4    61   338  4     4.05  2.39 not_worst    
+## # ℹ 53,930 more rows</code></pre>
+</div>
+<div id="case_when" class="section level3">
+<h3>Case_when</h3>
+<p>A useful variation of <code>if_else()</code> is
+<code>case_when()</code> which allows you to use multiple if-else
+statements to modify data. For example, the clarity column in the
+diamonds data set isn’t easy to interpret if you aren’t familiar with
+this measurement so we can change the names to something easier to
+understand</p>
+<pre class="r"><code>  # Case when ----------------------
+
+# create new column with two categories based on worst color diamonds (J)
+diamonds %&gt;% 
+  mutate(clarity = case_when(clarity == &#39;l1&#39; ~ 8,
+                             clarity == &#39;SI2&#39; ~ 7,
+                             clarity == &#39;SI1&#39; ~ 6,
+                             clarity == &#39;VS2&#39; ~ 5,
+                             clarity == &#39;VS1&#39; ~ 4,
+                             clarity == &#39;VVS2&#39; ~ 3,
+                             clarity == &#39;VVS1&#39; ~ 2,
+                             clarity == &#39;IF&#39; ~ 1))</code></pre>
+<pre><code>## # A tibble: 53,940 × 10
+##    carat cut       color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  0.23 Ideal     E           7  61.5    55   326  3.95  3.98  2.43
+##  2  0.21 Premium   E           6  59.8    61   326  3.89  3.84  2.31
+##  3  0.23 Good      E           4  56.9    65   327  4.05  4.07  2.31
+##  4  0.29 Premium   I           5  62.4    58   334  4.2   4.23  2.63
+##  5  0.31 Good      J           7  63.3    58   335  4.34  4.35  2.75
+##  6  0.24 Very Good J           3  62.8    57   336  3.94  3.96  2.48
+##  7  0.24 Very Good I           2  62.3    57   336  3.95  3.98  2.47
+##  8  0.26 Very Good H           6  61.9    55   337  4.07  4.11  2.53
+##  9  0.22 Fair      E           5  65.1    61   337  3.87  3.78  2.49
+## 10  0.23 Very Good H           4  59.4    61   338  4     4.05  2.39
+## # ℹ 53,930 more rows</code></pre>
+<p>The syntax for <code>case_when()</code> can seem confusing at first,
+but as with other <em>tidyverse</em> operations, code can be read left
+to right. Inside the <code>case_when()</code> <strong>function</strong>,
+first reference the <em>variable name</em> (e.g. clarity) followed by
+the <strong>boolean operation</strong> (e.g. equals, greater than, less
+than, etc.), then the entry you are performing the operation on
+(e.g. l1, SI2, etc.) and finally a ‘~’ followed by the new entry you
+want.</p>
+<p>Now we have scored the diamonds based on clarity with 8 being the
+worst and 1 being the best.</p>
+<p>This is a lot of categories/levels though. Maybe if we were doing an
+analysis or plotting this data we would want to simplify this data and
+clump some of these scores together. We can do that too!</p>
+<pre class="r"><code># group the scores for clarity using case_when
+diamonds %&gt;% 
+  mutate(clarity = case_when(clarity == &#39;l1&#39; ~ &#39;worst&#39;,
+                             clarity == &#39;IF&#39; ~ &#39;best&#39;,
+                             .default = &#39;neutral&#39;))</code></pre>
+<pre><code>## # A tibble: 53,940 × 10
+##    carat cut       color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  0.23 Ideal     E     neutral  61.5    55   326  3.95  3.98  2.43
+##  2  0.21 Premium   E     neutral  59.8    61   326  3.89  3.84  2.31
+##  3  0.23 Good      E     neutral  56.9    65   327  4.05  4.07  2.31
+##  4  0.29 Premium   I     neutral  62.4    58   334  4.2   4.23  2.63
+##  5  0.31 Good      J     neutral  63.3    58   335  4.34  4.35  2.75
+##  6  0.24 Very Good J     neutral  62.8    57   336  3.94  3.96  2.48
+##  7  0.24 Very Good I     neutral  62.3    57   336  3.95  3.98  2.47
+##  8  0.26 Very Good H     neutral  61.9    55   337  4.07  4.11  2.53
+##  9  0.22 Fair      E     neutral  65.1    61   337  3.87  3.78  2.49
+## 10  0.23 Very Good H     neutral  59.4    61   338  4     4.05  2.39
+## # ℹ 53,930 more rows</code></pre>
+<p>What we did here is define the worst and best scores for clarity and
+then using the <code>.default</code> argument we set everything else as
+‘neutral’.</p>
+<p>We can also set multiple values as the same new value.</p>
+<pre class="r"><code># group the scores for clarity using case_when
+diamonds %&gt;% 
+  mutate(clarity = case_when(clarity == &#39;l1&#39; ~ &#39;poor&#39;,
+                             clarity == &#39;SI2&#39; ~ &#39;poor&#39;,
+                             clarity == &#39;WS1&#39; ~ &#39;good&#39;,
+                             clarity == &#39;IF&#39; ~ &#39;good&#39;,
+                             .default = &#39;moderate&#39;))</code></pre>
+<pre><code>## # A tibble: 53,940 × 10
+##    carat cut       color clarity  depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  0.23 Ideal     E     poor      61.5    55   326  3.95  3.98  2.43
+##  2  0.21 Premium   E     moderate  59.8    61   326  3.89  3.84  2.31
+##  3  0.23 Good      E     moderate  56.9    65   327  4.05  4.07  2.31
+##  4  0.29 Premium   I     moderate  62.4    58   334  4.2   4.23  2.63
+##  5  0.31 Good      J     poor      63.3    58   335  4.34  4.35  2.75
+##  6  0.24 Very Good J     moderate  62.8    57   336  3.94  3.96  2.48
+##  7  0.24 Very Good I     moderate  62.3    57   336  3.95  3.98  2.47
+##  8  0.26 Very Good H     moderate  61.9    55   337  4.07  4.11  2.53
+##  9  0.22 Fair      E     moderate  65.1    61   337  3.87  3.78  2.49
+## 10  0.23 Very Good H     moderate  59.4    61   338  4     4.05  2.39
+## # ℹ 53,930 more rows</code></pre>
+<p>But, if we have a lot of different values we want to change to the
+same new value we can also define a vector with those first and then use
+<code>case_when()</code> to overwrite them. For example.</p>
+<pre class="r"><code># using a vector with case_when
+
+# define the  entries we want to be &#39;poor&#39; quality
+poor_quality &lt;- c(&#39;l1&#39;, &#39;SI2&#39;)
+
+# define the entries we want to be &#39;good&#39; quality
+good_quality &lt;- c(&#39;WS1&#39;, &#39;IF&#39;)
+
+# group the scores for clarity using case_when and %in%
+diamonds %&gt;% 
+  mutate(clarity = case_when(clarity %in% poor_quality ~ &#39;poor&#39;,
+                             clarity %in% good_quality ~ &#39;good&#39;,
+                             .default = &#39;moderate&#39;))</code></pre>
+<pre><code>## # A tibble: 53,940 × 10
+##    carat cut       color clarity  depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  0.23 Ideal     E     poor      61.5    55   326  3.95  3.98  2.43
+##  2  0.21 Premium   E     moderate  59.8    61   326  3.89  3.84  2.31
+##  3  0.23 Good      E     moderate  56.9    65   327  4.05  4.07  2.31
+##  4  0.29 Premium   I     moderate  62.4    58   334  4.2   4.23  2.63
+##  5  0.31 Good      J     poor      63.3    58   335  4.34  4.35  2.75
+##  6  0.24 Very Good J     moderate  62.8    57   336  3.94  3.96  2.48
+##  7  0.24 Very Good I     moderate  62.3    57   336  3.95  3.98  2.47
+##  8  0.26 Very Good H     moderate  61.9    55   337  4.07  4.11  2.53
+##  9  0.22 Fair      E     moderate  65.1    61   337  3.87  3.78  2.49
+## 10  0.23 Very Good H     moderate  59.4    61   338  4     4.05  2.39
+## # ℹ 53,930 more rows</code></pre>
+<p>Finally we can also combine other <strong>boolean operations</strong>
+with <code>mutate()</code> to modify data. For example we could change
+price from a numerical variable to a categorical one based on the value
+in that column</p>
+<pre class="r"><code># using other boolean operations with mutate()
+
+# look at range for price 
+summary(diamonds$price) # let&#39;s use the mean and 1st and 3rd quartiles to set our levels</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     326     950    2401    3933    5324   18823</code></pre>
+<pre class="r"><code># change price to factor/categorical 
+diamonds %&gt;%
+mutate(price = case_when(price &lt; 950 ~ &#39;low&#39;,
+                         price &gt; 950 &amp; price &lt; 5324 ~ &#39;moderate&#39;,
+                         price &gt; 5324 ~ &#39;high&#39;))</code></pre>
+<pre><code>## # A tibble: 53,940 × 10
+##    carat cut       color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  0.23 Ideal     E     SI2      61.5    55 low    3.95  3.98  2.43
+##  2  0.21 Premium   E     SI1      59.8    61 low    3.89  3.84  2.31
+##  3  0.23 Good      E     VS1      56.9    65 low    4.05  4.07  2.31
+##  4  0.29 Premium   I     VS2      62.4    58 low    4.2   4.23  2.63
+##  5  0.31 Good      J     SI2      63.3    58 low    4.34  4.35  2.75
+##  6  0.24 Very Good J     VVS2     62.8    57 low    3.94  3.96  2.48
+##  7  0.24 Very Good I     VVS1     62.3    57 low    3.95  3.98  2.47
+##  8  0.26 Very Good H     SI1      61.9    55 low    4.07  4.11  2.53
+##  9  0.22 Fair      E     VS2      65.1    61 low    3.87  3.78  2.49
+## 10  0.23 Very Good H     VS1      59.4    61 low    4     4.05  2.39
+## # ℹ 53,930 more rows</code></pre>
+<pre class="r"><code># or using the default argument
+diamonds %&gt;%
+mutate(price = case_when(price &lt; 950 ~ &#39;low&#39;,
+                         price &gt; 5324 ~ &#39;high&#39;,
+                         .default = &#39;moderate&#39;))</code></pre>
+<pre><code>## # A tibble: 53,940 × 10
+##    carat cut       color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  0.23 Ideal     E     SI2      61.5    55 low    3.95  3.98  2.43
+##  2  0.21 Premium   E     SI1      59.8    61 low    3.89  3.84  2.31
+##  3  0.23 Good      E     VS1      56.9    65 low    4.05  4.07  2.31
+##  4  0.29 Premium   I     VS2      62.4    58 low    4.2   4.23  2.63
+##  5  0.31 Good      J     SI2      63.3    58 low    4.34  4.35  2.75
+##  6  0.24 Very Good J     VVS2     62.8    57 low    3.94  3.96  2.48
+##  7  0.24 Very Good I     VVS1     62.3    57 low    3.95  3.98  2.47
+##  8  0.26 Very Good H     SI1      61.9    55 low    4.07  4.11  2.53
+##  9  0.22 Fair      E     VS2      65.1    61 low    3.87  3.78  2.49
+## 10  0.23 Very Good H     VS1      59.4    61 low    4     4.05  2.39
+## # ℹ 53,930 more rows</code></pre>
+<p>As you can see there are a lot of ways to modify data using
+<code>mutate()</code>, and these are just a few examples to get you
+started.</p>
+<blockquote>
+<p>Be very careful when using the .default agrument. It will alter the
+value for any remaining rows including NAs.</p>
+</blockquote>
+</div>
+</div>
+<div id="dealing-w-nas-in-data" class="section level2">
+<h2>Dealing w/ NAs in data</h2>
+<p>Speaking of NAs, in many real-world data sets, observations are
+incomplete in some way- they are missing information.</p>
+<p>In R, the code “NA” (not available) stands in for elements of a
+vector that are missing for whatever reason. Most statistical functions
+have ways of dealing with NAs, but you may want to modify your data
+yourself to deal with NAs.</p>
+<p>Let’s explore a data set with missing data.</p>
+<blockquote>
+<p>If you haven’t already, download the <a
+href="data/data_missing.txt">Example missing data (data_missing.txt)</a>
+and save to the data folder in your <strong>project
+directory</strong>.</p>
+</blockquote>
+<div id="check-for-nas" class="section level3">
+<h3>Check for NAs</h3>
+<p>Now let’s explore this data set in more detail, and go over a few
+ways to check for NAs</p>
+<pre class="r"><code>  # Dealing with NAs ----------------------
+
+  # Check for NAs ----------------------
+
+# read data
+
+# NOTE: you need to specify that this is a tab-delimited file. It is especially important to specify the delimiter for data files with missing data. If you specify the header and what the text is delimited by correctly, it will read missing data as NA. Otherwise it will fail to read data in properly.
+
+missing.df &lt;- read_delim(&#39;data/raw/data_missing.txt&#39;,
+                         delim = &quot;\t&quot;)  %&gt;% 
+  
+  # set names to lowercase
+   set_names(
+    names(.) %&gt;%  # the period here is a placeholder for the data it tells R to use the element before the last pipe (e.g., turtles.df)
+      tolower()) 
+
+# Missing data are read as an NA
+missing.df</code></pre>
+<pre><code>## # A tibble: 20 × 4
+##    country        import export product
+##    &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+##  1 Bolivia            46      0 N      
+##  2 Brazil             74      0 N      
+##  3 Chile              89     16 N      
+##  4 Colombia           77     16 A      
+##  5 CostaRica          84     21 A      
+##  6 Cuba               89     15 A      
+##  7 DominicanRep       NA     14 A      
+##  8 Ecuador            70      6 A      
+##  9 ElSalvador         60     13 A      
+## 10 Guatemala          55      9 A      
+## 11 Haiti              35      3 A      
+## 12 Honduras           51     NA A      
+## 13 Jamaica            87     23 A      
+## 14 Mexico             83      4 N      
+## 15 Nicaragua          68      0 A      
+## 16 Panama             NA     19 N      
+## 17 Paraguay           74      3 A      
+## 18 Peru               73     NA N      
+## 19 TrinidadTobago     84     15 A      
+## 20 Venezuela          NA      7 N</code></pre>
+<pre class="r"><code># You can summarize your data and tell you how many NA&#39;s per col
+summary(missing.df)</code></pre>
+<pre><code>##    country              import          export        product         
+##  Length:20          Min.   :35.00   Min.   : 0.00   Length:20         
+##  Class :character   1st Qu.:60.00   1st Qu.: 3.25   Class :character  
+##  Mode  :character   Median :74.00   Median :11.00   Mode  :character  
+##                     Mean   :70.53   Mean   :10.22                     
+##                     3rd Qu.:84.00   3rd Qu.:15.75                     
+##                     Max.   :89.00   Max.   :23.00                     
+##                     NA&#39;s   :3       NA&#39;s   :2</code></pre>
+<pre class="r"><code># ?is.na   (Boolean test!)
+is.na(missing.df)</code></pre>
+<pre><code>##       country import export product
+##  [1,]   FALSE  FALSE  FALSE   FALSE
+##  [2,]   FALSE  FALSE  FALSE   FALSE
+##  [3,]   FALSE  FALSE  FALSE   FALSE
+##  [4,]   FALSE  FALSE  FALSE   FALSE
+##  [5,]   FALSE  FALSE  FALSE   FALSE
+##  [6,]   FALSE  FALSE  FALSE   FALSE
+##  [7,]   FALSE   TRUE  FALSE   FALSE
+##  [8,]   FALSE  FALSE  FALSE   FALSE
+##  [9,]   FALSE  FALSE  FALSE   FALSE
+## [10,]   FALSE  FALSE  FALSE   FALSE
+## [11,]   FALSE  FALSE  FALSE   FALSE
+## [12,]   FALSE  FALSE   TRUE   FALSE
+## [13,]   FALSE  FALSE  FALSE   FALSE
+## [14,]   FALSE  FALSE  FALSE   FALSE
+## [15,]   FALSE  FALSE  FALSE   FALSE
+## [16,]   FALSE   TRUE  FALSE   FALSE
+## [17,]   FALSE  FALSE  FALSE   FALSE
+## [18,]   FALSE  FALSE   TRUE   FALSE
+## [19,]   FALSE  FALSE  FALSE   FALSE
+## [20,]   FALSE   TRUE  FALSE   FALSE</code></pre>
+<pre class="r"><code>complete.cases(missing.df)   # Boolean: for each row, tests if there are no NA values</code></pre>
+<pre><code>##  [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE
+## [13]  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE</code></pre>
+</div>
+<div id="removing-rows-with-nas" class="section level3">
+<h3>Removing rows with NAs</h3>
+<pre class="r"><code>  # Remove NAs ----------------------
+
+# Base R function that omits (removes) rows with missing data
+na.omit(missing.df) # note this removes the entire row, so only do this if you don&#39;t want to use any data from an observation with NAs</code></pre>
+<pre><code>## # A tibble: 15 × 4
+##    country        import export product
+##    &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+##  1 Bolivia            46      0 N      
+##  2 Brazil             74      0 N      
+##  3 Chile              89     16 N      
+##  4 Colombia           77     16 A      
+##  5 CostaRica          84     21 A      
+##  6 Cuba               89     15 A      
+##  7 Ecuador            70      6 A      
+##  8 ElSalvador         60     13 A      
+##  9 Guatemala          55      9 A      
+## 10 Haiti              35      3 A      
+## 11 Jamaica            87     23 A      
+## 12 Mexico             83      4 N      
+## 13 Nicaragua          68      0 A      
+## 14 Paraguay           74      3 A      
+## 15 TrinidadTobago     84     15 A</code></pre>
+<pre class="r"><code># we can also use this with %&gt;% to remove rows with NA
+missing.df %&gt;% 
+  
+  # remove rows with NA
+  na.omit()</code></pre>
+<pre><code>## # A tibble: 15 × 4
+##    country        import export product
+##    &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+##  1 Bolivia            46      0 N      
+##  2 Brazil             74      0 N      
+##  3 Chile              89     16 N      
+##  4 Colombia           77     16 A      
+##  5 CostaRica          84     21 A      
+##  6 Cuba               89     15 A      
+##  7 Ecuador            70      6 A      
+##  8 ElSalvador         60     13 A      
+##  9 Guatemala          55      9 A      
+## 10 Haiti              35      3 A      
+## 11 Jamaica            87     23 A      
+## 12 Mexico             83      4 N      
+## 13 Nicaragua          68      0 A      
+## 14 Paraguay           74      3 A      
+## 15 TrinidadTobago     84     15 A</code></pre>
+<p>You may also want to remove only rows that contain NAs for a
+specified column. Let’s say it doesn’t matter if an observation is
+missing data for variables X and Y but if there is an NA for variable Z
+then we can’t use that observation. We can do this using the
+<code>drop_na()</code> <strong>function</strong>.</p>
+<pre class="r"><code># print missing.df data to compare with data after we remove NAs
+missing.df</code></pre>
+<pre><code>## # A tibble: 20 × 4
+##    country        import export product
+##    &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+##  1 Bolivia            46      0 N      
+##  2 Brazil             74      0 N      
+##  3 Chile              89     16 N      
+##  4 Colombia           77     16 A      
+##  5 CostaRica          84     21 A      
+##  6 Cuba               89     15 A      
+##  7 DominicanRep       NA     14 A      
+##  8 Ecuador            70      6 A      
+##  9 ElSalvador         60     13 A      
+## 10 Guatemala          55      9 A      
+## 11 Haiti              35      3 A      
+## 12 Honduras           51     NA A      
+## 13 Jamaica            87     23 A      
+## 14 Mexico             83      4 N      
+## 15 Nicaragua          68      0 A      
+## 16 Panama             NA     19 N      
+## 17 Paraguay           74      3 A      
+## 18 Peru               73     NA N      
+## 19 TrinidadTobago     84     15 A      
+## 20 Venezuela          NA      7 N</code></pre>
+<pre class="r"><code># use drop_na to remove only rows missing data for &#39;import&#39;
+missing.df %&gt;% 
+  
+  # remove NAs
+  drop_na(import)</code></pre>
+<pre><code>## # A tibble: 17 × 4
+##    country        import export product
+##    &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+##  1 Bolivia            46      0 N      
+##  2 Brazil             74      0 N      
+##  3 Chile              89     16 N      
+##  4 Colombia           77     16 A      
+##  5 CostaRica          84     21 A      
+##  6 Cuba               89     15 A      
+##  7 Ecuador            70      6 A      
+##  8 ElSalvador         60     13 A      
+##  9 Guatemala          55      9 A      
+## 10 Haiti              35      3 A      
+## 11 Honduras           51     NA A      
+## 12 Jamaica            87     23 A      
+## 13 Mexico             83      4 N      
+## 14 Nicaragua          68      0 A      
+## 15 Paraguay           74      3 A      
+## 16 Peru               73     NA N      
+## 17 TrinidadTobago     84     15 A</code></pre>
+<p>We can also do this for multiple columns.</p>
+<p>Below we use drop_na to remove only rows missing data for ‘import’
+and ‘export’ (this is effectively the same as using na.omit for this
+data set because those are the only columns with NAs but it shows you
+how to drop rows for multiple variables)</p>
+<pre class="r"><code># drop NAs for import and export columns
+missing.df %&gt;% 
+  
+  # remove NAs
+  drop_na(c(import,
+            export))</code></pre>
+<pre><code>## # A tibble: 15 × 4
+##    country        import export product
+##    &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+##  1 Bolivia            46      0 N      
+##  2 Brazil             74      0 N      
+##  3 Chile              89     16 N      
+##  4 Colombia           77     16 A      
+##  5 CostaRica          84     21 A      
+##  6 Cuba               89     15 A      
+##  7 Ecuador            70      6 A      
+##  8 ElSalvador         60     13 A      
+##  9 Guatemala          55      9 A      
+## 10 Haiti              35      3 A      
+## 11 Jamaica            87     23 A      
+## 12 Mexico             83      4 N      
+## 13 Nicaragua          68      0 A      
+## 14 Paraguay           74      3 A      
+## 15 TrinidadTobago     84     15 A</code></pre>
+</div>
+<div id="replacing-nas" class="section level3">
+<h3>Replacing NAs</h3>
+<p>Because R will automatically fill any missing data with NAs,
+sometimes we want to replace NA values with another value. For example
+if blank cells actually = 0. We can use <code>replace()</code>with
+is.na, or a special variation of the <code>replace()</code>
+<strong>function</strong>, <code>replace_na()</code> to do this.</p>
+<pre class="r"><code>  # Replace NAs ----------------------
+
+# specifying columns
+
+# first check which columns have NA values
+is.na(missing.df) # import and export are the only columns with NAs</code></pre>
+<pre><code>##       country import export product
+##  [1,]   FALSE  FALSE  FALSE   FALSE
+##  [2,]   FALSE  FALSE  FALSE   FALSE
+##  [3,]   FALSE  FALSE  FALSE   FALSE
+##  [4,]   FALSE  FALSE  FALSE   FALSE
+##  [5,]   FALSE  FALSE  FALSE   FALSE
+##  [6,]   FALSE  FALSE  FALSE   FALSE
+##  [7,]   FALSE   TRUE  FALSE   FALSE
+##  [8,]   FALSE  FALSE  FALSE   FALSE
+##  [9,]   FALSE  FALSE  FALSE   FALSE
+## [10,]   FALSE  FALSE  FALSE   FALSE
+## [11,]   FALSE  FALSE  FALSE   FALSE
+## [12,]   FALSE  FALSE   TRUE   FALSE
+## [13,]   FALSE  FALSE  FALSE   FALSE
+## [14,]   FALSE  FALSE  FALSE   FALSE
+## [15,]   FALSE  FALSE  FALSE   FALSE
+## [16,]   FALSE   TRUE  FALSE   FALSE
+## [17,]   FALSE  FALSE  FALSE   FALSE
+## [18,]   FALSE  FALSE   TRUE   FALSE
+## [19,]   FALSE  FALSE  FALSE   FALSE
+## [20,]   FALSE   TRUE  FALSE   FALSE</code></pre>
+<pre class="r"><code># replace NA in import with zeros using mutate() and replace_na()
+missing.df %&gt;% 
+  
+  # replace NA with 0
+  mutate(import = replace_na(import, 0),
+         export = replace_na(export, 0)) # provide the variable/column name and then what you want the NAs replaced with (e.g. 0)</code></pre>
+<pre><code>## # A tibble: 20 × 4
+##    country        import export product
+##    &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+##  1 Bolivia            46      0 N      
+##  2 Brazil             74      0 N      
+##  3 Chile              89     16 N      
+##  4 Colombia           77     16 A      
+##  5 CostaRica          84     21 A      
+##  6 Cuba               89     15 A      
+##  7 DominicanRep        0     14 A      
+##  8 Ecuador            70      6 A      
+##  9 ElSalvador         60     13 A      
+## 10 Guatemala          55      9 A      
+## 11 Haiti              35      3 A      
+## 12 Honduras           51      0 A      
+## 13 Jamaica            87     23 A      
+## 14 Mexico             83      4 N      
+## 15 Nicaragua          68      0 A      
+## 16 Panama              0     19 N      
+## 17 Paraguay           74      3 A      
+## 18 Peru               73      0 N      
+## 19 TrinidadTobago     84     15 A      
+## 20 Venezuela           0      7 N</code></pre>
+<pre class="r"><code># or using tidyverse trickery (less code repetition)
+missing.df %&gt;% 
+  
+  # replace NA w/ 0
+  mutate(across(
+    where(is.numeric),
+    ~ replace_na(., 0)))</code></pre>
+<pre><code>## # A tibble: 20 × 4
+##    country        import export product
+##    &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+##  1 Bolivia            46      0 N      
+##  2 Brazil             74      0 N      
+##  3 Chile              89     16 N      
+##  4 Colombia           77     16 A      
+##  5 CostaRica          84     21 A      
+##  6 Cuba               89     15 A      
+##  7 DominicanRep        0     14 A      
+##  8 Ecuador            70      6 A      
+##  9 ElSalvador         60     13 A      
+## 10 Guatemala          55      9 A      
+## 11 Haiti              35      3 A      
+## 12 Honduras           51      0 A      
+## 13 Jamaica            87     23 A      
+## 14 Mexico             83      4 N      
+## 15 Nicaragua          68      0 A      
+## 16 Panama              0     19 N      
+## 17 Paraguay           74      3 A      
+## 18 Peru               73      0 N      
+## 19 TrinidadTobago     84     15 A      
+## 20 Venezuela           0      7 N</code></pre>
+<pre class="r"><code># for entire data set
+
+# replace NA in missing.df with zeros using replace()
+missing.df %&gt;% 
+  
+  # replace NW w/ 0
+  replace(is.na(.), 0)</code></pre>
+<pre><code>## # A tibble: 20 × 4
+##    country        import export product
+##    &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+##  1 Bolivia            46      0 N      
+##  2 Brazil             74      0 N      
+##  3 Chile              89     16 N      
+##  4 Colombia           77     16 A      
+##  5 CostaRica          84     21 A      
+##  6 Cuba               89     15 A      
+##  7 DominicanRep        0     14 A      
+##  8 Ecuador            70      6 A      
+##  9 ElSalvador         60     13 A      
+## 10 Guatemala          55      9 A      
+## 11 Haiti              35      3 A      
+## 12 Honduras           51      0 A      
+## 13 Jamaica            87     23 A      
+## 14 Mexico             83      4 N      
+## 15 Nicaragua          68      0 A      
+## 16 Panama              0     19 N      
+## 17 Paraguay           74      3 A      
+## 18 Peru               73      0 N      
+## 19 TrinidadTobago     84     15 A      
+## 20 Venezuela           0      7 N</code></pre>
+<p>We could also replace all values with a value calculated from the
+existing column data (e.g., mean, median, etc.)</p>
+<pre class="r"><code># Replace all missing values in the data frame with the mean for the column
+
+# check what the mean is for import and export columns
+summary(missing.df)</code></pre>
+<pre><code>##    country              import          export        product         
+##  Length:20          Min.   :35.00   Min.   : 0.00   Length:20         
+##  Class :character   1st Qu.:60.00   1st Qu.: 3.25   Class :character  
+##  Mode  :character   Median :74.00   Median :11.00   Mode  :character  
+##                     Mean   :70.53   Mean   :10.22                     
+##                     3rd Qu.:84.00   3rd Qu.:15.75                     
+##                     Max.   :89.00   Max.   :23.00                     
+##                     NA&#39;s   :3       NA&#39;s   :2</code></pre>
+<pre class="r"><code>missing.df %&gt;% 
+  
+  # replace NA with mean value for each column
+  mutate(export = replace_na(export,
+                             mean(export,
+                                  na.rm = T)),
+         import = replace_na(import, 
+                             mean(import, 
+                                  na.rm = T)))</code></pre>
+<pre><code>## # A tibble: 20 × 4
+##    country        import export product
+##    &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+##  1 Bolivia          46      0   N      
+##  2 Brazil           74      0   N      
+##  3 Chile            89     16   N      
+##  4 Colombia         77     16   A      
+##  5 CostaRica        84     21   A      
+##  6 Cuba             89     15   A      
+##  7 DominicanRep     70.5   14   A      
+##  8 Ecuador          70      6   A      
+##  9 ElSalvador       60     13   A      
+## 10 Guatemala        55      9   A      
+## 11 Haiti            35      3   A      
+## 12 Honduras         51     10.2 A      
+## 13 Jamaica          87     23   A      
+## 14 Mexico           83      4   N      
+## 15 Nicaragua        68      0   A      
+## 16 Panama           70.5   19   N      
+## 17 Paraguay         74      3   A      
+## 18 Peru             73     10.2 N      
+## 19 TrinidadTobago   84     15   A      
+## 20 Venezuela        70.5    7   N</code></pre>
+<pre class="r"><code># or using tidyverse trickery (less code repetition)
+missing.df %&gt;% 
+  
+  # replace NA with mean value for each column
+  mutate(across(
+    where(is.numeric),
+    ~ replace_na(.,
+                 mean(.,
+                      na.rm=T))))</code></pre>
+<pre><code>## # A tibble: 20 × 4
+##    country        import export product
+##    &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+##  1 Bolivia          46      0   N      
+##  2 Brazil           74      0   N      
+##  3 Chile            89     16   N      
+##  4 Colombia         77     16   A      
+##  5 CostaRica        84     21   A      
+##  6 Cuba             89     15   A      
+##  7 DominicanRep     70.5   14   A      
+##  8 Ecuador          70      6   A      
+##  9 ElSalvador       60     13   A      
+## 10 Guatemala        55      9   A      
+## 11 Haiti            35      3   A      
+## 12 Honduras         51     10.2 A      
+## 13 Jamaica          87     23   A      
+## 14 Mexico           83      4   N      
+## 15 Nicaragua        68      0   A      
+## 16 Panama           70.5   19   N      
+## 17 Paraguay         74      3   A      
+## 18 Peru             73     10.2 N      
+## 19 TrinidadTobago   84     15   A      
+## 20 Venezuela        70.5    7   N</code></pre>
+<blockquote>
+<p>There are tons of ways to replace NAs in data and we don’t have time
+to cover them all. <a
+href="https://sparkbyexamples.com/r-programming/replace-na-values-with-zero-in-r-dataframe/#:~:text=How%20do%20I%20replace%20NA,tidyr%3A%3Areplace_na()%20functions.">Here
+is a link with more ways to replace NAs in data</a></p>
+</blockquote>
+</div>
+<div id="changing-values-to-na" class="section level3">
+<h3>Changing values to NA</h3>
+<p>What about the reverse? When we have values in our data that are
+meant to be NAs. This happens frequently, we type ‘none’, ‘n/a’, ‘-’,
+etc. instead of NA and R reads those in as <strong>characters</strong>
+instead of missing data. We’ve already learned a few ways to do this
+with <code>mutate()</code>. Let’s review with a new data set.</p>
+<p>Download the <a href="data/Bobcat_necropsy_data.csv">bobcat necropsy
+data (Bobcat_necropsy_data.csv)</a> and save it to the data folder in
+your <strong>project directory</strong>.</p>
+<p><span style="color: blue;">In the same code chunk complete the
+following steps</span></p>
+<ul>
+<li><p>Read in the data and save it as <em>bobcats</em></p></li>
+<li><p>Set the column names to lowercase</p></li>
+<li><p>Select only ‘necropsy’, ‘necropsydata’, ‘age’, and ‘sex’</p></li>
+<li><p>print a summary of the data</p></li>
+</ul>
+<pre class="r fold-hide"><code>  # Replace values with NA ----------------------
+
+ # FILL IN YOUR CODE HERE ----------------------
+bobcats &lt;- read_csv(&#39;data/raw/Bobcat_necropsy_data.csv&#39;) %&gt;% 
+  
+  # set names to lowercase
+  
+  set_names(
+    names(.) %&gt;% 
+      tolower()) %&gt;% 
+  
+  # select specific columns
+  select(necropsy, necropsydate, age, sex)
+  
+
+summary(bobcats)</code></pre>
+<pre><code>##     necropsy   necropsydate           age                sex           
+##  Min.   :  1   Length:121         Length:121         Length:121        
+##  1st Qu.: 31   Class :character   Class :character   Class :character  
+##  Median : 61   Mode  :character   Mode  :character   Mode  :character  
+##  Mean   : 61                                                           
+##  3rd Qu.: 91                                                           
+##  Max.   :121</code></pre>
+<p>Now <span style="color: blue;"> using the <code>mutate()</code>
+<strong>function</strong> set <em>age</em> as a <strong>numeric</strong>
+variable</span>.</p>
+<pre class="r fold-hide"><code>bobcats %&gt;% 
+  
+  # set age to numeric
+  mutate(age = as.numeric(age))</code></pre>
+<pre><code>## # A tibble: 121 × 4
+##    necropsy necropsydate   age sex  
+##       &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;
+##  1        1 3/6/19           3 M    
+##  2        2 3/9/19           1 F    
+##  3        3 3/10/19          2 M    
+##  4        4 3/13/19          0 F    
+##  5        5 3/23/19          1 M    
+##  6        6 3/24/19         NA M    
+##  7        7 3/31/19         NA M    
+##  8        8 4/7/19           1 M    
+##  9        9 4/13/19          0 M    
+## 10       10 4/14/19          3 M    
+## # ℹ 111 more rows</code></pre>
+<p>When we changed ‘aged’ to a <strong>numeric</strong> variable this
+automatically change non-numeric entries to NAs, but if we were working
+with a <strong>character</strong> instead we could change some entries
+to NA using <code>mutate()</code> and <code>replace()</code>. <span
+style="color: blue;">Replace ‘na’ entries in the ‘age’ column</span>
+using<code>mutate()</code> and <code>replace()</code> or
+<code>recode()</code>.</p>
+<pre class="r fold-hide"><code># replace &#39;na&#39; in age using replace function
+bobcats %&gt;% 
+  mutate(age = replace(age,
+                       age == &#39;na&#39;,
+                       NA))</code></pre>
+<pre><code>## # A tibble: 121 × 4
+##    necropsy necropsydate age   sex  
+##       &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt;
+##  1        1 3/6/19       3     M    
+##  2        2 3/9/19       1     F    
+##  3        3 3/10/19      2     M    
+##  4        4 3/13/19      0     F    
+##  5        5 3/23/19      1     M    
+##  6        6 3/24/19      X     M    
+##  7        7 3/31/19      X     M    
+##  8        8 4/7/19       1     M    
+##  9        9 4/13/19      0     M    
+## 10       10 4/14/19      3     M    
+## # ℹ 111 more rows</code></pre>
+<pre class="r fold-hide"><code># replace na in age using recode
+bobcats %&gt;% 
+  mutate(age = recode(age,
+                      &#39;na&#39; = NA))</code></pre>
+<pre><code>## # A tibble: 121 × 4
+##    necropsy necropsydate age   sex  
+##       &lt;dbl&gt; &lt;chr&gt;        &lt;lgl&gt; &lt;chr&gt;
+##  1        1 3/6/19       NA    M    
+##  2        2 3/9/19       NA    F    
+##  3        3 3/10/19      NA    M    
+##  4        4 3/13/19      NA    F    
+##  5        5 3/23/19      NA    M    
+##  6        6 3/24/19      NA    M    
+##  7        7 3/31/19      NA    M    
+##  8        8 4/7/19       NA    M    
+##  9        9 4/13/19      NA    M    
+## 10       10 4/14/19      NA    M    
+## # ℹ 111 more rows</code></pre>
+<p>But you may notice there are still some questionable entries in the
+<em>age</em> column. <em>X</em> has been entered in some places and this
+should also be an NA. We can handle changing multiple entries by
+creating a vectors with the <strong>strings</strong> (characters) we
+want to replace</p>
+<pre class="r"><code># change multiple entries to NA
+
+# make a vector with a string of values that are meant to be NAs in data
+na_string &lt;- c(&#39;na&#39;, &#39;X&#39;)
+
+# use mutate with %in% argument to replace all values in the string above with NA
+bobcats %&gt;% 
+  mutate(age = replace(age,
+                       age %in% na_string,
+                       NA))</code></pre>
+<pre><code>## # A tibble: 121 × 4
+##    necropsy necropsydate age   sex  
+##       &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt;
+##  1        1 3/6/19       3     M    
+##  2        2 3/9/19       1     F    
+##  3        3 3/10/19      2     M    
+##  4        4 3/13/19      0     F    
+##  5        5 3/23/19      1     M    
+##  6        6 3/24/19      &lt;NA&gt;  M    
+##  7        7 3/31/19      &lt;NA&gt;  M    
+##  8        8 4/7/19       1     M    
+##  9        9 4/13/19      0     M    
+## 10       10 4/14/19      3     M    
+## # ℹ 111 more rows</code></pre>
+</div>
+</div>
+<div id="pivot-data" class="section level2">
+<h2>Pivot data</h2>
+<p>Recall that the <em>tidyverse</em> <strong>packages</strong> are all
+designed to work with <strong>tidy data</strong>. The <em>tidyr</em>
+package has several functions to help you get your data into this
+format.</p>
+<p>Use “pivot_longer()” to get all of the values and variables from
+multiple columns into a single column.</p>
+<p><img src="images/pivot_longer.png" /> Use “pivot_wider()” to
+distribute two variables in a single column into separate columns, with
+their data values(‘value’)</p>
+<p><img src="images/pivot_wider.png" /> Let’s go through an example
+using <code>pivot_longer()</code> and data from the <em>tidyr</em>
+<strong>package</strong>.</p>
+<pre class="r"><code> # Pivot functions ----------------------
+
+# use data from tidyr package
+relig_income</code></pre>
+<pre><code>## # A tibble: 18 × 11
+##    religion `&lt;$10k` `$10-20k` `$20-30k` `$30-40k` `$40-50k` `$50-75k` `$75-100k`
+##    &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+##  1 Agnostic      27        34        60        81        76       137        122
+##  2 Atheist       12        27        37        52        35        70         73
+##  3 Buddhist      27        21        30        34        33        58         62
+##  4 Catholic     418       617       732       670       638      1116        949
+##  5 Don’t k…      15        14        15        11        10        35         21
+##  6 Evangel…     575       869      1064       982       881      1486        949
+##  7 Hindu          1         9         7         9        11        34         47
+##  8 Histori…     228       244       236       238       197       223        131
+##  9 Jehovah…      20        27        24        24        21        30         15
+## 10 Jewish        19        19        25        25        30        95         69
+## 11 Mainlin…     289       495       619       655       651      1107        939
+## 12 Mormon        29        40        48        51        56       112         85
+## 13 Muslim         6         7         9        10         9        23         16
+## 14 Orthodox      13        17        23        32        32        47         38
+## 15 Other C…       9         7        11        13        13        14         18
+## 16 Other F…      20        33        40        46        49        63         46
+## 17 Other W…       5         2         3         4         2         7          3
+## 18 Unaffil…     217       299       374       365       341       528        407
+## # ℹ 3 more variables: `$100-150k` &lt;dbl&gt;, `&gt;150k` &lt;dbl&gt;,
+## #   `Don&#39;t know/refused` &lt;dbl&gt;</code></pre>
+<pre class="r"><code>relig_income %&gt;%
+  pivot_longer(!religion, names_to = &quot;income&quot;, values_to = &quot;count&quot;)</code></pre>
+<pre><code>## # A tibble: 180 × 3
+##    religion income             count
+##    &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;
+##  1 Agnostic &lt;$10k                 27
+##  2 Agnostic $10-20k               34
+##  3 Agnostic $20-30k               60
+##  4 Agnostic $30-40k               81
+##  5 Agnostic $40-50k               76
+##  6 Agnostic $50-75k              137
+##  7 Agnostic $75-100k             122
+##  8 Agnostic $100-150k            109
+##  9 Agnostic &gt;150k                 84
+## 10 Agnostic Don&#39;t know/refused    96
+## # ℹ 170 more rows</code></pre>
+</div>
+<div id="joining-data" class="section level2">
+<h2>Joining data</h2>
+<p>Sometimes data you need for a singular figure or analysis have been
+entered in two separate data files. We can join data from matching
+observations (e.g., same individual, site, etc.) using join
+<strong>functions</strong> in <em>dplyr</em> based on the keys (columns)
+in the data.</p>
+<p>Here’s a visual representation of how the various join functions
+work.</p>
+<p><img src="images/joins.png" style="width:50.0%" /></p>
+<div id="create-fake-data" class="section level3">
+<h3>Create fake data</h3>
+<p>First, let’s get some practice with a few <strong>functions</strong>
+we learned at the beginning of the day to create some fake environmental
+data for the turtles data set.</p>
+<pre class="r"><code>  # Joining data----------------------
+
+# create some fake data first 
+turtles_env &lt;- tibble(
+  
+  # create variable &#39;tag&#39; ranging from 1 - 105
+  tag = 1:105,
+  
+  # create variable site with 3 sites that repeat for 35 indv each
+  site = rep(c(&#39;A&#39;, &#39;B&#39;, &#39;C&#39;), 
+             each = 35),
+  
+  # create a variable for average summer temperature in Celsius
+  avg_summer_temp = runif(105,
+                          min = 15,
+                          max = 30),
+  
+  # create a variable for average summer precipitation in mm
+  avg_summer_precip = runif(105,
+                            min = 0,
+                            max = 110)
+  
+)
+
+turtles_env</code></pre>
+<pre><code>## # A tibble: 105 × 4
+##      tag site  avg_summer_temp avg_summer_precip
+##    &lt;int&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
+##  1     1 A                24.8             13.4 
+##  2     2 A                26.0             48.4 
+##  3     3 A                21.3             80.5 
+##  4     4 A                23.2            101.  
+##  5     5 A                19.4             87.1 
+##  6     6 A                20.4             51.5 
+##  7     7 A                26.2             23.6 
+##  8     8 A                16.4             22.7 
+##  9     9 A                23.2             88.1 
+## 10    10 A                25.9              7.00
+## # ℹ 95 more rows</code></pre>
+<p>Now we can join the environmental data we just created with the
+turtle observation data (turtles_tidy) using the <em>tag</em>
+column.</p>
+</div>
+<div id="left-join" class="section level3">
+<h3>Left join</h3>
+<p>Let’s start by using <code>left_join()</code> to join the two
+datasets together.</p>
+<pre class="r"><code>  # Left join----------------------
+
+turtles_full &lt;- turtles_tidy %&gt;% 
+  
+  # left join with turtles_env
+  left_join(turtles_env,
+            by = &#39;tag&#39;)
+
+turtles_full</code></pre>
+<pre><code>## # A tibble: 21 × 8
+##      tag sex    c_length h_width weight site  avg_summer_temp avg_summer_precip
+##    &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
+##  1    10 male       41      7.15   7.6  A                25.9              7.00
+##  2    11 female     46.4    8.18  11    A                15.1             12.4 
+##  3     2 &lt;NA&gt;       24.3    4.42   1.65 A                26.0             48.4 
+##  4    15 &lt;NA&gt;       28.7    4.89   2.18 A                18.4             76.3 
+##  5    16 &lt;NA&gt;       32      5.37   3    A                18.9             16.2 
+##  6     3 female     42.8    7.32   8.6  A                21.3             80.5 
+##  7     4 male       40      6.6    6.5  A                23.2            101.  
+##  8     5 female     45      8.05  10.9  A                19.4             87.1 
+##  9    12 female     44      7.55   8.9  A                23.0             11.0 
+## 10    13 &lt;NA&gt;       28      4.85   1.97 A                28.4             28.9 
+## # ℹ 11 more rows</code></pre>
+<p>Notice how are dataset reamins the same length as the turtles_tidy
+dataset and all environmental observations that for <em>tags</em> not in
+the turtles_tidy dataset are dropped. This is how
+<code>left_join()</code> works.</p>
+<p>If we wanted to keep all the environmental data and add the
+observation data we could use right join.</p>
+</div>
+<div id="right-join" class="section level3">
+<h3>Right join</h3>
+<pre class="r"><code>  # Right join ----------------------
+
+turtles_tidy %&gt;% 
+  
+  # right join
+  right_join(turtles_env,
+             by = &#39;tag&#39;) %&gt;% 
+  
+  # reorder by tag number so we can see what happened
+  arrange(desc(tag))</code></pre>
+<pre><code>## # A tibble: 105 × 8
+##      tag sex   c_length h_width weight site  avg_summer_temp avg_summer_precip
+##    &lt;dbl&gt; &lt;fct&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
+##  1   105 male        44    7.1       9 C                17.0             22.2 
+##  2   104 male        44    7.35      9 C                17.1             31.9 
+##  3   103 &lt;NA&gt;        NA   NA        NA C                19.5             19.3 
+##  4   102 &lt;NA&gt;        NA   NA        NA C                20.8             60.6 
+##  5   101 &lt;NA&gt;        NA   NA        NA C                29.5             12.5 
+##  6   100 &lt;NA&gt;        NA   NA        NA C                26.4             96.5 
+##  7    99 &lt;NA&gt;        NA   NA        NA C                16.3             42.3 
+##  8    98 &lt;NA&gt;        NA   NA        NA C                15.2             55.8 
+##  9    97 &lt;NA&gt;        NA   NA        NA C                28.0              9.87
+## 10    96 &lt;NA&gt;        NA   NA        NA C                29.6             23.8 
+## # ℹ 95 more rows</code></pre>
+<p>Now, wherever we don’t have turtle observation data to match the
+environmental data we get NAs</p>
+</div>
+<div id="inner-join" class="section level3">
+<h3>Inner join</h3>
+<p>The <code>inner_join()</code> function will join values from both
+datasets only where there are observations for both. With our current
+dataset this would perform the same as <code>left_join()</code> because
+there aren’t any missing data for the turtles_env dataset. But if we
+adjust that dataset we can see the difference.</p>
+<pre class="r"><code>  # Inner join ----------------------
+
+# run inner join without altering data to see what happen
+
+turtles_tidy %&gt;% 
+  
+  inner_join(turtles_env,
+             by = &#39;tag&#39;)</code></pre>
+<pre><code>## # A tibble: 21 × 8
+##      tag sex    c_length h_width weight site  avg_summer_temp avg_summer_precip
+##    &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
+##  1    10 male       41      7.15   7.6  A                25.9              7.00
+##  2    11 female     46.4    8.18  11    A                15.1             12.4 
+##  3     2 &lt;NA&gt;       24.3    4.42   1.65 A                26.0             48.4 
+##  4    15 &lt;NA&gt;       28.7    4.89   2.18 A                18.4             76.3 
+##  5    16 &lt;NA&gt;       32      5.37   3    A                18.9             16.2 
+##  6     3 female     42.8    7.32   8.6  A                21.3             80.5 
+##  7     4 male       40      6.6    6.5  A                23.2            101.  
+##  8     5 female     45      8.05  10.9  A                19.4             87.1 
+##  9    12 female     44      7.55   8.9  A                23.0             11.0 
+## 10    13 &lt;NA&gt;       28      4.85   1.97 A                28.4             28.9 
+## # ℹ 11 more rows</code></pre>
+<pre class="r"><code># if we remove some observations (say we didn&#39;t collect environmental data for the first 10 captures) then we can see the diff
+
+turtles_env.sub &lt;- turtles_env %&gt;% 
+  
+  # filter to only tags greater than 10
+  filter(tag &gt; 10)
+
+head(turtles_env.sub)</code></pre>
+<pre><code>## # A tibble: 6 × 4
+##     tag site  avg_summer_temp avg_summer_precip
+##   &lt;int&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
+## 1    11 A                15.1              12.4
+## 2    12 A                23.0              11.0
+## 3    13 A                28.4              28.9
+## 4    14 A                24.0              27.7
+## 5    15 A                18.4              76.3
+## 6    16 A                18.9              16.2</code></pre>
+<pre class="r"><code># now join with turtles_tidy
+
+turtles_tidy %&gt;% 
+  
+  inner_join(turtles_env.sub,
+             by = &#39;tag&#39;)</code></pre>
+<pre><code>## # A tibble: 11 × 8
+##      tag sex    c_length h_width weight site  avg_summer_temp avg_summer_precip
+##    &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
+##  1    11 female     46.4    8.18  11    A                15.1             12.4 
+##  2    15 &lt;NA&gt;       28.7    4.89   2.18 A                18.4             76.3 
+##  3    16 &lt;NA&gt;       32      5.37   3    A                18.9             16.2 
+##  4    12 female     44      7.55   8.9  A                23.0             11.0 
+##  5    13 &lt;NA&gt;       28      4.85   1.97 A                28.4             28.9 
+##  6    17 female     35.1    6.04   4.5  A                24.7             11.5 
+##  7    19 male       42.3    6.77   7.8  A                18.1            109.  
+##  8    22 female     48.1    8.55  12.8  A                15.8              1.80
+##  9   105 male       44      7.1    9    C                17.0             22.2 
+## 10    14 male       43      6.6    7.2  A                24.0             27.7 
+## 11   104 male       44      7.35   9    C                17.1             31.9</code></pre>
+<pre class="r"><code># notice fewer rows</code></pre>
+</div>
+<div id="full-join" class="section level3">
+<h3>Full join</h3>
+<p>Lastly we will look at <code>full_join()</code>, which does exactly
+as the name suggests, it joins all the data even if there aren’t matches
+between the datasets</p>
+<pre class="r"><code>  # Full join ----------------------
+
+turtles_tidy %&gt;% 
+  full_join(turtles_env,
+            by = &#39;tag&#39;)</code></pre>
+<pre><code>## # A tibble: 105 × 8
+##      tag sex    c_length h_width weight site  avg_summer_temp avg_summer_precip
+##    &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
+##  1    10 male       41      7.15   7.6  A                25.9              7.00
+##  2    11 female     46.4    8.18  11    A                15.1             12.4 
+##  3     2 &lt;NA&gt;       24.3    4.42   1.65 A                26.0             48.4 
+##  4    15 &lt;NA&gt;       28.7    4.89   2.18 A                18.4             76.3 
+##  5    16 &lt;NA&gt;       32      5.37   3    A                18.9             16.2 
+##  6     3 female     42.8    7.32   8.6  A                21.3             80.5 
+##  7     4 male       40      6.6    6.5  A                23.2            101.  
+##  8     5 female     45      8.05  10.9  A                19.4             87.1 
+##  9    12 female     44      7.55   8.9  A                23.0             11.0 
+## 10    13 &lt;NA&gt;       28      4.85   1.97 A                28.4             28.9 
+## # ℹ 95 more rows</code></pre>
+<p>But what if you have different variable names for your key (e.g.,
+tag). Well you could change the variable name in one of the datasets so
+they match, but you can also specify what the keys in each dataset are
+called</p>
+</div>
+<div id="mismatched-keys" class="section level3">
+<h3>Mismatched keys</h3>
+<pre class="r"><code>  # Mismatched keys----------------------
+
+# rename tag in the turtles_env dataset 
+turtles_env &lt;- turtles_env %&gt;% 
+  rename(tag_number = tag)
+
+names(turtles_env)</code></pre>
+<pre><code>## [1] &quot;tag_number&quot;        &quot;site&quot;              &quot;avg_summer_temp&quot;  
+## [4] &quot;avg_summer_precip&quot;</code></pre>
+<pre class="r"><code># now join with mismatched names
+
+turtles_tidy %&gt;% 
+  left_join(turtles_env,
+            join_by(&#39;tag&#39; == &#39;tag_number&#39;))</code></pre>
+<pre><code>## # A tibble: 21 × 8
+##      tag sex    c_length h_width weight site  avg_summer_temp avg_summer_precip
+##    &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
+##  1    10 male       41      7.15   7.6  A                25.9              7.00
+##  2    11 female     46.4    8.18  11    A                15.1             12.4 
+##  3     2 &lt;NA&gt;       24.3    4.42   1.65 A                26.0             48.4 
+##  4    15 &lt;NA&gt;       28.7    4.89   2.18 A                18.4             76.3 
+##  5    16 &lt;NA&gt;       32      5.37   3    A                18.9             16.2 
+##  6     3 female     42.8    7.32   8.6  A                21.3             80.5 
+##  7     4 male       40      6.6    6.5  A                23.2            101.  
+##  8     5 female     45      8.05  10.9  A                19.4             87.1 
+##  9    12 female     44      7.55   8.9  A                23.0             11.0 
+## 10    13 &lt;NA&gt;       28      4.85   1.97 A                28.4             28.9 
+## # ℹ 11 more rows</code></pre>
+</div>
+</div>
+<div id="practice-problems" class="section level2">
+<h2>Practice Problems</h2>
+<div id="remove-nas" class="section level3">
+<h3>1 Remove NAs</h3>
+<ul>
+<li>Read in the turtles_tidy data<br />
+</li>
+<li>In the same code chunk remove all rows with NAs</li>
+<li>Assign this new data to the environment as “turtles_no_na”</li>
+</ul>
+<pre><code>## # A tibble: 15 × 5
+##      tag sex    c_length h_width weight
+##    &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+##  1    10 male       41      7.15    7.6
+##  2    11 female     46.4    8.18   11  
+##  3     3 female     42.8    7.32    8.6
+##  4     4 male       40      6.6     6.5
+##  5     5 female     45      8.05   10.9
+##  6    12 female     44      7.55    8.9
+##  7     6 female     40      6.53    6.2
+##  8     9 male       35      5.74    3.9
+##  9    17 female     35.1    6.04    4.5
+## 10    19 male       42.3    6.77    7.8
+## 11    22 female     48.1    8.55   12.8
+## 12   105 male       44      7.1     9  
+## 13    14 male       43      6.6     7.2
+## 14     7 female     48      8.67   13.5
+## 15   104 male       44      7.35    9</code></pre>
+</div>
+<div id="make-a-new-variable" class="section level3">
+<h3>2 Make a new variable</h3>
+<p>Using the turtles_no_na data, overwrite the data and make a new
+variable called “size_class” based on the “weight” variable using
+<code>case_when()</code> whereby</p>
+<ul>
+<li><p>weights less than 4 are juvenile</p></li>
+<li><p>weights greater than 7 are adult</p></li>
+<li><p>weights between 4 and 7 are subadult</p></li>
+</ul>
+<p>(There are multiple ways to do this which is why there are multiple
+printouts, but they will yield the same answer)</p>
+<pre><code>##  [1] &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;    &quot;subadult&quot; &quot;adult&quot;    &quot;adult&quot;   
+##  [7] &quot;subadult&quot; &quot;juvenile&quot; &quot;subadult&quot; &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;   
+## [13] &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;</code></pre>
+<pre><code>##  [1] &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;    &quot;subadult&quot; &quot;adult&quot;    &quot;adult&quot;   
+##  [7] &quot;subadult&quot; &quot;juvenile&quot; &quot;subadult&quot; &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;   
+## [13] &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;</code></pre>
+</div>
+<div id="replace-values-with-na" class="section level3">
+<h3>3 Replace values with NA</h3>
+<p>In the <strong>turtles_tidy data</strong> (<em>not the turtles_no_na
+data</em>) replace ALL variable values for tags 104 and 105 with NAs</p>
+<p><em>Hint you will need to create a vector for the tag numbers you
+want to replace and use <code>mutate()</code></em></p>
+<pre><code>## # A tibble: 21 × 5
+##      tag sex    c_length h_width weight
+##    &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+##  1    10 male       41      7.15   7.6 
+##  2    11 female     46.4    8.18  11   
+##  3     2 &lt;NA&gt;       24.3    4.42   1.65
+##  4    15 &lt;NA&gt;       28.7    4.89   2.18
+##  5    16 &lt;NA&gt;       32      5.37   3   
+##  6     3 female     42.8    7.32   8.6 
+##  7     4 male       40      6.6    6.5 
+##  8     5 female     45      8.05  10.9 
+##  9    12 female     44      7.55   8.9 
+## 10    13 &lt;NA&gt;       28      4.85   1.97
+## # ℹ 11 more rows</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##      tag sex    c_length h_width weight
+##    &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+##  1    10 male       41      7.15   7.6 
+##  2    11 female     46.4    8.18  11   
+##  3     2 &lt;NA&gt;       24.3    4.42   1.65
+##  4    15 &lt;NA&gt;       28.7    4.89   2.18
+##  5    16 &lt;NA&gt;       32      5.37   3   
+##  6     3 female     42.8    7.32   8.6 
+##  7     4 male       40      6.6    6.5 
+##  8     5 female     45      8.05  10.9 
+##  9    12 female     44      7.55   8.9 
+## 10    13 &lt;NA&gt;       28      4.85   1.97
+## # ℹ 11 more rows</code></pre>
+</div>
+<div id="pivot-data-1" class="section level3">
+<h3>4 Pivot data</h3>
+<p>Use the below code to read in the Soils data from the
+<em>carData</em> package</p>
+<pre class="r"><code># Load the example data 
+
+soil &lt;- carData::Soils    # load example data</code></pre>
+<ul>
+<li><p>print the first few lines of data in “soil”</p></li>
+<li><p>Pivot the data so that columns Ca - Na are contained in one
+column called nutrients (again there are two possible solutions (really
+more than that but two I expect people to use))</p></li>
+</ul>
+<pre><code>##   Group Contour Depth Gp Block   pH     N Dens   P    Ca   Mg    K   Na Conduc
+## 1     1     Top  0-10 T0     1 5.40 0.188 0.92 215 16.35 7.65 0.72 1.14   1.09
+## 2     1     Top  0-10 T0     2 5.65 0.165 1.04 208 12.25 5.15 0.71 0.94   1.35
+## 3     1     Top  0-10 T0     3 5.14 0.260 0.95 300 13.02 5.68 0.68 0.60   1.41
+## 4     1     Top  0-10 T0     4 5.14 0.169 1.10 248 11.92 7.88 1.09 1.01   1.64
+## 5     2     Top 10-30 T1     1 5.14 0.164 1.12 174 14.17 8.12 0.70 2.17   1.85
+## 6     2     Top 10-30 T1     2 5.10 0.094 1.22 129  8.55 6.92 0.81 2.67   3.18</code></pre>
+<pre><code>## # A tibble: 192 × 12
+##    Group Contour Depth Gp    Block    pH     N  Dens     P Conduc nutrient value
+##    &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
+##  1 1     Top     0-10  T0    1      5.4  0.188  0.92   215   1.09 Ca       16.4 
+##  2 1     Top     0-10  T0    1      5.4  0.188  0.92   215   1.09 Mg        7.65
+##  3 1     Top     0-10  T0    1      5.4  0.188  0.92   215   1.09 K         0.72
+##  4 1     Top     0-10  T0    1      5.4  0.188  0.92   215   1.09 Na        1.14
+##  5 1     Top     0-10  T0    2      5.65 0.165  1.04   208   1.35 Ca       12.2 
+##  6 1     Top     0-10  T0    2      5.65 0.165  1.04   208   1.35 Mg        5.15
+##  7 1     Top     0-10  T0    2      5.65 0.165  1.04   208   1.35 K         0.71
+##  8 1     Top     0-10  T0    2      5.65 0.165  1.04   208   1.35 Na        0.94
+##  9 1     Top     0-10  T0    3      5.14 0.26   0.95   300   1.41 Ca       13.0 
+## 10 1     Top     0-10  T0    3      5.14 0.26   0.95   300   1.41 Mg        5.68
+## # ℹ 182 more rows</code></pre>
+<pre><code>## # A tibble: 192 × 12
+##    Group Contour Depth Gp    Block    pH     N  Dens     P Conduc nutrient value
+##    &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
+##  1 1     Top     0-10  T0    1      5.4  0.188  0.92   215   1.09 Ca       16.4 
+##  2 1     Top     0-10  T0    1      5.4  0.188  0.92   215   1.09 Mg        7.65
+##  3 1     Top     0-10  T0    1      5.4  0.188  0.92   215   1.09 K         0.72
+##  4 1     Top     0-10  T0    1      5.4  0.188  0.92   215   1.09 Na        1.14
+##  5 1     Top     0-10  T0    2      5.65 0.165  1.04   208   1.35 Ca       12.2 
+##  6 1     Top     0-10  T0    2      5.65 0.165  1.04   208   1.35 Mg        5.15
+##  7 1     Top     0-10  T0    2      5.65 0.165  1.04   208   1.35 K         0.71
+##  8 1     Top     0-10  T0    2      5.65 0.165  1.04   208   1.35 Na        0.94
+##  9 1     Top     0-10  T0    3      5.14 0.26   0.95   300   1.41 Ca       13.0 
+## 10 1     Top     0-10  T0    3      5.14 0.26   0.95   300   1.41 Mg        5.68
+## # ℹ 182 more rows</code></pre>
+</div>
+<div id="join-data" class="section level3">
+<h3>5 Join Data</h3>
+<p>If you haven’t already download the 3 bobcat data files added to the
+course after 12 January 2024 and save them to the data/raw folder</p>
+<p><a href="data/raw/bobcat_collection_data.csv">Bobcat collection data
+for Purrr (bobcat_collection_data.csv)</a></p>
+<p><a href="data/raw/bobcat_necropsy_only_data.csv">Bobcat necropsy data
+for Purrr (bobcat_necropsy_only_data.csv)</a></p>
+<p><a href="data/raw/bobcat_age_data.csv">Bobcat age data for Purrr
+(bobcat_age_data.csv)</a></p>
+<ul>
+<li>Read in the data files using the tidyverse
+<strong>function</strong></li>
+<li>In the same code chunk, set the column names to lowercase for all 3
+data sets AND rename the ‘Bobcat_ID#’ column to bobcat_id (<em>NOTE:
+this requires a lot of code repition which is annoying and does not
+follow best coding practices, we will learn a much better way to do this
+when we cover Purrr</em>)<br />
+</li>
+<li>Use the csv file names as the object names when you assign them to
+the environment - Make a list with the three data sets and check their
+internal structure <em>(there are multiple ways to do this)</em><br />
+</li>
+<li>Join the bobcat_necropsy_only_data <strong>to</strong> the
+bobcat_collection_data AND then in the same code chunk join the
+bobcat_age_data as well. Make sure to retain all observations from the
+bobcat_collection_data. <em>You will need to use the bobcat_id column as
+the key when joining</em><br />
+</li>
+<li>Print the summary of your data to check that it worked</li>
+</ul>
+<pre><code>## List of 3
+##  $ : spc_tbl_ [121 × 7] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ bobcat_id     : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ county        : chr [1:121] &quot;Athens&quot; &quot;Athens&quot; &quot;Morgan&quot; &quot;Perry&quot; ...
+##   ..$ township      : chr [1:121] &quot;Dover&quot; &quot;Canaan&quot; &quot;Hower&quot; &quot;Reading&quot; ...
+##   ..$ collectiondate: chr [1:121] &quot;12/30/18&quot; &quot;12/14/18&quot; &quot;12/7/18&quot; &quot;2/10/19&quot; ...
+##   ..$ month         : num [1:121] 12 12 12 2 1 3 2 2 2 3 ...
+##   ..$ coordinates_n : num [1:121] 39.4 39.3 39.5 39.8 40.4 ...
+##   ..$ coordinates_w : num [1:121] -82.1 -82 -82 -82.3 -81.2 ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   County = col_character(),
+##   .. ..   Township = col_character(),
+##   .. ..   CollectionDate = col_character(),
+##   .. ..   Month = col_double(),
+##   .. ..   Coordinates_N = col_double(),
+##   .. ..   Coordinates_W = col_double()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
+##  $ : spc_tbl_ [121 × 14] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ bobcat_id        : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ necropsy         : num [1:121] 1 2 3 4 5 6 7 8 9 10 ...
+##   ..$ necropsydate     : chr [1:121] &quot;3/6/19&quot; &quot;3/9/19&quot; &quot;3/10/19&quot; &quot;3/13/19&quot; ...
+##   ..$ dissector        : chr [1:121] &quot;SP,_MD&quot; &quot;SP_MD_CH&quot; &quot;MD_CH&quot; &quot;MD_CH_HK&quot; ...
+##   ..$ approxage        : chr [1:121] &quot;Ad&quot; &quot;Ad&quot; &quot;Ad&quot; &quot;Juv&quot; ...
+##   ..$ sex              : chr [1:121] &quot;M&quot; &quot;F&quot; &quot;M&quot; &quot;F&quot; ...
+##   ..$ fecundity_females: chr [1:121] &quot;na&quot; &quot;na&quot; &quot;na&quot; &quot;0&quot; ...
+##   ..$ rearfoot_cm      : chr [1:121] &quot;17.9&quot; &quot;16&quot; &quot;17.1&quot; &quot;14.7&quot; ...
+##   ..$ tail_cm          : chr [1:121] &quot;11.5&quot; &quot;11.5&quot; &quot;11.4&quot; &quot;11.3&quot; ...
+##   ..$ ear_cm           : chr [1:121] &quot;6.5&quot; &quot;6.5&quot; &quot;6.4&quot; &quot;6.5&quot; ...
+##   ..$ body_w/tail_cm   : chr [1:121] &quot;89.5&quot; &quot;82&quot; &quot;92&quot; &quot;71.5&quot; ...
+##   ..$ body             : chr [1:121] &quot;78&quot; &quot;70.5&quot; &quot;80.6&quot; &quot;60.2&quot; ...
+##   ..$ weight_kg        : chr [1:121] &quot;13.6&quot; &quot;6.33&quot; &quot;9.98&quot; &quot;4.62&quot; ...
+##   ..$ condition        : chr [1:121] &quot;17.43589744&quot; &quot;8.978723404&quot; &quot;12.382134&quot; &quot;7.674418605&quot; ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   Necropsy = col_double(),
+##   .. ..   NecropsyDate = col_character(),
+##   .. ..   Dissector = col_character(),
+##   .. ..   ApproxAge = col_character(),
+##   .. ..   Sex = col_character(),
+##   .. ..   Fecundity_Females = col_character(),
+##   .. ..   RearFoot_cm = col_character(),
+##   .. ..   Tail_cm = col_character(),
+##   .. ..   Ear_cm = col_character(),
+##   .. ..   `Body_w/Tail_cm` = col_character(),
+##   .. ..   Body = col_character(),
+##   .. ..   Weight_kg = col_character(),
+##   .. ..   Condition = col_character()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
+##  $ : spc_tbl_ [121 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ bobcat_id: chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ age      : chr [1:121] &quot;3&quot; &quot;1&quot; &quot;2&quot; &quot;0&quot; ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   Age = col_character()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<pre><code>## List of 3
+##  $ : spc_tbl_ [121 × 7] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ bobcat_id     : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ county        : chr [1:121] &quot;Athens&quot; &quot;Athens&quot; &quot;Morgan&quot; &quot;Perry&quot; ...
+##   ..$ township      : chr [1:121] &quot;Dover&quot; &quot;Canaan&quot; &quot;Hower&quot; &quot;Reading&quot; ...
+##   ..$ collectiondate: chr [1:121] &quot;12/30/18&quot; &quot;12/14/18&quot; &quot;12/7/18&quot; &quot;2/10/19&quot; ...
+##   ..$ month         : num [1:121] 12 12 12 2 1 3 2 2 2 3 ...
+##   ..$ coordinates_n : num [1:121] 39.4 39.3 39.5 39.8 40.4 ...
+##   ..$ coordinates_w : num [1:121] -82.1 -82 -82 -82.3 -81.2 ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   County = col_character(),
+##   .. ..   Township = col_character(),
+##   .. ..   CollectionDate = col_character(),
+##   .. ..   Month = col_double(),
+##   .. ..   Coordinates_N = col_double(),
+##   .. ..   Coordinates_W = col_double()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
+##  $ : spc_tbl_ [121 × 14] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ bobcat_id        : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ necropsy         : num [1:121] 1 2 3 4 5 6 7 8 9 10 ...
+##   ..$ necropsydate     : chr [1:121] &quot;3/6/19&quot; &quot;3/9/19&quot; &quot;3/10/19&quot; &quot;3/13/19&quot; ...
+##   ..$ dissector        : chr [1:121] &quot;SP,_MD&quot; &quot;SP_MD_CH&quot; &quot;MD_CH&quot; &quot;MD_CH_HK&quot; ...
+##   ..$ approxage        : chr [1:121] &quot;Ad&quot; &quot;Ad&quot; &quot;Ad&quot; &quot;Juv&quot; ...
+##   ..$ sex              : chr [1:121] &quot;M&quot; &quot;F&quot; &quot;M&quot; &quot;F&quot; ...
+##   ..$ fecundity_females: chr [1:121] &quot;na&quot; &quot;na&quot; &quot;na&quot; &quot;0&quot; ...
+##   ..$ rearfoot_cm      : chr [1:121] &quot;17.9&quot; &quot;16&quot; &quot;17.1&quot; &quot;14.7&quot; ...
+##   ..$ tail_cm          : chr [1:121] &quot;11.5&quot; &quot;11.5&quot; &quot;11.4&quot; &quot;11.3&quot; ...
+##   ..$ ear_cm           : chr [1:121] &quot;6.5&quot; &quot;6.5&quot; &quot;6.4&quot; &quot;6.5&quot; ...
+##   ..$ body_w/tail_cm   : chr [1:121] &quot;89.5&quot; &quot;82&quot; &quot;92&quot; &quot;71.5&quot; ...
+##   ..$ body             : chr [1:121] &quot;78&quot; &quot;70.5&quot; &quot;80.6&quot; &quot;60.2&quot; ...
+##   ..$ weight_kg        : chr [1:121] &quot;13.6&quot; &quot;6.33&quot; &quot;9.98&quot; &quot;4.62&quot; ...
+##   ..$ condition        : chr [1:121] &quot;17.43589744&quot; &quot;8.978723404&quot; &quot;12.382134&quot; &quot;7.674418605&quot; ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   Necropsy = col_double(),
+##   .. ..   NecropsyDate = col_character(),
+##   .. ..   Dissector = col_character(),
+##   .. ..   ApproxAge = col_character(),
+##   .. ..   Sex = col_character(),
+##   .. ..   Fecundity_Females = col_character(),
+##   .. ..   RearFoot_cm = col_character(),
+##   .. ..   Tail_cm = col_character(),
+##   .. ..   Ear_cm = col_character(),
+##   .. ..   `Body_w/Tail_cm` = col_character(),
+##   .. ..   Body = col_character(),
+##   .. ..   Weight_kg = col_character(),
+##   .. ..   Condition = col_character()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
+##  $ : spc_tbl_ [121 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ bobcat_id: chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ age      : chr [1:121] &quot;3&quot; &quot;1&quot; &quot;2&quot; &quot;0&quot; ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   Age = col_character()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<pre><code>##   bobcat_id            county            township         collectiondate    
+##  Length:121         Length:121         Length:121         Length:121        
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##      month        coordinates_n   coordinates_w       necropsy  
+##  Min.   : 1.000   Min.   :38.25   Min.   :-83.25   Min.   :  1  
+##  1st Qu.: 2.000   1st Qu.:39.25   1st Qu.:-82.38   1st Qu.: 31  
+##  Median : 3.000   Median :39.59   Median :-81.95   Median : 61  
+##  Mean   : 5.826   Mean   :39.58   Mean   :-81.95   Mean   : 61  
+##  3rd Qu.:11.000   3rd Qu.:39.97   3rd Qu.:-81.50   3rd Qu.: 91  
+##  Max.   :12.000   Max.   :40.68   Max.   :-80.89   Max.   :121  
+##  necropsydate        dissector          approxage             sex           
+##  Length:121         Length:121         Length:121         Length:121        
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##  fecundity_females  rearfoot_cm          tail_cm             ear_cm         
+##  Length:121         Length:121         Length:121         Length:121        
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##  body_w/tail_cm         body            weight_kg          condition        
+##  Length:121         Length:121         Length:121         Length:121        
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##      age           
+##  Length:121        
+##  Class :character  
+##  Mode  :character  
+##                    
+##                    
+## </code></pre>
+<p><a href="mod_5_purrr.html">–go to next module–</a></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

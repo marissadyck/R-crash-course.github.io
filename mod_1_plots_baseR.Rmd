@@ -1,0 +1,297 @@
+---
+title: "Data Visualization"
+author: "Module 1: Data Visualization in Base R"
+date: "2023"
+output:
+  html_document:
+    code_folding: show
+    theme: journal
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+#  R Crash Course  
+#      Author: Marissa A. Dyck          
+
+#  Data Visualization
+# Module 1: Data Visualization in Base R
+
+library(tidyverse)
+
+```
+
+## Materials
+
+### Script
+
+1. Click [here](mod_1_plots_baseR.R) to download the script! Save the script to the scripts folder (R Project folder).
+
+2. Load your script in RStudio. To do this, open RStudio and click the **files** window and select the scripts folder and then this script.
+
+
+Let's get started plotting!
+
+
+## Read data
+
+We'll start with the 'trees' dataset, which is built into R. It describes the girth, height, and volume of 31 felled black cherry trees.   
+
+```{r}
+  # Data ----------------------
+
+# look at description of built in dataset
+?trees      
+
+# Show the structure of the trees dataframe
+str(trees)   
+
+ # Show the first few observations of the trees dataframe
+head(trees)  
+
+```
+
+## Basic plots
+While we will spend most of today focusing on using *ggplot2* (a very powerful data visualization package in the *tidyverse*), you don't always need publication quality graphs and for simple data exploration it can be quicker to know how to make plots in **base R**.
+
+R's basic "plot()" function takes an "x" argument (defining coordinates on an x axis) and a "y" argument (defining coordinates on a y axis).
+
+Here is an example of a **scatterplot** in R:  
+
+```{r}
+
+  # Basic plotting ----------------------
+
+plot(x = trees$Girth, y = trees$Volume)    # use R's built-in "trees" dataset: ?trees
+
+# or
+
+plot(trees$Girth, trees$Volume) 
+
+```
+
+>Remember the `$` in **base R** refers to a specific column in the dataset and that we don't have to specify 'x =' and 'y='.
+
+### Change Plot Type
+Because we're exploring different ways of plotting, it may be useful to look at different plot types.The default plot type for two quantitative variables is points (classic scatterplot), but you can change it to lines or both points and lines (or others) by using the `type=` option
+
+
+```{r}
+# line graph
+plot(trees$Girth, trees$Volume,
+     type = "l")   # lines
+```
+
+Use the help shortcut in your **console** to <span style="color: blue;">look up what other types of plots you can specify in the plot argument</span>. (*Hint don't forget to specify which package*)
+
+```{r class.source = 'fold-hide'}
+# ?base::plot
+```
+
+### Viewing multiple plots at once
+It can also be useful to include multiple plots in the same image. 
+
+We can do this using the `par()` function (graphical parameters), which has arguments that control just about every aspect of a plot in R. 
+
+```{r eval=FALSE}
+
+  # Viewing multiple plots ----------------------
+
+?par
+
+par()   # view the default graphical parameters (can be kind of overwhelming!)
+
+```
+
+
+We could change the "mfrow" parameter from c(1,1) to c(2,2): this means that we can fit four plots into a single window. 
+```{r}
+# change plotting window
+
+# specify graphical parameters
+par(mfrow=c(2,2)) 
+
+# create plots to fill plotting window
+plot(trees$Girth, 
+     trees$Volume)             # point
+
+plot(trees$Girth, 
+     trees$Volume, 
+     type="l")   # lines
+
+plot(trees$Girth, 
+     trees$Volume,
+     type="b")   # both
+
+plot(trees$Girth, 
+     trees$Volume, 
+     type="o")   # both with connected lines
+
+```
+
+An even easier solution is to use the convenience function `layout()`. An example using `layout()` is below. 
+
+```{r}
+# layout
+
+# Use "layout" to define a 2 row x 2 column matrix with elements 1, 2, 3, and 4.
+# This divides the image into four sections and then fills these with the plot function
+layout(matrix(1:4, nrow=2, ncol=2))
+
+# create plots to fill plotting window
+plot(trees$Girth, 
+     trees$Volume)             # point
+
+plot(trees$Girth, 
+     trees$Volume, 
+     type="l")   # lines
+
+plot(trees$Girth, 
+     trees$Volume, 
+     type="b")   # both
+
+plot(trees$Girth, 
+     trees$Volume, 
+     type="o")   # both with connected lines
+
+```
+
+Whenever you use `layout()` or `par()`, the graphics window will retain this layout for all future plots. To start over (and return to the default graphical parameters), use `graphics.off()` to reset the plot. For example:
+
+```{r, eval=FALSE}
+
+plot(trees$Girth, 
+     trees$Volume)             ## The plot is still in 4 parts
+
+graphics.off()                                  ## now the plot is reset!
+
+
+```
+
+### Change Plot Symbol
+We can also change the type of points used when plotting using the `pch=` option. For example, we plot three different shape options below:
+
+```{r}
+
+  # Plot symbols ----------------------
+
+# Use layout to define a 3 row x 1 column matrix with elements 1, 2, and 3.
+# This divides the image into three sections and then fills these with the plot function
+layout(matrix(1:3, 
+              nrow = 3, 
+              ncol = 1))
+
+# pch: 'plotting character' changes the type of point that is used (default is an open circle)!
+plot(trees$Girth, 
+     trees$Volume, 
+     pch = 19)     # filled point
+
+plot(trees$Girth, 
+     trees$Volume, 
+     pch = 2)      # open triangle
+
+plot(trees$Girth, 
+     trees$Volume, 
+     pch = 11)     # star
+
+```
+
+You might want to remember a couple favorites (for example, I like to use pch = 19). Alternatively, you might consider saving a useful guide like this:
+
+![](images/points.png){width=50%}
+
+## Histograms
+
+We can also use **base R** to create **histograms**, which are useful for exploring data and checking assumptions of normality for statistical analysis.
+```{r}
+
+  # Histograms ----------------------
+
+layout(matrix(1:2, 1, 2))
+
+## y-axis is in counts by default (total observations in each "bin")
+hist(iris$Sepal.Length, 
+     main = "Histogram of Sepal Length",
+     xlab = "Sepal Length")
+
+## change y-axis to proportions of the entire dataset using freq=FALSE
+hist(iris$Sepal.Length, 
+     freq = FALSE, 
+     main = "Histogram of Sepal Length", 
+     xlab = "Sepal Length")
+
+```
+
+
+## Plot matrices
+
+### Plot
+Alternatively you can also plot all columns of a dataset in a matrix using the `plot()` **function** with your dateset inside the ()
+```{r}
+
+  # Plotting matrices ----------------------
+
+plot(iris)
+
+```
+
+### Pairs
+
+The `pairs()` function allows for quick investigation into relationships between variables. Be careful if your data set is large (e.g., lots of columns), as this can be a slow function.   
+
+```{r}
+
+# quick invesrtigation of relationship between variables 
+
+pairs(iris)
+
+```
+
+### Correlelogram (correlations)
+Another useful thing to know how to do is to create a correlelogram or a matrix depicting correlations between variables in a dataset. I used to copy and paste a super long confusing code from **base R** to do this but recently found that a **package** *PerformanceAnalytics* has a easy to use **function** that will do this for you from the link below. 
+
+[Correlation plot](https://r-coder.com/correlation-plot-r/)
+
+<span style="color: blue;">Install the *PerformanceAnalytics* **package** and load it to your **library**</span>.
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+# correlation matrix
+
+# add PerformanceAnalytics package to library
+library(PerformanceAnalytics)
+
+```
+
+```{r warning=FALSE}
+# create correlation matrix for numeric variables in the iris data
+chart.Correlation(iris[,1:4], 
+                  histogram = TRUE, 
+                  method = "pearson")
+```
+
+## More links
+We didn't cover a lot for plotting in **base R** because I find *ggplot2* to be much more flexible and user friendly, but if you need to create or adapt a plot in **base R** here are a few helpful links that could get you started
+
+[UC Business Analytics R Programming Guide - All Graphics in R](https://uc-r.github.io/quickplots)    
+[Towards Data Science - Base Plotting in R](https://towardsdatascience.com/base-plotting-in-r-eb365da06b22)
+
+
+[--go to next module--](mod_2_ggplot.html)
+
+
+
+
+
+
+
+
+
+
+

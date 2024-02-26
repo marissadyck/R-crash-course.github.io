@@ -1,0 +1,42 @@
+---
+title: "Git"
+author: "Module 1: Getting started with GitHub"
+date: "2023"
+output:
+  html_document:
+    code_folding: show
+    theme: journal
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+#  R Crash Course  
+#      Author: Marissa A. Dyck          
+
+#  Git
+# Module 1: Getting started with GitHub
+
+library(tidyverse)
+
+```
+
+# Create an account
+
+If you don't already have a GitHub account you will need to create one following the steps below.
+
+
+
+<center>
+![](images/construction_dog.jpeg){width=40%}
+</center>
+
+
+

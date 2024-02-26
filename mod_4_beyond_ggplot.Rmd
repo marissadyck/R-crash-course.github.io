@@ -1,0 +1,43 @@
+---
+title: "Data Visualization"
+author: "Module 4: Beyond ggplot"
+date: "2023"
+output: 
+  html_document:
+    code_folding: show
+    theme: journal
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+#  R Crash Course  
+#      Author: Marissa A. Dyck               
+
+#  Data Visualization
+# Module 4: Beyond ggplot
+
+
+```
+## Beyond ggplot
+  
+ggplot contains an incredibly rich and powerful set of tools for visualizing data. But ggplot and base R are not your only options! A variety of packages exist for visualization, including:
+  
+### ggplot extensions
+  
+  Several packages have been created that build off of ggplot's syntax with additional functions. You can find a list of them [here](https://exts.ggplot2.tidyverse.org/gallery/). 
+
+### Technique-specific plotting libraries
+
+Several analytical packages come with their own plotting functions that produce some very nice visualizations. There are dozens out there, but a few of them are [visreg](https://cran.r-project.org/web/packages/visreg/visreg.pdf) for regression plots, [corrplot](https://cran.r-project.org/web/packages/corrplot/index.html) (and its ggplot counterpart, [ggcorrplot](http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2)) for graphical presentation of correlation matrices, and [rpart.plot](https://cran.r-project.org/web/packages/rpart.plot/index.html) as a companion to the decision tree package rpart.
+
+### Interactive plots: leaflet and plotly
+
+Increasingly, scientific journals are providing platforms for interactive graphics on their websites to accompany published articles. Interactive plots are also popular for personal, lab, and organizational websites, and they can provide another option for your own data exploration. Two of the most popular in R are [plotly](https://plot.ly/r/), which offers a huge variety of 2D and 3D plots, and [leaflet](https://rstudio.github.io/leaflet/), which is specifically for mapping.
+
+

@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
  * **When?** Tuesday June 27th to Thursday June 29, 2023: 9am - 6pm
  * **Where?** Casa Tisaru Lepsa, Romania
- * **What to prepare?** Please bring your laptop computer! If possible, install R and RStudio prior to the course (see [links](Links.html)). 
+ * **What to prepare?** Please bring your laptop computer! If possible, install R and RStudio prior to the course (see [links](Links.html) or instructions below). 
  
 ## Facilitator
 [Marissa Dyck](https://github.com/marissadyck)  
@@ -49,24 +49,46 @@ Before we dig in and get started with the modules, you should install R and RStu
 [Download and install RStudio](https://www.rstudio.com/products/rstudio/download/)    (use free version!)      
 
 
-Also, it can be very helpful to print out R 'cheatsheets' and bring that with you (we will also have some available at the workshop!). Here are some links:
+### Download cheat sheets
+Also, it can be very helpful to print out R 'cheat sheets' and bring that with you or save them as PDFs to your hard drive. We will try to have some physical copies available during lab. Here are some links:
 
-[Base R cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf)           
+[Base R cheatsheet](https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf)           
 [R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)  
-[Various R cheatsheets](https://posit.co/resources/cheatsheets/?type=posit-cheatsheets&_page=2/) (I recommend 'Data tidying with tidyr', 'Data transofrmation with dpylr', and 'Data visualization with ggplot2' cheatsheets for this workshop)
+[Various R cheatsheets](https://posit.co/resources/cheatsheets/?type=posit-cheatsheets&_page=2/) (I recommend the following cheatsheets for this course:    
+    - Data tidying with tidyr    
+    - Data transformation with dpylr     
+    - Apply functions with purrr     
+    - Data visualization with ggplot2)
+
+### Download data
+
+To ensure we maximize time during the course please also download the data files for this course from the [Data](data.html) tab and save this in a folder on your hard drive. *We will move these to a specific folder for the course when we cover folder organization in the first module*
+
+Right click (or command-click for MAcs) each file. The .txt files will open in a viewer window and you will need to right click to save them. The .csv files should download directly in your downloads folder and you can move them where you want to save them. **Important DO NOT change the file names** the file names should match what is shown in () after the file description.
 
 ### Take pre course survey
 
-To help me gauge everyone's experience level and the effectiveness of this course, please take a few minutes to complete the [pre-course survey](https://qfreeaccountssjc1.az1.qualtrics.com/jfe/form/SV_bOcrXH4CuosgK7s)
+Once you've downloaded R, RStudio, and the associated cheat sheets and data for this course please complete the pre-course survey. This will act as an indicator that you have completed the necessary tasks to prepare for the first lab and help me gauge everyone's experience level and the effectiveness of this course later on.
+
+[pre-course survey](https://qfreeaccountssjc1.az1.qualtrics.com/jfe/form/SV_bOcrXH4CuosgK7s)
+
+
+## Go to first module
 
 Okay, now we're ready to go!
 
 
-[--go to first module--](day1_1.html)
+[--go to first module](mod_1_R101.html)
 
+
+## Post course survey
+
+Please return and complete this post course survey at the end of the semester
+
+Before you leave today please take a few moments to complete the [post-course survey](https://qfreeaccountssjc1.az1.qualtrics.com/jfe/form/SV_8wdzQHkevQRmpkG). 
 
 ```{r echo=FALSE}
-rmd2rscript <- function(infile="day1_1.Rmd"){    # function for converting markdown to scripts
+rmd2rscript <- function(infile="mod_4_data_manipulation.Rmd"){    # function for converting markdown to scripts
   outfile1 <- gsub(".Rmd",".R",infile)
   outfile2 <- gsub(".Rmd",".txt",infile)
   close( file( outfile1, open="w" ) )   # clear output file
@@ -125,17 +147,19 @@ rmd2rscript2 <- function(infile="LECTURE2.Rmd"){    # function for converting ma
 
 ```{r echo=FALSE, eval=FALSE}
 
-rmd2rscript2("day1_1.Rmd")
-rmd2rscript2("day1_2.Rmd")
-rmd2rscript2("day1_3.Rmd")
-rmd2rscript2("day2_1.Rmd")
-rmd2rscript2("day2_2.Rmd")
+rmd2rscript2("mod_2_baseR.Rmd")
+rmd2rscript2("mod_3_data.Rmd")
+rmd2rscript2("mod_4_data_manipulation.Rmd")
+rmd2rscript2("mod_1_plots_baseR.Rmd")
+rmd2rscript2("mod_2_ggplot.Rmd")
+
+rmd2rscript2("mod_2_glm.Rmd")
 
 ## TODO: make sure there are pdf copies of all the modules... 
 
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
-rmarkdown::render("index.Rmd",rmarkdown::pdf_document())
-rmarkdown::render("day1_1.Rmd",rmarkdown::pdf_document())
+rmarkdown::render("home.Rmd",rmarkdown::pdf_document())
+rmarkdown::render("Intro_to_R_part1.Rmd",rmarkdown::pdf_document())
 rmarkdown::render("day1_2.Rmd",rmarkdown::pdf_document())
 rmarkdown::render("day1_3.Rmd",rmarkdown::pdf_document())
 

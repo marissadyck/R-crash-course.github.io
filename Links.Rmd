@@ -1,7 +1,7 @@
 ---
 title: "Links"
-author: "R Workshop 2023"
-date: "June 2023"
+author: "R Crash Course"
+date: "2023"
 output: 
   html_document: 
     theme: journal
@@ -31,7 +31,8 @@ Please let me know if there are other links you think should be included on this
 [Base R Cheat sheet](https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf)            
  [Short Reference Card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)  
  [More comprehensive reference card](https://cran.r-project.org/doc/contrib/Baggott-refcard-v2.pdf) 
- [Tidyverse cheat sheet](https://www.datacamp.com/cheat-sheet/tidyverse-cheat-sheet-for-beginners)    
+ [Tidyverse cheat sheet](https://www.datacamp.com/cheat-sheet/tidyverse-cheat-sheet-for-beginners)  
+ [Purrr cheat sheet](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_purrr.pdf)   
  [RStudio cheatsheets- very useful!](https://www.rstudio.com/resources/cheatsheets/)  Includes cheat sheets for R markdown, shiny, data wrangling with "dplyr" and much more! 
  
 ## R Introductory Tutorials and Courses
@@ -68,7 +69,6 @@ Please let me know if there are other links you think should be included on this
  [a nice simple Markdown syntax guide](https://confluence.atlassian.com/bitbucketserver/markdown-syntax-guide-776639995.html)  
 
 
- 
 ## Time Series Analysis
  [A regression approach to time series analysis](http://node101.psych.cornell.edu/Darlington/series/series0.htm)  
  
@@ -87,7 +87,7 @@ Please let me know if there are other links you think should be included on this
 ## Spatial Analysis in R
  ["raster" package vignette](https://cran.r-project.org/web/packages/raster/raster.pdf)   
 
-## Spatial Capture Recapture (secr)  
+## Spatial Capture Recapture (SECR)  
 [secr vignette](https://cran.r-project.org/web/packages/secr/vignettes/secr-overview.pdf)   
  ['secr' Google Group](https://groups.google.com/forum/#!forum/secrgroup)    
  [BUGS code for secr](http://www.mikemeredith.net/blog/1309_SECR_in_JAGS_patchy_habitat.htm)

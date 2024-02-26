@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Module 5: The wonders of Purrr" />
+
+<meta name="date" content="2023-01-01" />
+
+<title>Intro to R</title>
+
+<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R Crash Course 2023</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Intro to R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_R101.html">Module 1: R 101</a>
+    </li>
+    <li>
+      <a href="mod_2_baseR.html">Module 2: Base R</a>
+    </li>
+    <li>
+      <a href="mod_3_data.html">Module 3: Working with data</a>
+    </li>
+    <li>
+      <a href="mod_4_data_manipulation.html">Module 4: Data manipulation</a>
+    </li>
+    <li>
+      <a href="mod_5_purrr.html">Module 5: The wonders of Purrr</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Data Visualization
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_plots_baseR.html">Module 1: Data Visualization in Base R</a>
+    </li>
+    <li>
+      <a href="mod_2_ggplot.html">Module 2: Basics of ggplot</a>
+    </li>
+    <li>
+      <a href="mod_3_ggplot_adv.html">Module 3: Advanced ggplot (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_4_beyond_ggplot.html">Module 4: Beyond ggplot</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Statistical Modeling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_lm.html">Module 1: Linear regression (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_2_glm.html">Module 2: Generalized linear models (GLMs)</a>
+    </li>
+    <li>
+      <a href="mod_3_glmm.html">Module 3: General mixed effects models (GLMMs) (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_4_occ.html">Module 4: Occupancy models (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_5_sem.html">Module 5: Structural equation models (SEMs) (coming soon)</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Git
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_github.html">Getting started with GitHub (coming soon)</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="data.html">Data</a>
+</li>
+<li>
+  <a href="links.html">Links</a>
+</li>
+<li>
+  <a href="surveys.html">Surveys</a>
+</li>
+<li>
+  <a href="terms.html">Terms</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Intro to R</h1>
+<h4 class="author">Module 5: The wonders of Purrr</h4>
+<h4 class="date">2023</h4>
+
+</div>
+
+
+<div id="materials" class="section level2">
+<h2>Materials</h2>
+<div id="scripts" class="section level3">
+<h3>Scripts</h3>
+<ol style="list-style-type: decimal">
+<li><p>Click <a href="mod_5_purrr.R">here</a> to download the script!
+Save the script to the project directory you set up in the previous
+module.</p></li>
+<li><p>Load your script in RStudio. To do this, open RStudio and click
+on the folder icon in the toolbar at the top to load your
+script.</p></li>
+</ol>
+</div>
+<div id="cheat-sheets" class="section level3">
+<h3>Cheat sheets</h3>
+<p>Save this to your cheat sheet folder</p>
+<p><a
+href="https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_purrr.pdf">Purrr
+cheat sheet</a></p>
+</div>
+</div>
+<div id="iteration" class="section level2">
+<h2>Iteration</h2>
+<p>Often times you will want to apply the same <strong>function</strong>
+or multiple <strong>functions</strong> to multiple
+<strong>objects</strong> or inputs this is called
+<strong>iteration</strong>. In <strong>Base R</strong>,
+<strong>iterations</strong> are achieved by using
+<strong>for-loops</strong>, which are cumbersome and not very intuitive.
+If you’ve taken an R class before and covered
+<strong>for-loops</strong>, you are probably already nervous. But do not
+fear Tidyverse has made a package to conduct <strong>iteration</strong>
+operations that is much more user-friendly… and it has a cute inviting
+name, <em>Purrr</em></p>
+<p><img src="images/purrr_cat.jpeg" /></p>
+<p>Let’s go through a few examples of how the <em>Purrr</em> package can
+be used</p>
+</div>
+<div id="purrr-map" class="section level2">
+<h2>Purrr map</h2>
+<p>As you can see from the <a
+href="cheatsheets/purrr_cheat_sheet.pdf">Purrr cheat sheet</a>, the
+<em>Purrr</em> package has a lot of usages. For the purposes of this
+course we will just be skimming the surface and mostly focus on applying
+<strong>functions</strong> with <em>Purrr</em> (upper left).</p>
+<p>To apply the same <strong>function/s</strong> to a number of
+<strong>objects</strong> we use the <code>map()</code>
+<strong>function</strong>.</p>
+<p>Let’s go through an example WITHOUT using <em>Purrr</em> first and
+then apply the <strong>tidyverse</strong> alternative.</p>
+<div id="import-data-with-purrr" class="section level3">
+<h3>Import data with Purrr</h3>
+<p>One of the most common ways I use <em>Purrr</em> is when I want to
+read in multiple data sets for the same analysis. Often times landscape
+data, weather data, species data, etc. will be entered separately but
+you need all the data files for an analysis.</p>
+<p><span style="color: blue;">Start by reading in the 3 bobcat data
+files for this module, leave them named as they
+are<span style="color: blue;"></p>
+<p><a
+href="data/bobcat_collection_data.csv">bobcat_collection_data.csv</a></p>
+<p><a
+href="data/bobcat_necropsy_only_data.csv">bobcat_necropsy_only_data.csv</a></p>
+<p><a href="data/bobcat_age_data.csv">bobcat_age_data.csv</a></p>
+<pre class="r fold-hide"><code>bobcat_collection_data &lt;- read_csv(&#39;data/raw/bobcat_collection_data.csv&#39;)</code></pre>
+<pre><code>## Rows: 121 Columns: 7
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (4): Bobcat_ID#, County, Township, CollectionDate
+## dbl (3): Month, Coordinates_N, Coordinates_W
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r fold-hide"><code>bobcat_necropsy_only_data &lt;- read_csv(&#39;data/raw/bobcat_necropsy_only_data.csv&#39;)</code></pre>
+<pre><code>## Rows: 121 Columns: 14
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (13): Bobcat_ID#, NecropsyDate, Dissector, ApproxAge, Sex, Fecundity_Fem...
+## dbl  (1): Necropsy
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r fold-hide"><code>bobcat_age_data &lt;- read_csv(&#39;data/raw/bobcat_age_data.csv&#39;)</code></pre>
+<pre><code>## Rows: 121 Columns: 2
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (2): Bobcat_ID#, Age
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>Now lets do this using <em>Purrr</em>!</p>
+<p>First we need to assign our object to the environment with a name.
+When we read in multiple data frames at a time they will be stored in a
+<strong>list</strong> object. <strong>Lists</strong> can be confusing to
+work with at first but they follow a similar structure to a <strong>data
+frame</strong>. Let’s name this <strong>list</strong>
+<em>bobcat_data</em>.</p>
+<p>And just like when we read in an individual data frame we need to
+provide the path for the data and the name and file extension
+(e.g. .csv, .txt.)</p>
+<p>Then we were reference our purrr::map <strong>function</strong> AND
+the <strong>function</strong> we want to apply to all of the data. This
+is where things can get a bit confusing at first,</p>
+<ul>
+<li>Inside the parentheses for for the <em>purrr::map</em>
+<strong>function</strong> we will reference the <code>read_csv()</code>
+<strong>fuction</strong>, BUT we must preface this
+<strong>fuction</strong> with a ‘~’. The ‘~’ is part of the syntax Purrr
+uses.</li>
+<li>Then where we would normally put the data file name we can
+substitute ‘.x’ which will reference the data in the
+<strong>list</strong> we already provided. Similar to the ‘.’ when using
+<em>dplyr</em>.</li>
+</ul>
+<p>Let’s look at an example</p>
+<pre class="r"><code># assign objects as list provide the names and file path of each data frame
+
+bobcat_data &lt;- list(&#39;data/raw/bobcat_collection_data.csv&#39;,
+                    &#39;data/raw/bobcat_necropsy_only_data.csv&#39;,
+                    &#39;data/raw/bobcat_age_data.csv&#39;) %&gt;% 
+  
+  # use purrr::map to read in all data at once
+  purrr::map(
+    ~read_csv(.x)
+  )</code></pre>
+<pre><code>## Rows: 121 Columns: 7
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (4): Bobcat_ID#, County, Township, CollectionDate
+## dbl (3): Month, Coordinates_N, Coordinates_W
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## Rows: 121 Columns: 14
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (13): Bobcat_ID#, NecropsyDate, Dissector, ApproxAge, Sex, Fecundity_Fem...
+## dbl  (1): Necropsy
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## Rows: 121 Columns: 2
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (2): Bobcat_ID#, Age
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code># look at the list structure
+str(bobcat_data)</code></pre>
+<pre><code>## List of 3
+##  $ : spc_tbl_ [121 × 7] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ Bobcat_ID#    : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ County        : chr [1:121] &quot;Athens&quot; &quot;Athens&quot; &quot;Morgan&quot; &quot;Perry&quot; ...
+##   ..$ Township      : chr [1:121] &quot;Dover&quot; &quot;Canaan&quot; &quot;Hower&quot; &quot;Reading&quot; ...
+##   ..$ CollectionDate: chr [1:121] &quot;12/30/18&quot; &quot;12/14/18&quot; &quot;12/7/18&quot; &quot;2/10/19&quot; ...
+##   ..$ Month         : num [1:121] 12 12 12 2 1 3 2 2 2 3 ...
+##   ..$ Coordinates_N : num [1:121] 39.4 39.3 39.5 39.8 40.4 ...
+##   ..$ Coordinates_W : num [1:121] -82.1 -82 -82 -82.3 -81.2 ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   County = col_character(),
+##   .. ..   Township = col_character(),
+##   .. ..   CollectionDate = col_character(),
+##   .. ..   Month = col_double(),
+##   .. ..   Coordinates_N = col_double(),
+##   .. ..   Coordinates_W = col_double()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
+##  $ : spc_tbl_ [121 × 14] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ Bobcat_ID#       : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ Necropsy         : num [1:121] 1 2 3 4 5 6 7 8 9 10 ...
+##   ..$ NecropsyDate     : chr [1:121] &quot;3/6/19&quot; &quot;3/9/19&quot; &quot;3/10/19&quot; &quot;3/13/19&quot; ...
+##   ..$ Dissector        : chr [1:121] &quot;SP,_MD&quot; &quot;SP_MD_CH&quot; &quot;MD_CH&quot; &quot;MD_CH_HK&quot; ...
+##   ..$ ApproxAge        : chr [1:121] &quot;Ad&quot; &quot;Ad&quot; &quot;Ad&quot; &quot;Juv&quot; ...
+##   ..$ Sex              : chr [1:121] &quot;M&quot; &quot;F&quot; &quot;M&quot; &quot;F&quot; ...
+##   ..$ Fecundity_Females: chr [1:121] &quot;na&quot; &quot;na&quot; &quot;na&quot; &quot;0&quot; ...
+##   ..$ RearFoot_cm      : chr [1:121] &quot;17.9&quot; &quot;16&quot; &quot;17.1&quot; &quot;14.7&quot; ...
+##   ..$ Tail_cm          : chr [1:121] &quot;11.5&quot; &quot;11.5&quot; &quot;11.4&quot; &quot;11.3&quot; ...
+##   ..$ Ear_cm           : chr [1:121] &quot;6.5&quot; &quot;6.5&quot; &quot;6.4&quot; &quot;6.5&quot; ...
+##   ..$ Body_w/Tail_cm   : chr [1:121] &quot;89.5&quot; &quot;82&quot; &quot;92&quot; &quot;71.5&quot; ...
+##   ..$ Body             : chr [1:121] &quot;78&quot; &quot;70.5&quot; &quot;80.6&quot; &quot;60.2&quot; ...
+##   ..$ Weight_kg        : chr [1:121] &quot;13.6&quot; &quot;6.33&quot; &quot;9.98&quot; &quot;4.62&quot; ...
+##   ..$ Condition        : chr [1:121] &quot;17.43589744&quot; &quot;8.978723404&quot; &quot;12.382134&quot; &quot;7.674418605&quot; ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   Necropsy = col_double(),
+##   .. ..   NecropsyDate = col_character(),
+##   .. ..   Dissector = col_character(),
+##   .. ..   ApproxAge = col_character(),
+##   .. ..   Sex = col_character(),
+##   .. ..   Fecundity_Females = col_character(),
+##   .. ..   RearFoot_cm = col_character(),
+##   .. ..   Tail_cm = col_character(),
+##   .. ..   Ear_cm = col_character(),
+##   .. ..   `Body_w/Tail_cm` = col_character(),
+##   .. ..   Body = col_character(),
+##   .. ..   Weight_kg = col_character(),
+##   .. ..   Condition = col_character()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
+##  $ : spc_tbl_ [121 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ Bobcat_ID#: chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ Age       : chr [1:121] &quot;3&quot; &quot;1&quot; &quot;2&quot; &quot;0&quot; ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   Age = col_character()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<p>We can reduce our typing even further since all of the data are
+stored in the same folder by referencing a file path.</p>
+<pre class="r"><code># assign object name to environment and provide file path for the data
+bobcat_data &lt;- file.path(&#39;data/raw&#39;, 
+  
+  # provide the names of each data frame
+  c(&#39;bobcat_collection_data.csv&#39;,
+    &#39;bobcat_necropsy_only_data.csv&#39;,
+    &#39;bobcat_age_data.csv&#39;)) %&gt;% 
+  
+  # use purrr::map to read in all data at once
+  purrr::map(
+    ~read_csv(.x))</code></pre>
+<pre><code>## Rows: 121 Columns: 7
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (4): Bobcat_ID#, County, Township, CollectionDate
+## dbl (3): Month, Coordinates_N, Coordinates_W
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## Rows: 121 Columns: 14
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (13): Bobcat_ID#, NecropsyDate, Dissector, ApproxAge, Sex, Fecundity_Fem...
+## dbl  (1): Necropsy
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## Rows: 121 Columns: 2
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (2): Bobcat_ID#, Age
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>str(bobcat_data)</code></pre>
+<pre><code>## List of 3
+##  $ : spc_tbl_ [121 × 7] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ Bobcat_ID#    : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ County        : chr [1:121] &quot;Athens&quot; &quot;Athens&quot; &quot;Morgan&quot; &quot;Perry&quot; ...
+##   ..$ Township      : chr [1:121] &quot;Dover&quot; &quot;Canaan&quot; &quot;Hower&quot; &quot;Reading&quot; ...
+##   ..$ CollectionDate: chr [1:121] &quot;12/30/18&quot; &quot;12/14/18&quot; &quot;12/7/18&quot; &quot;2/10/19&quot; ...
+##   ..$ Month         : num [1:121] 12 12 12 2 1 3 2 2 2 3 ...
+##   ..$ Coordinates_N : num [1:121] 39.4 39.3 39.5 39.8 40.4 ...
+##   ..$ Coordinates_W : num [1:121] -82.1 -82 -82 -82.3 -81.2 ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   County = col_character(),
+##   .. ..   Township = col_character(),
+##   .. ..   CollectionDate = col_character(),
+##   .. ..   Month = col_double(),
+##   .. ..   Coordinates_N = col_double(),
+##   .. ..   Coordinates_W = col_double()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
+##  $ : spc_tbl_ [121 × 14] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ Bobcat_ID#       : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ Necropsy         : num [1:121] 1 2 3 4 5 6 7 8 9 10 ...
+##   ..$ NecropsyDate     : chr [1:121] &quot;3/6/19&quot; &quot;3/9/19&quot; &quot;3/10/19&quot; &quot;3/13/19&quot; ...
+##   ..$ Dissector        : chr [1:121] &quot;SP,_MD&quot; &quot;SP_MD_CH&quot; &quot;MD_CH&quot; &quot;MD_CH_HK&quot; ...
+##   ..$ ApproxAge        : chr [1:121] &quot;Ad&quot; &quot;Ad&quot; &quot;Ad&quot; &quot;Juv&quot; ...
+##   ..$ Sex              : chr [1:121] &quot;M&quot; &quot;F&quot; &quot;M&quot; &quot;F&quot; ...
+##   ..$ Fecundity_Females: chr [1:121] &quot;na&quot; &quot;na&quot; &quot;na&quot; &quot;0&quot; ...
+##   ..$ RearFoot_cm      : chr [1:121] &quot;17.9&quot; &quot;16&quot; &quot;17.1&quot; &quot;14.7&quot; ...
+##   ..$ Tail_cm          : chr [1:121] &quot;11.5&quot; &quot;11.5&quot; &quot;11.4&quot; &quot;11.3&quot; ...
+##   ..$ Ear_cm           : chr [1:121] &quot;6.5&quot; &quot;6.5&quot; &quot;6.4&quot; &quot;6.5&quot; ...
+##   ..$ Body_w/Tail_cm   : chr [1:121] &quot;89.5&quot; &quot;82&quot; &quot;92&quot; &quot;71.5&quot; ...
+##   ..$ Body             : chr [1:121] &quot;78&quot; &quot;70.5&quot; &quot;80.6&quot; &quot;60.2&quot; ...
+##   ..$ Weight_kg        : chr [1:121] &quot;13.6&quot; &quot;6.33&quot; &quot;9.98&quot; &quot;4.62&quot; ...
+##   ..$ Condition        : chr [1:121] &quot;17.43589744&quot; &quot;8.978723404&quot; &quot;12.382134&quot; &quot;7.674418605&quot; ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   Necropsy = col_double(),
+##   .. ..   NecropsyDate = col_character(),
+##   .. ..   Dissector = col_character(),
+##   .. ..   ApproxAge = col_character(),
+##   .. ..   Sex = col_character(),
+##   .. ..   Fecundity_Females = col_character(),
+##   .. ..   RearFoot_cm = col_character(),
+##   .. ..   Tail_cm = col_character(),
+##   .. ..   Ear_cm = col_character(),
+##   .. ..   `Body_w/Tail_cm` = col_character(),
+##   .. ..   Body = col_character(),
+##   .. ..   Weight_kg = col_character(),
+##   .. ..   Condition = col_character()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
+##  $ : spc_tbl_ [121 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ Bobcat_ID#: chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ Age       : chr [1:121] &quot;3&quot; &quot;1&quot; &quot;2&quot; &quot;0&quot; ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   Age = col_character()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<p>We could also format it like this if that makes more sense to you,
+using a period as the placeholder for the data file names</p>
+<pre class="r"><code># assign object name to environment and provide list of data file names
+
+bobcat_data &lt;- list(&#39;bobcat_collection_data.csv&#39;,
+                    &#39;bobcat_necropsy_only_data.csv&#39;,
+                    &#39;bobcat_age_data.csv&#39;) %&gt;% 
+  
+  # provide file path for the data
+  file.path(&#39;data/raw&#39;, .) %&gt;% 
+  
+  # use purrr::map to read in all data at once
+  purrr::map(
+    ~read_csv(.x))</code></pre>
+<pre><code>## Rows: 121 Columns: 7
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (4): Bobcat_ID#, County, Township, CollectionDate
+## dbl (3): Month, Coordinates_N, Coordinates_W
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## Rows: 121 Columns: 14
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (13): Bobcat_ID#, NecropsyDate, Dissector, ApproxAge, Sex, Fecundity_Fem...
+## dbl  (1): Necropsy
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## Rows: 121 Columns: 2
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (2): Bobcat_ID#, Age
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>str(bobcat_data)</code></pre>
+<pre><code>## List of 3
+##  $ : spc_tbl_ [121 × 7] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ Bobcat_ID#    : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ County        : chr [1:121] &quot;Athens&quot; &quot;Athens&quot; &quot;Morgan&quot; &quot;Perry&quot; ...
+##   ..$ Township      : chr [1:121] &quot;Dover&quot; &quot;Canaan&quot; &quot;Hower&quot; &quot;Reading&quot; ...
+##   ..$ CollectionDate: chr [1:121] &quot;12/30/18&quot; &quot;12/14/18&quot; &quot;12/7/18&quot; &quot;2/10/19&quot; ...
+##   ..$ Month         : num [1:121] 12 12 12 2 1 3 2 2 2 3 ...
+##   ..$ Coordinates_N : num [1:121] 39.4 39.3 39.5 39.8 40.4 ...
+##   ..$ Coordinates_W : num [1:121] -82.1 -82 -82 -82.3 -81.2 ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   County = col_character(),
+##   .. ..   Township = col_character(),
+##   .. ..   CollectionDate = col_character(),
+##   .. ..   Month = col_double(),
+##   .. ..   Coordinates_N = col_double(),
+##   .. ..   Coordinates_W = col_double()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
+##  $ : spc_tbl_ [121 × 14] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ Bobcat_ID#       : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ Necropsy         : num [1:121] 1 2 3 4 5 6 7 8 9 10 ...
+##   ..$ NecropsyDate     : chr [1:121] &quot;3/6/19&quot; &quot;3/9/19&quot; &quot;3/10/19&quot; &quot;3/13/19&quot; ...
+##   ..$ Dissector        : chr [1:121] &quot;SP,_MD&quot; &quot;SP_MD_CH&quot; &quot;MD_CH&quot; &quot;MD_CH_HK&quot; ...
+##   ..$ ApproxAge        : chr [1:121] &quot;Ad&quot; &quot;Ad&quot; &quot;Ad&quot; &quot;Juv&quot; ...
+##   ..$ Sex              : chr [1:121] &quot;M&quot; &quot;F&quot; &quot;M&quot; &quot;F&quot; ...
+##   ..$ Fecundity_Females: chr [1:121] &quot;na&quot; &quot;na&quot; &quot;na&quot; &quot;0&quot; ...
+##   ..$ RearFoot_cm      : chr [1:121] &quot;17.9&quot; &quot;16&quot; &quot;17.1&quot; &quot;14.7&quot; ...
+##   ..$ Tail_cm          : chr [1:121] &quot;11.5&quot; &quot;11.5&quot; &quot;11.4&quot; &quot;11.3&quot; ...
+##   ..$ Ear_cm           : chr [1:121] &quot;6.5&quot; &quot;6.5&quot; &quot;6.4&quot; &quot;6.5&quot; ...
+##   ..$ Body_w/Tail_cm   : chr [1:121] &quot;89.5&quot; &quot;82&quot; &quot;92&quot; &quot;71.5&quot; ...
+##   ..$ Body             : chr [1:121] &quot;78&quot; &quot;70.5&quot; &quot;80.6&quot; &quot;60.2&quot; ...
+##   ..$ Weight_kg        : chr [1:121] &quot;13.6&quot; &quot;6.33&quot; &quot;9.98&quot; &quot;4.62&quot; ...
+##   ..$ Condition        : chr [1:121] &quot;17.43589744&quot; &quot;8.978723404&quot; &quot;12.382134&quot; &quot;7.674418605&quot; ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   Necropsy = col_double(),
+##   .. ..   NecropsyDate = col_character(),
+##   .. ..   Dissector = col_character(),
+##   .. ..   ApproxAge = col_character(),
+##   .. ..   Sex = col_character(),
+##   .. ..   Fecundity_Females = col_character(),
+##   .. ..   RearFoot_cm = col_character(),
+##   .. ..   Tail_cm = col_character(),
+##   .. ..   Ear_cm = col_character(),
+##   .. ..   `Body_w/Tail_cm` = col_character(),
+##   .. ..   Body = col_character(),
+##   .. ..   Weight_kg = col_character(),
+##   .. ..   Condition = col_character()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
+##  $ : spc_tbl_ [121 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ Bobcat_ID#: chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ Age       : chr [1:121] &quot;3&quot; &quot;1&quot; &quot;2&quot; &quot;0&quot; ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   Age = col_character()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<p>We can look at each <strong>list</strong> element by using the
+<code>$</code> similar to a data frame.</p>
+<p>Let’s see what are list elements are named using the
+<code>names()</code> argument.</p>
+<pre class="r"><code># first see what the list elements are named
+names(bobcat_data)</code></pre>
+<pre><code>## NULL</code></pre>
+<p>hmmmm that’s not ideal, our list elements don’t have names. We can
+fix this by adding a <strong>function</strong> outside the
+<code>Purrrr::map()</code> to rename each object in the list.</p>
+<pre class="r"><code># assign object name to environment and provide file path for the data
+bobcat_data &lt;- file.path(&#39;data/raw&#39;, 
+  
+  # provide the names of each data frame
+  c(&#39;bobcat_collection_data.csv&#39;,
+    &#39;bobcat_necropsy_only_data.csv&#39;,
+    &#39;bobcat_age_data.csv&#39;)) %&gt;% 
+  
+  # use purrr::map to read in all data at once
+  purrr::map(
+    ~read_csv(.x)) %&gt;% 
+  
+  # assign names to list objects
+purrr::set_names(&#39;bobcat_collection&#39;,
+                   &#39;bobcat_necropsy&#39;,
+                   &#39;bobcat_age&#39;)</code></pre>
+<pre><code>## Rows: 121 Columns: 7
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (4): Bobcat_ID#, County, Township, CollectionDate
+## dbl (3): Month, Coordinates_N, Coordinates_W
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## Rows: 121 Columns: 14
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (13): Bobcat_ID#, NecropsyDate, Dissector, ApproxAge, Sex, Fecundity_Fem...
+## dbl  (1): Necropsy
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## Rows: 121 Columns: 2
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (2): Bobcat_ID#, Age
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>str(bobcat_data)</code></pre>
+<pre><code>## List of 3
+##  $ bobcat_collection: spc_tbl_ [121 × 7] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ Bobcat_ID#    : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ County        : chr [1:121] &quot;Athens&quot; &quot;Athens&quot; &quot;Morgan&quot; &quot;Perry&quot; ...
+##   ..$ Township      : chr [1:121] &quot;Dover&quot; &quot;Canaan&quot; &quot;Hower&quot; &quot;Reading&quot; ...
+##   ..$ CollectionDate: chr [1:121] &quot;12/30/18&quot; &quot;12/14/18&quot; &quot;12/7/18&quot; &quot;2/10/19&quot; ...
+##   ..$ Month         : num [1:121] 12 12 12 2 1 3 2 2 2 3 ...
+##   ..$ Coordinates_N : num [1:121] 39.4 39.3 39.5 39.8 40.4 ...
+##   ..$ Coordinates_W : num [1:121] -82.1 -82 -82 -82.3 -81.2 ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   County = col_character(),
+##   .. ..   Township = col_character(),
+##   .. ..   CollectionDate = col_character(),
+##   .. ..   Month = col_double(),
+##   .. ..   Coordinates_N = col_double(),
+##   .. ..   Coordinates_W = col_double()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
+##  $ bobcat_necropsy  : spc_tbl_ [121 × 14] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ Bobcat_ID#       : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ Necropsy         : num [1:121] 1 2 3 4 5 6 7 8 9 10 ...
+##   ..$ NecropsyDate     : chr [1:121] &quot;3/6/19&quot; &quot;3/9/19&quot; &quot;3/10/19&quot; &quot;3/13/19&quot; ...
+##   ..$ Dissector        : chr [1:121] &quot;SP,_MD&quot; &quot;SP_MD_CH&quot; &quot;MD_CH&quot; &quot;MD_CH_HK&quot; ...
+##   ..$ ApproxAge        : chr [1:121] &quot;Ad&quot; &quot;Ad&quot; &quot;Ad&quot; &quot;Juv&quot; ...
+##   ..$ Sex              : chr [1:121] &quot;M&quot; &quot;F&quot; &quot;M&quot; &quot;F&quot; ...
+##   ..$ Fecundity_Females: chr [1:121] &quot;na&quot; &quot;na&quot; &quot;na&quot; &quot;0&quot; ...
+##   ..$ RearFoot_cm      : chr [1:121] &quot;17.9&quot; &quot;16&quot; &quot;17.1&quot; &quot;14.7&quot; ...
+##   ..$ Tail_cm          : chr [1:121] &quot;11.5&quot; &quot;11.5&quot; &quot;11.4&quot; &quot;11.3&quot; ...
+##   ..$ Ear_cm           : chr [1:121] &quot;6.5&quot; &quot;6.5&quot; &quot;6.4&quot; &quot;6.5&quot; ...
+##   ..$ Body_w/Tail_cm   : chr [1:121] &quot;89.5&quot; &quot;82&quot; &quot;92&quot; &quot;71.5&quot; ...
+##   ..$ Body             : chr [1:121] &quot;78&quot; &quot;70.5&quot; &quot;80.6&quot; &quot;60.2&quot; ...
+##   ..$ Weight_kg        : chr [1:121] &quot;13.6&quot; &quot;6.33&quot; &quot;9.98&quot; &quot;4.62&quot; ...
+##   ..$ Condition        : chr [1:121] &quot;17.43589744&quot; &quot;8.978723404&quot; &quot;12.382134&quot; &quot;7.674418605&quot; ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   Necropsy = col_double(),
+##   .. ..   NecropsyDate = col_character(),
+##   .. ..   Dissector = col_character(),
+##   .. ..   ApproxAge = col_character(),
+##   .. ..   Sex = col_character(),
+##   .. ..   Fecundity_Females = col_character(),
+##   .. ..   RearFoot_cm = col_character(),
+##   .. ..   Tail_cm = col_character(),
+##   .. ..   Ear_cm = col_character(),
+##   .. ..   `Body_w/Tail_cm` = col_character(),
+##   .. ..   Body = col_character(),
+##   .. ..   Weight_kg = col_character(),
+##   .. ..   Condition = col_character()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
+##  $ bobcat_age       : spc_tbl_ [121 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ Bobcat_ID#: chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ Age       : chr [1:121] &quot;3&quot; &quot;1&quot; &quot;2&quot; &quot;0&quot; ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   Age = col_character()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<p>Now we can look at each <strong>list</strong> element like by using
+the <code>$</code></p>
+<pre class="r"><code># look at the structure of the necropsy data
+str(bobcat_data$necropsy)</code></pre>
+<pre><code>##  NULL</code></pre>
+</div>
+<div id="formatmanipulate-data-with-purrr" class="section level3">
+<h3>Format/manipulate data with Purrr</h3>
+<p>We can also use <em>Purrr</em> to manipulate our data. Recall I
+recommend always using lowercase for column names, objects, etc. The
+bobcat data when entered does not follow those rules so we’d want to
+change that after we import in R.</p>
+<p>Let’s look at the non-purrr way first and then see how much code
+repetition we avoid when we use <em>Purrr</em>. We would likely want to
+do this when we read in the data so, on your own
+<span style="color: blue;"> copy the non-purrr code from above where we
+read in the data, and set the column names to lowercase for each data
+set.<span style="color: blue;"></p>
+<p><span style="color: blue;">Use the <code>head()</code> function to
+look at the first few rows of each data
+set.<span style="color: blue;"></p>
+<pre class="r fold-hide"><code>bobcat_collection_data &lt;- read_csv(&#39;data/raw/bobcat_collection_data.csv&#39;) %&gt;% 
+  
+  # set names to lowercase
+  set_names(
+    names(.) %&gt;% 
+      tolower())</code></pre>
+<pre><code>## Rows: 121 Columns: 7
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (4): Bobcat_ID#, County, Township, CollectionDate
+## dbl (3): Month, Coordinates_N, Coordinates_W
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r fold-hide"><code>head(bobcat_collection_data)</code></pre>
+<pre><code>## # A tibble: 6 × 7
+##   `bobcat_id#` county  township collectiondate month coordinates_n coordinates_w
+##   &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;
+## 1 5/18/01      Athens  Dover    12/30/18          12          39.4         -82.1
+## 2 5/18/02      Athens  Canaan   12/14/18          12          39.3         -82.0
+## 3 58-18-03     Morgan  Hower    12/7/18           12          39.5         -82.0
+## 4 64-19-04     Perry   Reading  2/10/19            2          39.8         -82.3
+## 5 34-15-05     Harris… Monroe   1/11/15            1          40.4         -81.2
+## 6 71-19-06     Ross    Jeffers… 3/7/19             3          39.2         -82.8</code></pre>
+<pre class="r fold-hide"><code>bobcat_necropsy_only_data &lt;- read_csv(&#39;data/raw/bobcat_necropsy_only_data.csv&#39;)%&gt;% 
+  
+  # set names to lowercase
+  set_names(
+    names(.) %&gt;% 
+      tolower())</code></pre>
+<pre><code>## Rows: 121 Columns: 14
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (13): Bobcat_ID#, NecropsyDate, Dissector, ApproxAge, Sex, Fecundity_Fem...
+## dbl  (1): Necropsy
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r fold-hide"><code>head(bobcat_necropsy_only_data)</code></pre>
+<pre><code>## # A tibble: 6 × 14
+##   `bobcat_id#` necropsy necropsydate dissector approxage sex   fecundity_females
+##   &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;            
+## 1 5/18/01             1 3/6/19       SP,_MD    Ad        M     na               
+## 2 5/18/02             2 3/9/19       SP_MD_CH  Ad        F     na               
+## 3 58-18-03            3 3/10/19      MD_CH     Ad        M     na               
+## 4 64-19-04            4 3/13/19      MD_CH_HK  Juv       F     0                
+## 5 34-15-05            5 3/23/19      MD_CH_JG  Ad        M     na               
+## 6 71-19-06            6 3/24/19      MD_CH     Ad        M     na               
+## # ℹ 7 more variables: rearfoot_cm &lt;chr&gt;, tail_cm &lt;chr&gt;, ear_cm &lt;chr&gt;,
+## #   `body_w/tail_cm` &lt;chr&gt;, body &lt;chr&gt;, weight_kg &lt;chr&gt;, condition &lt;chr&gt;</code></pre>
+<pre class="r fold-hide"><code>bobcat_age_data &lt;- read_csv(&#39;data/raw/bobcat_age_data.csv&#39;)%&gt;% 
+  
+  # set names to lowercase
+  set_names(
+    names(.) %&gt;% 
+      tolower())</code></pre>
+<pre><code>## Rows: 121 Columns: 2
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (2): Bobcat_ID#, Age
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r fold-hide"><code>head(bobcat_age_data)</code></pre>
+<pre><code>## # A tibble: 6 × 2
+##   `bobcat_id#` age  
+##   &lt;chr&gt;        &lt;chr&gt;
+## 1 5/18/01      3    
+## 2 5/18/02      1    
+## 3 58-18-03     2    
+## 4 64-19-04     0    
+## 5 34-15-05     1    
+## 6 71-19-06     X</code></pre>
+<p>That’s a lot of repetition in our code, which we generally want to
+avoid whenever possible. With <em>Purrr</em> we can do just that.</p>
+<p>We are going to use the same code from above that we used to read in
+the data files using a file path, and we will add a
+<strong>function</strong> to set the column names to lower case.</p>
+<p>To do multiple <strong>iterations</strong> within the same
+<code>purrr::map()</code> <strong>function</strong> we have to change
+one thing. Instead of typing a ‘~’ before the <code>read_csv()</code>
+<strong>function</strong> and referencing our list (.x) inside the
+<code>read_csv()</code> <strong>function</strong> we need to reference
+the list elements first and then supply the multiple
+<strong>funcitons</strong> we want to apply.</p>
+<p>See below</p>
+<pre class="r"><code># assign object name to environment and provide file path for the data
+bobcat_data &lt;- file.path(&#39;data/raw&#39;, 
+                         
+                         # provide the names of each data frame
+                         c(&#39;bobcat_collection_data.csv&#39;,
+                           &#39;bobcat_necropsy_only_data.csv&#39;,
+                           &#39;bobcat_age_data.csv&#39;)) %&gt;% 
+  
+  # use purrr::map to read in all data at once
+  purrr::map(
+    
+    # reference list elements with ~
+    ~.x %&gt;% 
+      
+      # read in list elements   
+      read_csv() %&gt;% 
+      
+      # set names to lower case
+      set_names(
+        names(.) %&gt;% 
+          tolower())
+  ) %&gt;% 
+  
+  # assign names to list objects
+purrr::set_names(&#39;bobcat_collection&#39;,
+                   &#39;bobcat_necropsy&#39;,
+                   &#39;bobcat_age&#39;)</code></pre>
+<pre><code>## Rows: 121 Columns: 7
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (4): Bobcat_ID#, County, Township, CollectionDate
+## dbl (3): Month, Coordinates_N, Coordinates_W
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## Rows: 121 Columns: 14
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (13): Bobcat_ID#, NecropsyDate, Dissector, ApproxAge, Sex, Fecundity_Fem...
+## dbl  (1): Necropsy
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## Rows: 121 Columns: 2
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (2): Bobcat_ID#, Age
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>head(bobcat_data$bobcat_collection)</code></pre>
+<pre><code>## # A tibble: 6 × 7
+##   `bobcat_id#` county  township collectiondate month coordinates_n coordinates_w
+##   &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;
+## 1 5/18/01      Athens  Dover    12/30/18          12          39.4         -82.1
+## 2 5/18/02      Athens  Canaan   12/14/18          12          39.3         -82.0
+## 3 58-18-03     Morgan  Hower    12/7/18           12          39.5         -82.0
+## 4 64-19-04     Perry   Reading  2/10/19            2          39.8         -82.3
+## 5 34-15-05     Harris… Monroe   1/11/15            1          40.4         -81.2
+## 6 71-19-06     Ross    Jeffers… 3/7/19             3          39.2         -82.8</code></pre>
+<p>I also don’t like the column name for ‘bobcat ID number’. See how it
+reads in with ’’ because someone used the ‘#’ instead of typing number
+and R doesn’t like that. Let’s change this in all the data sets using
+<em>Purrr</em>.</p>
+<p>For this example we won’t go through the non-purrr way to save
+time</p>
+<pre class="r"><code># assign object name to environment and provide file path for the data
+bobcat_data &lt;- file.path(&#39;data/raw&#39;, 
+                         
+                         # provide the names of each data frame
+                         c(&#39;bobcat_collection_data.csv&#39;,
+                           &#39;bobcat_necropsy_only_data.csv&#39;,
+                           &#39;bobcat_age_data.csv&#39;)) %&gt;% 
+  
+  # use purrr::map to read in all data at once
+  purrr::map(
+    
+    # reference list elements with ~
+    ~.x %&gt;% 
+      
+      # read in list elements   
+      read_csv() %&gt;% 
+      
+      # set names to lower case
+      set_names(
+        names(.) %&gt;% 
+          tolower()) %&gt;% 
+      
+      # change bobcats id# to better name
+      rename(.,
+             &#39;bobcat_id&#39; = &#39;bobcat_id#&#39;) # new name = old name
+  ) %&gt;% 
+  
+  # assign names to list objects
+  purrr::set_names(&#39;bobcat_collection&#39;,
+                   &#39;bobcat_necropsy&#39;,
+                   &#39;bobcat_age&#39;)</code></pre>
+<pre><code>## Rows: 121 Columns: 7
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (4): Bobcat_ID#, County, Township, CollectionDate
+## dbl (3): Month, Coordinates_N, Coordinates_W
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## Rows: 121 Columns: 14
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (13): Bobcat_ID#, NecropsyDate, Dissector, ApproxAge, Sex, Fecundity_Fem...
+## dbl  (1): Necropsy
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## Rows: 121 Columns: 2
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (2): Bobcat_ID#, Age
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>head(bobcat_data$collection)</code></pre>
+<pre><code>## NULL</code></pre>
+<p>Much better!</p>
+</div>
+</div>
+<div id="purrr-imap" class="section level2">
+<h2>Purrr imap</h2>
+<div id="saving-data" class="section level3">
+<h3>Saving data</h3>
+<p>Now that we have tidy data sets we may want to save these to our hard
+drive so we don’t have to run code to reformat them every time we read
+in the data.</p>
+<p><span style="color: blue;">In your script, type code that will save
+each of the data sets in the bobcat_data list as a csv to the
+data/processed folder. <span style="color: blue;"></p>
+<pre class="r"><code># save each data set as a csv
+write_csv(bobcat_data$bobcat_collection,
+          &#39;data/processed/bobcat_collection.csv&#39;)
+
+write_csv(bobcat_data$bobcat_age,
+          &#39;data/processed/bobcat_age.csv&#39;)
+
+write_csv(bobcat_data$bobcat_necropsy,
+          &#39;data/processed/bobcat_necropsy.csv&#39;)</code></pre>
+<p>Now the <em>Purrr</em> way!</p>
+<p>We can use the <em>Purrr</em> <strong>function</strong>
+<code>imap()</code> because it retains the names of elements within our
+list (.y) when we save them</p>
+<pre class="r"><code># save each data set as a csv
+purrr::imap(
+  bobcat_data,
+  ~write_csv(.x,
+             file = paste0(&quot;data/processed/&quot;,
+                           .y,
+                           &#39;.csv&#39;)))</code></pre>
+<pre><code>## $bobcat_collection
+## # A tibble: 121 × 7
+##    bobcat_id county    township collectiondate month coordinates_n coordinates_w
+##    &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;
+##  1 5/18/01   Athens    Dover    12/30/18          12          39.4         -82.1
+##  2 5/18/02   Athens    Canaan   12/14/18          12          39.3         -82.0
+##  3 58-18-03  Morgan    Hower    12/7/18           12          39.5         -82.0
+##  4 64-19-04  Perry     Reading  2/10/19            2          39.8         -82.3
+##  5 34-15-05  Harrison  Monroe   1/11/15            1          40.4         -81.2
+##  6 71-19-06  Ross      Jeffers… 3/7/19             3          39.2         -82.8
+##  7 16-19-07  Coshocton Jeffers… 2/28/19            2          40.4         -82.0
+##  8 40-19-08  Jackson   Madison  2/27/19            2          38.9         -82.4
+##  9 61-19-09  Noble     Elk      2/20/19            2          39.7         -81.3
+## 10 27-19-10  Gallia    Gallipo… 3/1/19             3          38.8         -82.2
+## # ℹ 111 more rows
+## 
+## $bobcat_necropsy
+## # A tibble: 121 × 14
+##    bobcat_id necropsy necropsydate dissector approxage sex   fecundity_females
+##    &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;            
+##  1 5/18/01          1 3/6/19       SP,_MD    Ad        M     na               
+##  2 5/18/02          2 3/9/19       SP_MD_CH  Ad        F     na               
+##  3 58-18-03         3 3/10/19      MD_CH     Ad        M     na               
+##  4 64-19-04         4 3/13/19      MD_CH_HK  Juv       F     0                
+##  5 34-15-05         5 3/23/19      MD_CH_JG  Ad        M     na               
+##  6 71-19-06         6 3/24/19      MD_CH     Ad        M     na               
+##  7 16-19-07         7 3/31/19      MD_HK     Ad        M     na               
+##  8 40-19-08         8 4/7/19       MD_CH_HK  Ad        M     na               
+##  9 61-19-09         9 4/13/19      MD_CH     Juv       M     na               
+## 10 27-19-10        10 4/14/19      MD_HK     Ad        M     na               
+## # ℹ 111 more rows
+## # ℹ 7 more variables: rearfoot_cm &lt;chr&gt;, tail_cm &lt;chr&gt;, ear_cm &lt;chr&gt;,
+## #   `body_w/tail_cm` &lt;chr&gt;, body &lt;chr&gt;, weight_kg &lt;chr&gt;, condition &lt;chr&gt;
+## 
+## $bobcat_age
+## # A tibble: 121 × 2
+##    bobcat_id age  
+##    &lt;chr&gt;     &lt;chr&gt;
+##  1 5/18/01   3    
+##  2 5/18/02   1    
+##  3 58-18-03  2    
+##  4 64-19-04  0    
+##  5 34-15-05  1    
+##  6 71-19-06  X    
+##  7 16-19-07  X    
+##  8 40-19-08  1    
+##  9 61-19-09  0    
+## 10 27-19-10  3    
+## # ℹ 111 more rows</code></pre>
+<p>So much less repetition and code if you have a lot of data sets to
+save</p>
+<p>We’ve only barely scratched the surface of what <em>Purrr</em> can
+do, but given our limited time that is where we will end. Just remember
+anytime you find yourself repeating the same operations for multiple
+<strong>objects</strong> of the same type you may want to consider using
+<em>Purrr</em> instead to reduce repetition in your code.</p>
+</div>
+</div>
+<div id="practice-problems" class="section level2">
+<h2>Practice problems</h2>
+<p>There is no formal assignment for this module, but you can complete
+the problems below for some extra practice.</p>
+<p><a href="mod_1_plots_baseR.html">–go to next module–</a></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

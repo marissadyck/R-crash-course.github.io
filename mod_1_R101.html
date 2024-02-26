@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Module 1: R 101 aka what is R and RStudio? And how to use them most effectively" />
+
+<meta name="date" content="2023-01-01" />
+
+<title>Intro to R</title>
+
+<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R Crash Course 2023</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Intro to R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_R101.html">Module 1: R 101</a>
+    </li>
+    <li>
+      <a href="mod_2_baseR.html">Module 2: Base R</a>
+    </li>
+    <li>
+      <a href="mod_3_data.html">Module 3: Working with data</a>
+    </li>
+    <li>
+      <a href="mod_4_data_manipulation.html">Module 4: Data manipulation</a>
+    </li>
+    <li>
+      <a href="mod_5_purrr.html">Module 5: The wonders of Purrr</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Data Visualization
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_plots_baseR.html">Module 1: Data Visualization in Base R</a>
+    </li>
+    <li>
+      <a href="mod_2_ggplot.html">Module 2: Basics of ggplot</a>
+    </li>
+    <li>
+      <a href="mod_3_ggplot_adv.html">Module 3: Advanced ggplot (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_4_beyond_ggplot.html">Module 4: Beyond ggplot</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Statistical Modeling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_lm.html">Module 1: Linear regression (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_2_glm.html">Module 2: Generalized linear models (GLMs)</a>
+    </li>
+    <li>
+      <a href="mod_3_glmm.html">Module 3: General mixed effects models (GLMMs) (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_4_occ.html">Module 4: Occupancy models (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_5_sem.html">Module 5: Structural equation models (SEMs) (coming soon)</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Git
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_github.html">Getting started with GitHub (coming soon)</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="data.html">Data</a>
+</li>
+<li>
+  <a href="links.html">Links</a>
+</li>
+<li>
+  <a href="surveys.html">Surveys</a>
+</li>
+<li>
+  <a href="terms.html">Terms</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Intro to R</h1>
+<h4 class="author">Module 1: R 101 aka what is R and RStudio? And how to
+use them most effectively</h4>
+<h4 class="date">2023</h4>
+
+</div>
+
+
+<p>Welcome to the R Crash Course!</p>
+<div id="materials" class="section level2">
+<h2>Materials</h2>
+<p>At the start of each module there will be section to download
+necessary materials (e.g. scripts, cheat sheets, etc.)</p>
+<div id="cheat-sheets" class="section level3">
+<h3>Cheat Sheets</h3>
+<p>You will be introduced to a lot of new material very quickly in this
+course, and you are not expected to remember everything! ‘Cheat sheets’
+can quickly and easily refresh your memory about syntax that can be
+difficult to remember. So don’t worry if you don’t memorize everything
+we do together in this course- the key is that you leave here with
+comfort working in the RStudio environment, doing some basic data
+operations in R, working through an analysis in R, and most importantly,
+learning and trying new things on your own!</p>
+<p>Below are links to good R “cheat sheets” for today’s lab (we will add
+more for each today’s lab or you can see <a href="Links.html">links</a>
+for a list of all cheat sheets):</p>
+<p>RStudio <a href="https://posit.co/reSources/cheatsheets/">Rstudio
+cheat sheet</a> (you will need to scroll down to find the RStudio IDE
+cheatsheet)</p>
+<p>Base R (We won’t be using base R a ton but it is good to have a solid
+understanding of the base functions)<br />
+<a href="https://www.i3s.unice.fr/~malapert/R/pdf/base-r.pdf">Base R
+Cheat sheet</a><br />
+<a href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">R
+reference card</a></p>
+</div>
+</div>
+<div id="what-is-r-and-rstudio" class="section level2">
+<h2>What is R and RStudio?</h2>
+<p>You will recall you downloaded two programs for this course, R and
+RStudio. R itself is the programming language we will be using and the R
+application you downloaded is the free software environment that allows
+your computer to understand the coding language and perform various
+functions. We almost never work directly in R because it’s clunky and
+not straightforward; instead we work in RStudio. RStudio is a much more
+user friendly interface to work in. <span style="color: blue;">Open
+RStudio</span> on your laptop and we will go over the layout and various
+options in RStudio. You may also want to reference the <a
+href="https://posit.co/reSources/cheatsheets/">Rstudio IDE cheat
+sheet</a> and take any notes you find helpful as we go.</p>
+<div id="terms" class="section level3">
+<h3>Terms</h3>
+<p>Terms that may be unfamiliar and useful to know are bolded throughout
+the course. You can access a list of these terms with definitions
+below:</p>
+<p><a href="terms.html">Terms</a></p>
+</div>
+<div id="rstudio-layout-the-four-windows" class="section level3">
+<h3>RStudio Layout (the four windows)</h3>
+<p>When you open RStudio, you’ll see four windows.</p>
+<p><img src="images/rstudio1.jpg" style="width:80.0%" /></p>
+<div id="source" class="section level4">
+<h4>1. Source:</h4>
+<p>This is where you write your code. Code that you have written is
+called your <strong>R script</strong>. Anything you want evaluated in R
+that you want to be available later is written here. Your code is not
+evaluated until you run it, this can be done in a couple different ways.
+As an example type <span style="color: blue;"><em>2 + 2</em></span> into
+the <strong>source</strong> panel, do not hit enter. Now, with your
+cursor still on the same line as the code you just wrote, <span
+style="color: blue;">click the ‘Run’ button</span> at the top right
+corner of the <strong>source</strong> panel, this will run your
+code.</p>
+<pre><code>## [1] 4</code></pre>
+<p>The result or output of your code will appear in the panel below, the
+<strong>console</strong>. Before we move on to the
+<strong>console</strong>, let’s cover a keyboard shortcut that is a much
+more efficient way to run your code.</p>
+<p>Place your cursor on your line of code again and press <span
+style="color: blue;"><em>Ctrl+Enter</em></span> (Windows) or <span
+style="color: blue;"><em>Command+Enter</em></span> (for Mac) and check
+the <strong>console</strong>. You should see the same output as
+before.</p>
+<p>(<em>RStudio has several helpful keyboard shortcuts to make running
+lines of code easier. <a
+href="https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts">Check
+this website</a> for a comprehensive set of keyboard shortcuts- or
+access the shortcuts using help&gt;&gt;keyboard shortcuts.</em>)</p>
+<p>If you have multiple lines of code that you want to run at once, you
+can also highlight your code and use either of the aforementioned
+methods to run it. Let’s try this. Type <span style="color: blue;"><em>4
++ 4</em></span> in the <strong>source</strong> panel below your previous
+line of code. Highlight both sections with your mouse and use either
+method to run your code, check the console.</p>
+<pre><code>## [1] 4</code></pre>
+<pre><code>## [1] 8</code></pre>
+</div>
+<div id="console" class="section level4">
+<h4>2. Console:</h4>
+<p>The R <strong>console</strong> (what you see if you opened R directly
+instead of RStudio) is a <strong>command line</strong> interface, and is
+<em>your direct connection with R</em>: you give R a command at the
+prompt and R executes that command. The <strong>console</strong> is
+where your code is evaluated by R, it will show the code you have run
+followed by any output if there is one. Some code will not have an
+output in this panel (e.g., graphs), which we will cover more later. The
+<strong>console</strong> can also be used to write and evaluate code you
+only need to use once and don’t want saved in your script. This is
+useful for looking up help files, checking the structure of your data,
+and simple math such as what we just did. Delete the lines of code you
+wrote in the <strong>source</strong> panel and instead type <span
+style="color: blue;"><em>2 + 2</em></span> in the console and hit enter.
+You should get the same output as before, but now that code is not in
+your <strong>R script</strong> so it won’t be evaluated every time you
+run your script. You can clear your <strong>console</strong> by clicking
+the broom icon in the right corner, I recommend doing this anytime you
+start a new analysis in R. Let’s do this now, <span
+style="color: blue;">click the broom icon</span> and see what
+happens.</p>
+</div>
+<div id="tab-panes" class="section level4">
+<h4>Tab Panes</h4>
+<p>There are two windows with various tabs on the right, the top window
+is your <strong>environment/history</strong> and the lower window
+contains the <strong>files</strong> window and other tabs.</p>
+</div>
+<div id="environmenthistory" class="section level4">
+<h4>3. Environment/History:</h4>
+<p>The first tab of this window is the <strong>environment</strong>;
+this shows you objects that are currently in your working space
+(environment) such as data, vectors, and graphs. The second tab is your
+<strong>history</strong> which shows you everything you’ve evaluated
+during your current session. You should only see a few lines of simple
+math that we did earlier (i.e., 2 + 2 &amp; 4 + 4), if you see anything
+else in your history that means you have run something else in R at an
+earlier time without closing the program. Similar to the
+<strong>console</strong>, you can clear both your
+<strong>environment</strong> and <strong>history</strong> by clicking
+the broom icon when each tab is selected. Let’s do this now, with the
+<strong>history</strong> tab selected <span
+style="color: blue;"><em>click the broom icon</em></span>, you will be
+prompted with a pop-up window, click yes. Now your
+<strong>history</strong> is empty. Do the same for your
+<strong>environment</strong>.</p>
+<p>There are more tabs and options in this window, some of which we will
+cover later, but for now lets move on to the last window of RStudio.</p>
+</div>
+<div id="files-and-others" class="section level4">
+<h4>4. Files and others:</h4>
+</div>
+<div id="files" class="section level4">
+<h4>Files:</h4>
+<p>The last window contains several tabs including
+<strong>files</strong> which is useful to see your directory (where you
+are working in your computer). You can check what you have named your
+data sets, open scripts, etc. without having to navigate out of RStudio.
+You can also create, delete, and rename folders and files directly in
+RStudio in this tab. When you click on <strong>files</strong> initially
+it will open to your current <strong>working directory</strong>, which
+is the file path on your computer that you are working out of. This is
+where your R outputs will be stored and should be where any files you
+want to access on your computer are also stored.</p>
+<p>You can also check your current <strong>working directory</strong> by
+running the command <code>getwd()</code> in the
+<strong>console</strong>. Do this now, type <span
+style="color: blue;"><em>getwd()</em></span> in the
+<strong>console</strong> and hit enter.</p>
+<p>What does R return?</p>
+<p>If you haven’t set your <strong>working directory</strong> yet, R
+will likely return <code>/</code>. If anything else appears then you
+have already set your <strong>working directory</strong>, don’t worry
+about this for now we will create a <strong>project directory</strong>
+for this course later.</p>
+</div>
+<div id="plots" class="section level4">
+<h4>Plots:</h4>
+<p>Working left to right let’s go through the remaining tabs. The
+<strong>plots</strong> panel is where graphs and other figures you
+create in R will appear. <span style="color: blue;">Click the
+<strong>plots</strong> tab*</span>, since we haven’t created any figures
+there isn’t anything to see here yet.</p>
+</div>
+<div id="packages" class="section level4">
+<h4>Packages:</h4>
+<p>This tab is one way that you can install, update, and check which
+<strong>packages</strong> you have in your works pace. We will cover
+this tab more later when we start working with
+<strong>packages</strong>.</p>
+</div>
+<div id="help" class="section level4">
+<h4>Help:</h4>
+<p>The <strong>help</strong> tab is where you can look up information
+and <strong>R documentation</strong> about various
+<strong>functions</strong> you may want to use. Since we haven’t covered
+<strong>functions</strong> yet, we will use some examples from the <a
+href="https://www.i3s.unice.fr/~malapert/R/pdf/base-r.pdf">Base R Cheat
+sheet</a> to show how this panel works.</p>
+<p><img src="images/base_r_vectors.png" /></p>
+<p>Type <span style="color: blue;"><em>table</em></span> in the search
+bar in the upper right corner of this panel and hit enter. This brings
+up the <strong>R documentation</strong> for the base R function
+<code>table()</code>.</p>
+<p>Now let’s go over a few other ways to use the <strong>help</strong>
+window.</p>
+<p><img src="images/help_search_table.png" /></p>
+<p>Look at your Base R Cheat Sheet under the “Getting Help” section.
+This shows a few other ways you can access the <strong>help</strong>
+panel. The first is by typing a <code>?</code> before a
+<strong>function</strong> and running that code. Let’s try it. In the
+<strong>source</strong> panel type <span
+style="color: blue;"><em>?seq</em></span> and run the code.</p>
+<pre class="r"><code># Using the help file ----------------------
+
+?seq</code></pre>
+<p>This should again open up <strong>R documentation</strong> in the
+<strong>help</strong> window, but for a different
+<strong>function</strong>. Now we are looking at the base R function
+<code>seq()</code>. This is useful, but you probably wouldn’t want this
+saved in your <strong>R script</strong> because it would run every time
+you run your code. Instead, we would probably use the
+<strong>console</strong>. Click out of the <strong>help</strong> window
+by selecting any other tab in that window, then cut a paste your code
+<span style="color: blue;"><em>?seq</em></span> to the
+<strong>console</strong> and hit enter. This will again open up the
+<strong>help</strong> window with the information for
+<code>seq()</code>, but now it isn’t saved in your script so it won’t
+open the window every time you run the rest of your code.</p>
+<p>Let’s briefly cover how to read <strong>R documentation</strong></p>
+<ul>
+<li><p>The first line shows the <strong>function</strong> and in {} the
+<strong>package</strong> the <strong>function</strong> is in.</p></li>
+<li><p>Description:<br />
+Then a brief description of what the <strong>function</strong>
+does.</p></li>
+<li><p>Usage:<br />
+Followed by the syntax to use with the <strong>function</strong>.
+<em>This is an important section to check when using a new function</em>
+it shows what order you need to provide various objects and arguments. R
+will read the arguments in your code in this order and assume they match
+unless you specify otherwise. For example</p></li>
+</ul>
+<pre class="r"><code># example of order of operations using seq()
+seq(from = 1,
+    to = 10,
+    by = 1)</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<pre class="r"><code># the below is read the same as above even though we didn&#39;t supply the from =, to =, and by = arguments because this is they are in the specified for this function
+seq(1, 10, 1)</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<pre class="r"><code># as long as we specify the arguments we can also enter them in a different order
+seq(to = 10,
+    from = 1,
+    by = 1)</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<pre class="r"><code># but not the same as
+# seq(10, 1, 1) # try this, what happens?</code></pre>
+<ul>
+<li><p>Arguments<br />
+The next section explains what the arguments are in the function
+including the format they bust be in.</p></li>
+<li><p>The next few sections vary depending on the specifics of the
+function</p></li>
+<li><p>Examples:<br />
+The last section is where examples are provided so you can see how to
+use the functions with real data, as they usually use data in R or
+create fake data for the example you can often opy and paste these
+examples directly to your R script to see how they work and then adapt
+them to your code.</p></li>
+</ul>
+<p>We won’t cover the Viewer and Presentation tabs in this course so
+let’s move on to a few other features of the RStudio environment.</p>
+</div>
+</div>
+<div id="explore-rstudio-environment" class="section level3">
+<h3>Explore RStudio Environment</h3>
+<p>Let’s explore a few more features of the RStudio environment before
+moving on. On your own see if you can;</p>
+<ol style="list-style-type: decimal">
+<li><p>locate how to create a new R script file</p></li>
+<li><p>save your script</p></li>
+<li><p>search and replace within your script</p></li>
+</ol>
+<p>(your RStudio IDE Cheat Sheet will be helpful for this).</p>
+<p>Try not to scroll down past the RStudio Cheat Sheet or you will see
+the answers!</p>
+<p><img src="images/rstudio_ide_cheat.png" /></p>
+<div id="opening-a-new-file" class="section level4">
+<h4>Opening a new file</h4>
+<p>To open a new file you click the page with the green ‘+’ in the upper
+left corner. This will prompt a drop-down menu where you can select the
+type of file you want to create. We will primarily be using the R script
+option.</p>
+</div>
+<div id="saving-your-code" class="section level4">
+<h4>Saving your code</h4>
+<p>To save your code for the first time you select “File&gt;&gt;Save
+as”. Once you have saved a file before you can click the blue floppy
+disk icon in the task bar at the top of the <strong>source</strong>
+panel to save it again. Whenever you have unsaved changes to your script
+the name of your file will appear in blue text instead of white text,
+this indicates that you need to save. Try typing something in your
+current <strong>R script</strong> to check this.</p>
+</div>
+<div id="find-and-replace" class="section level4">
+<h4>Find and replace</h4>
+<p>You can search for words and <strong>functions</strong> in your
+<strong>R script</strong> by clicking the magnifying glass icon. This
+will open another task bar with fields for ‘find’ and replace’. This
+feature can be useful for example if you have copied code and need to
+replace many entries within the script (e.g., data, variables,
+etc.).</p>
+</div>
+</div>
+</div>
+<div id="get-set-up-for-this-course" class="section level2">
+<h2>Get set up for this course</h2>
+<div id="file-organization" class="section level3">
+<h3>File organization</h3>
+<p>The last thing I want to cover is file organization. Keeping your
+<strong>R scripts</strong>, data, and figures organized will allow you
+to more efficiently and effectively use R and will result in fewer
+issues as you work with more complex analyses.</p>
+<p>Let’s start by creating a folder for this course, we will use the
+<strong>files</strong> tab in the bottom right panel to do this. <span
+style="color: blue;">Click on <strong>files</strong></span>, then next
+to the house icon navigate through your computer’s files to an area you
+want the materials for this course to be stored.</p>
+<p><img src="images/files_navigation.png" /></p>
+<p>Once you’ve selected a location for the course files to live we are
+going to create several new folders by clicking the ‘new folder’ icon,
+<span style="color: blue;">start by making a master folder labeled
+<em>‘R labs’</em></span>. Then create the following folders within the
+‘R labs’ master folder. To do this, <span style="color: blue;">click the
+R labs folder </span> then use the new folder icon again.</p>
+<ol style="list-style-type: decimal">
+<li><p>data</p></li>
+<li><p>scripts</p></li>
+<li><p>figures</p></li>
+<li><p>cheatsheets</p></li>
+</ol>
+<p><em>notice I used all lowercase letters for my internal folders, this
+makes it quicker to type in R and leads to fewer mistakes/errors that
+can arise from case sensitivity.</em></p>
+<p><img src="images/folder_structure.png" /></p>
+<p><em>Ignore that my images say ‘R Crash Course Example’ as the master
+folder, this was the title of another similar course I taught</em></p>
+<p>Once you have created the folders above, <span
+style="color: blue;">click the data folder</span> and then within the
+data folder we will create two additional folders,</p>
+<ol style="list-style-type: decimal">
+<li><p>raw</p></li>
+<li><p>processed</p></li>
+</ol>
+<p>I was taught this basic file structure in a R course that I took as a
+graduate student and it is one I really like. I think this works well
+for most analyses with some variation.</p>
+</div>
+<div id="add-cheat-sheets-to-folder" class="section level3">
+<h3>Add cheat sheets to folder</h3>
+<p>Now, staying in Rstudio move any cheat sheets you have already
+downloaded to the cheat sheets folder you just created. To do this first
+navigate to where you saved the cheat sheets at the start of lab, select
+all the files, and using the cog icon after ‘rename’ to open a drop down
+menu of additional options. Select ‘Move…’ and then navigate back to
+your cheatsheets folder to move the selected files to this location.</p>
+</div>
+<div id="download-script-for-first-module" class="section level3">
+<h3>Download script for first module</h3>
+<p>Click <a href="mod_2_baseR.R">here</a> to download the script for
+this today’s lab! I recommend right-clicking (or command-clicking for
+Macs) on the link and selecting the “Save As” option from the context
+menu. Save the script to the ‘scripts’ folder in the ‘R Crash Course’
+folder we just created, which will serve as your <strong>working
+directory</strong> for this course.</p>
+</div>
+<div id="open-script" class="section level3">
+<h3>Open script</h3>
+<p>To open this script in RStudio, we will use the
+<strong>files</strong> tab again. If this tab is not already open, open
+it and navigate to the ‘scripts’ folder, then <span
+style="color: blue;">click the mod_2_baseR.R script</span> this will
+automatically open this script in your current RStudio session.</p>
+</div>
+<div id="open-a-blank-script" class="section level3">
+<h3>Open a blank script</h3>
+<p><span style="color: blue;">Open a blank R script and save it to the
+‘scripts’ folder we created as myscript_day1</span></p>
+<blockquote>
+<p>For this course to be most effective you should work primarily in
+your own script and only reference the provided script for each lab when
+absolutely necessary.</p>
+</blockquote>
+<p>By making your own script you will get practice writing and debugging
+code (e.g., spelling errors, missing parentheses etc.), using keyboard
+shortcuts, and organizing your code.</p>
+</div>
+<div id="setting-your-working-directory" class="section level3">
+<h3>Setting your working directory</h3>
+<p>Before we can start coding we need to set our <strong>working
+directory</strong> which essentially just tells R where on your computer
+it should save outputs to and where to find data you want to read in.
+There are a couple ways to do this.</p>
+<ol style="list-style-type: decimal">
+<li><p>You can go to the ‘Session’ tab at the top of RStudio and select
+‘set working directory’ from the drop down menu. From there you. will
+see a few options for where to set the directory or you can select
+‘Choose directory’.</p></li>
+<li><p>You can also set your <strong>working directory</strong> in the
+console or in your <strong>R script</strong> using the
+<strong>function</strong> setwd(). Try this, <span
+style="color: blue;">set your working directory to the ‘R Crash Course’
+folder you created using setwd()</span>.</p></li>
+</ol>
+<p>Remember, you can easily check your file path in the
+<strong>files</strong> panel so you don’t have to navigate out of R to
+do this.</p>
+<p><strong>NOTE:</strong> when you put file paths in R, they need to use
+forward slashes (“/”; or double backslashes, “\\”) – single backslashes
+(“\”, as seen in Windows) do not work for specifying file paths in
+R.</p>
+<p>One thing to remember about setting your working directory is you
+have to do it every time you open a new R session. For example if you
+save this script and close R and then open it again tomorrow you have to
+reset your <strong>working directory</strong> before you begin.
+Therefore, it can be useful to write the setwd() function at the top of
+your script. However, if someone else wants to use your <strong>R
+script</strong> they have to have the exact same<strong>working
+directory</strong> as you or they have to change the <strong>working
+directory</strong> before they can run the code. This is inefficient and
+can lead to issues when sharing code. Luckily there is an easier way!
+<strong>RStudio projects</strong>.</p>
+</div>
+<div id="working-in-projects" class="section level3">
+<h3>Working in projects</h3>
+<p>A <strong>RStudio project</strong> is simply a <strong>working
+directory</strong> in the form of a file that is saved on your computer
+much like an <strong>R script</strong> wherever you want your
+<strong>working directory</strong> to be and is designated with a .RProj
+file extension. When you open a project the <strong>working
+directory</strong> will be automatically set. Therefore you don’t have
+to run setwd() each time you start R and you can share a <strong>Rstudio
+project</strong> and associated files (e.g., scripts and data) with
+others and the directory will automatically be set wherever they save
+those files.</p>
+<p>Let’s try this, start a new <strong>RStudio Project</strong>. To do
+this, <span style="color: blue;">click the ‘Project’ option in the upper
+right corner</span> (it should currently read ’Project (None). Then
+select new project. In the menu that follows, select “Existing
+Directory”, and then navigate to R Crash Course folder. Select this
+folder to be your <strong>project directory</strong>. Every time you
+open this project (File &gt;&gt; Open Project), this project directory
+will be the first place that R looks for data files and code, and will
+be the default location for saving data and code.</p>
+</div>
+</div>
+<div id="coding-best-practices" class="section level2">
+<h2>Coding best practices</h2>
+<p>Before we start we’ll cover a few organization tips that will help
+keep your code organized and easily repeatable. Future you will thank
+past you for using these best practices!</p>
+<div id="comments" class="section level3">
+<h3>Comments</h3>
+<p>You may have noticed already that some lines are preceded by a hash
+tag <code>#</code> R ignores these lines (as in it doesn’t try to
+evaluate them)- they are called <strong>comments</strong>, and they help
+to keep code organized and understandable.</p>
+<p><em>Use comments early and often- they are tremendously
+valuable</em>.</p>
+</div>
+<div id="headers" class="section level3">
+<h3>Headers</h3>
+<p>You can create sections headers throughout your code to separate
+chunks of code. Let’s create a section header now title ‘<em>intro to
+base R</em>’. To do this <span style="color: blue;">use the keyboard
+shortcut <em>Ctrl + shift + R</em> (Windows) or <em>Cmd + Shift + R</em>
+(Mac)</span>. This will open a window where you can type the text for
+your section header.</p>
+<p><strong>Headers</strong> are added to a table of contents of sort at
+the bottom left of your <strong>source</strong> panel.You can easily
+navigate between section headers using this feature. This is
+particularly useful when your <strong>R scripts</strong> become very
+lengthy.</p>
+</div>
+<div id="global-options" class="section level3">
+<h3>Global Options</h3>
+<p>Your <strong>global options</strong> can be found under the
+‘<em>Tools</em>’ tab at the top of the RStudio environment. Navigate
+there now and we will change a few settings.</p>
+<ol style="list-style-type: decimal">
+<li><span style="color: blue;"><em>Soft wrap</em> your code</span>. This
+means that if your code extends outside the <strong>source</strong>
+window it will automatically wrap to the next line so you don’t have to
+scroll to see your code and comments. To do this navigate to
+‘<em>Code</em>’ and make sure ‘<em>Soft-wrap R source files</em>’ is
+checked.</li>
+</ol>
+<p><img src="images/global_options_soft_wrap_code.png" /></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Next, change your <strong>editor theme</strong> (code appearance) so
+that different colors are used to indicate <strong>comments</strong>,
+<strong>functions</strong>, paired parentheses, etc. I prefer a black
+background and have selected the ‘<em>Tomorrow Night Bright</em>’ theme
+but play around with a few options to choose which one is most pleasing
+for you.</li>
+</ol>
+<p><img
+src="https://miro.medium.com/v2/resize:fit:1400/1*eLjON45R_kHIfg_IgL8FIg.jpeg" /></p>
+<p><img src="images/global_options_appearance.png" /> That’s all we will
+change for now but you can come back to <strong>global options</strong>
+later to change other settings if you want.</p>
+</div>
+<div id="code-formatting" class="section level3">
+<h3>Code formatting</h3>
+<p>You’ll notice throughout the course that I try to follow some basic
+rules for R code formatting which I learned in a prior course. These
+rules, while not everyone follows, I have certainly found useful and
+make your code much easier to follow. If these don’t all make sense now
+that is okay, we will cover them later on.</p>
+<p>Code Spacing:<br />
+* Maintain one blank line between code blocks.<br />
+* Maintain one blank line between code blocks and comments or section
+headers. (<em>I don’t always agree with this one</em>) * All assignment
+and logical operators should be separated from other code by a leading
+and a trailing space.<br />
+* Commas should be separated from other code by a trailing space but not
+a leading space.<br />
+* Hash tags should be separated from comment text by a trailing
+space.</p>
+<p>Assignment:<br />
+* Objects that are used in the creation of a parent object and not used
+again should not be assigned to the global environment.<br />
+* Assigned names should be in all lowercase with multiple words should
+be separate by a _.<br />
+* Only use <code>=</code> when providing values to the formals of a
+function – in all other instances use the <code>&lt;-</code> assignment
+operator.<br />
+* All global assignments live on their own line.</p>
+<p>Functions:<br />
+* Each formal of a function (i.e., argument) lives on its own
+line.<br />
+* There should be no more than one call to a named function per line of
+code.</p>
+<pre class="r"><code># example of clean code
+
+# there are spaces between each comment and between the &#39;#&#39; operator and the start of the comment text
+
+# get mtcars data and create new object for filtered data
+mtcars_6cyl &lt;- mtcars %&gt;% 
+  
+  # filter to only data with 6 cylinders
+  filter(cyl == 6)
+  
+# plot filtered data wt x mpg  
+ggplot(data = mtcars_6cyl, 
+       aes(x = wt, y = mpg)) +
+  
+  # graph with columns
+  geom_col()</code></pre>
+<p><img src="mod_1_R101_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code># example of same code but messy
+# notice there are no comments so you wouldn&#39;t remember what you did each step and the code is all smooshed together so it would be hard to check for coding errors/typos
+
+mtcars_6cyl &lt;-mtcars%&gt;% 
+filter(cyl==6)
+
+ggplot(data=mtcars_6cyl, aes(x=wt,y=mpg)) + geom_col()</code></pre>
+<p><img src="mod_1_R101_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<blockquote>
+<p>Now that we have covered some coding best practices, we are ready to
+do some coding of our own!</p>
+</blockquote>
+<p><img
+src="https://media.tenor.com/bCfpwMjfAi0AAAAC/cat-typing.gif" /></p>
+<p><a href="mod_2_baseR.html">–go to next module–</a></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

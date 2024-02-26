@@ -14,7 +14,7 @@
 
 <title>Welcome to the R Crash Course!</title>
 
-<script src="site_libs/header-attrs-2.15/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
@@ -30,7 +30,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -182,8 +182,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -191,16 +191,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -331,54 +324,87 @@ div.tocify {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Day 1
+    Intro to R
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="day1_1.html">Module 1: R basics</a>
+      <a href="mod_1_R101.html">Module 1: R 101</a>
     </li>
     <li>
-      <a href="day1_2.html">Module 2: Working with data</a>
+      <a href="mod_2_baseR.html">Module 2: Base R</a>
     </li>
     <li>
-      <a href="day1_3.html">Module 3: Data manipulation</a>
+      <a href="mod_3_data.html">Module 3: Working with data</a>
+    </li>
+    <li>
+      <a href="mod_4_data_manipulation.html">Module 4: Data manipulation</a>
+    </li>
+    <li>
+      <a href="mod_5_purrr.html">Module 5: The wonders of Purrr</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Day 2
+    Data Visualization
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="day2_1.html">Module 1: Plotting in Base R</a>
+      <a href="mod_1_plots_baseR.html">Module 1: Data Visualization in Base R</a>
     </li>
     <li>
-      <a href="day2_2.html">Module 2: Basics of ggplot</a>
+      <a href="mod_2_ggplot.html">Module 2: Basics of ggplot</a>
     </li>
     <li>
-      <a href="day2_3.html">Module 3: Advanced ggplot (to be added)</a>
+      <a href="mod_3_ggplot_adv.html">Module 3: Advanced ggplot (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_4_beyond_ggplot.html">Module 4: Beyond ggplot</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Day 3
+    Statistical Modeling
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="day3_1.html">Module 1: GLM Example Analysis (to be added)</a>
+      <a href="mod_1_lm.html">Module 1: Linear regression (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_2_glm.html">Module 2: Generalized linear models (GLMs)</a>
+    </li>
+    <li>
+      <a href="mod_3_glmm.html">Module 3: General mixed effects models (GLMMs) (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_4_occ.html">Module 4: Occupancy models (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_5_sem.html">Module 5: Structural equation models (SEMs) (coming soon)</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Git
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_github.html">Getting started with GitHub (coming soon)</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="data.html">Data sets</a>
+  <a href="data.html">Data</a>
 </li>
 <li>
   <a href="links.html">Links</a>
@@ -415,7 +441,7 @@ to formatting and visualizing data</h4>
 <li><strong>Where?</strong> Casa Tisaru Lepsa, Romania</li>
 <li><strong>What to prepare?</strong> Please bring your laptop computer!
 If possible, install R and RStudio prior to the course (see <a
-href="Links.html">links</a>).</li>
+href="Links.html">links</a> or instructions below).</li>
 </ul>
 <div id="facilitator" class="section level2">
 <h2>Facilitator</h2>
@@ -471,29 +497,64 @@ links to help you get started:</p>
 R</a><br />
 <a href="https://www.rstudio.com/products/rstudio/download/">Download
 and install RStudio</a> (use free version!)</p>
-<p>Also, it can be very helpful to print out R ‘cheatsheets’ and bring
-that with you (we will also have some available at the workshop!). Here
-are some links:</p>
+</div>
+<div id="download-cheat-sheets" class="section level3">
+<h3>Download cheat sheets</h3>
+<p>Also, it can be very helpful to print out R ‘cheat sheets’ and bring
+that with you or save them as PDFs to your hard drive. We will try to
+have some physical copies available during lab. Here are some links:</p>
 <p><a
-href="https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf">Base
+href="https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf">Base
 R cheatsheet</a><br />
 <a href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">R
 reference card</a><br />
 <a
 href="https://posit.co/resources/cheatsheets/?type=posit-cheatsheets&amp;_page=2/">Various
-R cheatsheets</a> (I recommend ‘Data tidying with tidyr’, ‘Data
-transofrmation with dpylr’, and ‘Data visualization with ggplot2’
-cheatsheets for this workshop)</p>
+R cheatsheets</a> (I recommend the following cheatsheets for this
+course:<br />
+- Data tidying with tidyr<br />
+- Data transformation with dpylr<br />
+- Apply functions with purrr<br />
+- Data visualization with ggplot2)</p>
+</div>
+<div id="download-data" class="section level3">
+<h3>Download data</h3>
+<p>To ensure we maximize time during the course please also download the
+data files for this course from the <a href="data.html">Data</a> tab and
+save this in a folder on your hard drive. <em>We will move these to a
+specific folder for the course when we cover folder organization in the
+first module</em></p>
+<p>Right click (or command-click for MAcs) each file. The .txt files
+will open in a viewer window and you will need to right click to save
+them. The .csv files should download directly in your downloads folder
+and you can move them where you want to save them. <strong>Important DO
+NOT change the file names</strong> the file names should match what is
+shown in () after the file description.</p>
 </div>
 <div id="take-pre-course-survey" class="section level3">
 <h3>Take pre course survey</h3>
-<p>To help me gauge everyone’s experience level and the effectiveness of
-this course, please take a few minutes to complete the <a
+<p>Once you’ve downloaded R, RStudio, and the associated cheat sheets
+and data for this course please complete the pre-course survey. This
+will act as an indicator that you have completed the necessary tasks to
+prepare for the first lab and help me gauge everyone’s experience level
+and the effectiveness of this course later on.</p>
+<p><a
 href="https://qfreeaccountssjc1.az1.qualtrics.com/jfe/form/SV_bOcrXH4CuosgK7s">pre-course
 survey</a></p>
-<p>Okay, now we’re ready to go!</p>
-<p><a href="day1_1.html">–go to first module–</a></p>
 </div>
+</div>
+<div id="go-to-first-module" class="section level2">
+<h2>Go to first module</h2>
+<p>Okay, now we’re ready to go!</p>
+<p><a href="mod_1_R101.html">–go to first module</a></p>
+</div>
+<div id="post-course-survey" class="section level2">
+<h2>Post course survey</h2>
+<p>Please return and complete this post course survey at the end of the
+semester</p>
+<p>Before you leave today please take a few moments to complete the <a
+href="https://qfreeaccountssjc1.az1.qualtrics.com/jfe/form/SV_8wdzQHkevQRmpkG">post-course
+survey</a>.</p>
 </div>
 
 
