@@ -1,37 +1,64 @@
-name: "R Crash Course 2023"
+name: "R Crash Course 2025"
 output_dir: "."
 navbar:
-  title: "R Crash Course 2023"
+  title: "R Crash Course 2025"
   left:
     - text: "Home"
       href: index.html
-    - text: "Day 1"
+    - text: "Intro to R"
       menu:
-        - text: "Module 1: R basics"
-          href: day1_1.html
-        - text: "Module 2: Working with data"
-          href: day1_2.html
-        - text: "Module 3: Data manipulation"
-          href: day1_3.html
-    - text: "Day 2"
+        - text: "Module 1: R 101"
+          href: mod_1_R101.html
+        - text: "Module 2: Base R"
+          href: mod_2_baseR.html
+        - text: "Module 3: Working with data"
+          href: mod_3_data.html
+        - text: "Module 4: Data manipulation"
+          href: mod_4_data_manipulation.html
+        - text: "Module 5: The wonders of Purrr"
+          href: mod_5_purrr.html
+    - text: "Data Visualization"
       menu:
-        - text: "Module 1: Plotting in Base R"
-          href: day2_1.html
+        - text: "Module 1: Data Visualization in Base R"
+          href: mod_1_plots_baseR.html
         - text: "Module 2: Basics of ggplot"
-          href: day2_2.html
-        - text: "Module 3: Advanced ggplot (to be added)"
-          href: day2_3.html
-    - text: "Day 3"
+          href: mod_2_ggplot.html
+        - text: "Module 3: Advanced ggplot (coming soon)"
+          href: mod_3_ggplot_adv.html
+        - text: "Module 4: Beyond ggplot"
+          href: mod_4_beyond_ggplot.html
+    - text: "Statistical Modeling"
       menu:
-        - text: "Module 1: GLM Example Analysis (to be added)"
-          href: day3_1.html
-    - text: "Data sets"
+        - text: "Module 1: Linear regression (coming soon)"
+          href: mod_1_lm.html
+        - text: "Module 2: Generalized linear models (GLMs)"
+          href: mod_2_glm.html
+        - text: "Module 3: General mixed effects models (GLMMs) (coming soon)"
+          href: mod_3_glmm.html
+        - text: "Module 4: Occupancy models (coming soon)"
+          href: mod_4_occ.html
+        - text: "Module 5: Structural equation models (SEMs) (under construction)"
+          href: mod_5_sem.html
+    - text: "Statistical Modeling"
+      menu:
+        - text: "Getting started with GitHub (under construction)"
+    - text: "Assignments"
+      menu: 
+        - text: "Assignment 1"
+          href: assign_1.html
+        - text: "Assignment 2"
+          href: assign_2.html
+        - text: "Assignment 3"
+          href: assign_3.html
+        - text: "Assignment 4"
+          href: assign_4.html
+    - text: "Data"
       href: data.html
     - text: "Links"
       href: links.html
     - text: "Surveys"
       href: surveys.html
-    - text: 'Terms'
+    - text: "Terms"
       href: terms.html
    
       

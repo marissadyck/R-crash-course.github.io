@@ -1,7 +1,6 @@
 ---
 title: "Welcome to the R Crash Course!"
-author: "A beginners guide to R from downloading R and RStuido to formatting and visualizing data"
-date: "June 2023"
+date: "Spring 2025"
 output:
   html_document:
     theme: journal
@@ -13,15 +12,21 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
- * **When?** Tuesday June 27th to Thursday June 29, 2023: 9am - 6pm
- * **Where?** Casa Tisaru Lepsa, Romania
- * **What to prepare?** Please bring your laptop computer! If possible, install R and RStudio prior to the course (see [links](Links.html)). 
+ * **When?** Tuesday's @2:30 - 4:20pm & Friday's @2:30 - 3:20pm       
+ * **Where?** Clearihue A312        
+ * **What to prepare?** Please bring your laptop computer! Also, install R and RStudio prior to the course and following the instructions below on 'To do before lab 1'.    
+ * **Office hours:** My "office hours" will immediately follow lab each week for 1 hour in Clearihue A312 (assuming there is no class after us). I encourage you to stay and work on the practice problems with your peers and I can answer any questions you have regarding the lab material, assignments, working with your own data etc. during this time.   
  
-## Facilitator
+## Facilitators
 [Marissa Dyck](https://github.com/marissadyck)  
-Ohio University  
-Department of Biological Sciences  
-Email: [marissadyck17@gmail.com](marissadyck17@gmail.com)
+University of Victoria    
+School of Environmental Studies     
+Email: [marissadyck@uvic.ca](mailto:marissadyck@uvic.ca)   
+
+[Jason Fisher](http://www.acmelab.ca/the-lab.html)  
+University of Victoria    
+School of Environmental Studies   
+Email: [fisherj@uvic.ca](mailto:fisherj@uvic.ca)   
 
 ## Contributors
 This workshop is based on content from an R Bootcamp run by Dr. Kevin Shoemaker at University of Nevada Reno (https://github.com/kevintshoemaker/R-Bootcamp)
@@ -29,7 +34,7 @@ This workshop is based on content from an R Bootcamp run by Dr. Kevin Shoemaker 
 [Kevin Shoemaker](http://naes.unr.edu/shoemaker/)	
 University of Nevada Reno  
 Department of Natural Resources and Environmental Science       
-Email: [kshoemaker@cabnr.unr.edu](kshoemaker@cabnr.unr.edu)
+Email: [kshoemaker@cabnr.unr.edu](mailto:kshoemaker@cabnr.unr.edu)
 
 ## About
 
@@ -39,7 +44,13 @@ This workshop is designed for beginner to intermediate R users and will focus on
 
 All code will be available as scripts that you can download from this website (at the top of each module page on this website) and load up in RStudio. That way you won't need to constantly copy and paste from the web!  
 
-## Before we get started...
+## Course Schedule
+
+See Brightspace for most up-to-date schedule        
+
+## To do before lab 1
+
+Please complete the following tasks BEFORE the first lab on Tuesday January 14th. We have a lot of material to cover in a short time and completing the following tasks will save time at the start of lab and ensure everyone is ready.
 
 ### Install R and RStudio
 
@@ -49,24 +60,32 @@ Before we dig in and get started with the modules, you should install R and RStu
 [Download and install RStudio](https://www.rstudio.com/products/rstudio/download/)    (use free version!)      
 
 
-Also, it can be very helpful to print out R 'cheatsheets' and bring that with you (we will also have some available at the workshop!). Here are some links:
+### Download cheat sheets
+Also, it can be very helpful to print out R 'cheat sheets' and bring that with you or save them as PDFs to your hard drive. We will try to have some physical copies available during lab. Here are some links:
 
-[Base R cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf)           
+[Base R cheatsheet](https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf)           
 [R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)  
-[Various R cheatsheets](https://posit.co/resources/cheatsheets/?type=posit-cheatsheets&_page=2/) (I recommend 'Data tidying with tidyr', 'Data transofrmation with dpylr', and 'Data visualization with ggplot2' cheatsheets for this workshop)
+[Various R cheatsheets](https://posit.co/resources/cheatsheets/?type=posit-cheatsheets&_page=2/) (I recommend the following 3: 'Data tidying with tidyr', 'Data transformation with dpylr', 'Apply functions with purrr', and 'Data visualization with ggplot2' cheat sheets for this course)
 
-### Take pre course survey
+### Download data
 
-To help me gauge everyone's experience level and the effectiveness of this course, please take a few minutes to complete the [pre-course survey](https://qfreeaccountssjc1.az1.qualtrics.com/jfe/form/SV_bOcrXH4CuosgK7s)
+To ensure we maximize time in lab please also download the data files for this course from the [Data](data.html) tab and save this in a folder on your hard drive. *We will move these to a specific folder for the course when we cover folder organization on the first day of lab*
+
+Right click (or command-click for MAcs) each file. The .txt files will open in a viewer window and you will need to right click to save them. The .csv files should download directly in your downloads folder and you can move them where you want to save them. **Important DO NOT change the file names**.
+
+
+## Go to first lab
 
 Okay, now we're ready to go!
 
 
-[--go to first module--](day1_1.html)
+[--go to first lab module](mod_1_R101.html)
+
+
 
 
 ```{r echo=FALSE}
-rmd2rscript <- function(infile="day1_1.Rmd"){    # function for converting markdown to scripts
+rmd2rscript <- function(infile="mod_5_purrr.Rmd"){    # function for converting markdown to scripts
   outfile1 <- gsub(".Rmd",".R",infile)
   outfile2 <- gsub(".Rmd",".txt",infile)
   close( file( outfile1, open="w" ) )   # clear output file
@@ -125,17 +144,20 @@ rmd2rscript2 <- function(infile="LECTURE2.Rmd"){    # function for converting ma
 
 ```{r echo=FALSE, eval=FALSE}
 
-rmd2rscript2("day1_1.Rmd")
-rmd2rscript2("day1_2.Rmd")
-rmd2rscript2("day1_3.Rmd")
-rmd2rscript2("day2_1.Rmd")
-rmd2rscript2("day2_2.Rmd")
+rmd2rscript2("mod_2_baseR.Rmd")
+rmd2rscript2("mod_3_data.Rmd")
+rmd2rscript2("mod_4_data_manipulation.Rmd")
+rmd2rscript2("mod_1_plots_baseR.Rmd")
+rmd2rscript2("mod_2_ggplot.Rmd")
+
+rmd2rscript2("mod_2_glm.Rmd")
+rmd2rscript2("mod_5_purrr.Rmd")
 
 ## TODO: make sure there are pdf copies of all the modules... 
 
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
-rmarkdown::render("index.Rmd",rmarkdown::pdf_document())
-rmarkdown::render("day1_1.Rmd",rmarkdown::pdf_document())
+rmarkdown::render("home.Rmd",rmarkdown::pdf_document())
+rmarkdown::render("Intro_to_R_part1.Rmd",rmarkdown::pdf_document())
 rmarkdown::render("day1_2.Rmd",rmarkdown::pdf_document())
 rmarkdown::render("day1_3.Rmd",rmarkdown::pdf_document())
 

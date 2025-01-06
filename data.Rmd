@@ -1,26 +1,37 @@
 ---
 title: "Data"
-author: "R Crash Course"
+author: "ES482 R labs"
 output: html_document
-date: "2023-06-26"
+date: "2024"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-[Example Whitespace delimited data](data/data.txt) 
+> Data should be downloaded and saved to your data/raw folder if you have completed the Intro to R Module 1, otherwise save all the data files in a folder on you computer and we will transfer them to the proper folder later.
 
-[Example Comma delimited data](data/data.csv) 
+[Example Whitespace delimited data (data.txt)](data/raw/data.txt) 
 
-[Example missing data](data/data_missing.txt)
+[Example Comma delimited data (data.csv)](data/raw/data.csv) 
 
-[Turtle Data](data/turtle_data.txt)
+[Example missing data (data_missing.txt)](data/raw/data_missing.txt)
 
-[Bear data](data/bear_2008_2016.csv)
+[Turtle Data (turtle_data.txt)](data/raw/turtle_data.txt)
 
-[Bear glm example raw data](data/pagube_2008_2016_spatial.csv)
+[Brown bear damage data (bear_2008_2016.csv)](data/raw/bear_2008_2016.csv)
 
-[Bear glm example cow data](data/cows.csv)
+[Bear glm example raw data (pagube_2008_2016_spatial.csv)](data/raw/pagube_2008_2016_spatial.csv)
 
-[Bobcat necropsy data](data/Bobcat_necropsy_data.csv)
+[Bear glm example cow data (cows.csv)](data/raw/cows.csv)
+
+[Bobcat necropsy data (Bobcat_necropsy_data.csv)](data/raw/Bobcat_necropsy_data.csv)
+
+
+#### Added after 12 January 2024
+
+[Bobcat collection data for Purrr (bobcat_collection_data.csv)](data/raw/bobcat_collection_data.csv)
+
+[Bobcat necropsy data for Purrr (bobcat_necropsy_only_data.csv)](data/raw/bobcat_necropsy_only_data.csv)
+
+[Bobcat age data for Purrr (bobcat_age_data.csv)](data/raw/bobcat_age_data.csv)

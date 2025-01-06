@@ -1,0 +1,47 @@
+---
+title: "Statistical Modeling"
+author: 'Module 2: Occupancy models'
+date: "2024"
+output:
+  html_document:
+    code_folding: show
+    theme: journal
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
+```
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+
+#  ES482 R labs   
+#      University of Victoria, Victoria BC Canada             
+
+#  Statistical Modeling
+# Module 2: Occupancy models
+
+
+```
+
+## Materials
+
+### Scripts
+
+1. Click [here](mod_2_occ.R) to download the script! Save the script to the 'scripts'' folder in your project directory you set up in the previous module.
+
+2. Load your script in RStudio. To do this, open RStudio and click the **files** window and select the scripts folder and then this script.
+
+### Cheat sheets
+
+There are no cheat sheets specific to this module but don't forget the ones you've already printed for previous modules!
+
+<center>
+![](images/construction_dog.jpeg){width=40%}
+</center>

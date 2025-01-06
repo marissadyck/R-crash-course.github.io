@@ -1,0 +1,81 @@
+---
+title: "Git"
+author: "Module 1: Getting started with GitHub"
+date: "2023"
+output:
+  html_document:
+    theme: journal
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+#  R Crash Course  
+#      Author: Marissa A. Dyck          
+
+#  Git
+# Module 1: Getting started with GitHub
+
+library(tidyverse)
+
+```
+
+## Download GitHub Desktop
+
+The GitHub Desktop app makes working in GitHub much easier (similar to RStudio and R). Click [here](https://desktop.github.com/) to download the GitHub Desktop App.
+
+## GitHub
+
+GitHub is a development platform that allows you to create, store, change, merge, and collaborate on files or code. Any member of a team can access the GitHub repository (think of this as a folder for files) and see the most recent version of documents, data, and code in real-time. Then, they can make edits or changes that the other collaborators also see.
+
+GitHub is also useful for publishing R scripts and associated files (data, readme, etc.) for publications. Many journals and scientific funding agencies such as NSF are requesting that code and data be available for research projects and published manuscripts. GitHub is an ideal platform for academics to meet these requests as code can be made publicly available but managed and associated with a personal account. Additionally with the use of RMarkdown, Readme files, etc. we can make code and analyses more approachable to non R-users.
+
+
+## Create and account
+
+If you don't already have a GitHub account you will need to create one following the steps outlined in this [link](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github).
+
+You can also navigate directly to [github.com](https://github.com/) and follow the on-screen instructions. 
+
+![](images/github_signup.png)
+
+## Repositories
+
+Repositories are like folders that contain related items, such as the code, data, images, r project files, etc. needed for a project/analysis.
+
+### Create a repository
+
+There are two main ways to create a repository.   
+
+1. Create a repository online following GitHub instructions [here](https://docs.github.com/en/get-started/start-your-journey/hello-world).   
+
+2. Create a repository through GitHub Desktop App following instructions [here](https://docs.github.com/en/desktop/overview/creating-your-first-repository-using-github-desktop).
+
+### Clone a repository
+
+You may be invited to work on a repository someone else has created (more below on collaborative repositories), to clone a repository you can use the GitHub desktop app following instructions [here](https://docs.github.com/en/desktop/adding-and-cloning-repositories/cloning-a-repository-from-github-to-github-desktop).
+
+You can also clone your own personal repository this way, if it was created online (option 1. to create a repository above) so you have access to manage files through GitHub desktop.
+
+
+### Collaborative repositories
+
+When you create a repository you have the option to invite collaborators to contribute to that repository. This is a useful option for collaborative coding projects where multiple individuals may need to work on the same code to reach desired outcomes. Rather than emailing various versions of a code back and forth you can use GitHub for collaborative coding.
+
+To add someone to collaborate on a personal repository follow instructions [here](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-access-to-your-personal-repositories/inviting-collaborators-to-a-personal-repository).
+
+
+
+<center>
+![](images/construction_dog.jpeg){width=40%}
+</center>
+
+
+

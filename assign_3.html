@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Data manipulation" />
+
+
+<title>Assignment 3</title>
+
+<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R Crash Course 2025</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Intro to R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_R101.html">Module 1: R 101</a>
+    </li>
+    <li>
+      <a href="mod_2_baseR.html">Module 2: Base R</a>
+    </li>
+    <li>
+      <a href="mod_3_data.html">Module 3: Working with data</a>
+    </li>
+    <li>
+      <a href="mod_4_data_manipulation.html">Module 4: Data manipulation</a>
+    </li>
+    <li>
+      <a href="mod_5_purrr.html">Module 5: The wonders of Purrr</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Data Visualization
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_plots_baseR.html">Module 1: Data Visualization in Base R</a>
+    </li>
+    <li>
+      <a href="mod_2_ggplot.html">Module 2: Basics of ggplot</a>
+    </li>
+    <li>
+      <a href="mod_3_ggplot_adv.html">Module 3: Advanced ggplot (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_4_beyond_ggplot.html">Module 4: Beyond ggplot</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Statistical Modeling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_lm.html">Module 1: Linear regression (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_2_glm.html">Module 2: Generalized linear models (GLMs)</a>
+    </li>
+    <li>
+      <a href="mod_3_glmm.html">Module 3: General mixed effects models (GLMMs) (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_4_occ.html">Module 4: Occupancy models (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_5_sem.html">Module 5: Structural equation models (SEMs) (under construction)</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Statistical Modeling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Getting started with GitHub (under construction)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assign_1.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assign_2.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assign_3.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assign_4.html">Assignment 4</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="data.html">Data</a>
+</li>
+<li>
+  <a href="links.html">Links</a>
+</li>
+<li>
+  <a href="surveys.html">Surveys</a>
+</li>
+<li>
+  <a href="terms.html">Terms</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Assignment 3</h1>
+<h4 class="author">Data manipulation</h4>
+<h4 class="date">Due 4 February 2024</h4>
+
+</div>
+
+
+<div id="submission" class="section level2">
+<h2>Submission</h2>
+<p>Brightspace/TBD</p>
+</div>
+<div id="grading" class="section level2">
+<h2>Grading</h2>
+<blockquote>
+<p>You should always be following best coding practices (see Intro to R
+module 1) but especially for assingment submissions.</p>
+</blockquote>
+<p>To receive full credit for each assignment</p>
+<ul>
+<li>Please make sure each problem has its own header so that I can
+easily navigate to your answers</li>
+<li>Ensure you have comments that explain what you are doing<br />
+</li>
+<li>Long code chunks should be broken up with spaces and comments to
+explain what is happening at each step<br />
+</li>
+<li>Object names should be lowercase and short but descriptive enough
+that they aren’t confused with other objects <em>(For example data1 and
+data2 are not good names for dataframes you are working with)</em><br />
+</li>
+<li>Just because your code runs doesn’t mean it did what you think it
+did, always check your data/objects to ensure any functions were
+performed correctly (there are several ways to do this)</li>
+</ul>
+</div>
+<div id="remove-nas" class="section level2">
+<h2>1 Remove NAs</h2>
+<ul>
+<li>Read in the turtles_tidy data<br />
+</li>
+<li>In the same code chunk remove all rows with NAs</li>
+<li>Assign this new data to the environment as “turtles_no_na”</li>
+</ul>
+<pre><code>## # A tibble: 15 × 5
+##      tag sex    c_length h_width weight
+##    &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+##  1    10 male       41      7.15    7.6
+##  2    11 female     46.4    8.18   11  
+##  3     3 female     42.8    7.32    8.6
+##  4     4 male       40      6.6     6.5
+##  5     5 female     45      8.05   10.9
+##  6    12 female     44      7.55    8.9
+##  7     6 female     40      6.53    6.2
+##  8     9 male       35      5.74    3.9
+##  9    17 female     35.1    6.04    4.5
+## 10    19 male       42.3    6.77    7.8
+## 11    22 female     48.1    8.55   12.8
+## 12   105 male       44      7.1     9  
+## 13    14 male       43      6.6     7.2
+## 14     7 female     48      8.67   13.5
+## 15   104 male       44      7.35    9</code></pre>
+</div>
+<div id="make-a-new-variable" class="section level2">
+<h2>2 Make a new variable</h2>
+<p>Using the turtles_no_na data, make a new variable called “size_class”
+based on the “weight” variable using <code>case_when()</code>
+whereby</p>
+<ul>
+<li><p>weights less than 4 are juvenile</p></li>
+<li><p>weights greater than 7 are adult</p></li>
+<li><p>weights between 4 and 7 are subadult</p></li>
+</ul>
+<p>(There are multiple ways to do this which is why there are multiple
+printouts, but they will yield the same answer)</p>
+<pre><code>##  [1] &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;    &quot;subadult&quot; &quot;adult&quot;    &quot;adult&quot;   
+##  [7] &quot;subadult&quot; &quot;juvenile&quot; &quot;subadult&quot; &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;   
+## [13] &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;</code></pre>
+<pre><code>##  [1] &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;    &quot;subadult&quot; &quot;adult&quot;    &quot;adult&quot;   
+##  [7] &quot;subadult&quot; &quot;juvenile&quot; &quot;subadult&quot; &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;   
+## [13] &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;</code></pre>
+</div>
+<div id="replace-values-with-na" class="section level2">
+<h2>3 Replace values with NA</h2>
+<p>In the <strong>turtles_tidy data</strong> (<em>not the turtles_no_na
+data</em>) replace ALL variable values (except the tag column) for tags
+104 and 105 with NAs</p>
+<p><em>Hint you will need to create a vector for the tag numbers you
+want to replace and use <code>mutate()</code></em></p>
+<pre><code>## Rows: 21 Columns: 5
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (1): sex
+## dbl (4): tag, c_length, h_width, weight
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## # A tibble: 6 × 5
+##     tag sex    c_length h_width weight
+##   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+## 1    22 female     48.1    8.55  12.8 
+## 2   105 &lt;NA&gt;       NA     NA     NA   
+## 3    14 male       43      6.6    7.2 
+## 4     7 female     48      8.67  13.5 
+## 5     1 &lt;NA&gt;       29.2    5.1    2.38
+## 6   104 &lt;NA&gt;       NA     NA     NA</code></pre>
+<pre><code>## # A tibble: 6 × 5
+##     tag sex    c_length h_width weight
+##   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+## 1    22 female     48.1    8.55  12.8 
+## 2   105 &lt;NA&gt;       NA     NA     NA   
+## 3    14 male       43      6.6    7.2 
+## 4     7 female     48      8.67  13.5 
+## 5     1 &lt;NA&gt;       29.2    5.1    2.38
+## 6   104 &lt;NA&gt;       NA     NA     NA</code></pre>
+</div>
+<div id="pivot-data" class="section level2">
+<h2>4 Pivot data</h2>
+<p>Use the below code to read in the Soils data from the
+<em>carData</em> package</p>
+<pre class="r"><code># Load the example data 
+
+soil &lt;- carData::Soils    # load example data</code></pre>
+<ul>
+<li><p>print the first few lines of data in “soil”</p></li>
+<li><p>Pivot the data so that columns Ca - Na are contained in one
+column called nutrients (again there are two possible solutions (really
+more than that but two I expect people to use))</p></li>
+</ul>
+<pre><code>##   Group Contour Depth Gp Block   pH     N Dens   P    Ca   Mg    K   Na Conduc
+## 1     1     Top  0-10 T0     1 5.40 0.188 0.92 215 16.35 7.65 0.72 1.14   1.09
+## 2     1     Top  0-10 T0     2 5.65 0.165 1.04 208 12.25 5.15 0.71 0.94   1.35
+## 3     1     Top  0-10 T0     3 5.14 0.260 0.95 300 13.02 5.68 0.68 0.60   1.41
+## 4     1     Top  0-10 T0     4 5.14 0.169 1.10 248 11.92 7.88 1.09 1.01   1.64
+## 5     2     Top 10-30 T1     1 5.14 0.164 1.12 174 14.17 8.12 0.70 2.17   1.85
+## 6     2     Top 10-30 T1     2 5.10 0.094 1.22 129  8.55 6.92 0.81 2.67   3.18</code></pre>
+<pre><code>## # A tibble: 192 × 12
+##    Group Contour Depth Gp    Block    pH     N  Dens     P Conduc nutrient value
+##    &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
+##  1 1     Top     0-10  T0    1      5.4  0.188  0.92   215   1.09 Ca       16.4 
+##  2 1     Top     0-10  T0    1      5.4  0.188  0.92   215   1.09 Mg        7.65
+##  3 1     Top     0-10  T0    1      5.4  0.188  0.92   215   1.09 K         0.72
+##  4 1     Top     0-10  T0    1      5.4  0.188  0.92   215   1.09 Na        1.14
+##  5 1     Top     0-10  T0    2      5.65 0.165  1.04   208   1.35 Ca       12.2 
+##  6 1     Top     0-10  T0    2      5.65 0.165  1.04   208   1.35 Mg        5.15
+##  7 1     Top     0-10  T0    2      5.65 0.165  1.04   208   1.35 K         0.71
+##  8 1     Top     0-10  T0    2      5.65 0.165  1.04   208   1.35 Na        0.94
+##  9 1     Top     0-10  T0    3      5.14 0.26   0.95   300   1.41 Ca       13.0 
+## 10 1     Top     0-10  T0    3      5.14 0.26   0.95   300   1.41 Mg        5.68
+## # ℹ 182 more rows</code></pre>
+<pre><code>## # A tibble: 192 × 12
+##    Group Contour Depth Gp    Block    pH     N  Dens     P Conduc nutrient value
+##    &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
+##  1 1     Top     0-10  T0    1      5.4  0.188  0.92   215   1.09 Ca       16.4 
+##  2 1     Top     0-10  T0    1      5.4  0.188  0.92   215   1.09 Mg        7.65
+##  3 1     Top     0-10  T0    1      5.4  0.188  0.92   215   1.09 K         0.72
+##  4 1     Top     0-10  T0    1      5.4  0.188  0.92   215   1.09 Na        1.14
+##  5 1     Top     0-10  T0    2      5.65 0.165  1.04   208   1.35 Ca       12.2 
+##  6 1     Top     0-10  T0    2      5.65 0.165  1.04   208   1.35 Mg        5.15
+##  7 1     Top     0-10  T0    2      5.65 0.165  1.04   208   1.35 K         0.71
+##  8 1     Top     0-10  T0    2      5.65 0.165  1.04   208   1.35 Na        0.94
+##  9 1     Top     0-10  T0    3      5.14 0.26   0.95   300   1.41 Ca       13.0 
+## 10 1     Top     0-10  T0    3      5.14 0.26   0.95   300   1.41 Mg        5.68
+## # ℹ 182 more rows</code></pre>
+</div>
+<div id="join-data" class="section level2">
+<h2>5 Join Data</h2>
+<p>If you haven’t already download the 3 bobcat data files added to the
+course after 12 January 2024 and save them to the data/raw folder</p>
+<p><a href="data/raw/bobcat_collection_data.csv">Bobcat collection data
+for Purrr (bobcat_collection_data.csv)</a></p>
+<p><a href="data/raw/bobcat_necropsy_only_data.csv">Bobcat necropsy data
+for Purrr (bobcat_necropsy_only_data.csv)</a></p>
+<p><a href="data/raw/bobcat_age_data.csv">Bobcat age data for Purrr
+(bobcat_age_data.csv)</a></p>
+<ul>
+<li><p>Read in the data files using the tidyverse
+<strong>function</strong></p></li>
+<li><p>In the same code chunk, set the column names to lowercase for all
+3 data sets AND rename the ‘Bobcat_ID#’ column to bobcat_id (<em>NOTE:
+this requires a lot of code repition which is annoying and does not
+follow best coding practices, we will learn a much better way to do this
+when we cover Purrr</em>)</p></li>
+<li><p>Use the csv file names as the object names when you assign them
+to the environment - Make a list with the three data sets and check
+their internal structure <em>(there are multiple ways to do
+this)</em><br />
+</p></li>
+<li><p>Join the bobcat_necropsy_only_data <strong>to</strong> the
+bobcat_collection_data AND then in the same code chunk join the
+bobcat_age_data as well. Make sure to retain all observations from the
+bobcat_collection_data. <em>You will need to use the bobcat_id column as
+the key when joining</em></p></li>
+<li><p>Print the summary of your data to check that it worked</p></li>
+</ul>
+<pre><code>## List of 3
+##  $ : spc_tbl_ [121 × 7] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ bobcat_id     : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ county        : chr [1:121] &quot;Athens&quot; &quot;Athens&quot; &quot;Morgan&quot; &quot;Perry&quot; ...
+##   ..$ township      : chr [1:121] &quot;Dover&quot; &quot;Canaan&quot; &quot;Hower&quot; &quot;Reading&quot; ...
+##   ..$ collectiondate: chr [1:121] &quot;12/30/18&quot; &quot;12/14/18&quot; &quot;12/7/18&quot; &quot;2/10/19&quot; ...
+##   ..$ month         : num [1:121] 12 12 12 2 1 3 2 2 2 3 ...
+##   ..$ coordinates_n : num [1:121] 39.4 39.3 39.5 39.8 40.4 ...
+##   ..$ coordinates_w : num [1:121] -82.1 -82 -82 -82.3 -81.2 ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   County = col_character(),
+##   .. ..   Township = col_character(),
+##   .. ..   CollectionDate = col_character(),
+##   .. ..   Month = col_double(),
+##   .. ..   Coordinates_N = col_double(),
+##   .. ..   Coordinates_W = col_double()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
+##  $ : spc_tbl_ [121 × 14] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ bobcat_id        : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ necropsy         : num [1:121] 1 2 3 4 5 6 7 8 9 10 ...
+##   ..$ necropsydate     : chr [1:121] &quot;3/6/19&quot; &quot;3/9/19&quot; &quot;3/10/19&quot; &quot;3/13/19&quot; ...
+##   ..$ dissector        : chr [1:121] &quot;SP,_MD&quot; &quot;SP_MD_CH&quot; &quot;MD_CH&quot; &quot;MD_CH_HK&quot; ...
+##   ..$ approxage        : chr [1:121] &quot;Ad&quot; &quot;Ad&quot; &quot;Ad&quot; &quot;Juv&quot; ...
+##   ..$ sex              : chr [1:121] &quot;M&quot; &quot;F&quot; &quot;M&quot; &quot;F&quot; ...
+##   ..$ fecundity_females: chr [1:121] &quot;na&quot; &quot;na&quot; &quot;na&quot; &quot;0&quot; ...
+##   ..$ rearfoot_cm      : chr [1:121] &quot;17.9&quot; &quot;16&quot; &quot;17.1&quot; &quot;14.7&quot; ...
+##   ..$ tail_cm          : chr [1:121] &quot;11.5&quot; &quot;11.5&quot; &quot;11.4&quot; &quot;11.3&quot; ...
+##   ..$ ear_cm           : chr [1:121] &quot;6.5&quot; &quot;6.5&quot; &quot;6.4&quot; &quot;6.5&quot; ...
+##   ..$ body_w/tail_cm   : chr [1:121] &quot;89.5&quot; &quot;82&quot; &quot;92&quot; &quot;71.5&quot; ...
+##   ..$ body             : chr [1:121] &quot;78&quot; &quot;70.5&quot; &quot;80.6&quot; &quot;60.2&quot; ...
+##   ..$ weight_kg        : chr [1:121] &quot;13.6&quot; &quot;6.33&quot; &quot;9.98&quot; &quot;4.62&quot; ...
+##   ..$ condition        : chr [1:121] &quot;17.43589744&quot; &quot;8.978723404&quot; &quot;12.382134&quot; &quot;7.674418605&quot; ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   Necropsy = col_double(),
+##   .. ..   NecropsyDate = col_character(),
+##   .. ..   Dissector = col_character(),
+##   .. ..   ApproxAge = col_character(),
+##   .. ..   Sex = col_character(),
+##   .. ..   Fecundity_Females = col_character(),
+##   .. ..   RearFoot_cm = col_character(),
+##   .. ..   Tail_cm = col_character(),
+##   .. ..   Ear_cm = col_character(),
+##   .. ..   `Body_w/Tail_cm` = col_character(),
+##   .. ..   Body = col_character(),
+##   .. ..   Weight_kg = col_character(),
+##   .. ..   Condition = col_character()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
+##  $ : spc_tbl_ [121 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ bobcat_id: chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ age      : chr [1:121] &quot;3&quot; &quot;1&quot; &quot;2&quot; &quot;0&quot; ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   Age = col_character()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<pre><code>## List of 3
+##  $ : spc_tbl_ [121 × 7] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ bobcat_id     : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ county        : chr [1:121] &quot;Athens&quot; &quot;Athens&quot; &quot;Morgan&quot; &quot;Perry&quot; ...
+##   ..$ township      : chr [1:121] &quot;Dover&quot; &quot;Canaan&quot; &quot;Hower&quot; &quot;Reading&quot; ...
+##   ..$ collectiondate: chr [1:121] &quot;12/30/18&quot; &quot;12/14/18&quot; &quot;12/7/18&quot; &quot;2/10/19&quot; ...
+##   ..$ month         : num [1:121] 12 12 12 2 1 3 2 2 2 3 ...
+##   ..$ coordinates_n : num [1:121] 39.4 39.3 39.5 39.8 40.4 ...
+##   ..$ coordinates_w : num [1:121] -82.1 -82 -82 -82.3 -81.2 ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   County = col_character(),
+##   .. ..   Township = col_character(),
+##   .. ..   CollectionDate = col_character(),
+##   .. ..   Month = col_double(),
+##   .. ..   Coordinates_N = col_double(),
+##   .. ..   Coordinates_W = col_double()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
+##  $ : spc_tbl_ [121 × 14] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ bobcat_id        : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ necropsy         : num [1:121] 1 2 3 4 5 6 7 8 9 10 ...
+##   ..$ necropsydate     : chr [1:121] &quot;3/6/19&quot; &quot;3/9/19&quot; &quot;3/10/19&quot; &quot;3/13/19&quot; ...
+##   ..$ dissector        : chr [1:121] &quot;SP,_MD&quot; &quot;SP_MD_CH&quot; &quot;MD_CH&quot; &quot;MD_CH_HK&quot; ...
+##   ..$ approxage        : chr [1:121] &quot;Ad&quot; &quot;Ad&quot; &quot;Ad&quot; &quot;Juv&quot; ...
+##   ..$ sex              : chr [1:121] &quot;M&quot; &quot;F&quot; &quot;M&quot; &quot;F&quot; ...
+##   ..$ fecundity_females: chr [1:121] &quot;na&quot; &quot;na&quot; &quot;na&quot; &quot;0&quot; ...
+##   ..$ rearfoot_cm      : chr [1:121] &quot;17.9&quot; &quot;16&quot; &quot;17.1&quot; &quot;14.7&quot; ...
+##   ..$ tail_cm          : chr [1:121] &quot;11.5&quot; &quot;11.5&quot; &quot;11.4&quot; &quot;11.3&quot; ...
+##   ..$ ear_cm           : chr [1:121] &quot;6.5&quot; &quot;6.5&quot; &quot;6.4&quot; &quot;6.5&quot; ...
+##   ..$ body_w/tail_cm   : chr [1:121] &quot;89.5&quot; &quot;82&quot; &quot;92&quot; &quot;71.5&quot; ...
+##   ..$ body             : chr [1:121] &quot;78&quot; &quot;70.5&quot; &quot;80.6&quot; &quot;60.2&quot; ...
+##   ..$ weight_kg        : chr [1:121] &quot;13.6&quot; &quot;6.33&quot; &quot;9.98&quot; &quot;4.62&quot; ...
+##   ..$ condition        : chr [1:121] &quot;17.43589744&quot; &quot;8.978723404&quot; &quot;12.382134&quot; &quot;7.674418605&quot; ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   Necropsy = col_double(),
+##   .. ..   NecropsyDate = col_character(),
+##   .. ..   Dissector = col_character(),
+##   .. ..   ApproxAge = col_character(),
+##   .. ..   Sex = col_character(),
+##   .. ..   Fecundity_Females = col_character(),
+##   .. ..   RearFoot_cm = col_character(),
+##   .. ..   Tail_cm = col_character(),
+##   .. ..   Ear_cm = col_character(),
+##   .. ..   `Body_w/Tail_cm` = col_character(),
+##   .. ..   Body = col_character(),
+##   .. ..   Weight_kg = col_character(),
+##   .. ..   Condition = col_character()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
+##  $ : spc_tbl_ [121 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##   ..$ bobcat_id: chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
+##   ..$ age      : chr [1:121] &quot;3&quot; &quot;1&quot; &quot;2&quot; &quot;0&quot; ...
+##   ..- attr(*, &quot;spec&quot;)=
+##   .. .. cols(
+##   .. ..   `Bobcat_ID#` = col_character(),
+##   .. ..   Age = col_character()
+##   .. .. )
+##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<pre><code>##   bobcat_id            county            township         collectiondate    
+##  Length:121         Length:121         Length:121         Length:121        
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##      month        coordinates_n   coordinates_w       necropsy  
+##  Min.   : 1.000   Min.   :38.25   Min.   :-83.25   Min.   :  1  
+##  1st Qu.: 2.000   1st Qu.:39.25   1st Qu.:-82.38   1st Qu.: 31  
+##  Median : 3.000   Median :39.59   Median :-81.95   Median : 61  
+##  Mean   : 5.826   Mean   :39.58   Mean   :-81.95   Mean   : 61  
+##  3rd Qu.:11.000   3rd Qu.:39.97   3rd Qu.:-81.50   3rd Qu.: 91  
+##  Max.   :12.000   Max.   :40.68   Max.   :-80.89   Max.   :121  
+##  necropsydate        dissector          approxage             sex           
+##  Length:121         Length:121         Length:121         Length:121        
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##  fecundity_females  rearfoot_cm          tail_cm             ear_cm         
+##  Length:121         Length:121         Length:121         Length:121        
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##  body_w/tail_cm         body            weight_kg          condition        
+##  Length:121         Length:121         Length:121         Length:121        
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##      age           
+##  Length:121        
+##  Class :character  
+##  Mode  :character  
+##                    
+##                    
+## </code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

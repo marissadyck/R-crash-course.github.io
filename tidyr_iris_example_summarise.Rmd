@@ -1,0 +1,60 @@
+---
+title: "Untitled"
+author: "Marissa Dyck"
+date: "2024-01-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+First we will look at how Purrr is useful for split-apply-combine operations. This is when we want to split (filter) a data set into parts such as by species, site, etc. apply a function to each part such as calculating a mean, median, etc. and then combine the resulting parts back together. For this we will use the built-in *iris* data set which contains measurements for three species of iris' 
+
+First the long way, which you should be able to do after the last modules
+```{r}
+# first let's 'read in' the iris data and make a few simple modifications to make it easier to use
+
+# create new object called iris_tbl (iris tibble)
+iris_tbl <-  iris %>% 
+  
+  # make a tibble
+  as_tibble(.) %>% 
+  
+  # set names to lowercase
+  set_names(
+    names(.) %>% 
+      tolower())
+
+```
+
+To do this normally we'd have to write a function to calculate the what we want that can be applied to each part (species) of the full data set
+```{r}
+# Write a custom function that will calculate the mean sepal length of any of the iris species:
+mean_sepal_length <- 
+  function(x) {
+    iris_tbl %>% 
+      filter(species == x) %>% 
+      pull(sepal.length) %>% 
+      mean()
+  }
+
+# Use your custom function to generate a list of mean sepal lengths for the three iris species:
+
+tibble(
+  species = 
+    iris_tbl %>% 
+    pull(species) %>%
+    unique(),
+  sepal_length = 
+    c(mean_sepal_length('setosa'),
+      mean_sepal_length('versicolor'),
+      mean_sepal_length('virginica')))
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

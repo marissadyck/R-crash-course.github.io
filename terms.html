@@ -10,11 +10,10 @@
 
 
 
-<meta name="date" content="2023-06-06" />
 
 <title>R terms</title>
 
-<script src="site_libs/header-attrs-2.15/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -179,8 +178,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -188,16 +187,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -246,7 +238,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R Crash Course 2023</a>
+      <a class="navbar-brand" href="index.html">ES482 R labs</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -255,72 +247,105 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Day 1
+    Intro to R
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="day1_1.html">Module 1: R basics</a>
+      <a href="mod_1_R101.html">Module 1: R 101</a>
     </li>
     <li>
-      <a href="day1_2.html">Module 1.2: Working with data</a>
+      <a href="mod_2_baseR.html">Module 2: Base R</a>
     </li>
     <li>
-      <a href="day1_3.html">Submodule 1.3: Data formatting</a>
+      <a href="mod_3_data.html">Module 3: Working with data</a>
+    </li>
+    <li>
+      <a href="mod_4_data_manipulation.html">Module 4: Data manipulation</a>
+    </li>
+    <li>
+      <a href="mod_5_purrr.html">Module 5: The wonders of Purrr</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Day 2
+    Data Visualization
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="day2_1.html">Module 1: Plotting in base R</a>
+      <a href="mod_1_plots_baseR.html">Module 1: Data Visualization in Base R</a>
     </li>
     <li>
-      <a href="day2_2.html">Module 2: ggplot</a>
+      <a href="mod_2_ggplot.html">Module 2: Basics of ggplot</a>
     </li>
     <li>
-      <a href="day2_3.html">Module 3: Basics of regression models</a>
+      <a href="mod_3_ggplot_adv.html">Module 3: Advanced ggplot (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_4_beyond_ggplot.html">Module 4: Beyond ggplot</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Data sets
+    Statistical Modeling
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="data/data.dat">Example: tab-separated data</a>
+      <a href="mod_1_lm.html">Module 1: Linear regression (coming soon)</a>
     </li>
     <li>
-      <a href="data/data.csv">Example: comma-separated data</a>
+      <a href="mod_2_glm.html">Module 2: Generalized linear models (GLMs)</a>
     </li>
     <li>
-      <a href="data/data_missing.txt">Example: missing data</a>
+      <a href="mod_3_glmm.html">Module 3: General mixed effects models (GLMMs) (coming soon)</a>
     </li>
     <li>
-      <a href="turtle_data.txt">Turtle Data</a>
+      <a href="mod_4_occ.html">Module 4: Occupancy models (coming soon)</a>
     </li>
     <li>
-      <a href="data/bear_2008_2016.csv">Bear data</a>
+      <a href="mod_5_sem.html">Module 5: Structural equation models (SEMs) (coming soon)</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assign_1.html">Assignment 1</a>
     </li>
     <li>
-      <a href="data/Bobcat_necropsy_data.csv">Bobcat data</a>
+      <a href="assign_2.html">Assignment 2</a>
     </li>
     <li>
-      <a href="reptiles.csv">Reptile Data</a>
+      <a href="assign_3.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assign_4.html">Assignment 4 (coming soon)</a>
+    </li>
+    <li>
+      <a href="assign_5.html">Assignment 5 (coming soon)</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="Links.html">Links</a>
+  <a href="data.html">Data</a>
+</li>
+<li>
+  <a href="links.html">Links</a>
+</li>
+<li>
+  <a href="surveys.html">Surveys</a>
 </li>
 <li>
   <a href="terms.html">Terms</a>
@@ -338,7 +363,6 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">R terms</h1>
-<h4 class="date">2023-06-06</h4>
 
 </div>
 
@@ -355,6 +379,9 @@ each geom.</p>
 objects to the environment, looks like left arrow.</p>
 <p><strong>Base R</strong> - Refers to the built-in functions and
 operations that R can perform without loading any packages.</p>
+<p><strong>Binomial distribution</strong> - Refers to a probability
+distribution that predicts the number of successes or probability of an
+event occuring when there are only two options.</p>
 <p><strong>Character</strong> - Data types that are non-numeric (contain
 text instead of numbers), must be contained in quotes ’’.</p>
 <p><strong>Comments</strong> - Text that R does not evaluate. Comments
@@ -367,6 +394,7 @@ object in R. Data frames are a special type of list in which each list
 element is a vector of equal length. Each list element in a data frame
 is also known as a column.</p>
 <p><strong>Dimensions</strong> - rows and columns.</p>
+<p><strong>Effect size</strong> - The magnitude</p>
 <p><strong>Environment</strong> - Shows you objects that are currently
 in your working space (environment). By default this is the first panel
 in the top right window.</p>
@@ -379,6 +407,8 @@ data, having a limited number of different values.</p>
 files from your computer. This panel by default shows you files in your
 current working directory. It is also one of multiple panels in the
 bottom right window.</p>
+<p><strong>For-loops</strong> - A way to execute a set of statements for
+multiple objects.</p>
 <p><strong>Function</strong> - Objects that contain multiple
 interrelated statements that are run together in a predefined order.</p>
 <p><strong>Geometric objects</strong> - Are elements that we mark on the
@@ -393,9 +423,13 @@ characters and can be used in the <code>col =</code> and
 <p><strong>History</strong> - Shows you everything you’ve evaluated
 during your current session. By default this is the second panel in the
 top right window.</p>
+<p><strong>Iteration</strong> - When you want to do the same thing to
+multiple inputs.</p>
 </div>
 <div id="k---o" class="section level2">
 <h2>K - O</h2>
+<p><strong>Latent variable</strong> - variables in a structural equation
+model for which we have not measured</p>
 <p><strong>Library</strong> - the directory where the packages are
 stored. You must load packages to your library every new session.</p>
 <p><strong>List</strong> - are more general than matrices. List objects
@@ -410,6 +444,12 @@ columns. All of the elements in a matrix must be of the same type.</p>
 <p><strong>Numeric</strong> - Data type that contains numbers.</p>
 <p><strong>Object</strong> - Variables that can take many types and are
 saved to the environment using the assignment operator.</p>
+<p><strong>Observed variable</strong> - Variables in a structural
+equation model for which we have data on.</p>
+<p><strong>Odds ratio</strong> - A measure of association between a
+variable and an expected outcome, this represents the odds that an
+outcome will occur given a particular exposure compared to the odds of
+the outcome occurring in the absence of that exposure.</p>
 </div>
 <div id="p---z" class="section level2">
 <h2>P - Z</h2>
@@ -417,9 +457,15 @@ saved to the environment using the assignment operator.</p>
 code, functions, and sometimes data that you can access by installing
 them and then storing them to your library. You can look up packages in
 the third panel of the lower right window.</p>
+<p><strong>Path diagram</strong> - Graphical tool used to depict
+relationships between variables (structured equations) for a structural
+equation model.</p>
 <p><strong>Plots</strong> - This panel is where you can view plots you
 have created and export them (although there are better ways). By
 default this is the second panel in the bottom right window.</p>
+<p><strong>Poisson distribution</strong> - A probability distribution
+that represents how many times an event is likely to occur over a period
+of time (discrete data).</p>
 <p><strong>R documentation</strong> - Files that explain the usage,
 arguments, and include examples for various R functions, packages, and
 data.</p>
@@ -431,6 +477,9 @@ automatically be set to the location where the project is saved. Allows
 you to easily share code.</p>
 <p><strong>Scalar</strong> - are the simplest data objects. A scalar is
 just a single value of any data type.</p>
+<p><strong>Scale</strong> - The process of transforming the values of a
+data set to a specific range, often centered on zero and ranging from -1
+to 1.</p>
 <p><strong>Scales</strong> - Map data values to the visual values of an
 aesthetic.</p>
 <p><strong>Source</strong> - Panel in RStudio where code is written and

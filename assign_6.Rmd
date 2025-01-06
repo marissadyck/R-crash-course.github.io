@@ -1,0 +1,402 @@
+---
+title: "Assignment 6"
+author: "Marissa Dyck"
+date: "Due Tuesday Mar 25th @11:59pm"
+output: 
+ html_document:
+    code_folding: show
+    theme: journal
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      cache = TRUE)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+#  ES482 R labs   
+#      University of Victoria, Victoria BC Canada             
+
+#  Assignment 4: Data visualization
+
+library(tidyverse)
+library(cowplot)
+library(leaflet)
+library(ggpubr)
+library(RColorBrewer)
+library(stringr)
+```
+
+## Submission
+Please email me a copy of your R script for this assignment by end of day **Friday March 29th** with your first and last name followed by assignment 3 as the file name (e.g. 'marissa_dyck_assignment4.R')
+
+> You should always be following best coding practices (see Intro to R module 1) but especially for assingment submissions. Please make sure each problem has its own header so that I can easily navigate to your answers and that your code is well organized with spaces as described in the best coding practices section and comments as needed. 
+
+## 1 Boxplot
+
+Using the built in *PlantGrowth* dataset make a plot that meets the following requirements
+
+1. Boxplot of weight for each group
+
+2. Filled by group (choose some greyscale colors) and outlined in black
+
+3. Informative axis titles and text
+
+4. Readable text size
+
+5. No gridlines
+
+5. No legend
+
+```{r echo=FALSE}
+
+plant_boxplot <- ggplot(PlantGrowth, aes(x = group, y = weight)) +
+  
+  # add boxplots filled by group 
+  geom_boxplot(aes(fill = group),
+               color = 'black') + # outline in black
+  
+  labs(x = 'Treatment group',
+       y = 'Weight (g)') + # I am just guessing it is in grams since the R documentation did not say
+  
+  # select greyscale colors
+  scale_fill_manual(values = c('#DDDDDD', '#888888', '#444444')) +
+  
+  # change axis labels
+  scale_x_discrete(labels = c('Control', 'Treatment 1', 'Treatment 2')) +
+  
+  # select theme with no gridlines
+  theme_classic() +
+  
+  # remove legend and increase text size
+  theme(legend.position = 'NONE',
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14)) 
+```
+
+## Scatterplot
+
+Using the built in *trees* data make a plot that meets the following requirements
+
+1. Scatterplot with girth as a function of height
+
+2. Change the points plus signs
+
+3. Informative axis titles and text
+
+4. Readable text size
+
+5. Informative title that is centered at the top
+
+6. axis with breaks every 5 units starting at a number divisible by 5
+
+7. Gridlines
+```{r echo=FALSE, class.source = 'fold-hide'}
+
+# specify data and variables
+trees_scatterplot <- ggplot(trees, aes(x = Height, y = Girth)) +
+  
+  # add points as plus signs
+  geom_point(shape = 3,
+             size = 4) +
+  
+  # create informative labels and title
+  labs(x = 'Height (ft)',
+       y = 'Diameter (in)',
+       title = 'Black Cherry Tree Measurements') +
+  
+  # add breaks based on range of data
+  scale_x_continuous(breaks = seq(60, 85, by = 5)) +
+  scale_y_continuous(breaks = seq(5, 20, by = 5)) +
+  
+  # choose theme with gridlines
+  theme_bw() +
+  
+  # adjust text and title
+  theme(plot.title = element_text(hjust = 0.5,
+                                  size = 16),
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14))
+```
+
+## 3 Read/format data
+
+> For the next three problems you will be using the 'bear_2008_2016.csv' data
+
+
+Please read in the data according to the following guidelines
+
+1. Save it as 'bears'
+
+2. Set all variable names to lowercase
+
+3. Keep only points where damage is 1
+
+4. Keep only the following columns (damage, year, targetspp, bear_abund, landcover_code, altitude, human_population, disto_to_forest, and dist_to_town)
+
+*You may have to do some other data manipulation later on for each graph
+```{r echo=FALSE, class.source = 'fold-hide'}
+
+# read in bear data
+
+bears <- read.csv('data/raw/bear_2008_2016.csv') %>% 
+  
+   # set column names to lowercase
+  set_names(
+    names(.) %>%  # the period here is a placeholder for the data it tells R to use the element before the last pipe (e.g., turtles.df)
+      tolower()) %>% 
+  
+     # select only damage points
+  filter(damage == 1) %>% 
+  
+  # select specified columns
+  select(damage, year, targetspp, bear_abund:dist_to_town)
+
+str(bears)
+  
+  
+# filter data to only damage points
+
+```
+
+## 4 Bar graph
+
+Create a plot using the bear data so it meets the following criteria
+
+1. Bar graph showing the total number of livestock events per year per livestock type
+
+2. Bars colored by livestock type (manually set the colors)
+
+3. Informative title, caption, and axis with readable text size
+
+4. y axis breaks every 20
+
+5. No ticks on x - axis and years at a 45 degree angle
+
+6. no legend
+
+7. No gridlines and only borders on the left and bottom of graph
+
+```{r echo=FALSE, class.source = 'fold-hide'}
+
+# mutate data so year and targetspp are factors
+
+bears_summary <- bears %>% 
+
+  
+  # change variables to factor
+  mutate(year = as.factor(year),
+         targetspp = as.factor(targetspp))
+
+
+bear_damage_bargraph <-  ggplot(bears_summary, aes( x = year)) +
+  
+  # add bars
+  geom_bar(aes(fill = targetspp),
+           position = position_dodge()) +
+  
+  # specify colors and labels
+  scale_fill_manual(name = 'Livestock type',
+                    values = c('#A31E17', '#4F3124', '#AF9985'),
+                    labels = c('Other', 'Cows', 'Sheep')) +
+  
+  scale_y_continuous(expand = c(0,0),
+                     breaks = seq(0, 80, by = 20)) +
+  
+  # add labels, caption, and title
+  labs(x = 'Year',
+       y = 'Number of events',
+       title = 'Reported livestock damage by brown bears',
+       caption = str_wrap('The total number of reported livestock damage events caused by brown bears in Romania per year and livestock type (tan = sheep, brown = cows, red = other livesotock [e.g. chickens]) from 2008 to 2016.',
+                          width = 90)) +
+  
+  
+  theme_classic() +
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_text(size = 12,
+                                   angle = 45,
+                                  vjust = 0.7),
+        axis.text.y = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        plot.title = element_text(size = 18),
+        legend.position = 'NONE',
+        plot.caption = element_text(size = 12,
+                                    hjust = 0))
+```
+
+## 5 Combine multiple plots
+
+For this problem you'll need to make a change to the data
+
+* Create a new column the combines values from the landcover code    
+  art_surfaces = 112, 121, 131    
+  ag = 211, 221, 222, 242, 243    
+  open = 231, 321   
+  forest = 311, 312, 313, 324   
+
+Then you will need to make **two** graphs using this new column
+
+
+1. Grouped landcover type and dist_to_forest
+
+2. Grouped landcover type and dist_to_town
+
+Then **combine** them into one plot with a common legend.
+
+
+The graphs should all meet the following criteria
+
+1. Raw data plotted *hint: use `geom_jitter()` to avoid having all points stacked on top of eachother*
+
+2. Points shaped **and** colored by targetspp
+
+3. manually set the color *hint to get one legend per plot you will also need to manually set the shape using the same name and labels*
+
+4. Informative and readable axis and text
+  
+
+```{r echo=FALSE, class.source = 'fold-hide'}
+
+# create vectors for landcover types
+
+art_surfaces <- c(112,121,131) 
+
+ag <- c(211,221,222, 242,243) 
+
+open <- c(231, 321) 
+
+forest <- c(311,312,313, 324) 
+
+
+bears_cows <- bears %>% 
+  
+  # keep only data for cows
+  #filter(targetspp == 'bovine') %>% 
+  
+  # combine landcover types using case_when
+  mutate(landcover_grouped = case_when(landcover_code %in% art_surfaces ~ 'art_surfaces',
+                                       landcover_code %in% ag ~ 'ag',
+                                       landcover_code %in% open ~ 'open',
+                                       landcover_code %in% forest ~ 'forest'))
+
+str(bears_cows)
+
+# create vectors for plot colors and labels
+
+spp_colors <- c('#A31E17', '#4F3124', '#AF9985')
+
+spp_shapes = c(17, 16, 15)
+
+spp_labels <- c('Other', 'Cows', 'Sheep')
+
+
+# plot 1
+
+# specify data and variables
+plot_5.1 <- ggplot(bears_cows, aes(x = landcover_grouped, y = dist_to_forest)) +
+  
+  # add points
+  geom_jitter(aes(color = targetspp,
+                  shape = targetspp),
+              width = 0.4, # this changes the amount of 'jitter'
+              alpha = 0.6, # this sets opacity
+              size = 2) +
+  
+  # manually set colors
+  scale_color_manual(name = 'Livestock type',
+                     values = spp_colors,
+                     labels = spp_labels) +
+  scale_shape_manual(name = 'Livestock type',
+                     values = spp_shapes,
+                     labels = spp_labels) +
+  scale_x_discrete(labels = c('Agriculture', 'Artifical', 'Forest', 'Open')) +
+  
+  # informative labels
+  labs(x = 'Landcover type',
+       y = 'Distance to forest (m)') +
+  
+  # add theme elements
+  theme_bw() +
+    theme(axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 14))
+
+# plot 2
+
+# specify data and variables
+plot_5.2 <- ggplot(bears_cows, aes(x = landcover_grouped, y = dist_to_town)) +
+  
+  # add points
+  geom_jitter(aes(color = targetspp,
+                  shape = targetspp),
+              width = 0.4, # this changes the amount of 'jitter'
+              alpha = 0.6, # this sets opacity
+              size = 2) +
+  
+  # manually set colors
+  scale_color_manual(name = 'Livestock type',
+                     values = spp_colors,
+                     labels = spp_labels) +
+  scale_shape_manual(name = 'Livestock type',
+                     values = spp_shapes,
+                     labels = spp_labels) +
+  scale_x_discrete(labels = c('Agriculture', 'Artifical', 'Forest', 'Open')) +
+  
+  # informative labels
+  labs(x = 'Landcover type',
+       y = 'Distance to town (m)') +
+  
+  # add theme elements
+  theme_bw() +
+    theme(axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 14))
+
+plot_combined <-  ggarrange(plot_5.1, plot_5.2,
+          common.legend = TRUE)
+```
+
+# 'Answer Key'
+
+## 1 Boxplot
+```{r, echo = FALSE}
+
+plant_boxplot
+
+```
+
+## 2 Scatterplot
+```{r, echo = FALSE}
+
+trees_scatterplot
+
+```
+
+## 3 Read/format data
+
+```{r}
+
+str(bears)
+
+```
+
+
+## 4 Bar graph
+```{r, echo = FALSE}
+
+bear_damage_bargraph
+```
+
+## 5 Combined plots
+```{r, echo = FALSE}
+
+plot_combined
+```
+
+
+

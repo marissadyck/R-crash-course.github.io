@@ -1,0 +1,1888 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Module 3: Working with data" />
+
+<meta name="date" content="2025-01-24" />
+
+<title>Intro to R</title>
+
+<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R Crash Course 2025</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Intro to R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_R101.html">Module 1: R 101</a>
+    </li>
+    <li>
+      <a href="mod_2_baseR.html">Module 2: Base R</a>
+    </li>
+    <li>
+      <a href="mod_3_data.html">Module 3: Working with data</a>
+    </li>
+    <li>
+      <a href="mod_4_data_manipulation.html">Module 4: Data manipulation</a>
+    </li>
+    <li>
+      <a href="mod_5_purrr.html">Module 5: The wonders of Purrr</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Data Visualization
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_plots_baseR.html">Module 1: Data Visualization in Base R</a>
+    </li>
+    <li>
+      <a href="mod_2_ggplot.html">Module 2: Basics of ggplot</a>
+    </li>
+    <li>
+      <a href="mod_3_ggplot_adv.html">Module 3: Advanced ggplot (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_4_beyond_ggplot.html">Module 4: Beyond ggplot</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Statistical Modeling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_lm.html">Module 1: Linear regression (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_2_glm.html">Module 2: Generalized linear models (GLMs)</a>
+    </li>
+    <li>
+      <a href="mod_3_glmm.html">Module 3: General mixed effects models (GLMMs) (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_4_occ.html">Module 4: Occupancy models (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_5_sem.html">Module 5: Structural equation models (SEMs) (under construction)</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Statistical Modeling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Getting started with GitHub (under construction)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assign_1.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assign_2.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assign_3.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assign_4.html">Assignment 4</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="data.html">Data</a>
+</li>
+<li>
+  <a href="links.html">Links</a>
+</li>
+<li>
+  <a href="surveys.html">Surveys</a>
+</li>
+<li>
+  <a href="terms.html">Terms</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Intro to R</h1>
+<h4 class="author">Module 3: Working with data</h4>
+<h4 class="date">24 January 2025</h4>
+
+</div>
+
+
+<div id="materials" class="section level2">
+<h2>Materials</h2>
+<div id="script" class="section level3">
+<h3>Script</h3>
+<ol style="list-style-type: decimal">
+<li><p>Click <a href="mod_3_data.R">here</a> to download the script!
+Save the script to the project directory you set up in the previous
+module.</p></li>
+<li><p>Load your script in RStudio. To do this, open RStudio and click
+on the folder icon in the toolbar at the top to load your
+script.</p></li>
+</ol>
+</div>
+<div id="cheat-sheets" class="section level3">
+<h3>Cheat sheets</h3>
+<p>Make sure to save these to your cheatsheets folder</p>
+<p><a
+href="https://www.datacamp.com/cheat-sheet/tidyverse-cheat-sheet-for-beginners">Tidyverse
+cheat sheet</a><br />
+<a
+href="https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_data-import.pdf">readr
+cheat sheet</a><br />
+<a href="https://www.rstudio.com/resources/cheatsheets/">tidyr and dplyr
+cheat sheets</a> Scroll down to data tidying with tidyr
+<strong>&amp;</strong> data transformation with dplyr</p>
+</div>
+</div>
+<div id="working-directory" class="section level2">
+<h2>Working directory</h2>
+<p>Remember, the working directory is the first place R looks for any
+files you would like to read in (e.g., code, data). It is also the first
+place R will try to write any files you want to save.</p>
+<p>Every R session has a working directory, whether you specify one or
+not. <span style="color: blue;">Find out what your working directory
+is</span>.</p>
+<pre class="r fold-hide"><code># Working directories --------------------
+
+# Find the directory you&#39;re working in 
+getwd()          # note: the results from running this command on my machine will differ from yours!  </code></pre>
+<pre><code>## [1] &quot;/Users/marissadyck/Documents/Teaching/ES482/ES482-R-labs.github.io&quot;</code></pre>
+<p>Since you should already be working in an RStudio Project, your
+working directory will be set as your project directory (directory that
+contains the .Rproj file for your project). This is convenient,
+because:</p>
+<ol style="list-style-type: decimal">
+<li>That’s most likely where the data for that project live anyway<br />
+</li>
+<li>If you’re collaborating with someone else on the project (e.g., in a
+shared Dropbox folder), you can both open the project and R will
+instantly know where to read and write data without either of you having
+to reset the working directory (even though the directory path is
+probably different on your two machines). This can save a lot of
+headaches!</li>
+</ol>
+<blockquote>
+<p>If you didn’t open your Rstudio project before beginning today’s lab
+your working directory might show something different, if so close out
+of R and navigate to the project you created for this course and open
+Rstudio by double clicking the project.</p>
+</blockquote>
+</div>
+<div id="basic-data-exploration-base-r" class="section level2">
+<h2>Basic data exploration (base R)</h2>
+<div id="importing-data-into-r" class="section level3">
+<h3>Importing data into R</h3>
+<p>There are many ways data can be imported into R. Many types of files
+can be imported (e.g., text files, csv, shapefiles). And people are
+always inventing new ways to read and write data to/from R. But here are
+the basics.</p>
+<ul>
+<li>read.table or read_delim
+<ul>
+<li>reads a data file in any major text format (comma-delimited, space
+delimited etc.), you can specify which format (very general)<br />
+</li>
+</ul></li>
+<li>read.csv or read_csv
+<ul>
+<li>fields are separated by a comma (this is still probably the most
+common way to read in data)</li>
+</ul></li>
+</ul>
+<p>Before we can read data in, we need to put some data files in our
+working directory!</p>
+<ol style="list-style-type: decimal">
+<li><p>Download the following data files and store them in your ‘data’
+folder in the R Crash Course working directory</p>
+<ul>
+<li><a href="data/raw/data.txt">Whitespace delimited data file</a><br />
+</li>
+<li><a href="data/raw/data.csv">Comma delimited data file</a></li>
+</ul></li>
+</ol>
+<p>Once you have saved these files to your working directory, open one
+or two of them up (e.g., in Excel or a text editor) to see what’s
+inside. You can do this directly in R using the <strong>files</strong>
+panel.</p>
+<p>Now let’s read them into R!</p>
+<pre class="r"><code>#  Import/Export data files into R with base R----------------------
+
+# read.table to import text file (if no delim specified, it will try to guess!)
+data.txt.df &lt;- read.table(&quot;data/raw/data.txt&quot;)  </code></pre>
+<p>It is always useful to check what the data look like after they are
+read in. Can you recall one of the ways to view an object in R? <span
+style="color: blue;">View the data.txt.df object</span></p>
+<pre class="r fold-hide"><code># Look at data by printing it in the console
+# You can also look at data by using the View() function
+# Or you can click on the object (data.txt.df) in your environment to view it
+data.txt.df</code></pre>
+<pre><code>##                V1     V2     V3      V4
+## 1         Country Import Export Product
+## 2         Bolivia     46      0       N
+## 3          Brazil     74      0       N
+## 4           Chile     89     16       N
+## 5        Colombia     77     16       A
+## 6       CostaRica     84     21       A
+## 7            Cuba     89     15       A
+## 8    DominicanRep     68     14       A
+## 9         Ecuador     70      6       A
+## 10     ElSalvador     60     13       A
+## 11      Guatemala     55      9       A
+## 12          Haiti     35      3       A
+## 13       Honduras     51      7       A
+## 14        Jamaica     87     23       A
+## 15         Mexico     83      4       N
+## 16      Nicaragua     68      0       A
+## 17         Panama     84     19       N
+## 18       Paraguay     74      3       A
+## 19           Peru     73      0       N
+## 20 TrinidadTobago     84     15       A
+## 21      Venezuela     91      7       A</code></pre>
+<p>Data will often be saved as a .csv file (or separated by commas) we
+can load this data using read.csv</p>
+<pre class="r"><code># read.csv to import textfile with columns separated by commas
+data.df &lt;- read.csv(&quot;data/raw/data.csv&quot;)
+
+#print data
+data.df</code></pre>
+<pre><code>##           Country Import Export Product
+## 1         Bolivia     46      0       N
+## 2          Brazil     74      0       N
+## 3           Chile     89     16       N
+## 4        Colombia     77     16       A
+## 5       CostaRica     84     21       A
+## 6            Cuba     89     15       A
+## 7    DominicanRep     68     14       A
+## 8         Ecuador     70      6       A
+## 9      ElSalvador     60     13       A
+## 10      Guatemala     55      9       A
+## 11          Haiti     35      3       A
+## 12       Honduras     51      7       A
+## 13        Jamaica     87     23       A
+## 14         Mexico     83      4       N
+## 15      Nicaragua     68      0       A
+## 16         Panama     84     19       N
+## 17       Paraguay     74      3       A
+## 18           Peru     73      0       N
+## 19 TrinidadTobago     84     15       A
+## 20      Venezuela     91      7       N</code></pre>
+</div>
+<div id="removing-objects-from-the-environment" class="section level3">
+<h3>Removing objects from the environment</h3>
+<p>Since both of these files contain the same data just in different
+formats let’s delete one of the from the environment so we don’t get
+confused. We can use the <code>rm()</code> function for this.</p>
+<pre class="r"><code># Remove redundant objects from memory
+rm(data.txt.df)</code></pre>
+</div>
+<div id="built-in-data" class="section level3">
+<h3>Built in data</h3>
+<p>R has many useful built-in data sets that come pre-loaded. You can
+explore these datasets with the following command:</p>
+<pre class="r"><code>  # Using Rs built-in data----------------------
+
+# Look at all built-in data files
+data()   </code></pre>
+<p>Let’s read in one of these datasets!</p>
+<pre class="r"><code># read built-in data on car road tests performed by Motor Trend
+data(mtcars) 
+
+# inspect the first few lines
+head(mtcars)   
+
+# learn more about this built-in data set
+# ?mtcars        </code></pre>
+</div>
+<div id="basic-data-checking" class="section level3">
+<h3>Basic data checking</h3>
+<p>To learn more about the ‘internals’ of any data object in R, we can
+use the <code>str()</code> (structure) function:</p>
+<pre class="r"><code>  # Basic data checking ----------------------
+
+# ?str: displays the internal structure of the data object
+str(mtcars)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...</code></pre>
+<pre class="r"><code>str(data.df)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    20 obs. of  4 variables:
+##  $ Country: chr  &quot;Bolivia&quot; &quot;Brazil&quot; &quot;Chile&quot; &quot;Colombia&quot; ...
+##  $ Import : int  46 74 89 77 84 89 68 70 60 55 ...
+##  $ Export : int  0 0 16 16 21 15 14 6 13 9 ...
+##  $ Product: chr  &quot;N&quot; &quot;N&quot; &quot;N&quot; &quot;A&quot; ...</code></pre>
+<p>And we can use the <code>summary()</code> function to get a brief
+summary of what’s in our data frame:</p>
+<pre class="r"><code># get summary of the variables (columns) of a data object
+summary(data.df)</code></pre>
+<pre><code>##    Country              Import         Export        Product         
+##  Length:20          Min.   :35.0   Min.   : 0.00   Length:20         
+##  Class :character   1st Qu.:66.0   1st Qu.: 3.00   Class :character  
+##  Mode  :character   Median :74.0   Median : 8.00   Mode  :character  
+##                     Mean   :72.1   Mean   : 9.55                     
+##                     3rd Qu.:84.0   3rd Qu.:15.25                     
+##                     Max.   :91.0   Max.   :23.00</code></pre>
+<p>If we want to look at data for a specific column in our dataset we
+use the <code>$</code> argument to specify which column</p>
+<pre class="r"><code># get summary info for a specific variable
+summary(data.df$Import)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    35.0    66.0    74.0    72.1    84.0    91.0</code></pre>
+</div>
+<div id="exporting-data" class="section level3">
+<h3>Exporting data</h3>
+<p>Reading in data is one thing, but you will probably also want to
+write data to your hard drive as well. There are countless reasons for
+this- you might want to use an external program to plot your data, you
+might want to archive some simulation results, etc..</p>
+<p>Again, there are many ways to write data to a file. Here are the
+basics using <strong>base R</strong></p>
+<pre class="r"><code># Exporting data (save to hard drive as data file)
+
+# ?write.csv: writes a CSV file to the working directory
+
+# to save an entire data frame to your hard drive you would use the format below
+# write.csv(data name in R, file = &#39;data name to save as.csv&#39;)
+
+# however if we did this for data.df we would just be making a copy, instead we can export a subset of the data we just ran in
+write.csv(data.df[, c(&quot;Country&quot;,&quot;Product&quot;)], # this tells R to save all rows for the &#39;Country&#39; and &#39;Product&#39; columns
+          file = &quot;data/processed/data_export.csv&quot;)   </code></pre>
+</div>
+</div>
+<div id="working-with-data-base-r" class="section level2">
+<h2>Working with data (base R)</h2>
+<p>Now let’s start seeing what we can do with data in R. Even without
+doing any statistical analyses, R is very a powerful environment for
+doing data transformations and performing mathematical operations.</p>
+<div id="boolean-operations" class="section level3">
+<h3>Boolean operations</h3>
+<p>Boolean operations refer to TRUE/FALSE tests. That is, we can ask a
+question about the data to a Boolean operator and the operator will
+return a TRUE or a FALSE (logical) result.</p>
+<p>First, let’s meet the boolean operators.</p>
+<p>NOTE: don’t get confused between the equals sign (<code>=</code>),
+which is an <em>assignment operator</em> (same as <code>&lt;-</code>),
+and the double equals sign (<code>==</code>), which is a Boolean
+operator:</p>
+<pre class="r"><code># Working with data in R ------------------------
+
+  # Assigning objects ----------------------
+
+# &lt;- assignment operator
+# =  alternative assignment operator *avoid using this to assign objects to the environment
+
+a &lt;- 3     # assign the value &quot;3&quot; to the object named &quot;a&quot;
+a = 3      # assign the value &quot;3&quot; to the object named &quot;a&quot; (alternative)
+a == 3     # answer the question: &quot;does the object &quot;a&quot; equal &quot;3&quot;? </code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>  # Boolean operations ----------------------
+
+# Basic operators
+
+# &lt;    less than
+# &gt;    greater than
+# &lt;=   less than or equal to
+# &gt;=   greater than or equal to
+# ==   equal to
+# !=   not equal to
+# %in% matches one of a specified group of possibilities
+
+# Combining multiple conditions
+
+# &amp;    must meet both conditions (AND operator)
+# |    must meet one of two conditions (OR operator)
+
+Y &lt;- 4
+Z &lt;- 6
+
+Y == Z  #I am asking if Y is equal to Z, and it will return FALSE
+Y &lt; Z
+
+!(Y &lt; Z)  # the exclamation point reverses any boolean object (read &quot;NOT&quot;)
+
+# Wrong!
+data.df[, 2] = 74     # sets entire second column equal to 74! OOPS WE GOOFED UP!!!
+
+data.df &lt;- read.csv(&quot;data/data.csv&quot;)  ## correct our mistake in the previous line (revert to the original data)!
+
+# Right
+data.df[, 2] == 74    # tests each element of column to see whether it is equal to 74
+
+data.df[, 2] &lt; 74 | data.df[, 2] == 91   # use the logical OR operator</code></pre>
+<p>This image from Wickham and Grolemund’s excellent <a
+href="https://r4ds.had.co.nz/index.html">R for Data Science</a> book can
+help conceptualize the combination operators:</p>
+<p><img src="images/transform_logical.png" style="width:70.0%" /></p>
+</div>
+<div id="data-subsetting-using-boolean-logic" class="section level3">
+<h3>Data subsetting using boolean logic</h3>
+<p>You probably won’t us boolean operations that often to return
+TRUE/FALSE results but they are great for subsetting, filtering, and
+reformatting data.</p>
+<p>Let’s use them to subset data - select only those rows/observations
+that meet a certain condition (where [some condition] is TRUE).</p>
+<pre class="r"><code>  # Sub-setting data base R----------------------
+
+# select those rows of data for which second column is less than 74
+data.df[data.df[, &quot;Import&quot;] &lt; 74, ]  </code></pre>
+<pre><code>##         Country Import Export Product
+## 1       Bolivia     46      0       N
+## 7  DominicanRep     68     14       A
+## 8       Ecuador     70      6       A
+## 9    ElSalvador     60     13       A
+## 10    Guatemala     55      9       A
+## 11        Haiti     35      3       A
+## 12     Honduras     51      7       A
+## 15    Nicaragua     68      0       A
+## 18         Peru     73      0       N</code></pre>
+<pre class="r"><code># select rows of data for which second column is greater than 25 AND less than 75
+
+data.df[data.df[, &#39;Import&#39;] &gt; 25 &amp; 
+          data.df[, &#39;Import&#39;] &lt;75, ]</code></pre>
+<pre><code>##         Country Import Export Product
+## 1       Bolivia     46      0       N
+## 2        Brazil     74      0       N
+## 7  DominicanRep     68     14       A
+## 8       Ecuador     70      6       A
+## 9    ElSalvador     60     13       A
+## 10    Guatemala     55      9       A
+## 11        Haiti     35      3       A
+## 12     Honduras     51      7       A
+## 15    Nicaragua     68      0       A
+## 17     Paraguay     74      3       A
+## 18         Peru     73      0       N</code></pre>
+</div>
+<div id="summary-statistics" class="section level3">
+<h3>Summary statistics</h3>
+<p>We can also use <strong>base R</strong> functions to get summary
+statistics for our data. Let’s use the <strong>functions</strong>
+<code>mean()</code> and <code>sd()</code> to calculate the mean and
+standard deviation for one of the columns in our data frame.</p>
+<pre class="r"><code>  # Summary statistics base R ----------------------
+
+mean(data.df$Import)</code></pre>
+<pre><code>## [1] 72.1</code></pre>
+<pre class="r"><code>sd(data.df$Import)</code></pre>
+<pre><code>## [1] 15.73765</code></pre>
+<p>However, if we wanted to calculate the mean and sd for many columns
+in our dataset this would take a lot of lines of repetitive code using
+<strong>base R</strong>. We will go over a much more efficient way using
+the <strong>tidyverse package</strong>.</p>
+</div>
+</div>
+<div id="packages" class="section level2">
+<h2>Packages</h2>
+<p><strong>Packages</strong> are an incredibly useful to for R users.
+These are extensions of the R programming language which contain a vast
+array of <strong>functions</strong>, code, sample data etc. A few rules
+for using <strong>packages</strong>;</p>
+<ol style="list-style-type: decimal">
+<li><p>Have to be installed (<em>once</em> but you may need to
+re-install the latest version as the packages are updated)</p></li>
+<li><p>Loaded into your <strong>library</strong> (<em>every time you
+start a new R session</em>). The <strong>library</strong> is simply the
+directory where the <strong>packages</strong> are stored.</p></li>
+</ol>
+<div id="installing-packages" class="section level3">
+<h3>Installing packages</h3>
+<p>Let’s install some <strong>packages</strong> that we will use for
+this module. There are a few ways to do this</p>
+<ol style="list-style-type: decimal">
+<li><p>Use the <strong>packages</strong>
+panel&gt;&gt;install&gt;&gt;type the package you want</p></li>
+<li><p>Use the <code>install.packages()</code>
+<strong>function</strong>.</p></li>
+</ol>
+<pre class="r"><code>  # Packages----------------------
+
+# Install packages 
+
+# install.packages(&quot;tidyverse&quot;)</code></pre>
+<p>*Notice that the package name is enclosed with quotations (” “). If
+you do not use the quotations the package will not be installed.</p>
+</div>
+<div id="loading-packages-to-library" class="section level3">
+<h3>Loading packages to library</h3>
+<p>Each time you open a new R session you need to load the
+<strong>packages</strong> you want to use into your
+<strong>library</strong>. To do this use the <code>library()</code>
+<strong>function</strong></p>
+<pre class="r"><code># Load packages to library 
+
+library(tidyverse)</code></pre>
+</div>
+<div id="built-in-datasets" class="section level3">
+<h3>Built-in datasets</h3>
+<p>Many <strong>packages</strong> come with built-in data sets as well.
+For, instance, ggplot2 comes with the “diamonds” data:</p>
+<pre class="r"><code>  # Package datasets ----------------------
+
+ggplot2::diamonds   # note the use of the package name followed by two colons- this is a way to make sure you are using a function (or data set or other object) from a particular package... (sometimes several packages have functions with the same name...)</code></pre>
+<pre><code>## # A tibble: 53,940 × 10
+##    carat cut       color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  0.23 Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43
+##  2  0.21 Premium   E     SI1      59.8    61   326  3.89  3.84  2.31
+##  3  0.23 Good      E     VS1      56.9    65   327  4.05  4.07  2.31
+##  4  0.29 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63
+##  5  0.31 Good      J     SI2      63.3    58   335  4.34  4.35  2.75
+##  6  0.24 Very Good J     VVS2     62.8    57   336  3.94  3.96  2.48
+##  7  0.24 Very Good I     VVS1     62.3    57   336  3.95  3.98  2.47
+##  8  0.26 Very Good H     SI1      61.9    55   337  4.07  4.11  2.53
+##  9  0.22 Fair      E     VS2      65.1    61   337  3.87  3.78  2.49
+## 10  0.23 Very Good H     VS1      59.4    61   338  4     4.05  2.39
+## # ℹ 53,930 more rows</code></pre>
+</div>
+</div>
+<div id="tidyverse" class="section level2">
+<h2>Tidyverse</h2>
+<p>The tidyverse is a collection of packages introduced by Hadley and
+Wickham that all work together using a similar design, syntax, and data
+structure (<strong>tidy data</strong>) for data science. It will be
+useful to have your <a
+href="https://www.datacamp.com/cheat-sheet/tidyverse-cheat-sheet-for-beginners">tidyverse
+cheat sheet</a>, <a
+href="https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_data-import.pdf">reader
+cheat sheet</a>, and <a
+href="https://www.rstudio.com/resources/cheatsheets/">tidyr &amp; dplyr
+cheat sheets</a> during the rest of this module.</p>
+<div id="what-is-tidy-data" class="section level3">
+<h3>What is tidy data</h3>
+<p>All of the tidyverse set of packages are designed to work with
+<em>Tidy</em> formatted data.</p>
+<p>This means:</p>
+<ul>
+<li>Each variable must have its own column.</li>
+<li>Each observation must have its own row.</li>
+<li>Each value must have its own cell.</li>
+</ul>
+<p>This is what it looks like:</p>
+<p><img src="images/tidy_1.png" /> We will start by working with data
+that is already ‘tidy’ but later we will cover several
+<strong>functions</strong> to help you get your data into this
+format.</p>
+</div>
+<div id="base-r-vs-tidyverse" class="section level3">
+<h3>Base R vs tidyverse</h3>
+<p>We didn’t spend a lot of time going over data exploration,
+manipulation, or visualization in <strong>base R</strong> because the
+<strong>tidyverse</strong> provides a much more efficient and intuitive
+way to do these things. I will provide a few examples as we continue to
+compare <strong>base R</strong> to the <strong>tidyverse</strong> to
+illustrate this point.</p>
+</div>
+<div id="importing-tidy-data-tibbles" class="section level3">
+<h3>Importing tidy data (tibbles)</h3>
+<p>We already covered a few ways to read in data with <strong>base
+R</strong> but since we will primarily be using the
+<strong>tidyverse</strong> for this course let’s cover the tidy
+<strong>functions</strong> to read in data. The
+<strong>function</strong> to read in .txt files as tidy data is
+<code>read_delim()</code> in the <em>readr</em>
+<strong>package</strong>.</p>
+<pre class="r"><code>  # The wonders of tidyverse ----------------------
+
+  # Read in tidy data ----------------------
+
+tidy_data.txt &lt;- read_delim(&#39;data/raw/data.txt&#39;)
+
+# print data
+tidy_data.txt</code></pre>
+<pre><code>## # A tibble: 20 × 4
+##    Country        Import Export Product
+##    &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+##  1 Bolivia            46      0 N      
+##  2 Brazil             74      0 N      
+##  3 Chile              89     16 N      
+##  4 Colombia           77     16 A      
+##  5 CostaRica          84     21 A      
+##  6 Cuba               89     15 A      
+##  7 DominicanRep       68     14 A      
+##  8 Ecuador            70      6 A      
+##  9 ElSalvador         60     13 A      
+## 10 Guatemala          55      9 A      
+## 11 Haiti              35      3 A      
+## 12 Honduras           51      7 A      
+## 13 Jamaica            87     23 A      
+## 14 Mexico             83      4 N      
+## 15 Nicaragua          68      0 A      
+## 16 Panama             84     19 N      
+## 17 Paraguay           74      3 A      
+## 18 Peru               73      0 N      
+## 19 TrinidadTobago     84     15 A      
+## 20 Venezuela          91      7 A</code></pre>
+<p>Notice the tidy way did a slightly better job reading in this data
+(e.g., we don’t have those weird variable labels at the top of our
+columns)</p>
+<p>You’ll also notice the object type has change to a
+<strong>tibble</strong></p>
+<pre class="r"><code># check the object type of data
+
+class(tidy_data.txt)</code></pre>
+<pre><code>## [1] &quot;spec_tbl_df&quot; &quot;tbl_df&quot;      &quot;tbl&quot;         &quot;data.frame&quot;</code></pre>
+<p>The <strong>function</strong> to read in .csv files as tidy data is
+<code>read_csv()</code> in the <em>readr</em>
+<strong>package</strong></p>
+<pre class="r"><code>tidy_data.csv &lt;- read_csv(&#39;data/raw/data.csv&#39;)
+
+# print the first few rows of data
+head(tidy_data.csv)</code></pre>
+<pre><code>## # A tibble: 6 × 4
+##   Country   Import Export Product
+##   &lt;chr&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+## 1 Bolivia       46      0 N      
+## 2 Brazil        74      0 N      
+## 3 Chile         89     16 N      
+## 4 Colombia      77     16 A      
+## 5 CostaRica     84     21 A      
+## 6 Cuba          89     15 A</code></pre>
+<p>We have now imported multiple versions of the same data with similar
+names. Let’s remove all but one from our <strong>environment</strong> to
+avoid confusion later on. Recall the command to remove objects from your
+<strong>environment</strong>? <span style="color: blue;">using the
+<strong>console</strong> remove ‘tidy_data.txt’ and ‘data.df’ from your
+<strong>environment</strong></span>.</p>
+<pre class="r fold-hide"><code># in the console type
+# rm(tidy_data.txt)
+# rm(data.df)</code></pre>
+</div>
+<div id="exporting-tidy-data" class="section level3">
+<h3>Exporting tidy data</h3>
+<p>The <strong>function</strong> to save tidy data as .csv files is
+<code>write_csv()</code> in the <em>readr</em>
+<strong>package</strong></p>
+<pre class="r"><code>  # Export tidy data ----------------------
+
+# ?write_csv
+
+# write_csv(data, &#39;data_name_to_save.csv&#39;)</code></pre>
+<blockquote>
+<p>Check your data import (readr) cheat sheet for more
+<strong>functions</strong> to import and export tidy data*</p>
+</blockquote>
+</div>
+<div id="the-pipe-operator" class="section level3">
+<h3>The pipe operator (%&gt;%)</h3>
+<p>The <strong>tidyverse</strong> set of <strong>packages</strong> takes
+advantage of the <strong>pipe operator</strong> <code>%&gt;%</code>,
+which provides a clean and intuitive way to structure code and perform
+sequential operations in R.</p>
+<p><img src="images/magritte.jpg" style="width:25.0%" /> %&gt;%</p>
+<p>Key advantages include:</p>
+<ul>
+<li><p>code is more readable and intuitive – reads left to right, rather
+than inside out as is the case for nested function</p></li>
+<li><p>perform multiple operations without creating a bunch of
+intermediate (temporary) datasets</p></li>
+</ul>
+<p>This operator comes from the <em>magrittr</em> package, which is
+included in the installation of all of the tidyverse packages. The
+shortcut for the pipe operator is ctrl + shift + m (‘m’ is for Magritte)
+for Windows and command + shift + m for Mac. When reading code out loud,
+use ‘then’ for the pipe. For example the command here:</p>
+<pre><code>
+x %&gt;% 
+log() %&gt;% 
+round(digits = 2)
+</code></pre>
+<p>can be interpreted as follows:</p>
+<blockquote>
+<p>Take “x”, THEN take its natural logarithm, THEN round the resulting
+value to 2 decimal places</p>
+</blockquote>
+<p>The structure is simple. Start with the object you want to
+manipulate, and apply actions (e.g., functions) to that object in the
+order in which you want to apply them.</p>
+<p>Here is a quick example of dplyr in action using the dataset we read
+in earlier.</p>
+<pre class="r"><code>  # The pipe operator ----------------------
+
+# start by assigning a value to x
+x &lt;- 3
+
+# call the variable x followed by %&gt;% (&#39;then&#39;)
+x %&gt;% 
+  
+  # calculate the log of x, &#39;then&#39;
+  log() %&gt;% 
+  
+  # round the log of x to 2 digits
+  round(digits = 2) </code></pre>
+<pre><code>## [1] 1.1</code></pre>
+<p>For the above code to be applied in <strong>base R</strong> you would
+have to nest your functions which can get very confusing to read
+<strong>or</strong> assign many objects to your
+<strong>environment</strong> that you only need temporarily. For
+example,</p>
+<pre class="r"><code> x &lt;- 3
+
+# nested code
+round(log(x), digits=2) </code></pre>
+<pre><code>## [1] 1.1</code></pre>
+<pre class="r"><code># assigning multiple objects
+log_x &lt;- log(x)
+
+round_log_x &lt;- round(x, digits = 2)</code></pre>
+<p>The nested code may seem simpler at first but you can imagine as
+operation get more complex this can become quite difficult to
+interpret.</p>
+</div>
+</div>
+<div id="data-exploration-tidyverse" class="section level2">
+<h2>Data exploration (tidyverse)</h2>
+<p>Let’s switch to a different data file. Download the <a
+href="data/turtle_data.txt">Turtle Data</a> and save it to the data
+folder in your project directory.</p>
+<p>Let’s use this data set to review tsome data processing operations we
+have learned- and learn a few new things along the way:</p>
+<p>First we need to read the data in to R. Using the <em>reader</em>
+<strong>package</strong>, <span style="color: blue;">read the
+turtle_data.txt in to R and assign it to the environemnt as
+turtles.df</span></p>
+<pre class="r fold-hide"><code># Data exploration with tidyverse ----------------------
+
+# read turtle_data.txt in to R using readr
+turtles.df &lt;- read_delim(&#39;data/raw/turtle_data.txt&#39;,
+                         delim = &#39;\t&#39;) # specify tab-delimited file</code></pre>
+<div id="check-data" class="section level3">
+<h3>Check data</h3>
+<p>It is always good coding practice to view your data and check the
+internal structure before proceeding with any processing, analyses, or
+visualization. <span style="color: blue;"> View the turtles, check the
+internal structure and then look at a summary of the columns</span>.
+Below are the outputs you should see in the
+<strong>console</strong>.</p>
+<pre><code>## spc_tbl_ [21 × 5] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ Tag_number     : num [1:21] 10 11 2 15 16 3 4 5 12 13 ...
+##  $ Sex            : chr [1:21] &quot;male&quot; &quot;female&quot; NA NA ...
+##  $ Carapace_length: num [1:21] 41 46.4 24.3 28.7 32 42.8 40 45 44 28 ...
+##  $ Head_width     : num [1:21] 7.15 8.18 4.42 4.89 5.37 7.32 6.6 8.05 7.55 4.85 ...
+##  $ Weight         : num [1:21] 7.6 11 1.65 2.18 3 8.6 6.5 10.9 8.9 1.97 ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   Tag_number = col_double(),
+##   ..   Sex = col_character(),
+##   ..   Carapace_length = col_double(),
+##   ..   Head_width = col_double(),
+##   ..   Weight = col_double()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<pre><code>##    Tag_number         Sex            Carapace_length   Head_width  
+##  Min.   :  1.00   Length:21          Min.   :24.30   Min.   :4.42  
+##  1st Qu.:  6.00   Class :character   1st Qu.:32.00   1st Qu.:5.37  
+##  Median : 11.00   Mode  :character   Median :41.00   Median :6.60  
+##  Mean   : 19.19                      Mean   :38.71   Mean   :6.58  
+##  3rd Qu.: 16.00                      3rd Qu.:44.00   3rd Qu.:7.35  
+##  Max.   :105.00                      Max.   :48.10   Max.   :8.67  
+##      Weight      
+##  Min.   : 1.650  
+##  1st Qu.: 3.000  
+##  Median : 7.200  
+##  Mean   : 6.737  
+##  3rd Qu.: 9.000  
+##  Max.   :13.500</code></pre>
+</div>
+<div id="renaming-columns" class="section level3">
+<h3>Renaming columns</h3>
+<p>Notice the column names are capitalized in this data set. Data are
+often entered this way, but this can lead to mistakes in your code if
+you forget to capitalize a variable. I prefer to keep everything
+lowercase when working in R to avoid this and extra keystrokes. There’s
+an easy way to do this using the <em>dplyr</em>
+<strong>package</strong>.</p>
+<pre class="r"><code># Renaming columns ----------------------
+
+# check names of turtles data before changing
+names(turtles.df)</code></pre>
+<pre><code>## [1] &quot;Tag_number&quot;      &quot;Sex&quot;             &quot;Carapace_length&quot; &quot;Head_width&quot;     
+## [5] &quot;Weight&quot;</code></pre>
+<pre class="r"><code>turtles.df %&gt;% 
+  
+   # set column names to lowercase
+  set_names(
+    names(.) %&gt;%  # the period here is a placeholder for the data it tells R to use the element before the last pipe (e.g., turtles.df)
+      tolower()) </code></pre>
+<pre><code>## # A tibble: 21 × 5
+##    tag_number sex    carapace_length head_width weight
+##         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
+##  1         10 male              41         7.15   7.6 
+##  2         11 female            46.4       8.18  11   
+##  3          2 &lt;NA&gt;              24.3       4.42   1.65
+##  4         15 &lt;NA&gt;              28.7       4.89   2.18
+##  5         16 &lt;NA&gt;              32         5.37   3   
+##  6          3 female            42.8       7.32   8.6 
+##  7          4 male              40         6.6    6.5 
+##  8          5 female            45         8.05  10.9 
+##  9         12 female            44         7.55   8.9 
+## 10         13 &lt;NA&gt;              28         4.85   1.97
+## # ℹ 11 more rows</code></pre>
+<pre class="r"><code># check the names of turtles data
+names(turtles.df)</code></pre>
+<pre><code>## [1] &quot;Tag_number&quot;      &quot;Sex&quot;             &quot;Carapace_length&quot; &quot;Head_width&quot;     
+## [5] &quot;Weight&quot;</code></pre>
+<p>Alternatively a more efficient way to do this would be to change the
+names in the same code chunk that we read in the data. Let’s check this,
+<span style="color: blue;"> remove the turtles data from your
+<strong>environment</strong></span>.</p>
+<pre class="r fold-hide"><code>rm(turtles.df)</code></pre>
+<p>Now let’s read in the data and change the column names to lowercase
+in the same code chunk.</p>
+<pre class="r"><code># read turtle_data.txt in to R using readr
+turtles.df &lt;- read_delim(&#39;data/raw/turtle_data.txt&#39;,
+                         delim = &#39;\t&#39;) %&gt;% 
+  
+   # set column names to lowercase
+  set_names(
+    names(.) %&gt;%  
+      tolower()) 
+
+summary(turtles.df)</code></pre>
+<pre><code>##    tag_number         sex            carapace_length   head_width  
+##  Min.   :  1.00   Length:21          Min.   :24.30   Min.   :4.42  
+##  1st Qu.:  6.00   Class :character   1st Qu.:32.00   1st Qu.:5.37  
+##  Median : 11.00   Mode  :character   Median :41.00   Median :6.60  
+##  Mean   : 19.19                      Mean   :38.71   Mean   :6.58  
+##  3rd Qu.: 16.00                      3rd Qu.:44.00   3rd Qu.:7.35  
+##  Max.   :105.00                      Max.   :48.10   Max.   :8.67  
+##      weight      
+##  Min.   : 1.650  
+##  1st Qu.: 3.000  
+##  Median : 7.200  
+##  Mean   : 6.737  
+##  3rd Qu.: 9.000  
+##  Max.   :13.500</code></pre>
+<p>Sometimes we have column names that are not informative or don’t make
+sense to us, and rather than just changing them to lowercase we may want
+to rename some of them. Let’s go through how to rename columns using the
+<code>names()</code> <strong>function</strong>. Let’s make some shorter
+names for the turtles dataset.</p>
+<pre class="r"><code># extract the column names for turtle data
+names(turtles.df)</code></pre>
+<pre><code>## [1] &quot;tag_number&quot;      &quot;sex&quot;             &quot;carapace_length&quot; &quot;head_width&quot;     
+## [5] &quot;weight&quot;</code></pre>
+<pre class="r"><code># to change the column names, use the &quot;names()&quot; function
+names(turtles.df)  &lt;- c(&quot;tag&quot;, &quot;sex&quot;,&quot;c_length&quot;, &quot;h_width&quot;, &quot;weight&quot;)
+
+# let&#39;s check
+head(turtles.df)</code></pre>
+<pre><code>## # A tibble: 6 × 5
+##     tag sex    c_length h_width weight
+##   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+## 1    10 male       41      7.15   7.6 
+## 2    11 female     46.4    8.18  11   
+## 3     2 &lt;NA&gt;       24.3    4.42   1.65
+## 4    15 &lt;NA&gt;       28.7    4.89   2.18
+## 5    16 &lt;NA&gt;       32      5.37   3   
+## 6     3 female     42.8    7.32   8.6</code></pre>
+<p>We can also do this more efficiently in the <em>dplyr</em> pipe when
+we read in the data using the <code>rename()</code>
+<strong>function</strong>.</p>
+<pre class="r"><code># read turtle_data.txt in to R using readr
+turtles.df &lt;- read_delim(&#39;data/raw/turtle_data.txt&#39;,
+                         delim = &#39;\t&#39;) %&gt;% 
+  
+   # set column names to lowercase
+  set_names(
+    names(.) %&gt;%  
+      tolower()) %&gt;% 
+  
+  # rename columns to shorter names
+  rename(tag = tag_number,
+         c_length = carapace_length,
+         h_width = head_width)
+
+summary(turtles.df)</code></pre>
+<pre><code>##       tag             sex               c_length        h_width    
+##  Min.   :  1.00   Length:21          Min.   :24.30   Min.   :4.42  
+##  1st Qu.:  6.00   Class :character   1st Qu.:32.00   1st Qu.:5.37  
+##  Median : 11.00   Mode  :character   Median :41.00   Median :6.60  
+##  Mean   : 19.19                      Mean   :38.71   Mean   :6.58  
+##  3rd Qu.: 16.00                      3rd Qu.:44.00   3rd Qu.:7.35  
+##  Max.   :105.00                      Max.   :48.10   Max.   :8.67  
+##      weight      
+##  Min.   : 1.650  
+##  1st Qu.: 3.000  
+##  Median : 7.200  
+##  Mean   : 6.737  
+##  3rd Qu.: 9.000  
+##  Max.   :13.500</code></pre>
+</div>
+<div id="summary-statistics-1" class="section level3">
+<h3>Summary statistics</h3>
+<p>Remember earlier we calculated the mean and standard deviation for a
+column in our dataset? <span style="color: blue;"> Calculate the mean
+and sd for carapace length, head width, and weight</span> in the turtles
+data.</p>
+<pre class="r fold-hide"><code># Summary stats the tidyverse way ----------------------
+
+# calculate the mean and sd for three columns in the turtles data using base R
+
+# carapace length
+mean(turtles.df$c_length)</code></pre>
+<pre><code>## [1] 38.70952</code></pre>
+<pre class="r fold-hide"><code>sd (turtles.df$c_length)</code></pre>
+<pre><code>## [1] 7.223427</code></pre>
+<pre class="r fold-hide"><code># head width
+mean(turtles.df$h_width)</code></pre>
+<pre><code>## [1] 6.58</code></pre>
+<pre class="r fold-hide"><code>sd(turtles.df$h_width)</code></pre>
+<pre><code>## [1] 1.272108</code></pre>
+<pre class="r fold-hide"><code># weight
+mean(turtles.df$weight)</code></pre>
+<pre><code>## [1] 6.737143</code></pre>
+<pre class="r fold-hide"><code>sd(turtles.df$weight)</code></pre>
+<pre><code>## [1] 3.666874</code></pre>
+<p>We had to type a lot to do these simple calculations across multiple
+columns, and there is a lot of repetition in our code which we should
+try to avoid. And what if we wanted a simple table with the meand and sd
+for all three columns so we could easily compare. This would involved a
+lot more coding. Luckily, the <strong>tidyverse</strong> <em>dplyr</em>
+<strong>package</strong> allows for a much more efficient way to do this
+using the <code>summarise()</code> <strong>function</strong>.</p>
+<pre class="r"><code># calculate the mean and sd for three columns in the turtles data using dplyr
+
+turtles.df %&gt;% 
+  
+  # use summarise function to get mean and sd for multiple columns
+  summarise(cl_mean = mean(c_length),
+            cl_sd = sd(c_length),
+            hw_mean = mean(h_width),
+            hw_sd = sd(h_width),
+            w_mean = mean(weight),
+            w_sd = sd(weight)
+  )</code></pre>
+<pre><code>## # A tibble: 1 × 6
+##   cl_mean cl_sd hw_mean hw_sd w_mean  w_sd
+##     &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+## 1    38.7  7.22    6.58  1.27   6.74  3.67</code></pre>
+<p>Using dplyr we only have to reference the data once which saves us
+typing and our output is a nice tibble data frame that is easy to read
+or save and use later for plotting etc. However, there’s still a more
+efficient way to do this in <em>dplyr</em> let’s try the
+<code>summarise_all()</code> <strong>function</strong>.</p>
+<pre class="r"><code>turtles.df %&gt;% 
+summarise_all(.funs = list(mean, sd))</code></pre>
+<pre><code>## # A tibble: 1 × 10
+##   tag_fn1 sex_fn1 c_length_fn1 h_width_fn1 weight_fn1 tag_fn2 sex_fn2
+##     &lt;dbl&gt;   &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1    19.2      NA         38.7        6.58       6.74    28.9      NA
+## # ℹ 3 more variables: c_length_fn2 &lt;dbl&gt;, h_width_fn2 &lt;dbl&gt;, weight_fn2 &lt;dbl&gt;</code></pre>
+<p>This worked but since a few of our variables are not
+<strong>numeric</strong> R cannot calculate a mean and sd for them and
+we get NAs. Let’s try <code>summarise_if()</code> instead and specify
+only to run the <strong>functions</strong> if the variables are
+<strong>numeric</strong>.</p>
+<pre class="r"><code>turtles.df %&gt;% 
+summarise_if(is.numeric,
+             .funs = list(mean, sd))</code></pre>
+<pre><code>## # A tibble: 1 × 8
+##   tag_fn1 c_length_fn1 h_width_fn1 weight_fn1 tag_fn2 c_length_fn2 h_width_fn2
+##     &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
+## 1    19.2         38.7        6.58       6.74    28.9         7.22        1.27
+## # ℹ 1 more variable: weight_fn2 &lt;dbl&gt;</code></pre>
+<p>This worked better but the column names for our new
+<strong>tibble</strong> aren’t very informative if we had a lot of
+functions to run it would be hard to remember which is which. Let’s try
+adding names. Let’s practice using the <strong>help</strong> window to
+see if we can figure out how to name our <strong>functions</strong>.
+<span style="color: blue;"> Use the <strong>console</strong> to access
+the <strong>R documentation</strong> for
+<code>summarise_if()</code></span>.</p>
+<pre class="r fold-hide"><code># ?summarise_if()</code></pre>
+<p>Let’s work through the <strong>R documentation</strong> together. It
+looks like there is a ‘naming’ section for this
+<strong>function</strong> that explains exactly how the columns are
+named based on the arguments/input you provide in the
+<strong>function</strong>, but I don’t see how to specify the column
+names… Let’s see if some of the examples help us. It looks like the very
+last one provides names for each function in the <code>list()</code>
+argument. Let’s copy this code to the <strong>console</strong> and run
+it to check if the output is what we want.</p>
+<pre class="r"><code>by_species &lt;- iris %&gt;%
+  group_by(Species)
+
+by_species %&gt;%
+  summarise(across(everything(), list(min = min, max = max)))</code></pre>
+<pre><code>## # A tibble: 3 × 9
+##   Species    Sepal.Length_min Sepal.Length_max Sepal.Width_min Sepal.Width_max
+##   &lt;fct&gt;                 &lt;dbl&gt;            &lt;dbl&gt;           &lt;dbl&gt;           &lt;dbl&gt;
+## 1 setosa                  4.3              5.8             2.3             4.4
+## 2 versicolor              4.9              7               2               3.4
+## 3 virginica               4.9              7.9             2.2             3.8
+## # ℹ 4 more variables: Petal.Length_min &lt;dbl&gt;, Petal.Length_max &lt;dbl&gt;,
+## #   Petal.Width_min &lt;dbl&gt;, Petal.Width_max &lt;dbl&gt;</code></pre>
+<p>Looks good! Let’s try this with our data. Using our code from earlier
+and the example above, <span style="color: blue;"> get the mean and sd
+for all numeric variables in the turtle data and specify the names of
+the <strong>functions</strong> ‘<em>mean</em>’ and
+‘<em>sd</em>’</span>.</p>
+<pre class="r"><code>turtles.df %&gt;% 
+summarise_if(is.numeric,
+             .funs = list(mean = mean, 
+                          sd = sd))</code></pre>
+<pre><code>## # A tibble: 1 × 8
+##   tag_mean c_length_mean h_width_mean weight_mean tag_sd c_length_sd h_width_sd
+##      &lt;dbl&gt;         &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;
+## 1     19.2          38.7         6.58        6.74   28.9        7.22       1.27
+## # ℹ 1 more variable: weight_sd &lt;dbl&gt;</code></pre>
+<p>This is much better! And you just practiced using the
+<strong>help</strong> window and <strong>R documentation</strong> to
+learn about a new <strong>function</strong></p>
+</div>
+<div id="change-variable-type" class="section level3">
+<h3>Change variable type</h3>
+<p>In the last example we specified to only calculate summary statistics
+for variables that were <strong>numeric</strong>. But what if R doesn’t
+properly read the variables types and we want to change them? This
+happens quite frequent, let’s look at how to do this in <em>dplyr</em>
+using the <code>mutate()</code> <strong>function</strong>. This
+<strong>function</strong> creates new columns using existing variables
+and can also modify existing columns by settting the new column name the
+same as a previous column name, as in this example below.</p>
+<pre class="r"><code># Change variable type ----------------------
+
+# Change sex to factor
+turtles.df %&gt;% 
+  mutate(sex = as.factor(sex)) # we use the same name for our &#39;new&#39; column so that it modifies the old column instead of creating a new one</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##      tag sex    c_length h_width weight
+##    &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+##  1    10 male       41      7.15   7.6 
+##  2    11 female     46.4    8.18  11   
+##  3     2 &lt;NA&gt;       24.3    4.42   1.65
+##  4    15 &lt;NA&gt;       28.7    4.89   2.18
+##  5    16 &lt;NA&gt;       32      5.37   3   
+##  6     3 female     42.8    7.32   8.6 
+##  7     4 male       40      6.6    6.5 
+##  8     5 female     45      8.05  10.9 
+##  9    12 female     44      7.55   8.9 
+## 10    13 &lt;NA&gt;       28      4.85   1.97
+## # ℹ 11 more rows</code></pre>
+<pre class="r"><code># check structure
+str(turtles.df) # sex is still a character, why?</code></pre>
+<pre><code>## spc_tbl_ [21 × 5] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ tag     : num [1:21] 10 11 2 15 16 3 4 5 12 13 ...
+##  $ sex     : chr [1:21] &quot;male&quot; &quot;female&quot; NA NA ...
+##  $ c_length: num [1:21] 41 46.4 24.3 28.7 32 42.8 40 45 44 28 ...
+##  $ h_width : num [1:21] 7.15 8.18 4.42 4.89 5.37 7.32 6.6 8.05 7.55 4.85 ...
+##  $ weight  : num [1:21] 7.6 11 1.65 2.18 3 8.6 6.5 10.9 8.9 1.97 ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   Tag_number = col_double(),
+##   ..   Sex = col_character(),
+##   ..   Carapace_length = col_double(),
+##   ..   Head_width = col_double(),
+##   ..   Weight = col_double()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<p>You’ll notice it works within you pipe but when we re-check the
+structure of our data it hasn’t changed. This is because we save the
+changes, to do this we need to use the <strong>assignment
+operator</strong> to save the altered turtles.df data to the
+<strong>environment</strong>. Using the <em>same name for the turtles
+data and the assignment operator</em> and code above <span
+style="color: blue;">assign the altered data to the
+<strong>environment</strong> as turtles.df</span>. Check the structure
+of the data when you are done to ensure it worked.</p>
+<pre class="r"><code># Change sex to factor as save changes to data
+turtles.df &lt;-  turtles.df %&gt;% 
+  mutate(sex = as.factor(sex))
+
+# check structure
+str(turtles.df) </code></pre>
+<pre><code>## tibble [21 × 5] (S3: tbl_df/tbl/data.frame)
+##  $ tag     : num [1:21] 10 11 2 15 16 3 4 5 12 13 ...
+##  $ sex     : Factor w/ 3 levels &quot;fem&quot;,&quot;female&quot;,..: 3 2 NA NA NA 2 3 2 2 NA ...
+##  $ c_length: num [1:21] 41 46.4 24.3 28.7 32 42.8 40 45 44 28 ...
+##  $ h_width : num [1:21] 7.15 8.18 4.42 4.89 5.37 7.32 6.6 8.05 7.55 4.85 ...
+##  $ weight  : num [1:21] 7.6 11 1.65 2.18 3 8.6 6.5 10.9 8.9 1.97 ...</code></pre>
+<p>This worked! But, you guessed it. There is a more efficient way to do
+this right when we read in the data. Using the code below, <span
+style="color: blue;"> add the mutate function to the <em>dplyr</em> pipe
+to mutate sex to a factor</span>.</p>
+<pre><code># read turtle_data.txt in to R using readr
+turtles.df &lt;- read_delim(&#39;data/turtle_data.txt&#39;,
+                         delim = &#39;\t&#39;) %&gt;% 
+  
+   # set column names to lowercase
+  set_names(
+    names(.) %&gt;%  
+      tolower()) %&gt;% 
+  
+  # rename columns to shorter names
+  rename(tag = tag_number,
+         c_length = carapace_length,
+         h_width = head_width)</code></pre>
+<pre class="r fold-hide"><code># read turtle_data.txt in to R using readr
+turtles.df &lt;- read_delim(&#39;data/raw/turtle_data.txt&#39;,
+                         delim = &#39;\t&#39;) %&gt;% 
+  
+   # set column names to lowercase
+  set_names(
+    names(.) %&gt;%  
+      tolower()) %&gt;% 
+  
+  # rename columns to shorter names
+  rename(tag = tag_number,
+         c_length = carapace_length,
+         h_width = head_width) %&gt;% 
+  
+  # change sex to factor
+  mutate(sex = as.factor(sex))</code></pre>
+<p>Similar to the <code>summarise()</code> <strong>function</strong> we
+can also perform mutations on all the columns
+(<code>mutate_all()</code>) or multiple columns that fit a criteria
+(<code>mutat_if()</code>). <span style="color: blue;"> Without assigning
+the object to the <strong>environment</strong> to mutate all the
+<strong>numeric</strong> columns to <strong>characters</strong> </span>
+in the turtles data. HINT: Look at the <strong>R Documentation</strong>
+examples.</p>
+<pre class="r fold-hide"><code># read turtle_data.txt in to R using readr
+turtles.df %&gt;% 
+  mutate_if(is.numeric, as.character)</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##    tag   sex    c_length h_width weight
+##    &lt;chr&gt; &lt;fct&gt;  &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt; 
+##  1 10    male   41       7.15    7.6   
+##  2 11    female 46.4     8.18    11    
+##  3 2     &lt;NA&gt;   24.3     4.42    1.65  
+##  4 15    &lt;NA&gt;   28.7     4.89    2.18  
+##  5 16    &lt;NA&gt;   32       5.37    3     
+##  6 3     female 42.8     7.32    8.6   
+##  7 4     male   40       6.6     6.5   
+##  8 5     female 45       8.05    10.9  
+##  9 12    female 44       7.55    8.9   
+## 10 13    &lt;NA&gt;   28       4.85    1.97  
+## # ℹ 11 more rows</code></pre>
+</div>
+<div id="subsetting-data-with-tidyr" class="section level3">
+<h3>Subsetting data with tidyr</h3>
+<p>Just like in base R we can use <strong>functions</strong> from the
+tidyverse <strong>packages</strong> to subset our data.</p>
+<div id="filter" class="section level4">
+<h4>Filter</h4>
+<p>For example, if we are only interested in the male data we can use
+the <code>filter()</code> <strong>function</strong> to do this with
+Boolean operations. Filter applies criteria to the rows and returns only
+the rows that match the criteria.</p>
+<pre class="r"><code>  # Subsetting data with tidyr ----------------------
+
+  # Filter ----------------------
+
+# subset turtles data
+turtles.df %&gt;% 
+  
+  # return data for males only
+  filter(sex == &#39;male&#39;)</code></pre>
+<pre><code>## # A tibble: 7 × 5
+##     tag sex   c_length h_width weight
+##   &lt;dbl&gt; &lt;fct&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+## 1    10 male      41      7.15    7.6
+## 2     4 male      40      6.6     6.5
+## 3     9 male      35      5.74    3.9
+## 4    19 male      42.3    6.77    7.8
+## 5   105 male      44      7.1     9  
+## 6    14 male      43      6.6     7.2
+## 7   104 male      44      7.35    9</code></pre>
+<pre class="r"><code>turtles.df %&gt;% 
+  
+  # return data for males only that are larger than 5 (grams?)
+  filter(sex == &#39;male&#39; &amp;
+           weight &gt; 5)</code></pre>
+<pre><code>## # A tibble: 6 × 5
+##     tag sex   c_length h_width weight
+##   &lt;dbl&gt; &lt;fct&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+## 1    10 male      41      7.15    7.6
+## 2     4 male      40      6.6     6.5
+## 3    19 male      42.3    6.77    7.8
+## 4   105 male      44      7.1     9  
+## 5    14 male      43      6.6     7.2
+## 6   104 male      44      7.35    9</code></pre>
+</div>
+<div id="select" class="section level4">
+<h4>Select</h4>
+<p>If we only want to work with specific columns we can also subset the
+data using the <code>select()</code> <strong>function</strong>. We don’t
+need Boolean operations here, instead we can just refer to the column
+names.</p>
+<pre class="r"><code>  # Select ----------------------
+
+turtles.df %&gt;% 
+  
+  # return data for tag and weight only
+  select(tag, weight)</code></pre>
+<pre><code>## # A tibble: 21 × 2
+##      tag weight
+##    &lt;dbl&gt;  &lt;dbl&gt;
+##  1    10   7.6 
+##  2    11  11   
+##  3     2   1.65
+##  4    15   2.18
+##  5    16   3   
+##  6     3   8.6 
+##  7     4   6.5 
+##  8     5  10.9 
+##  9    12   8.9 
+## 10    13   1.97
+## # ℹ 11 more rows</code></pre>
+<p>We can also combine these <strong>functions</strong> to subset the
+columns and rows in one code chunk.</p>
+<pre class="r"><code>turtles.df %&gt;%
+  
+  # return data for males only with weight greater than 5
+  filter(sex == &#39;male&#39; &amp;
+           weight &gt; 5) %&gt;% 
+
+# return data for tag and weight only
+  select(tag, weight)</code></pre>
+<pre><code>## # A tibble: 6 × 2
+##     tag weight
+##   &lt;dbl&gt;  &lt;dbl&gt;
+## 1    10    7.6
+## 2     4    6.5
+## 3    19    7.8
+## 4   105    9  
+## 5    14    7.2
+## 6   104    9</code></pre>
+<p>And we can assign the altered data to the
+<strong>environment</strong> to save for later or to export to our hard
+drive if we want.</p>
+<pre class="r"><code>turtles_males_lg &lt;- turtles.df %&gt;% 
+    # return data for males only with weight greater than 5
+  filter(sex == &#39;male&#39; &amp;
+           weight &gt; 5) %&gt;% 
+
+# return data for tag and weight only
+  select(tag, weight)</code></pre>
+</div>
+<div id="group-by" class="section level4">
+<h4>Group by</h4>
+<p><code>group_by()</code> is a useful <strong>function</strong> to get
+summary statistics for various groups such as different treatments,
+sexes, etc. You simply supply the column name in the
+<code>group_by()</code> <strong>function</strong> and anything after
+will be applied to each group separately. For example:</p>
+<pre class="r"><code>  # Group by ----------------------
+
+turtles.df %&gt;% 
+  
+  # group by sex
+  group_by(sex) %&gt;% 
+  
+  summarise(mean = mean(weight))</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##   sex     mean
+##   &lt;fct&gt;  &lt;dbl&gt;
+## 1 fem     6.2 
+## 2 female 10.0 
+## 3 male    7.29
+## 4 &lt;NA&gt;    2.35</code></pre>
+<pre class="r"><code> # END MAIN SCRIPT ----------------------</code></pre>
+<p>You might notice a problem with the way the data are entered here. We
+will fix that in the next module.</p>
+</div>
+</div>
+</div>
+<div id="practice-problems" class="section level2">
+<h2>Practice Problems</h2>
+<div id="export-data" class="section level3">
+<h3>1 Export data</h3>
+<p>Save the altered turtles data as a comma separated file to the
+<em>data/processed</em> folder in your working directory using the
+‘readr’ package and name it ‘turtles_tidy’</p>
+</div>
+<div id="import-and-rename-data" class="section level3">
+<h3>2 Import and rename data</h3>
+<p>Download the <a href="data/raw/bear_2008_2016.csv">brown bear damage
+data (bear_2008_2016.csv)</a> and save it in the data folder.</p>
+<ul>
+<li>Import the brown bear dataset from the <em>data/raw</em> folder
+using the appropriate function from the ‘readr’ package and save it as
+bear_data.<br />
+</li>
+<li>In the same code chunk set the column names to lowercase and<br />
+</li>
+<li>change dist_to_town to m_to_town and dist_to_forest to m_to_forest
+(m for meters)<br />
+</li>
+<li>Finally, use one of the functions we’ve covered to view/print your
+data to check that it worked.</li>
+</ul>
+<pre><code>## # A tibble: 6 × 25
+##   damage  year month targetspp point_x point_y bear_abund landcover_code
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;          &lt;dbl&gt;
+## 1      0  2008     0 &lt;NA&gt;      542583. 532675.         38            311
+## 2      0  2008     0 &lt;NA&gt;      540963. 528113.         40            311
+## 3      0  2008     0 &lt;NA&gt;      542435. 510385.         38            211
+## 4      0  2008     0 &lt;NA&gt;      541244. 507297.         38            231
+## 5      0  2008     0 &lt;NA&gt;      542791. 497755.         32            211
+## 6      0  2008     0 &lt;NA&gt;      544639. 610454.         32            313
+## # ℹ 17 more variables: altitude &lt;dbl&gt;, human_population &lt;dbl&gt;,
+## #   m_to_forest &lt;dbl&gt;, m_to_town &lt;dbl&gt;, livestock_killed &lt;dbl&gt;,
+## #   numberdamageperplot &lt;dbl&gt;, shannondivindex &lt;dbl&gt;, prop_arable &lt;dbl&gt;,
+## #   prop_orchards &lt;dbl&gt;, prop_pasture &lt;dbl&gt;, prop_ag_mosaic &lt;dbl&gt;,
+## #   prop_seminatural &lt;dbl&gt;, prop_deciduous &lt;dbl&gt;, prop_coniferous &lt;dbl&gt;,
+## #   prop_mixedforest &lt;dbl&gt;, prop_grassland &lt;dbl&gt;, prop_for_regen &lt;dbl&gt;</code></pre>
+</div>
+<div id="change-variable-type-1" class="section level3">
+<h3>3 Change variable type</h3>
+<ul>
+<li>Check the internal structure of the bear dataset<br />
+</li>
+<li>Change ‘targetspp’ from <strong>character</strong> to
+<strong>factor</strong> using <em>dplyr</em> make sure to overwrite the
+previous bear data so the changes are saved<br />
+</li>
+<li>Use the ‘levels()’ <strong>function</strong> to check if this
+worked. HINT: Use the help file if you aren’t familiar with
+‘levels()’</li>
+</ul>
+<pre><code>## spc_tbl_ [3,024 × 25] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ damage             : num [1:3024] 0 0 0 0 0 0 0 0 0 0 ...
+##  $ year               : num [1:3024] 2008 2008 2008 2008 2008 ...
+##  $ month              : num [1:3024] 0 0 0 0 0 0 0 0 0 0 ...
+##  $ targetspp          : chr [1:3024] NA NA NA NA ...
+##  $ point_x            : num [1:3024] 542583 540963 542435 541244 542791 ...
+##  $ point_y            : num [1:3024] 532675 528113 510385 507297 497755 ...
+##  $ bear_abund         : num [1:3024] 38 40 38 38 32 32 37 45 45 36 ...
+##  $ landcover_code     : num [1:3024] 311 311 211 231 211 313 313 312 324 312 ...
+##  $ altitude           : num [1:3024] 800 666 504 553 470 ...
+##  $ human_population   : num [1:3024] 2 0 2 0 0 0 0 0 0 0 ...
+##  $ m_to_forest        : num [1:3024] 0 0 1829 398 942 ...
+##  $ m_to_town          : num [1:3024] 2398 2441 571 1598 1068 ...
+##  $ livestock_killed   : num [1:3024] 0 0 0 0 0 0 0 0 0 0 ...
+##  $ numberdamageperplot: num [1:3024] 0 0 0 0 0 0 0 0 0 0 ...
+##  $ shannondivindex    : num [1:3024] 0.963 1.119 1.056 1.506 1.067 ...
+##  $ prop_arable        : num [1:3024] 0 0 65.6 27.3 53.2 ...
+##  $ prop_orchards      : num [1:3024] 0 0 0 0 0 0 0 0 0 0 ...
+##  $ prop_pasture       : num [1:3024] 0 25.3 11.13 20 4.27 ...
+##  $ prop_ag_mosaic     : num [1:3024] 0 0 8.55 0 0 ...
+##  $ prop_seminatural   : num [1:3024] 16.3 30.6 0 19.8 0 ...
+##  $ prop_deciduous     : num [1:3024] 57.796 43.095 0 0.769 32.454 ...
+##  $ prop_coniferous    : num [1:3024] 0 0 0 0 0 ...
+##  $ prop_mixedforest   : num [1:3024] 0 0 0 0 0 ...
+##  $ prop_grassland     : num [1:3024] 0 1 0 0 0 ...
+##  $ prop_for_regen     : num [1:3024] 25.9 0 13.5 0 0 ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   Damage = col_double(),
+##   ..   Year = col_double(),
+##   ..   Month = col_double(),
+##   ..   Targetspp = col_character(),
+##   ..   POINT_X = col_double(),
+##   ..   POINT_Y = col_double(),
+##   ..   Bear_abund = col_double(),
+##   ..   Landcover_code = col_double(),
+##   ..   Altitude = col_double(),
+##   ..   Human_population = col_double(),
+##   ..   Dist_to_forest = col_double(),
+##   ..   Dist_to_town = col_double(),
+##   ..   Livestock_killed = col_double(),
+##   ..   Numberdamageperplot = col_double(),
+##   ..   ShannonDivIndex = col_double(),
+##   ..   prop_arable = col_double(),
+##   ..   prop_orchards = col_double(),
+##   ..   prop_pasture = col_double(),
+##   ..   prop_ag_mosaic = col_double(),
+##   ..   prop_seminatural = col_double(),
+##   ..   prop_deciduous = col_double(),
+##   ..   prop_coniferous = col_double(),
+##   ..   prop_mixedforest = col_double(),
+##   ..   prop_grassland = col_double(),
+##   ..   prop_for_regen = col_double()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<pre><code>## [1] &quot;alte&quot;   &quot;bovine&quot; &quot;ovine&quot;</code></pre>
+</div>
+<div id="subsetting" class="section level3">
+<h3>4 Subsetting</h3>
+<ul>
+<li>Now that we know there are 3 livestock types (groups), subset the
+data to include only the rows for ‘ovine’</li>
+<li>In the same code chunk select the columns damage, year, month,
+bear_abund, landcover_code, and altitude</li>
+<li>Save this to your <strong>environment</strong> as
+‘bear_sheep_data’</li>
+</ul>
+<pre><code>## # A tibble: 6 × 6
+##   damage  year month bear_abund landcover_code altitude
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;          &lt;dbl&gt;    &lt;dbl&gt;
+## 1      1  2008     9         40            324      570
+## 2      1  2008     9         40            324      570
+## 3      1  2008     8         36            321     1410
+## 4      1  2008     8         22            321     1068
+## 5      1  2008     9         40            112      516
+## 6      1  2008     8         56            112      533</code></pre>
+</div>
+<div id="summarise" class="section level3">
+<h3>5 Summarise</h3>
+<ul>
+<li>Using the bear_sheep_data and the <code>summarise()</code>
+<strong>function</strong>, calculate the mean, sd and SE (the formula
+for SE is sd / sqrt(n)) for altitude. <em>This last part might be tricky
+at first but give it a try and remember you can always google things and
+check the ‘help’ files; and if that fails ‘phone a friend or
+me’</em></li>
+</ul>
+<pre><code>## # A tibble: 1 × 3
+##   mean_alt sd_alt se_alt
+##      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1     699.   183.   12.6</code></pre>
+</div>
+</div>
+<div id="assignment-and-next-module" class="section level2">
+<h2>Assignment and next module</h2>
+<p><a href="assign_2.html">–Assignment 2–</a></p>
+<p><a href="mod_4_data_manipulation.html">–go to next module–</a></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

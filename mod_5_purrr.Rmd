@@ -1,0 +1,345 @@
+---
+title: "Intro to R"
+author: "Module 5: The wonders of Purrr"
+date: "TBD"
+output: 
+  html_document:
+    code_folding: show
+    theme: journal
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r echo=FALSE, message=FALSE}
+
+#  ES482 R labs   
+#      University of Victoria, Victoria BC Canada             
+
+#  Module 5: The wonders of Purrr
+
+library(tidyverse)
+```
+## Materials
+
+### Scripts
+
+1. Click [here](mod_5_purrr.R) to download the script! Save the script to the project directory you set up in the previous module.
+
+2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top to load your script.    
+
+### Cheat sheets
+
+Save this to your cheat sheet folder
+
+[Purrr cheat sheet](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_purrr.pdf)    
+
+## Iteration
+
+Often times you will want to apply the same **function** or multiple **functions** to multiple **objects** or inputs this is called **iteration**. In **Base R**, **iterations** are achieved by using **for-loops**, which are cumbersome and not very intuitive. If you've taken an R class before and covered **for-loops**, you are probably already nervous. But do not fear Tidyverse has made a package to conduct **iteration** operations that is much more user-friendly... and it has a cute inviting name, *Purrr*
+
+![](images/purrr_cat.jpeg)
+
+Let's go through a few examples of how the *Purrr* package can be used
+
+## Purrr map
+
+As you can see from the [Purrr cheat sheet](cheatsheets/purrr_cheat_sheet.pdf), the *Purrr* package has a lot of usages. For the purposes of this course we will just be skimming the surface and mostly focus on applying **functions** with *Purrr* (upper left).
+
+To apply the same **function/s** to a number of **objects** we use the `map()` **function**. 
+
+Let's go through an example WITHOUT using *Purrr* first and then apply the **tidyverse** alternative.
+
+### Import data with Purrr
+
+One of the most common ways I use *Purrr* is when I want to read in multiple data sets for the same analysis. Often times landscape data, weather data, species data, etc. will be entered separately but you need all the data files for an analysis.
+
+<span style="color: blue;">Start by reading in the 3 bobcat data files for this module, leave them named as they are<span style="color: blue;">
+
+[bobcat_collection_data.csv](data/bobcat_collection_data.csv)
+
+[bobcat_necropsy_only_data.csv](data/bobcat_necropsy_only_data.csv)
+
+[bobcat_age_data.csv](data/bobcat_age_data.csv)
+
+```{r class.source = 'fold-hide'}
+
+bobcat_collection_data <- read_csv('data/raw/bobcat_collection_data.csv')
+
+bobcat_necropsy_only_data <- read_csv('data/raw/bobcat_necropsy_only_data.csv')
+
+bobcat_age_data <- read_csv('data/raw/bobcat_age_data.csv')
+```
+
+Now lets do this using *Purrr*!
+
+First we need to assign our object to the environment with a name. When we read in multiple data frames at a time they will be stored in a **list** object. **Lists** can be confusing to work with at first but they follow a similar structure to a **data frame**. Let's name this **list** *bobcat_data*.
+
+And just like when we read in an individual data frame we need to provide the path for the data and the name and file extension (e.g. .csv, .txt.)
+
+Then we were reference our purrr::map **function** AND the **function** we want to apply to all of the data. This is where things can get a bit confusing at first,
+
+  - Inside the parentheses for for the *purrr::map* **function** we will reference the `read_csv()` **fuction**, BUT we must preface this **fuction** with a '~'. The '~' is part of the syntax Purrr uses.
+  - Then where we would normally put the data file name we can substitute '.x' which will reference the data in the **list** we already provided. Similar to the '.' when using *dplyr*.
+
+Let's look at an example
+```{r}
+
+# assign objects as list provide the names and file path of each data frame
+
+bobcat_data <- list('data/raw/bobcat_collection_data.csv',
+                    'data/raw/bobcat_necropsy_only_data.csv',
+                    'data/raw/bobcat_age_data.csv') %>% 
+  
+  # use purrr::map to read in all data at once
+  purrr::map(
+    ~read_csv(.x)
+  )
+
+# look at the list structure
+str(bobcat_data)
+```
+
+
+We can reduce our typing even further since all of the data are stored in the same folder by referencing a file path.
+
+```{r}
+
+# assign object name to environment and provide file path for the data
+bobcat_data <- file.path('data/raw', 
+  
+  # provide the names of each data frame
+  c('bobcat_collection_data.csv',
+    'bobcat_necropsy_only_data.csv',
+    'bobcat_age_data.csv')) %>% 
+  
+  # use purrr::map to read in all data at once
+  purrr::map(
+    ~read_csv(.x))
+
+str(bobcat_data)
+```
+
+We could also format it like this if that makes more sense to you, using a period as the placeholder for the data file names
+```{r}
+# assign object name to environment and provide list of data file names
+
+bobcat_data <- list('bobcat_collection_data.csv',
+                    'bobcat_necropsy_only_data.csv',
+                    'bobcat_age_data.csv') %>% 
+  
+  # provide file path for the data
+  file.path('data/raw', .) %>% 
+  
+  # use purrr::map to read in all data at once
+  purrr::map(
+    ~read_csv(.x))
+
+str(bobcat_data)
+```
+
+We can look at each **list** element by using the `$` similar to a data frame.
+
+Let's see what are list elements are named using the `names()` argument.
+```{r}
+# first see what the list elements are named
+names(bobcat_data)
+
+```
+
+hmmmm that's not ideal, our list elements don't have names. We can fix this by adding a 
+**function** outside the `Purrrr::map()` to rename each object in the list.
+
+```{r}
+
+# assign object name to environment and provide file path for the data
+bobcat_data <- file.path('data/raw', 
+  
+  # provide the names of each data frame
+  c('bobcat_collection_data.csv',
+    'bobcat_necropsy_only_data.csv',
+    'bobcat_age_data.csv')) %>% 
+  
+  # use purrr::map to read in all data at once
+  purrr::map(
+    ~read_csv(.x)) %>% 
+  
+  # assign names to list objects
+purrr::set_names('bobcat_collection',
+                   'bobcat_necropsy',
+                   'bobcat_age')
+
+str(bobcat_data)
+```
+
+Now we can look at each **list** element like by using the `$` 
+```{r}
+# look at the structure of the necropsy data
+str(bobcat_data$necropsy)
+```
+
+### Format/manipulate data with Purrr
+
+We can also use *Purrr* to manipulate our data. Recall I recommend always using lowercase for column names, objects, etc. The bobcat data when entered does not follow those rules so we'd want to change that after we import in R.
+
+Let's look at the non-purrr way first and then see how much code repetition we avoid when we use *Purrr*. We would likely want to do this when we read in the data so, on your own <span style="color: blue;"> copy the non-purrr code from above where we read in the data, and set the column names to lowercase for each data set.<span style="color: blue;">
+
+<span style="color: blue;">Use the `head()` function to look at the first few rows of each data set.<span style="color: blue;">
+
+```{r class.source = 'fold-hide'}
+
+bobcat_collection_data <- read_csv('data/raw/bobcat_collection_data.csv') %>% 
+  
+  # set names to lowercase
+  set_names(
+    names(.) %>% 
+      tolower())
+
+head(bobcat_collection_data)
+
+bobcat_necropsy_only_data <- read_csv('data/raw/bobcat_necropsy_only_data.csv')%>% 
+  
+  # set names to lowercase
+  set_names(
+    names(.) %>% 
+      tolower())
+
+head(bobcat_necropsy_only_data)
+
+bobcat_age_data <- read_csv('data/raw/bobcat_age_data.csv')%>% 
+  
+  # set names to lowercase
+  set_names(
+    names(.) %>% 
+      tolower())
+
+head(bobcat_age_data)
+```
+
+That's a lot of repetition in our code, which we generally want to avoid whenever possible. With *Purrr* we can do just that. 
+
+We are going to use the same code from above that we used to read in the data files using a file path, and we will add a **function** to set the column names to lower case.
+
+To do multiple **iterations** within the same `purrr::map()` **function** we have to change one thing. Instead of typing a '~' before the `read_csv()` **function** and referencing our list (.x) inside the `read_csv()` **function** we need to reference the list elements first and then supply the multiple **funcitons** we want to apply.
+
+See below
+```{r}
+# assign object name to environment and provide file path for the data
+bobcat_data <- file.path('data/raw', 
+                         
+                         # provide the names of each data frame
+                         c('bobcat_collection_data.csv',
+                           'bobcat_necropsy_only_data.csv',
+                           'bobcat_age_data.csv')) %>% 
+  
+  # use purrr::map to read in all data at once
+  purrr::map(
+    
+    # reference list elements with ~
+    ~.x %>% 
+      
+      # read in list elements   
+      read_csv() %>% 
+      
+      # set names to lower case
+      set_names(
+        names(.) %>% 
+          tolower())
+  ) %>% 
+  
+  # assign names to list objects
+purrr::set_names('bobcat_collection',
+                   'bobcat_necropsy',
+                   'bobcat_age')
+
+head(bobcat_data$bobcat_collection)
+```
+
+I also don't like the column name for 'bobcat ID number'. See how it reads in with '' because someone used the '#' instead of typing number and R doesn't like that. Let's change this in all the data sets using *Purrr*.
+
+For this example we won't go through the non-purrr way to save time
+```{r}
+# assign object name to environment and provide file path for the data
+bobcat_data <- file.path('data/raw', 
+                         
+                         # provide the names of each data frame
+                         c('bobcat_collection_data.csv',
+                           'bobcat_necropsy_only_data.csv',
+                           'bobcat_age_data.csv')) %>% 
+  
+  # use purrr::map to read in all data at once
+  purrr::map(
+    
+    # reference list elements with ~
+    ~.x %>% 
+      
+      # read in list elements   
+      read_csv() %>% 
+      
+      # set names to lower case
+      set_names(
+        names(.) %>% 
+          tolower()) %>% 
+      
+      # change bobcats id# to better name
+      rename(.,
+             'bobcat_id' = 'bobcat_id#') # new name = old name
+  ) %>% 
+  
+  # assign names to list objects
+  purrr::set_names('bobcat_collection',
+                   'bobcat_necropsy',
+                   'bobcat_age')
+
+head(bobcat_data$collection)
+
+```
+
+Much better! 
+
+## Purrr imap
+
+### Saving data
+
+Now that we have tidy data sets we may want to save these to our hard drive so we don't have to run code to reformat them every time we read in the data. 
+
+<span style="color: blue;">In your script, type code that will save each of the data sets in the bobcat_data list as a csv to the data/processed folder. <span style="color: blue;">
+
+```{r eval=FALSE}
+# save each data set as a csv
+write_csv(bobcat_data$bobcat_collection,
+          'data/processed/bobcat_collection.csv')
+
+write_csv(bobcat_data$bobcat_age,
+          'data/processed/bobcat_age.csv')
+
+write_csv(bobcat_data$bobcat_necropsy,
+          'data/processed/bobcat_necropsy.csv')
+```
+
+Now the *Purrr* way!
+
+We can use the *Purrr* **function** `imap()` because it retains the names of elements within our list (.y) when we save them
+```{r}
+# save each data set as a csv
+purrr::imap(
+  bobcat_data,
+  ~write_csv(.x,
+             file = paste0("data/processed/",
+                           .y,
+                           '.csv')))
+```
+
+So much less repetition and code if you have a lot of data sets to save
+
+We've only barely scratched the surface of what *Purrr* can do, but given our limited time that is where we will end. Just remember anytime you find yourself repeating the same operations for multiple **objects** of the same type you may want to consider using *Purrr* instead to reduce repetition in your code.
+
+## Practice problems
+
+There is no formal assignment for this module, but you can complete the problems below for some extra practice. 
+
+
+[--go to next module--](mod_1_plots_baseR.html)

@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Module 2: Base R" />
+
+<meta name="date" content="2025-01-14" />
+
+<title>Intro to R</title>
+
+<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R Crash Course 2025</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Intro to R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_R101.html">Module 1: R 101</a>
+    </li>
+    <li>
+      <a href="mod_2_baseR.html">Module 2: Base R</a>
+    </li>
+    <li>
+      <a href="mod_3_data.html">Module 3: Working with data</a>
+    </li>
+    <li>
+      <a href="mod_4_data_manipulation.html">Module 4: Data manipulation</a>
+    </li>
+    <li>
+      <a href="mod_5_purrr.html">Module 5: The wonders of Purrr</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Data Visualization
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_plots_baseR.html">Module 1: Data Visualization in Base R</a>
+    </li>
+    <li>
+      <a href="mod_2_ggplot.html">Module 2: Basics of ggplot</a>
+    </li>
+    <li>
+      <a href="mod_3_ggplot_adv.html">Module 3: Advanced ggplot (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_4_beyond_ggplot.html">Module 4: Beyond ggplot</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Statistical Modeling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mod_1_lm.html">Module 1: Linear regression (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_2_glm.html">Module 2: Generalized linear models (GLMs)</a>
+    </li>
+    <li>
+      <a href="mod_3_glmm.html">Module 3: General mixed effects models (GLMMs) (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_4_occ.html">Module 4: Occupancy models (coming soon)</a>
+    </li>
+    <li>
+      <a href="mod_5_sem.html">Module 5: Structural equation models (SEMs) (under construction)</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Statistical Modeling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Getting started with GitHub (under construction)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assign_1.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assign_2.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assign_3.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assign_4.html">Assignment 4</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="data.html">Data</a>
+</li>
+<li>
+  <a href="links.html">Links</a>
+</li>
+<li>
+  <a href="surveys.html">Surveys</a>
+</li>
+<li>
+  <a href="terms.html">Terms</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Intro to R</h1>
+<h4 class="author">Module 2: Base R</h4>
+<h4 class="date">14 January 2025</h4>
+
+</div>
+
+
+<div id="materials" class="section level2">
+<h2>Materials</h2>
+<div id="scripts" class="section level3">
+<h3>Scripts</h3>
+<p>You should have already downloaded the script for this module and
+save it to the scripts folder in your R labs folder. If you missed this
+step do this now by right-clicking (or command-clicking for Macs) <a
+href="mod_2_baseR.R">here</a>.</p>
+</div>
+<div id="cheat-sheets" class="section level3">
+<h3>Cheat sheets</h3>
+<p>You should also already have downloaded the cheat sheets in the prior
+module but if not here are the cheat sheets we will use in this
+module.</p>
+<p><a href="https://www.i3s.unice.fr/~malapert/R/pdf/base-r.pdf">Base R
+Cheat sheet</a><br />
+<a href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">R
+reference card</a></p>
+</div>
+</div>
+<div id="what-is-base-r" class="section level2">
+<h2>What is Base R</h2>
+<p>You may here people use the term <strong>base R</strong> when working
+in RStudio. This simply refers to the built-in functions and operations
+that R can perform without loading any <strong>packages</strong>. We
+will cover packages more later, but for now your <a
+href="https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf">Base
+R Cheat sheet</a> will come in handy.</p>
+<p><img src="images/base_r_cheat.png" /> R Objects</p>
+</div>
+<div id="objects" class="section level2">
+<h2>Objects</h2>
+<p>We have already covered that R can compute mathmatical equations, but
+what if we want to create an <strong>object</strong> and save it in R.
+Let’s create our first <strong>object</strong>. <strong>Objects</strong>
+are defined using R’s <strong>assignment operator</strong> (Windows
+shortcut: Alt + -)(Mac: Option + -), which looks like a left arrow
+(<code>&lt;-</code>).</p>
+<div id="creating-objects" class="section level3">
+<h3>Creating objects</h3>
+<p><span style="color: blue;">Type the following statement</span>
+directly into the <strong>console</strong>:</p>
+<pre><code>
+my_obj &lt;- 6+11
+</code></pre>
+<p>Then hit “Enter”. What does R return (e.g. look at the
+<strong>console</strong>)?</p>
+<p>NOTHING!</p>
+<p>BUT…. check the <strong>environment</strong>. You should see that you
+now have a new <strong>object</strong> in your environment, called
+<code>myname</code>, and this object contains a single <strong>text
+string</strong>. Simply checking the <strong>environment</strong> works
+to view this simple object but for more complex objects you may want to
+print them in the console or open another window to view them.</p>
+</div>
+<div id="view-objects" class="section level3">
+<h3>View objects</h3>
+<p>To print an object type the object name in either your
+<strong>source</strong> if you want it to print every time you run your
+code, or the <strong>console</strong> to just view it once.</p>
+<p>To view an object you can type the function <em>View()</em> with your
+object name in the parentheses or click on the object in the
+<strong>environment</strong> window.</p>
+<p><span style="color: blue;"> Print <strong>and</strong> view your
+object</span> using any of the methods described above.</p>
+<p>NOTE: RStudio has a useful auto-fill feature, which can save you lots
+of time and headaches. After you’ve typed the first couple letters
+(e.g., “my”), RStudio will suggest “my_obj” (or use the “tab” key to
+trigger RStudio to give you autofill options) and you can just scroll to
+the right object/function and hit “Enter”! The auto-type feature, unlike
+R, is not case sensitive!</p>
+<p>In your blank script, let’s define a new object. For example:</p>
+<p>Now run that line of code. You should see a new
+<strong>object</strong> (‘my_name’) pop up in your
+<strong>environment</strong>.</p>
+<p>Notice how for this <strong>object</strong> we put quotations
+<code>''</code> or <code>""</code> around the text. That is because
+words and letters are <strong>characters</strong> and not
+<strong>numeric</strong> variables so R recognized them differently.</p>
+<p><span style="color: blue;">Try creating the same object without the
+quotes</span>. What happens? You get an Error message right? This is
+because without the quotes R assumes you are referring to an
+<strong>object</strong> you have created called ‘<em>your name</em>’ but
+it doesn’t exits. We will cover data types more in a minute.</p>
+<p>Of course, it’s always a good idea to save your scripts often – save
+this script in your ‘scripts’ folder using ‘file’ &gt; ‘save as’ and
+title it <span style="color: blue;">’my_script_day1_1”</span>.</p>
+</div>
+<div id="types-of-r-objects" class="section level3">
+<h3>Types of R objects</h3>
+<p>R has many different kinds of objects that you can define and store
+in memory.</p>
+<p>Objects that enable storage of information (data objects) include:
+<strong>vectors</strong>, <strong>matrices</strong>,
+<strong>lists</strong>, and <strong>data frames</strong>.</p>
+<p>Objects that transform data and perform operations (e.g.,
+statistics/visualizations) on data objects are called
+<strong>functions</strong>.</p>
+</div>
+</div>
+<div id="working-with-objects" class="section level2">
+<h2>Working with objects</h2>
+<div id="load-an-existing-script" class="section level3">
+<h3>Load an existing script</h3>
+<p>Remember the file you downloaded at the beginning of this today’s
+lab? That file is an R script (<a href="day1_2.R">“day1_2.R”</a>); Let’s
+click back to it now.</p>
+</div>
+<div id="functions" class="section level3">
+<h3>Functions</h3>
+<p>Functions are routines that take inputs (usually data objects) (also
+called <strong>arguments</strong>) and produce something useful in
+return (transformed data objects, summaries, plots, tables, statistics,
+files).</p>
+<p>In R, the name of the function is followed by parentheses, and any
+arguments (inputs) are entered inside the parentheses. The basic syntax
+looks like the code snippet below.</p>
+<p><img src="images/funcmach.png" style="width:25.0%" /></p>
+<pre><code>## function syntax
+functionName([argument 1, argument2, ...])</code></pre>
+<p>If you don’t type the parenthesis, the function is not run- instead,
+the function definition is shown.</p>
+<p>Here are some examples of how functions are used. Note the
+parentheses!</p>
+<pre class="r"><code># Functions ------------------- 
+
+# sum
+sum(1, 2, 3, 10)    # returns: 15</code></pre>
+<pre><code>## [1] 16</code></pre>
+<pre class="r"><code># combine
+c(1, 2, 3, 10)   # combine four numbers into a single data object (a vector!)</code></pre>
+<pre><code>## [1]  1  2  3 10</code></pre>
+<pre class="r"><code># floor
+floor(67.8)  # removes the decimal component of a number</code></pre>
+<pre><code>## [1] 67</code></pre>
+<pre class="r"><code># round
+round(67.8)  # rounds a number</code></pre>
+<pre><code>## [1] 68</code></pre>
+<pre class="r"><code>round    # oops, forgot the parentheses!</code></pre>
+<pre><code>## function (x, digits = 0)  .Primitive(&quot;round&quot;)</code></pre>
+<p>Remember, it’s easy to get some help if you forget how a function
+works, <span style="color: blue;">Try accessing a help file for
+<em>round()</em></span> using one of the methods we covered earlier.</p>
+<pre class="r fold-hide"><code>?round        </code></pre>
+</div>
+<div id="data-objects-and-variables" class="section level3">
+<h3>Data objects and variables</h3>
+<div id="data-types" class="section level4">
+<h4>Data types</h4>
+<p>The basic data types in R are:</p>
+<ul>
+<li><strong>numeric</strong> (numbers)<br />
+</li>
+<li><strong>character</strong> (text strings)</li>
+<li><strong>logical</strong> (TRUE/FALSE)<br />
+</li>
+<li><strong>factor</strong> (categorical)</li>
+</ul>
+<p>Data of each of these types can be represented as
+<strong>scalars</strong>, <strong>vectors</strong>,
+<strong>matrices</strong>, <strong>lists</strong>, and <strong>data
+frames</strong> and various functions work differnetly or won’t work at
+all depending on the data type provided</p>
+</div>
+<div id="scalars" class="section level4">
+<h4>Scalars</h4>
+<p>Scalars are the simplest data objects. A scalar is just a single
+value of any data type.</p>
+<pre class="r"><code>#  Create R Objects ------------------------
+
+  # Scalars----------------------
+
+scalar1 &lt;- &#39;this is a scalar&#39;
+
+scalar2 &lt;- 104</code></pre>
+<p>Scalars can store information of any type. In the example above,
+<code>scalar1</code> is a character, <code>scalar2</code> is
+numeric.</p>
+<p><em>If you’re uncertain about the type of any R object the R function
+use the <code>typeof()</code> function.</em></p>
+</div>
+<div id="vectors" class="section level4">
+<h4>Vectors</h4>
+<p><strong>Vectors</strong> are strings (single dimensional) of values
+(can be numbers or characters) which are created following the syntax
+below. Vectors can combine multiple scalars in a single data object. In
+fact, a scalar in R is really just a vector of length 1.</p>
+<pre class="r"><code>  # Vectors ----------------------
+
+# create a vector of numbers 1 to 4
+vector1 &lt;- c(1, 2, 3, 4)  
+
+# print vector1
+vector1</code></pre>
+<pre><code>## [1] 1 2 3 4</code></pre>
+<p>In the code above we used a function called <code>c()</code>which is
+a ‘<em>combine</em>’ <strong>function</strong>- it takes several smaller
+data objects and combines them together into a single object. We will be
+using this <strong>function</strong> a lot.</p>
+<p>There’s a many different ways to create a <strong>vector</strong>.
+Let’s see some examples of ways we can create the same vector above more
+efficiently.</p>
+<pre class="r"><code># create a vector of numbers 1 to 4 using &#39;:&#39;
+vector2 &lt;- 1:4  
+
+# print vector2
+vector2</code></pre>
+<pre><code>## [1] 1 2 3 4</code></pre>
+<pre class="r"><code># create a vector of numbers 1 to 4 using seq()
+vector3 &lt;- seq(1, 4, by = 1)
+
+# print vector 3
+vector3</code></pre>
+<pre><code>## [1] 1 2 3 4</code></pre>
+<pre class="r"><code># create a vector of numbers 1 to 4 using &#39;c&#39;
+vector4 &lt;- c(1, 4)
+
+# print vector 4
+vector4</code></pre>
+<pre><code>## [1] 1 4</code></pre>
+<p>Notice, each <strong>vector</strong> is composed of one or more
+<strong>scalar</strong> elements of the same type. If you try to create
+a vector combining <strong>numeric</strong> and
+<strong>character</strong> elements you will get an error. You can try
+this in the <strong>console</strong> now.</p>
+<p>Now let’s do some stuff with vectors!</p>
+<pre class="r"><code># make a vector of 1, 2, and 3
+d1 &lt;- 1:3  
+
+d1</code></pre>
+<pre><code>## [1] 1 2 3</code></pre>
+<pre class="r"><code># add 3 to all elements of the vector d1
+d2 &lt;- d1 + 3  
+
+d2</code></pre>
+<pre><code>## [1] 4 5 6</code></pre>
+<pre class="r"><code># elemntwise addition
+d3 &lt;- d1 + d2
+
+d3</code></pre>
+<pre><code>## [1] 5 7 9</code></pre>
+<pre class="r"><code># check the number of elements in a vector
+length(d1)           </code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code># sum all the elements in a vector
+sum(d3)              </code></pre>
+<pre><code>## [1] 21</code></pre>
+<pre class="r"><code># extract the second element in a vector
+d2[2]                 </code></pre>
+<pre><code>## [1] 5</code></pre>
+</div>
+<div id="matrices" class="section level4">
+<h4>Matrices</h4>
+<p><strong>Matrix</strong> data objects have two
+<strong>dimensions</strong>: rows and columns. All of the elements in a
+matrix must be of the same type.</p>
+<p>Let’s make our first matrix. One simple way to make a matrix is just
+by joining two or more vectors using the function <code>cbind()</code>
+(bind vectors or matrices together by column) or <code>rbind()</code>
+(bind vectors or matrices together by row)</p>
+<pre class="r"><code>  # Matrices ----------------------
+
+# create a matrix by binding vectors, with vector d1 as column 1 and d2 as column 2
+mymat &lt;- cbind(d1, d2)
+
+mymat</code></pre>
+<pre><code>##      d1 d2
+## [1,]  1  4
+## [2,]  2  5
+## [3,]  3  6</code></pre>
+<pre class="r"><code># confirm that the new object &quot;mymat&quot; is a matrix using the &#39;class()&#39; function
+class(mymat)   </code></pre>
+<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
+<pre class="r"><code> # create matrix another way (matrix constructor)
+mymat &lt;- matrix(
+  c(1,2,3,4,5,6),
+  nrow = 3,
+  ncol = 2)  
+
+mymat</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    1    4
+## [2,]    2    5
+## [3,]    3    6</code></pre>
+<p>We can do stuff with matrices too!</p>
+<pre class="r"><code># math with matrices
+
+mymat + 2</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    3    6
+## [2,]    4    7
+## [3,]    5    8</code></pre>
+<pre class="r"><code>sum(mymat)</code></pre>
+<pre><code>## [1] 21</code></pre>
+<pre class="r"><code># extract matrix elements
+
+# extract the element in the 3rd row, 2nd column
+mymat[3, 2]  </code></pre>
+<pre><code>## [1] 6</code></pre>
+<pre class="r"><code>mymat[, 1]     # extract the entire first column</code></pre>
+<pre><code>## [1] 1 2 3</code></pre>
+<pre class="r"><code># Syntax for using []
+# X[a,b]       access row a, column b element of matrix/data frame X
+# X[,b]        access all rows of column b of matrix/data frame X
+# X[a,]        access row a of matrix/data frame X</code></pre>
+<p>Notice, when using <code>[]</code> with vectors you only need one
+value to reference the element’s position, however with matrices you
+need two values to specify the row (first) and the column (second).</p>
+</div>
+<div id="lists" class="section level4">
+<h4>Lists</h4>
+<p><strong>Lists</strong> are more general than matrices.
+<strong>List</strong> objects are just a bunch of arbitrary R data
+objects (called <strong>list elements</strong>) grouped together into a
+single object! The elements of a list don’t need to be the same length
+or the same type. The elements of a list can be
+<strong>vectors</strong>, <strong>matrices</strong>, other
+<strong>lists</strong>, or even <strong>functions</strong>.</p>
+<p>Let’s make our first list:</p>
+<pre class="r"><code>  # lists ----------------------
+
+# create an empty list
+mylist &lt;- list()
+
+# add elements to the empty list
+mylist[[1]] &lt;- c(1, 2, 3)     # note the double brackets- this is one way to reference list elements. 
+
+mylist[[2]] &lt;- c(&#39;piatra&#39;,&#39;craiului&#39;)
+
+mylist[[3]] &lt;- matrix(1:6,
+                      nrow = 2)
+
+# print mylist
+mylist</code></pre>
+<pre><code>## [[1]]
+## [1] 1 2 3
+## 
+## [[2]]
+## [1] &quot;piatra&quot;   &quot;craiului&quot;
+## 
+## [[3]]
+##      [,1] [,2] [,3]
+## [1,]    1    3    5
+## [2,]    2    4    6</code></pre>
+<pre class="r"><code># do stuff with lists
+
+# extract the second list element
+mylist[[2]]    </code></pre>
+<pre><code>## [1] &quot;piatra&quot;   &quot;craiului&quot;</code></pre>
+<pre class="r"><code># extract the first row, second column from the matrix that is embedded as the third element in this list !
+mylist[[3]][1,2]      </code></pre>
+<pre><code>## [1] 3</code></pre>
+<div id="data-frames-and-tibbles" class="section level5">
+<h5>Data frames and tibbles</h5>
+<p><strong>Data frame</strong> objects are the basic data storage object
+in R. Data frames are a special type of <strong>list</strong> in which
+each list element is a <em>vector</em> of equal length. Each list
+element in a data frame is also known as a <em>column</em>.</p>
+<p>Data frames superficially resemble matrices, since both have rows and
+columns. However, unlike matrices, the columns of a data frame can
+represent different data types (i.e., character, logical, numeric,
+factor), and can thereby represent different types of information!</p>
+<p><em>Data frames are the fundamental data storage structure in R</em>.
+You can think of a data frame like a spreadsheet. Each row of the the
+data frame represents a different observation, and each column
+represents a different measurement taken on each observation unit.</p>
+<p>Let’s make our first data frame.</p>
+<pre class="r"><code>  # Data frames ----------------------
+
+ # create a data frame with two columns. Each column is a vector of length 3
+df1 &lt;- data.frame(col1 = c(1,2,3),
+                  col2 = c(&quot;A&quot;,&quot;A&quot;,&quot;B&quot;)) 
+
+df1</code></pre>
+<pre><code>##   col1 col2
+## 1    1    A
+## 2    2    A
+## 3    3    B</code></pre>
+<pre class="r"><code># extract the first element in the second column
+df1[1, 2]    </code></pre>
+<pre><code>## [1] &quot;A&quot;</code></pre>
+<pre class="r"><code># extract the second column by name (alternatively, df1[[&quot;col2&quot;]])
+df1$col2    </code></pre>
+<pre><code>## [1] &quot;A&quot; &quot;A&quot; &quot;B&quot;</code></pre>
+<p>Now we have a data frame with three observation units and two
+measurements (variables).</p>
+<p>A <strong>tibble</strong> is the same thing as a data frame, just
+with a few tweaks to make it work better in the
+<strong>tidyverse</strong>. We will primarily work with tibble data
+frames in this course. For our purposes right now, tibbles and data
+frames are the same thing.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="making-up-data" class="section level2">
+<h2>Making up data!</h2>
+<p>In this section, we will make up some fake data objects. In the
+module we’ll practice working with real data!</p>
+<div id="generating-sequences-of-numbers" class="section level3">
+<h3>Generating sequences of numbers</h3>
+<p>One task that comes up a lot is generating sequences of numbers:</p>
+<pre class="r"><code># Making up data ----------------------------------
+
+# Generating vector sequences  
+
+# sequential vector from 1 to 10
+1:10            </code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<pre class="r"><code># sequence of length 5 between 0 and 1 
+seq(0, 1, length = 5)         </code></pre>
+<pre><code>## [1] 0.00 0.25 0.50 0.75 1.00</code></pre>
+</div>
+<div id="repeating-sequences" class="section level3">
+<h3>Repeating sequences</h3>
+<p>Another task is to group regular recurring sequences together:</p>
+<pre class="r"><code># Repeating vector sequences 
+
+# repeat 0 three times
+rep(0, 
+    times = 3) </code></pre>
+<pre><code>## [1] 0 0 0</code></pre>
+<pre class="r"><code># repeat the vector 1:3 twice
+rep(1:3, 
+    times = 2) </code></pre>
+<pre><code>## [1] 1 2 3 1 2 3</code></pre>
+<pre class="r"><code># repeat each element of 1:3 two times
+rep(1:3, 
+    each = 2)              </code></pre>
+<pre><code>## [1] 1 1 2 2 3 3</code></pre>
+</div>
+<div id="random-number-generator" class="section level3">
+<h3>Random number generator</h3>
+<p>We can also fill up a vector with random numbers using one of R’s
+built in random number generators:</p>
+<pre class="r"><code># Random numbers 
+
+# 10 samples from std. normal
+rnorm(10)                    </code></pre>
+<pre><code>##  [1] -1.589175303  0.005842284  0.482516372  0.744521395  0.723245194
+##  [6]  1.293188451  0.107553568  0.346852822 -2.391893132  1.446575742</code></pre>
+<pre class="r"><code># 10 samples from Normal(-2,4^2)
+rnorm(10, 
+      mean= -2, 
+      sd = 4)      </code></pre>
+<pre><code>##  [1] -6.144380 -4.484352  5.430535 -6.356204 -4.879685 -0.343540 -4.330507
+##  [8]  2.808148 -6.935556 -5.993167</code></pre>
+<pre class="r"><code># 5 samples from Binom(3,0.5)
+rbinom(5,
+       size = 3,
+       prob = .5)  </code></pre>
+<pre><code>## [1] 2 0 2 1 1</code></pre>
+<pre class="r"><code># 5 samples from Binom(3,0.1)
+rbinom(5, 3, .1)            </code></pre>
+<pre><code>## [1] 0 2 0 0 0</code></pre>
+<pre class="r"><code># 10 standard uniform random numbers
+runif(10)  </code></pre>
+<pre><code>##  [1] 0.6885668 0.1500576 0.6239272 0.1069005 0.7292910 0.9932367 0.3936438
+##  [8] 0.7690720 0.3851497 0.4735436</code></pre>
+<pre class="r"><code>  # 10 uniform random numbers from [-1,1]
+runif(10,
+      min = -1,
+      max = 1)      </code></pre>
+<pre><code>##  [1]  0.66131249 -0.91369347 -0.08934685  0.38788158 -0.68939574 -0.89622434
+##  [7] -0.48490983  0.58697437  0.39406356  0.65566496</code></pre>
+</div>
+<div id="making-fake-data" class="section level3">
+<h3>Making fake data</h3>
+<p>And finally, we can make up a fake data frame (or tibble) using some
+of the tricks we just learned!</p>
+<pre class="r"><code># Make up an entire fake data frame!
+
+my.data &lt;- data.frame(
+  Obs.Id = 1:100,
+  Treatment = rep(c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;),
+                  each = 20),
+  Block = rep(1:20,
+              times = 5),
+  Germination = rpois(100,
+                      lambda = rep(c(1,5,4,7,1),
+                                   each = 20)),   # random poisson variable
+  AvgHeight = rnorm(100,
+                    mean = rep(c(10,30,31,25,35,7),
+                               each = 20))
+)
+
+my.data</code></pre>
+<pre><code>##     Obs.Id Treatment Block Germination AvgHeight
+## 1        1         A     1           0 11.342538
+## 2        2         A     2           0  9.978369
+## 3        3         A     3           2 10.496506
+## 4        4         A     4           1  9.213940
+## 5        5         A     5           1  9.904152
+## 6        6         A     6           0  8.978157
+## 7        7         A     7           0 11.801750
+## 8        8         A     8           0  9.504918
+## 9        9         A     9           0  9.509516
+## 10      10         A    10           1  9.211841
+## 11      11         A    11           1  8.367834
+## 12      12         A    12           1 10.692236
+## 13      13         A    13           0 10.978625
+## 14      14         A    14           1  7.223274
+## 15      15         A    15           0 10.022331
+## 16      16         A    16           1  9.992843
+## 17      17         A    17           2 10.284299
+## 18      18         A    18           2 10.660484
+## 19      19         A    19           1 10.120462
+## 20      20         A    20           2 10.211522
+## 21      21         B     1           6 30.432113
+## 22      22         B     2           4 29.174703
+## 23      23         B     3           5 30.544111
+## 24      24         B     4           4 32.061169
+## 25      25         B     5           9 30.663112
+## 26      26         B     6           4 30.769333
+## 27      27         B     7           5 30.779039
+## 28      28         B     8           6 30.307239
+## 29      29         B     9          11 31.269864
+## 30      30         B    10           2 30.765544
+## 31      31         B    11           8 30.631158
+## 32      32         B    12           5 30.342674
+## 33      33         B    13           5 29.357244
+## 34      34         B    14           8 30.270617
+## 35      35         B    15           8 28.458225
+## 36      36         B    16           5 31.288573
+## 37      37         B    17           4 30.775288
+## 38      38         B    18           2 30.146189
+## 39      39         B    19           3 28.073054
+## 40      40         B    20           6 30.512783
+## 41      41         C     1           3 32.398162
+## 42      42         C     2           3 30.807343
+## 43      43         C     3           6 32.240568
+## 44      44         C     4           3 30.164726
+## 45      45         C     5           6 30.939371
+## 46      46         C     6           6 33.115647
+## 47      47         C     7           4 29.582652
+## 48      48         C     8           4 32.295653
+## 49      49         C     9           2 29.188278
+## 50      50         C    10           6 30.648701
+## 51      51         C    11           2 32.367612
+## 52      52         C    12           3 32.886402
+## 53      53         C    13           7 32.543117
+## 54      54         C    14           1 33.270943
+## 55      55         C    15           5 29.570951
+## 56      56         C    16           1 31.065232
+## 57      57         C    17           2 30.797250
+## 58      58         C    18           6 30.252581
+## 59      59         C    19           2 30.589816
+## 60      60         C    20           4 30.328182
+## 61      61         D     1           6 24.414931
+## 62      62         D     2           6 26.568624
+## 63      63         D     3           7 25.993731
+## 64      64         D     4          12 26.314966
+## 65      65         D     5          10 24.814924
+## 66      66         D     6           7 24.203313
+## 67      67         D     7           9 25.159485
+## 68      68         D     8           8 24.690358
+## 69      69         D     9           7 24.397180
+## 70      70         D    10           7 24.438201
+## 71      71         D    11           8 23.528971
+## 72      72         D    12           2 25.158777
+## 73      73         D    13           5 25.110045
+## 74      74         D    14           6 23.585998
+## 75      75         D    15           6 26.299245
+## 76      76         D    16           7 24.487021
+## 77      77         D    17           6 26.658791
+## 78      78         D    18           8 24.874903
+## 79      79         D    19          10 25.387753
+## 80      80         D    20           9 25.645593
+## 81      81         E     1           1 34.803294
+## 82      82         E     2           0 34.508264
+## 83      83         E     3           0 35.362659
+## 84      84         E     4           1 34.867267
+## 85      85         E     5           2 35.233753
+## 86      86         E     6           0 34.889916
+## 87      87         E     7           0 34.944075
+## 88      88         E     8           0 35.169338
+## 89      89         E     9           2 35.823296
+## 90      90         E    10           1 34.251656
+## 91      91         E    11           2 36.633289
+## 92      92         E    12           1 36.514704
+## 93      93         E    13           1 34.948690
+## 94      94         E    14           1 34.992315
+## 95      95         E    15           0 34.059414
+## 96      96         E    16           0 35.420402
+## 97      97         E    17           1 35.819667
+## 98      98         E    18           0 34.790124
+## 99      99         E    19           4 35.977994
+## 100    100         E    20           3 33.571315</code></pre>
+<pre class="r"><code># Use the &quot;summary()&quot; function to summarize each column in the data frame.
+summary(my.data)   </code></pre>
+<pre><code>##      Obs.Id        Treatment             Block        Germination   
+##  Min.   :  1.00   Length:100         Min.   : 1.00   Min.   : 0.00  
+##  1st Qu.: 25.75   Class :character   1st Qu.: 5.75   1st Qu.: 1.00  
+##  Median : 50.50   Mode  :character   Median :10.50   Median : 3.00  
+##  Mean   : 50.50                      Mean   :10.50   Mean   : 3.68  
+##  3rd Qu.: 75.25                      3rd Qu.:15.25   3rd Qu.: 6.00  
+##  Max.   :100.00                      Max.   :20.00   Max.   :12.00  
+##    AvgHeight     
+##  Min.   : 7.223  
+##  1st Qu.:24.432  
+##  Median :30.262  
+##  Mean   :26.345  
+##  3rd Qu.:32.375  
+##  Max.   :36.633</code></pre>
+<pre class="r"><code># extract rows 21 to 30 and store as a new data frame
+mydf = my.data[21:30, ]  
+
+mydf</code></pre>
+<pre><code>##    Obs.Id Treatment Block Germination AvgHeight
+## 21     21         B     1           6  30.43211
+## 22     22         B     2           4  29.17470
+## 23     23         B     3           5  30.54411
+## 24     24         B     4           4  32.06117
+## 25     25         B     5           9  30.66311
+## 26     26         B     6           4  30.76933
+## 27     27         B     7           5  30.77904
+## 28     28         B     8           6  30.30724
+## 29     29         B     9          11  31.26986
+## 30     30         B    10           2  30.76554</code></pre>
+<pre class="r"><code># access a column of the data frame by name
+mydf$Treatment </code></pre>
+<pre><code>##  [1] &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot;</code></pre>
+</div>
+<div id="r-functions-to-explore-data" class="section level3">
+<h3>R functions to explore data</h3>
+<p>Here are some useful R functions for exploring data
+<strong>objects</strong>. We will cover these in more depth later but
+take a look at the outputs for each now.</p>
+<pre class="r"><code># Useful data exploration/checking tools in R --------------------
+
+# Obtain length (# elements) of vector d2
+length(d2)  
+
+# Obtain dimensions of matrix or array
+dim(mymat)
+
+# summarize columns in a data frame. 
+summary(my.data)
+
+# look at the &quot;internals&quot; of an object (useful for making sense of complex objects!)
+str(my.data) 
+
+# get names of variables in a data frame (or names of elements in a named vector)
+names(my.data) 
+
+# get number of rows/observations in a data frame
+nrow(my.data) 
+
+# get number of columns/variables in a data frame
+ncol(my.data)   </code></pre>
+</div>
+</div>
+<div id="assignment-and-next-module" class="section level2">
+<h2>Assignment and next module</h2>
+<p><a href="assign_1.html">–Assignment 1–</a></p>
+<p><a href="mod_3_data.html">–go to next module–</a></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
