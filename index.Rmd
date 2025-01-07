@@ -1,6 +1,6 @@
 ---
 title: "Welcome to the R Crash Course!"
-date: "Spring 2025"
+date: "University of Victoria - Spring 2025"
 output:
   html_document:
     theme: journal

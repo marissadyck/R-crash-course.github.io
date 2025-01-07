@@ -24,7 +24,7 @@ navbar:
         - text: "Module 2: Basics of ggplot"
           href: mod_2_ggplot.html
         - text: "Module 3: Advanced ggplot (coming soon)"
-          href: mod_3_ggplot_adv.html
+          href: mod_3_adv_ggplot.html
         - text: "Module 4: Beyond ggplot"
           href: mod_4_beyond_ggplot.html
     - text: "Statistical Modeling"
@@ -60,8 +60,6 @@ navbar:
       href: data.html
     - text: "Links"
       href: links.html
-    - text: "Surveys"
-      href: surveys.html
     - text: "Terms"
       href: terms.html
    

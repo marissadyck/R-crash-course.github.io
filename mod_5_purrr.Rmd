@@ -337,9 +337,11 @@ So much less repetition and code if you have a lot of data sets to save
 
 We've only barely scratched the surface of what *Purrr* can do, but given our limited time that is where we will end. Just remember anytime you find yourself repeating the same operations for multiple **objects** of the same type you may want to consider using *Purrr* instead to reduce repetition in your code.
 
-## Practice problems
 
-There is no formal assignment for this module, but you can complete the problems below for some extra practice. 
+## Assignment and next module
+
+> Assignment coming soon  
+
 
 
 [--go to next module--](mod_1_plots_baseR.html)

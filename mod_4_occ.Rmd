@@ -1,7 +1,7 @@
 ---
 title: "Statistical Modeling"
-author: 'Module 2: Occupancy models'
-date: "2024"
+author: 'Module 4: Occupancy models'
+date: "2025"
 output:
   html_document:
     code_folding: show
@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 #      University of Victoria, Victoria BC Canada             
 
 #  Statistical Modeling
-# Module 2: Occupancy models
+# Module 4: Occupancy models
 
 
 ```

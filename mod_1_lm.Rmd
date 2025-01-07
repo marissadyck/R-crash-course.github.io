@@ -1,0 +1,37 @@
+---
+title: "Statistical Modeling"
+author: 'Module 1: Linear regression'
+date: ""
+output:
+  html_document:
+    code_folding: show
+    theme: journal
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
+```
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+
+#  ES482 R labs   
+#      University of Victoria, Victoria BC Canada             
+
+#  Statistical Modeling
+# Module 1: linear regression
+
+
+library(tidyverse)
+```
+
+
+<center>
+![](images/construction_dog.jpeg){width=40%}
+</center>

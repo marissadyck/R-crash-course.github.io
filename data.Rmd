@@ -2,7 +2,7 @@
 title: "Data"
 author: "ES482 R labs"
 output: html_document
-date: "2024"
+date: "2025"
 ---
 
 ```{r setup, include=FALSE}
@@ -26,9 +26,6 @@ knitr::opts_chunk$set(echo = TRUE)
 [Bear glm example cow data (cows.csv)](data/raw/cows.csv)
 
 [Bobcat necropsy data (Bobcat_necropsy_data.csv)](data/raw/Bobcat_necropsy_data.csv)
-
-
-#### Added after 12 January 2024
 
 [Bobcat collection data for Purrr (bobcat_collection_data.csv)](data/raw/bobcat_collection_data.csv)
 

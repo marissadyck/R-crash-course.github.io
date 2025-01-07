@@ -1,7 +1,7 @@
 ---
 title: "Assignment 1"
 author: "Base R"
-date: "Due Tuesday Jan 21st @11:59pm"
+date: "Due Tuesday Jan 14th @11:59pm"
 output: 
   html_document:
     code_folding: show

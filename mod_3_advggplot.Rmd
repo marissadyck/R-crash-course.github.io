@@ -1,0 +1,43 @@
+---
+title: "Data Visualization"
+author: 'Advance ggplot'
+date: ""
+output:
+  html_document:
+    code_folding: show
+    theme: journal
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
+```
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+
+#  ES482 R labs   
+#      University of Victoria, Victoria BC Canada             
+
+#  Data Visualization
+# Module 2: Data visualization in ggplot 
+
+library(cowplot)
+library(tidyverse)
+library(leaflet)
+library(ggpubr)
+library(RColorBrewer)
+library(stringr)
+```
+
+
+<center>
+![](images/construction_dog.jpeg){width=40%}
+</center>
+
+

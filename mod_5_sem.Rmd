@@ -1,7 +1,7 @@
 ---
 title: "Statistical Modeling"
-author: 'Module 3: Structural equation models (SEMs)'
-date: "2024"
+author: 'Module 5: Structural equation models (SEMs)'
+date: "2025"
 output:
   html_document:
     code_folding: show

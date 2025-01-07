@@ -1,7 +1,7 @@
 ---
 title: "Intro to R"
 author: "Module 1: R 101 aka what is R and RStudio? And how to use them most effectively"
-date: "14 January 2025"
+date: "7 January 2025"
 output: 
   html_document:
     code_folding: show
@@ -26,7 +26,7 @@ library(ggplot2)
 library(dplyr)
 ```
 
-Welcome to the 2024 ES482 R labs! 
+Welcome to the 2025 ES482 R labs! 
 
 ## Materials
 

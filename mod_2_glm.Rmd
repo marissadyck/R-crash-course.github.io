@@ -1,7 +1,7 @@
 ---
 title: "Statistical Modeling"
 author: 'Module 2: Generalized linear models (GLMs)'
-date: "7 February 2024"
+date: "7 February 2025"
 output:
   html_document:
     code_folding: show
@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 #      University of Victoria, Victoria BC Canada             
 
 #  Statistical Modeling
-# Module 1: Generalized linear models (GLMs)
+# Module 2: Generalized linear models (GLMs)
 
 # Libraries ----------------------
 

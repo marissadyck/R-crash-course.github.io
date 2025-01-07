@@ -1,0 +1,41 @@
+---
+title: "Assignment 4"
+author: "Base R"
+date: "Due Tuesday February 18th @11:59pm"
+output: 
+  html_document:
+    code_folding: show
+    theme: journal
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      cache = TRUE)
+
+library(tidyverse)
+```
+
+
+## Submission
+
+Brightspace/TBD   
+
+## Grading
+
+> You should always be following best coding practices (see Intro to R module 1) but especially for assingment submissions.
+
+To receive full credit for each assignment   
+
+* Please make sure each problem has its own header so that I can easily navigate to your answers 
+* Ensure you have comments that explain what you are doing   
+* Long code chunks should be broken up with spaces and comments to explain what is happening at each step    
+* Object names should be lowercase and short but descriptive enough that they aren't confused with other objects *(For example data1 and data2 are not good names for dataframes you are working with)*    
+* Just because your code runs doesn't mean it did what you think it did, always check your data/objects to ensure any functions were performed correctly (there are several ways to do this)    
+
+
+
+<center>
+![](images/construction_dog.jpeg){width=40%}
+</center>

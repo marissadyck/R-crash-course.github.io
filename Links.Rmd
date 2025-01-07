@@ -1,7 +1,7 @@
 ---
 title: "Links"
-author: "ES482 R Labs"
-date: "Second Term 2024"
+author: "R crash course"
+date: "2025"
 output: 
   html_document: 
     theme: journal
