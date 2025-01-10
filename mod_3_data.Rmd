@@ -38,7 +38,7 @@ library(tidyverse)
 
 ### Script
 
-1. Click [here](mod_3_data.R) to download the script! Save the script to the project directory you set up in the previous module.
+1. Click [here](mod_3_data.R) to download the script! Save the scripts folder in the project directory you set up in the previous module.
 
 2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top to load your script.    
 
@@ -53,7 +53,7 @@ Make sure to save these to your cheatsheets folder
 
 ## Working directory
 
-Remember, the working directory is the first place R looks for any files you would like to read in (e.g., code, data). It is also the first place R will try to write any files you want to save. 
+Remember, the working directory is the first place R looks for any files you would like to read in (e.g., code, data). It is also the first place R will try to write any files you want to save. If you opened up RStudio through the .Rproj object you created in the previous module your working directory should automatically set to the right place and you should see the project name you set for this course in the upper righthand corner of your Rproject windows. But we can check this with a quick and easy command.
 
 Every R session has a working directory, whether you specify one or not. <span style="color: blue;">Find out what your working directory is</span>.
 
@@ -77,14 +77,14 @@ Since you should already be working in an RStudio Project, your working director
 
 ### Importing data into R
 
-There are many ways data can be imported into R. Many types of files can be imported (e.g., text files, csv, shapefiles). And people are always inventing new ways to read and write data to/from R. But here are the basics.   
+There are many ways data can be imported into R. Many types of files can be imported (e.g., text files, csv, shapefiles). And there are many different functions to read in each of these file types. But here are the basics.   
 
 - read.table or read_delim      
      - reads a data file in any major text format (comma-delimited, space delimited etc.), you can specify which format (very general)       
 - read.csv or read_csv        
      - fields are separated by a comma (this is still probably the most common way to read in data)        
 
-Before we can read data in, we need to put some data files in our working directory! 
+Before we can read data in, we need to put some data files in our working directory if you haven't already! 
 
 1. Download the following data files and store them in your 'data' folder in the R Crash Course working directory
 
@@ -107,6 +107,7 @@ data.txt.df <- read.table("data/raw/data.txt")
 ```
 
 It is always useful to check what the data look like after they are read in. Can you recall one of the ways to view an object in R?  <span style="color: blue;">View the data.txt.df object</span>
+
 ```{r class.source = 'fold-hide'}
 
 # Look at data by printing it in the console
@@ -279,7 +280,7 @@ Y < Z
 # Wrong!
 data.df[, 2] = 74     # sets entire second column equal to 74! OOPS WE GOOFED UP!!!
 
-data.df <- read.csv("data/data.csv")  ## correct our mistake in the previous line (revert to the original data)!
+data.df <- read.csv("data/raw/data.csv")  ## correct our mistake in the previous line (revert to the original data)!
 
 # Right
 data.df[, 2] == 74    # tests each element of column to see whether it is equal to 74
@@ -352,7 +353,7 @@ Let's install some **packages** that we will use for this module. There are a fe
 *Notice that the package name is enclosed with quotations (" "). If you do not use the quotations the package will not be installed.
 
 ### Loading packages to library
-Each time you open a new R session you need to load the **packages** you want to use into your **library**. To do this use the `library()` **function**
+Each time you open a new R session you need to load the **packages** you want to use into your **library**. To do this use the `library()` **function**, however in this instance since the package is already installed you don't need "".
 
 ```{r message=FALSE, warning=FALSE, results=FALSE}
 
@@ -409,7 +410,7 @@ tidy_data.txt <- read_delim('data/raw/data.txt')
 tidy_data.txt
 
 ```
-Notice the tidy way did a slightly better job reading in this data (e.g., we don't have those weird variable labels at the top of our columns)
+Notice the tidy way did a slightly better job reading in this data (e.g., we don't have those weird variable labels at the top of our columns), and when it prints it also tells us what data type it has read the columns in as
 
 You'll also notice the object type has change to a **tibble**
 ```{r}
@@ -419,6 +420,7 @@ You'll also notice the object type has change to a **tibble**
 class(tidy_data.txt)
 
 ```
+We aren't going to get much into the weeds of the difference between a tibble and a data frame, they function similarly but tibbles tend to work better with tidyverse functions.
 
 The **function** to read in .csv files as tidy data is `read_csv()` in the *readr* **package**
 
@@ -736,7 +738,7 @@ turtles.df %>%
 str(turtles.df) # sex is still a character, why?
 ```
 
-You'll notice it works within you pipe but when we re-check the structure of our data it hasn't changed. This is because we save the changes, to do this we need to use the **assignment operator** to save the altered turtles.df data to the **environment**. Using the *same name for the turtles data and the assignment operator* and code above <span style="color: blue;">assign the altered data to the **environment** as turtles.df</span>. Check the structure of the data when you are done to ensure it worked.
+You'll notice it works within your pipe but when we re-check the structure of our data it hasn't changed. This is because we didn't save the changes to the actual object, to do this we need to use the **assignment operator** to save the altered turtles.df data to the **environment**. Using the *same name for the turtles data and the assignment operator* and code above <span style="color: blue;">assign the altered data to the **environment** as turtles.df</span>. Check the structure of the data when you are done to ensure it worked.
 
 ```{r}
 
@@ -750,9 +752,14 @@ str(turtles.df)
 
 This worked! But, you guessed it. There is a more efficient way to do this right when we read in the data. Using the code below, <span style="color: blue;"> add the mutate function to the *dplyr* pipe to mutate sex to a factor</span>.
 
-```
+```{r}
+# PRACTICE ON YOUR OWN ----------------------
+
+# Use the code below to read in the data and make changes we covered in the sections above, then in your script add a pipe and use the mutate function to change sex to a factor variable 
+
+
 # read turtle_data.txt in to R using readr
-turtles.df <- read_delim('data/turtle_data.txt',
+turtles.df <- read_delim('data/raw/turtle_data.txt',
                          delim = '\t') %>% 
   
    # set column names to lowercase
@@ -766,7 +773,7 @@ turtles.df <- read_delim('data/turtle_data.txt',
          h_width = head_width)
 ```
 
-```{r class.source = 'fold-hide'}
+```{r echo = FALSE, class.source = 'fold-hide'}
 
 # read turtle_data.txt in to R using readr
 turtles.df <- read_delim('data/raw/turtle_data.txt',
@@ -787,6 +794,58 @@ turtles.df <- read_delim('data/raw/turtle_data.txt',
 
 
 ```
+
+BUT WAIT! There is even a better (sometimes) way to do this
+
+With tidyverse you can specify how you want the columns read in without using the mutate function
+
+```{r}
+# in this example we will specify how we want ALL of the data in the turtle_data.txt file to read in 
+
+turtles.df <- read_delim('data/raw/turtle_data.txt',
+                         delim = '\t',
+                         
+                         # specify variable types 
+                         col_types = cols(Tag_number = col_number(),
+                                          Sex = col_factor(),
+                                          Carapace_length = col_number(),
+                                          Head_width = col_number(),
+                                          Weight = col_number())
+) %>% 
+  
+  # set column names to lowercase
+  set_names(
+    names(.) %>%  
+      tolower()) %>% 
+  
+  # rename columns to shorter names
+  rename(tag = tag_number,
+         c_length = carapace_length,
+         h_width = head_width)
+
+# or even less coding
+
+turtles.df <- read_delim('data/raw/turtle_data.txt',
+                         delim = '\t',
+                         
+                         # specify variable types 
+                         col_types = cols(Sex = col_factor(),
+                                          .default = col_number()) # this sets every variable not specified above to this type
+)%>% 
+  
+  # set column names to lowercase
+  set_names(
+    names(.) %>%  
+      tolower()) %>% 
+  
+  # rename columns to shorter names
+  rename(tag = tag_number,
+         c_length = carapace_length,
+         h_width = head_width)
+```
+
+
+
 
 Similar to the `summarise()` **function** we can also perform mutations on all the columns (`mutate_all()`) or multiple columns that fit a criteria (`mutat_if()`). <span style="color: blue;"> Without assigning the object to the **environment** to mutate all the **numeric** columns to **characters** </span> in the turtles data. HINT: Look at the **R Documentation** examples.
 ```{r class.source = 'fold-hide'}
@@ -876,98 +935,6 @@ turtles.df %>%
 
 You might notice a problem with the way the data are entered here. We will fix that in the next module.
 
-## Practice Problems
-
-### 1 Export data
-Save the altered turtles data as a comma separated file to the *data/processed* folder in your working directory using the 'readr' package and name it 'turtles_tidy'
-
-```{r echo=FALSE}
-
-write_csv(turtles.df,
-          'data/processed/turtles_tidy.csv')
-
-```
-
-
-### 2 Import and rename data
-
-Download the [brown bear damage data (bear_2008_2016.csv)](data/raw/bear_2008_2016.csv) and save it in the data folder.    
-
-
-* Import the brown bear dataset from the *data/raw* folder using the appropriate function from the 'readr' package and save it as bear_data.    
-* In the same code chunk set the column names to lowercase and    
-* change dist_to_town to m_to_town and dist_to_forest to m_to_forest (m for meters)    
-* Finally, use one of the functions we've covered to view/print your data to check that it worked.
-
-```{r echo=FALSE}
-
-bear_data <- read_csv('data/raw/bear_2008_2016.csv') %>% 
-  
-  # set column names to lowercase
-  set_names(
-    names(.) %>%  
-      tolower()) %>% 
-  
-  # rename columns to include units
-  rename(m_to_town = dist_to_town,
-         m_to_forest = dist_to_forest)
-  
-
-head(bear_data) 
-```
-
-### 3 Change variable type
-* Check the internal structure of the bear dataset    
-* Change 'targetspp' from **character** to **factor** using *dplyr* make sure to overwrite the previous bear data so the changes are saved    
-* Use the 'levels()' **function** to check if this worked. HINT: Use the help file if you aren't familiar with 'levels()'
-
-```{r echo=FALSE}
-
-str(bear_data)
-
-# change targetspp to factor dplyr
-bear_data <- bear_data %>% 
-  mutate(targetspp = as.factor(targetspp))
-
-levels(bear_data$targetspp)
-```
-
-### 4 Subsetting
-* Now that we know there are 3 livestock types (groups), subset the data to include only the rows for 'ovine' 
-* In the same code chunk select the columns damage, year, month, bear_abund, landcover_code, and altitude
-* Save this to your **environment** as 'bear_sheep_data'
-```{r echo=FALSE}
-
-bear_sheep_data <- bear_data %>% 
-  
-  # return only rows for sheep
-  filter(targetspp == 'ovine') %>% 
-  
-  # select specified columns
-  select(damage:month, bear_abund:altitude) # most parsimonious way to do it but you could have also done
-
-
-# select(damage, year, month, bear_abund, landcover_code, altitude)
-
-# or 
-
-# select(1:3, 7:9)
-
-head(bear_sheep_data)
-```
-
-### 5 Summarise 
-* Using the bear_sheep_data and the `summarise()` **function**, calculate the mean, sd and SE (the formula for SE is sd / sqrt(n)) for altitude. *This last part might be tricky at first but give it a try and remember you can always google things and check the 'help' files; and if that fails 'phone a friend or me'*
-
-```{r echo=FALSE}
-
-bear_sheep_data %>% 
-  summarise(mean_alt = mean(altitude),
-            sd_alt = sd(altitude),
-            se_alt = sd_alt/sqrt(length(altitude))) # you could also look up the length for altitude in the console and type the number here directly but this is more flexible and readable
-
-
-```
 
 ## Assignment and next module
 

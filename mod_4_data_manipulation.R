@@ -9,12 +9,35 @@ library(tidyverse)
   # import data FILL IN YOUR CODE HERE ----------------------
 
 # read in altered turtles data
-
+turtles_tidy <- read_csv('data/processed/turtles_tidy.csv')
 
 # print data
-
+turtles_tidy
 
 # check internal structure
+str(turtles_tidy)
+
+# code for altering turtle data
+turtles.df <- read_delim('data/raw/turtle_data.txt',
+                         delim = '\t') %>% 
+  
+   # set column names to lowercase
+  set_names(
+    names(.) %>%  
+      tolower()) %>% 
+  
+  # rename columns to shorter names
+  rename(tag = tag_number,
+         c_length = carapace_length,
+         h_width = head_width) %>% 
+  
+  # change sex to factor variable
+  mutate(sex = as.factor(sex))
+
+
+# save to data/processed folder as 'turtles_tidy.csv'
+write_csv(turtles.df,
+          'data/processed/turtles_tidy.csv')
 
 
 # Sorting/ordering data --------------------
@@ -35,7 +58,7 @@ turtles_tidy %>%
 
 # Practice FILL IN YOUR CODE HERE ----------------------
 
-
+# practice- arrange diamonds data by highest price to lowest price
 
 
 
@@ -99,7 +122,6 @@ diamonds %>%
   relocate(price,
            .before = carat)
 
-# practice with turtles_tidy data on factors
 
 turtles_tidy %>% 
   
@@ -117,11 +139,14 @@ str(turtles_tidy)
 
 # first read in data for this section
 
-# read in altered turtles data and change 'sex' to a factor
-
+# read in altered turtles data
+turtles_tidy <- read_csv('data/processed/turtles_tidy.csv') %>% 
+  
+  # change 'sex' to a factor
+  mutate(sex = as.factor(sex))
 
 # check internal structure
-
+str(turtles_tidy)
 
  
 
@@ -140,14 +165,23 @@ levels(turtles_tidy$sex)
 
 # FILL IN YOUR CODE HERE --------------------
 
-# change 'sex' back to a character then try the data manipulation again, and change 'sex' back to a factor to see if anything is different. We can do this all in one pipe!
+# change 'sex' back to a character then try the data manipulation again to see if anything is different. We can do this all in one pipe!
+turtles_tidy <- turtles_tidy %>% 
+  
+  # sex to character
+  mutate(sex = as.character(sex),
+         
+         # change fem to female with replace
+         replace(sex,
+                 sex == 'fem',
+                 'female'),
+         
+         # sex to factor
+         sex = as.factor(sex))
 
+head(turtles_tidy)
 
-# print the data
-
-
-# check the levels of the 'sex' variable
-
+levels(turtles_tidy$sex)
 
 
 
@@ -191,7 +225,7 @@ diamonds %>%
 
   # Case when ----------------------
 
-# create new column with two categories based on worst clairty diamonds (J)
+# create new column with two categories based on worst color diamonds (J)
 diamonds %>% 
   mutate(clarity = case_when(clarity == 'l1' ~ 8,
                              clarity == 'SI2' ~ 7,
@@ -283,20 +317,27 @@ complete.cases(missing.df)   # Boolean: for each row, tests if there are no NA v
 na.omit(missing.df) # note this removes the entire row, so only do this if you don't want to use any data from an observation with NAs
 
 # we can also use this with %>% to remove rows with NA
- missing.df %>% 
+missing.df %>% 
   
   # remove rows with NA
   na.omit()
 
- # drop NA
- 
- # use drop_na to remove only rows missing data for 'import'
- missing.df.2 <- missing.df %>% 
-   
-   # remove NAs
-   drop_na(c(import,
-             export)) 
- 
+
+# print missing.df data to compare with data after we remove NAs
+missing.df
+
+# use drop_na to remove only rows missing data for 'import'
+missing.df %>% 
+  
+  # remove NAs
+  drop_na(import)
+
+# drop NAs for import and export columns
+missing.df %>% 
+  
+  # remove NAs
+  drop_na(c(import,
+            export))
   # Replace NAs ----------------------
 
 # specifying columns
@@ -355,15 +396,19 @@ missing.df %>%
   # Replace values with NA ----------------------
 
  # FILL IN YOUR CODE HERE ----------------------
-
-# read in bobcat_necropsy data
-# set the column names to lowercase
-# select the necropsy, necropsydate, age, and sex columns
-
+bobcats <- read_csv('data/raw/Bobcat_necropsy_data.csv') %>% 
+  
+  # set names to lowercase
+  
+  set_names(
+    names(.) %>% 
+      tolower()) %>% 
+  
+  # select specific columns
+  select(necropsy, necropsydate, age, sex)
   
 
-# print data summary
-
+summary(bobcats)
 
 bobcats %>% 
   
@@ -372,7 +417,7 @@ bobcats %>%
 
 
 # replace 'na' in age using replace function
-bobcats.2 <- bobcats %>% 
+bobcats %>% 
   mutate(age = replace(age,
                        age == 'na',
                        NA))
@@ -400,8 +445,7 @@ bobcats %>%
 relig_income
 
 relig_income %>%
-  pivot_longer(!religion, names_to = "income", 
-               values_to = "count")
+  pivot_longer(!religion, names_to = "income", values_to = "count")
 
   # Joining data----------------------
 
@@ -441,7 +485,7 @@ turtles_full
 
   # Right join ----------------------
 
-turtles_full2 <- turtles_tidy %>% 
+turtles_tidy %>% 
   
   # right join
   right_join(turtles_env,
@@ -472,7 +516,7 @@ head(turtles_env.sub)
 
 # now join with turtles_tidy
 
-turtles_inner <- turtles_tidy %>% 
+turtles_tidy %>% 
   
   inner_join(turtles_env.sub,
              by = 'tag')
@@ -487,23 +531,14 @@ turtles_tidy %>%
 
   # Mismatched keys----------------------
 
-# rename tag in the turtles_env data set 
+# rename tag in the turtles_env dataset 
 turtles_env <- turtles_env %>% 
   rename(tag_number = tag)
 
 names(turtles_env)
 
 # now join with mismatched names
-turtles_tidy %>% 
-  left_join(turtles_env,
-            by = 'tag')
 
 turtles_tidy %>% 
   left_join(turtles_env,
             join_by('tag' == 'tag_number'))
-
-
-# For problem 4 on assignment 3
-# Load the example data 
-
-soil <- carData::Soils    # load example data

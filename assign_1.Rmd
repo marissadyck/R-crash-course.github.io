@@ -22,7 +22,7 @@ Below are some exercises for your first stats assignment based on the material w
 
 ## Submission
 
-Brightspace/TBD   
+Submit you R script as a .R (or .Rmd if using markdown) file to Brightspace      
 
 ## Grading
 

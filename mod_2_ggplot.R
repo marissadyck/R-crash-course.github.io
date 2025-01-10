@@ -12,8 +12,8 @@ library(ggpubr)
 library(RColorBrewer)
 library(stringr)
 
-# ggplot(data, aes(x = x_variable, y = y_variable)) +
-#   geom_chooseGeom
+ggplot(data, aes(x = x_variable, y = y_variable)) +
+  geom_chooseGeom
 
 
 # Box-whisker plots  -----------------------
@@ -26,57 +26,37 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
 ggplot(iris, aes(x = Species, y = Sepal.Length)) +    
   geom_violin() 
 
-
-# YOUR CODE HERE ----------------------------------------------------------
-
-# ?geom_violin()
-
-# violin plot with quantiles
-
-
-
-
-###
-
-
   # Bar plots ----------------------
 
 ggplot(iris, aes(x = Species)) + # we don't specify a y variable if we want sample size
   geom_bar()
+
 # bar plot with width specified
 
 ggplot(iris, aes(x = Species)) + # we don't specify a y variable if we want sample size
   geom_bar(width = 0.5)
 
-
-
-# YOUR CODE HERE ----------------------------------------------------------
-
-
-# first we need to calculate some summary statistics since these data aren't available in the current dataset, create a data frame object called bar_heights from the iris data. Calculate the mean Sepal length per species and assin this to data as meanSL. Then use code to plot the data
-
-
-
-
-
-
-
 # create plot of mean sepal length for each species
-
 ggplot(bar_heights, aes(Species, meanSL)) +
   
   # add bars
   geom_col(width = 0.5)
-
-
-# adapt code to pipe directly into ggplot
-
-
-
-
-
-
-
+# do some data manipulation to get data frame with mean sepal length per species
+iris %>% 
+  
+  # group by species to calculate a mean for each
+  group_by(Species) %>% 
+  
+  # use summarize to calculate a mean of Sepal length and assign it to a column called mean_sepal_L
+  summarize(meanSL = mean(Sepal.Length)) %>% 
+  
+  # ungroup and pipe into ggplot function
+  ungroup() %>% 
+  
+ggplot(., aes(x = Species, y = meanSL)) +
+  
+  # plot bar graph
+  geom_col(width = 0.5)
 
   # Bar plots with error bars ----------------------
 
@@ -112,7 +92,6 @@ ggplot(bar_heights, aes(x = Species, y = meanSL)) +
 ggsave('iris_plot_1.tiff',
        plot_1,
        path = 'figures')
-
   # Combining plots ----------------------
 
 # Explore different geoms with iris data
@@ -163,11 +142,11 @@ figure_1
 #        figure_1,
 #        path = 'figures')
 ggarrange(plot4,
+          nrow = 2,
+          labels = 'D',
           ggarrange(plot1, plot2, plot3,
                     ncol = 3,
-                    labels = c('A', 'B', 'C')),
-          nrow = 2,
-          labels = 'D')
+                    labels = c('A', 'B', 'C')))
 
   # Changing aesthetics----------------------
 
@@ -194,8 +173,14 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
  # try representing tree species using color
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   
-  # add points colored by height
+  # add points colored by species
   geom_point(aes(col = Species))
+
+ # try representing tree species using color
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+  
+  # add points colored by species
+  geom_point(col = Species)
 
   # Shape----------------------
 
@@ -845,5 +830,3 @@ ggplot(sumTC, aes(x = dose, y = mean, fill = supp)) + geom_col(color = 'black', 
    scale_fill_manual(values = c('#E69F00', '#999999'),labels = c('Orange juice', 'Ascorbic acid')) +
   scale_x_discrete(expand = c(0, 0)) +cale_y_continuous(expand = c(0, 0),
                      limits = c(0, 35))
-
-

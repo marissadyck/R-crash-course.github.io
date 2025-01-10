@@ -25,7 +25,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 **Console** - Where code is evaluated and any results/outputs are printed. By default this is the bottom left panel.
 
-**Data frame** - bjects are the basic data storage object in R. Data frames are a special type of list in which each list element is a vector of equal length. Each list element in a data frame is also known as a column. 
+**Data frame** - Data frames are a special type of list in which each list element is a vector of equal length. Each list element in a data frame is also known as a column. 
 
 **Dimensions** - rows and columns.
 

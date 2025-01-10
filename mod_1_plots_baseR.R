@@ -2,7 +2,8 @@
 #  ES482 R labs   
 #      University of Victoria, Victoria BC Canada             
 
-#  Module 5: Data Visualization in Base R
+#  Data Visualization
+# Module 1: Data Visualization in Base R
 
 library(tidyverse)
 

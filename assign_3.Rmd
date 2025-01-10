@@ -27,7 +27,7 @@ library(tidyverse)
 
 ## Submission
 
-Brightspace/TBD   
+Submit you R script as a .R (or .Rmd if using markdown) file to Brightspace     
 
 ## Grading
 
@@ -35,6 +35,7 @@ Brightspace/TBD
 
 To receive full credit for each assignment   
 
+* Wherever possible prioritizxe the use of tidyverse functions 
 * Please make sure each problem has its own header so that I can easily navigate to your answers 
 * Ensure you have comments that explain what you are doing   
 * Long code chunks should be broken up with spaces and comments to explain what is happening at each step    

@@ -439,9 +439,6 @@ div.tocify {
   <a href="links.html">Links</a>
 </li>
 <li>
-  <a href="surveys.html">Surveys</a>
-</li>
-<li>
   <a href="terms.html">Terms</a>
 </li>
       </ul>
@@ -473,7 +470,8 @@ div.tocify {
 
 <div id="submission" class="section level2">
 <h2>Submission</h2>
-<p>Brightspace/TBD</p>
+<p>Submit you R script as a .R (or .Rmd if using markdown) file to
+Brightspace</p>
 </div>
 <div id="grading" class="section level2">
 <h2>Grading</h2>
@@ -483,6 +481,8 @@ module 1) but especially for assingment submissions.</p>
 </blockquote>
 <p>To receive full credit for each assignment</p>
 <ul>
+<li>Wherever possible prioritizxe the use of tidyverse functions<br />
+</li>
 <li>Please make sure each problem has its own header so that I can
 easily navigate to your answers</li>
 <li>Ensure you have comments that explain what you are doing<br />
@@ -504,14 +504,18 @@ performed correctly (there are several ways to do this)</li>
 <p>Save the altered turtles data as a comma separated file to the
 <em>data/processed</em> folder in your working directory using the
 ‘readr’ package and name it ‘turtles_tidy’</p>
-<p>Download the <a href="data/raw/bear_2008_2016.csv">brown bear damage
-data (bear_2008_2016.csv)</a> and save it in the data folder.</p>
 </div>
 <div id="import-and-rename-data" class="section level2">
 <h2>2 Import and rename data</h2>
+<blockquote>
+<p>First if you haven’t, download the <a
+href="data/raw/bear_2008_2016.csv">brown bear damage data
+(bear_2008_2016.csv)</a> and save it in the data/raw folder.</p>
+</blockquote>
 <ul>
 <li>Import the brown bear dataset using the appropriate function from
-the ‘readr’ package and save it as bear_data.<br />
+the ‘readr’ package (e.g. tidyverse) and save it to the environment as
+bear_data.<br />
 </li>
 <li>In the same code chunk set the column names to lowercase and<br />
 </li>
@@ -552,7 +556,7 @@ data to check that it worked.</li>
 </li>
 <li>Change ‘targetspp’ from <strong>character</strong> to
 <strong>factor</strong> using <em>dplyr</em> make sure to overwrite the
-previous bear data so the changes are saved<br />
+previous bear data so the changes are saved for your object<br />
 </li>
 <li>Use the ‘levels()’ <strong>function</strong> to check if this
 worked. HINT: Use the help file if you aren’t familiar with

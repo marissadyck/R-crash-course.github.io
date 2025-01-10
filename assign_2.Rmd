@@ -29,14 +29,15 @@ library(tidyverse)
 
 ## Submission
 
-Brightspace/TBD   
+Submit you R script as a .R (or .Rmd if using markdown) file to Brightspace   
 
 ## Grading
 
 > You should always be following best coding practices (see Intro to R module 1) but especially for assingment submissions.
 
-To receive full credit for each assignment   
+To receive full credit for each assignment  
 
+* Wherever possible prioritizxe the use of tidyverse functions  
 * Please make sure each problem has its own header so that I can easily navigate to your answers 
 * Ensure you have comments that explain what you are doing   
 * Long code chunks should be broken up with spaces and comments to explain what is happening at each step    
@@ -75,10 +76,13 @@ write_csv(turtles.df,
 ```
 
 
-Download the [brown bear damage data (bear_2008_2016.csv)](data/raw/bear_2008_2016.csv) and save it in the data folder. 
+ 
 
 ## 2 Import and rename data
-* Import the brown bear dataset using the appropriate function from the 'readr' package and save it as bear_data.    
+
+> First if you haven't, download the [brown bear damage data (bear_2008_2016.csv)](data/raw/bear_2008_2016.csv) and save it in the data/raw folder.
+
+* Import the brown bear dataset using the appropriate function from the 'readr' package (e.g. tidyverse) and save it to the environment as bear_data.    
 * In the same code chunk set the column names to lowercase and    
 * change dist_to_town to m_to_town and dist_to_forest to m_to_forest (m for meters)    
 * Finally, use one of the functions we've covered to view/print your data to check that it worked.
@@ -100,9 +104,10 @@ bear_data <- read_csv('data/raw/bear_2008_2016.csv') %>%
 head(bear_data) 
 ```
 
-## 3 Change variable type
+## 3 Change variable type 
+
 * Check the internal structure of the bear dataset    
-* Change 'targetspp' from **character** to **factor** using *dplyr* make sure to overwrite the previous bear data so the changes are saved    
+* Change 'targetspp' from **character** to **factor** using *dplyr* make sure to overwrite the previous bear data so the changes are saved for your object    
 * Use the 'levels()' **function** to check if this worked. HINT: Use the help file if you aren't familiar with 'levels()'
 
 ```{r echo=FALSE}
@@ -116,7 +121,8 @@ bear_data <- bear_data %>%
 levels(bear_data$targetspp)
 ```
 
-## 4 Subsetting
+## 4 Subsetting 
+
 * Now that we know there are 3 livestock types (groups), subset the data to include only the rows for 'ovine' 
 * In the same code chunk select the columns damage, year, month, bear_abund, landcover_code, and altitude
 * Save this to your **environment** as 'bear_sheep_data'
@@ -141,6 +147,7 @@ head(bear_sheep_data)
 ```
 
 ## 5 Summarise 
+
 * Using the bear_sheep_data and the `summarise()` **function**, calculate the mean, sd and SE (the formula for SE is sd / sqrt(n)) for altitude. *This last part might be tricky at first but give it a try and remember you can always google things and check the 'help' files; and if that fails 'phone a friend or me'*
 
 ```{r echo=FALSE}

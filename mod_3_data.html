@@ -365,7 +365,7 @@ div.tocify {
       <a href="mod_2_ggplot.html">Module 2: Basics of ggplot</a>
     </li>
     <li>
-      <a href="mod_3_ggplot_adv.html">Module 3: Advanced ggplot (coming soon)</a>
+      <a href="mod_3_adv_ggplot.html">Module 3: Advanced ggplot (coming soon)</a>
     </li>
     <li>
       <a href="mod_4_beyond_ggplot.html">Module 4: Beyond ggplot</a>
@@ -440,9 +440,6 @@ div.tocify {
   <a href="links.html">Links</a>
 </li>
 <li>
-  <a href="surveys.html">Surveys</a>
-</li>
-<li>
   <a href="terms.html">Terms</a>
 </li>
       </ul>
@@ -478,8 +475,8 @@ div.tocify {
 <h3>Script</h3>
 <ol style="list-style-type: decimal">
 <li><p>Click <a href="mod_3_data.R">here</a> to download the script!
-Save the script to the project directory you set up in the previous
-module.</p></li>
+Save the scripts folder in the project directory you set up in the
+previous module.</p></li>
 <li><p>Load your script in RStudio. To do this, open RStudio and click
 on the folder icon in the toolbar at the top to load your
 script.</p></li>
@@ -503,7 +500,12 @@ cheat sheets</a> Scroll down to data tidying with tidyr
 <h2>Working directory</h2>
 <p>Remember, the working directory is the first place R looks for any
 files you would like to read in (e.g., code, data). It is also the first
-place R will try to write any files you want to save.</p>
+place R will try to write any files you want to save. If you opened up
+RStudio through the .Rproj object you created in the previous module
+your working directory should automatically set to the right place and
+you should see the project name you set for this course in the upper
+righthand corner of your Rproject windows. But we can check this with a
+quick and easy command.</p>
 <p>Every R session has a working directory, whether you specify one or
 not. <span style="color: blue;">Find out what your working directory
 is</span>.</p>
@@ -538,8 +540,8 @@ Rstudio by double clicking the project.</p>
 <div id="importing-data-into-r" class="section level3">
 <h3>Importing data into R</h3>
 <p>There are many ways data can be imported into R. Many types of files
-can be imported (e.g., text files, csv, shapefiles). And people are
-always inventing new ways to read and write data to/from R. But here are
+can be imported (e.g., text files, csv, shapefiles). And there are many
+different functions to read in each of these file types. But here are
 the basics.</p>
 <ul>
 <li>read.table or read_delim
@@ -555,7 +557,7 @@ common way to read in data)</li>
 </ul></li>
 </ul>
 <p>Before we can read data in, we need to put some data files in our
-working directory!</p>
+working directory if you haven’t already!</p>
 <ol style="list-style-type: decimal">
 <li><p>Download the following data files and store them in your ‘data’
 folder in the R Crash Course working directory</p>
@@ -776,7 +778,7 @@ Y &lt; Z
 # Wrong!
 data.df[, 2] = 74     # sets entire second column equal to 74! OOPS WE GOOFED UP!!!
 
-data.df &lt;- read.csv(&quot;data/data.csv&quot;)  ## correct our mistake in the previous line (revert to the original data)!
+data.df &lt;- read.csv(&quot;data/raw/data.csv&quot;)  ## correct our mistake in the previous line (revert to the original data)!
 
 # Right
 data.df[, 2] == 74    # tests each element of column to see whether it is equal to 74
@@ -879,7 +881,8 @@ you do not use the quotations the package will not be installed.</p>
 <p>Each time you open a new R session you need to load the
 <strong>packages</strong> you want to use into your
 <strong>library</strong>. To do this use the <code>library()</code>
-<strong>function</strong></p>
+<strong>function</strong>, however in this instance since the package is
+already installed you don’t need ““.</p>
 <pre class="r"><code># Load packages to library 
 
 library(tidyverse)</code></pre>
@@ -986,13 +989,17 @@ tidy_data.txt</code></pre>
 ## 20 Venezuela          91      7 A</code></pre>
 <p>Notice the tidy way did a slightly better job reading in this data
 (e.g., we don’t have those weird variable labels at the top of our
-columns)</p>
+columns), and when it prints it also tells us what data type it has read
+the columns in as</p>
 <p>You’ll also notice the object type has change to a
 <strong>tibble</strong></p>
 <pre class="r"><code># check the object type of data
 
 class(tidy_data.txt)</code></pre>
 <pre><code>## [1] &quot;spec_tbl_df&quot; &quot;tbl_df&quot;      &quot;tbl&quot;         &quot;data.frame&quot;</code></pre>
+<p>We aren’t going to get much into the weeds of the difference between
+a tibble and a data frame, they function similarly but tibbles tend to
+work better with tidyverse functions.</p>
 <p>The <strong>function</strong> to read in .csv files as tidy data is
 <code>read_csv()</code> in the <em>readr</em>
 <strong>package</strong></p>
@@ -1448,12 +1455,12 @@ str(turtles.df) # sex is still a character, why?</code></pre>
 ##   ..   Weight = col_double()
 ##   .. )
 ##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
-<p>You’ll notice it works within you pipe but when we re-check the
-structure of our data it hasn’t changed. This is because we save the
-changes, to do this we need to use the <strong>assignment
-operator</strong> to save the altered turtles.df data to the
-<strong>environment</strong>. Using the <em>same name for the turtles
-data and the assignment operator</em> and code above <span
+<p>You’ll notice it works within your pipe but when we re-check the
+structure of our data it hasn’t changed. This is because we didn’t save
+the changes to the actual object, to do this we need to use the
+<strong>assignment operator</strong> to save the altered turtles.df data
+to the <strong>environment</strong>. Using the <em>same name for the
+turtles data and the assignment operator</em> and code above <span
 style="color: blue;">assign the altered data to the
 <strong>environment</strong> as turtles.df</span>. Check the structure
 of the data when you are done to ensure it worked.</p>
@@ -1473,20 +1480,12 @@ str(turtles.df) </code></pre>
 this right when we read in the data. Using the code below, <span
 style="color: blue;"> add the mutate function to the <em>dplyr</em> pipe
 to mutate sex to a factor</span>.</p>
-<pre><code># read turtle_data.txt in to R using readr
-turtles.df &lt;- read_delim(&#39;data/turtle_data.txt&#39;,
-                         delim = &#39;\t&#39;) %&gt;% 
-  
-   # set column names to lowercase
-  set_names(
-    names(.) %&gt;%  
-      tolower()) %&gt;% 
-  
-  # rename columns to shorter names
-  rename(tag = tag_number,
-         c_length = carapace_length,
-         h_width = head_width)</code></pre>
-<pre class="r fold-hide"><code># read turtle_data.txt in to R using readr
+<pre class="r"><code># PRACTICE ON YOUR OWN ----------------------
+
+# Use the code below to read in the data and make changes we covered in the sections above, then in your script add a pipe and use the mutate function to change sex to a factor variable 
+
+
+# read turtle_data.txt in to R using readr
 turtles.df &lt;- read_delim(&#39;data/raw/turtle_data.txt&#39;,
                          delim = &#39;\t&#39;) %&gt;% 
   
@@ -1498,10 +1497,52 @@ turtles.df &lt;- read_delim(&#39;data/raw/turtle_data.txt&#39;,
   # rename columns to shorter names
   rename(tag = tag_number,
          c_length = carapace_length,
-         h_width = head_width) %&gt;% 
+         h_width = head_width)</code></pre>
+<p>BUT WAIT! There is even a better (sometimes) way to do this</p>
+<p>With tidyverse you can specify how you want the columns read in
+without using the mutate function</p>
+<pre class="r"><code># in this example we will specify how we want ALL of the data in the turtle_data.txt file to read in 
+
+turtles.df &lt;- read_delim(&#39;data/raw/turtle_data.txt&#39;,
+                         delim = &#39;\t&#39;,
+                         
+                         # specify variable types 
+                         col_types = cols(Tag_number = col_number(),
+                                          Sex = col_factor(),
+                                          Carapace_length = col_number(),
+                                          Head_width = col_number(),
+                                          Weight = col_number())
+) %&gt;% 
   
-  # change sex to factor
-  mutate(sex = as.factor(sex))</code></pre>
+  # set column names to lowercase
+  set_names(
+    names(.) %&gt;%  
+      tolower()) %&gt;% 
+  
+  # rename columns to shorter names
+  rename(tag = tag_number,
+         c_length = carapace_length,
+         h_width = head_width)
+
+# or even less coding
+
+turtles.df &lt;- read_delim(&#39;data/raw/turtle_data.txt&#39;,
+                         delim = &#39;\t&#39;,
+                         
+                         # specify variable types 
+                         col_types = cols(Sex = col_factor(),
+                                          .default = col_number()) # this sets every variable not specified above to this type
+)%&gt;% 
+  
+  # set column names to lowercase
+  set_names(
+    names(.) %&gt;%  
+      tolower()) %&gt;% 
+  
+  # rename columns to shorter names
+  rename(tag = tag_number,
+         c_length = carapace_length,
+         h_width = head_width)</code></pre>
 <p>Similar to the <code>summarise()</code> <strong>function</strong> we
 can also perform mutations on all the columns
 (<code>mutate_all()</code>) or multiple columns that fit a criteria
@@ -1646,161 +1687,14 @@ turtles.df %&gt;%
 <pre><code>## # A tibble: 4 × 2
 ##   sex     mean
 ##   &lt;fct&gt;  &lt;dbl&gt;
-## 1 fem     6.2 
+## 1 male    7.29
 ## 2 female 10.0 
-## 3 male    7.29
+## 3 fem     6.2 
 ## 4 &lt;NA&gt;    2.35</code></pre>
 <pre class="r"><code> # END MAIN SCRIPT ----------------------</code></pre>
 <p>You might notice a problem with the way the data are entered here. We
 will fix that in the next module.</p>
 </div>
-</div>
-</div>
-<div id="practice-problems" class="section level2">
-<h2>Practice Problems</h2>
-<div id="export-data" class="section level3">
-<h3>1 Export data</h3>
-<p>Save the altered turtles data as a comma separated file to the
-<em>data/processed</em> folder in your working directory using the
-‘readr’ package and name it ‘turtles_tidy’</p>
-</div>
-<div id="import-and-rename-data" class="section level3">
-<h3>2 Import and rename data</h3>
-<p>Download the <a href="data/raw/bear_2008_2016.csv">brown bear damage
-data (bear_2008_2016.csv)</a> and save it in the data folder.</p>
-<ul>
-<li>Import the brown bear dataset from the <em>data/raw</em> folder
-using the appropriate function from the ‘readr’ package and save it as
-bear_data.<br />
-</li>
-<li>In the same code chunk set the column names to lowercase and<br />
-</li>
-<li>change dist_to_town to m_to_town and dist_to_forest to m_to_forest
-(m for meters)<br />
-</li>
-<li>Finally, use one of the functions we’ve covered to view/print your
-data to check that it worked.</li>
-</ul>
-<pre><code>## # A tibble: 6 × 25
-##   damage  year month targetspp point_x point_y bear_abund landcover_code
-##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;          &lt;dbl&gt;
-## 1      0  2008     0 &lt;NA&gt;      542583. 532675.         38            311
-## 2      0  2008     0 &lt;NA&gt;      540963. 528113.         40            311
-## 3      0  2008     0 &lt;NA&gt;      542435. 510385.         38            211
-## 4      0  2008     0 &lt;NA&gt;      541244. 507297.         38            231
-## 5      0  2008     0 &lt;NA&gt;      542791. 497755.         32            211
-## 6      0  2008     0 &lt;NA&gt;      544639. 610454.         32            313
-## # ℹ 17 more variables: altitude &lt;dbl&gt;, human_population &lt;dbl&gt;,
-## #   m_to_forest &lt;dbl&gt;, m_to_town &lt;dbl&gt;, livestock_killed &lt;dbl&gt;,
-## #   numberdamageperplot &lt;dbl&gt;, shannondivindex &lt;dbl&gt;, prop_arable &lt;dbl&gt;,
-## #   prop_orchards &lt;dbl&gt;, prop_pasture &lt;dbl&gt;, prop_ag_mosaic &lt;dbl&gt;,
-## #   prop_seminatural &lt;dbl&gt;, prop_deciduous &lt;dbl&gt;, prop_coniferous &lt;dbl&gt;,
-## #   prop_mixedforest &lt;dbl&gt;, prop_grassland &lt;dbl&gt;, prop_for_regen &lt;dbl&gt;</code></pre>
-</div>
-<div id="change-variable-type-1" class="section level3">
-<h3>3 Change variable type</h3>
-<ul>
-<li>Check the internal structure of the bear dataset<br />
-</li>
-<li>Change ‘targetspp’ from <strong>character</strong> to
-<strong>factor</strong> using <em>dplyr</em> make sure to overwrite the
-previous bear data so the changes are saved<br />
-</li>
-<li>Use the ‘levels()’ <strong>function</strong> to check if this
-worked. HINT: Use the help file if you aren’t familiar with
-‘levels()’</li>
-</ul>
-<pre><code>## spc_tbl_ [3,024 × 25] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
-##  $ damage             : num [1:3024] 0 0 0 0 0 0 0 0 0 0 ...
-##  $ year               : num [1:3024] 2008 2008 2008 2008 2008 ...
-##  $ month              : num [1:3024] 0 0 0 0 0 0 0 0 0 0 ...
-##  $ targetspp          : chr [1:3024] NA NA NA NA ...
-##  $ point_x            : num [1:3024] 542583 540963 542435 541244 542791 ...
-##  $ point_y            : num [1:3024] 532675 528113 510385 507297 497755 ...
-##  $ bear_abund         : num [1:3024] 38 40 38 38 32 32 37 45 45 36 ...
-##  $ landcover_code     : num [1:3024] 311 311 211 231 211 313 313 312 324 312 ...
-##  $ altitude           : num [1:3024] 800 666 504 553 470 ...
-##  $ human_population   : num [1:3024] 2 0 2 0 0 0 0 0 0 0 ...
-##  $ m_to_forest        : num [1:3024] 0 0 1829 398 942 ...
-##  $ m_to_town          : num [1:3024] 2398 2441 571 1598 1068 ...
-##  $ livestock_killed   : num [1:3024] 0 0 0 0 0 0 0 0 0 0 ...
-##  $ numberdamageperplot: num [1:3024] 0 0 0 0 0 0 0 0 0 0 ...
-##  $ shannondivindex    : num [1:3024] 0.963 1.119 1.056 1.506 1.067 ...
-##  $ prop_arable        : num [1:3024] 0 0 65.6 27.3 53.2 ...
-##  $ prop_orchards      : num [1:3024] 0 0 0 0 0 0 0 0 0 0 ...
-##  $ prop_pasture       : num [1:3024] 0 25.3 11.13 20 4.27 ...
-##  $ prop_ag_mosaic     : num [1:3024] 0 0 8.55 0 0 ...
-##  $ prop_seminatural   : num [1:3024] 16.3 30.6 0 19.8 0 ...
-##  $ prop_deciduous     : num [1:3024] 57.796 43.095 0 0.769 32.454 ...
-##  $ prop_coniferous    : num [1:3024] 0 0 0 0 0 ...
-##  $ prop_mixedforest   : num [1:3024] 0 0 0 0 0 ...
-##  $ prop_grassland     : num [1:3024] 0 1 0 0 0 ...
-##  $ prop_for_regen     : num [1:3024] 25.9 0 13.5 0 0 ...
-##  - attr(*, &quot;spec&quot;)=
-##   .. cols(
-##   ..   Damage = col_double(),
-##   ..   Year = col_double(),
-##   ..   Month = col_double(),
-##   ..   Targetspp = col_character(),
-##   ..   POINT_X = col_double(),
-##   ..   POINT_Y = col_double(),
-##   ..   Bear_abund = col_double(),
-##   ..   Landcover_code = col_double(),
-##   ..   Altitude = col_double(),
-##   ..   Human_population = col_double(),
-##   ..   Dist_to_forest = col_double(),
-##   ..   Dist_to_town = col_double(),
-##   ..   Livestock_killed = col_double(),
-##   ..   Numberdamageperplot = col_double(),
-##   ..   ShannonDivIndex = col_double(),
-##   ..   prop_arable = col_double(),
-##   ..   prop_orchards = col_double(),
-##   ..   prop_pasture = col_double(),
-##   ..   prop_ag_mosaic = col_double(),
-##   ..   prop_seminatural = col_double(),
-##   ..   prop_deciduous = col_double(),
-##   ..   prop_coniferous = col_double(),
-##   ..   prop_mixedforest = col_double(),
-##   ..   prop_grassland = col_double(),
-##   ..   prop_for_regen = col_double()
-##   .. )
-##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
-<pre><code>## [1] &quot;alte&quot;   &quot;bovine&quot; &quot;ovine&quot;</code></pre>
-</div>
-<div id="subsetting" class="section level3">
-<h3>4 Subsetting</h3>
-<ul>
-<li>Now that we know there are 3 livestock types (groups), subset the
-data to include only the rows for ‘ovine’</li>
-<li>In the same code chunk select the columns damage, year, month,
-bear_abund, landcover_code, and altitude</li>
-<li>Save this to your <strong>environment</strong> as
-‘bear_sheep_data’</li>
-</ul>
-<pre><code>## # A tibble: 6 × 6
-##   damage  year month bear_abund landcover_code altitude
-##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;          &lt;dbl&gt;    &lt;dbl&gt;
-## 1      1  2008     9         40            324      570
-## 2      1  2008     9         40            324      570
-## 3      1  2008     8         36            321     1410
-## 4      1  2008     8         22            321     1068
-## 5      1  2008     9         40            112      516
-## 6      1  2008     8         56            112      533</code></pre>
-</div>
-<div id="summarise" class="section level3">
-<h3>5 Summarise</h3>
-<ul>
-<li>Using the bear_sheep_data and the <code>summarise()</code>
-<strong>function</strong>, calculate the mean, sd and SE (the formula
-for SE is sd / sqrt(n)) for altitude. <em>This last part might be tricky
-at first but give it a try and remember you can always google things and
-check the ‘help’ files; and if that fails ‘phone a friend or
-me’</em></li>
-</ul>
-<pre><code>## # A tibble: 1 × 3
-##   mean_alt sd_alt se_alt
-##      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-## 1     699.   183.   12.6</code></pre>
 </div>
 </div>
 <div id="assignment-and-next-module" class="section level2">

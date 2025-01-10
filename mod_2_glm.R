@@ -3,7 +3,7 @@
 #      University of Victoria, Victoria BC Canada             
 
 #  Statistical Modeling
-# Module 1: Generalized linear models (GLMs)
+# Module 2: Generalized linear models (GLMs)
 
 # Libraries ----------------------
 
@@ -14,6 +14,9 @@ library(rphylopic)
 library(MuMIn)
 library(car)
 library(AER)
+library(broom)
+library(pROC)
+
 
 # Data ----------------------
 
@@ -70,15 +73,15 @@ chart.Correlation(cows_cor,
 
 # GLM syntax ----------------------
 
-# glm(response variable ~ explanatory variable 1 + explanatory variable 2,    
-#     data = your data,   
-#     family = chosen distribution)
+glm(response variable ~ explanatory variable 1 + explanatory variable 2,    
+    data = your data,   
+    family = chosen distribution)
     
 
 # GLM ----------------------
 
 # run a global GLM which includes all variables not highly correlated
-cows_global <- glm(damage ~ bear_abund +
+cows_global <- glm(damage ~ bear_abund + 
                      dist_to_forest + 
                      dist_to_town +
                      openhab_10k +
@@ -87,7 +90,6 @@ cows_global <- glm(damage ~ bear_abund +
                    data = cows, 
                    family = binomial)
 
-summary(cows_global)
 
 # Test assumptions ----------------------
 
@@ -122,6 +124,7 @@ summary(cows_global)
 # calculate odds ratio for coefficients
 exp(coefficients(cows_global))
 
+
 # re-run scaled model
 
 # scale variables inside the glm model to get effect sizes when looking at coefficients
@@ -137,11 +140,67 @@ cows_global <- glm(damage ~ scale(bear_abund) +
                    family = binomial)
 
 summary(cows_global)
+
 # calculate odds ratio for scaled coefficients
 exp(coefficients(cows_global))
 
+
+model_odds <- 
+tidy(cows_global,
+     exponentiate = TRUE,
+     confint.int = TRUE) %>% 
+  
+  # bind the estiamtes with the confidence intervals from the model
+  cbind(exp(confint(cows_global))) %>% 
+  
+  # change format to a tibble so works nicely with ggplot
+  as.tibble() %>% 
+  
+  rename(lower = '2.5 %',
+         upper = '97.5 %') %>% 
+  
+  filter(term != '(Intercept)')
+# specify data and mapping asesthetics
+ggplot(data = model_odds,
+       aes(x = term,
+           y = estimate)) +
+  
+  # add points for the odss
+  geom_point() +
+  
+  # add errorbars for the confidence intervals
+  geom_errorbar(aes(ymin = lower,
+                    ymax = upper),
+                linewidth = 0.5,
+                width = 0.4) +
+  
+  geom_hline(yintercept = 1,
+             alpha = 0.5) +
+  
+  # rename the x axis labels
+  scale_x_discrete(labels = c('Agriculture',
+                              'Opoen habitat',
+                              'Bear abundance',
+                              'Distance to forest',
+                              'Distance to town',
+                              'SHDI')) +
+  
+  # rename y axis title
+  ylab('Odds ratio') +
+  
+  # flip x and y axis 
+      coord_flip() +
+
+  # specify theme
+  theme_bw() +
+  
+  # specify theme elements
+  theme(panel.grid = element_blank(),
+        axis.title.y = element_blank())
+
 # inverse logit of coefficients to get probabilities 
 plogis(coefficients(cows_global))
+
 
 # Newdata ----------------------
 
@@ -159,6 +218,7 @@ new_data_bear <- expand.grid(bear_abund = seq(min(cows$bear_abund),
 
 # look at what we created
 head(new_data_bear)
+
 # use predict function to get predicted probabilities of cow damage based on our model
 new_data_bear$pred <- predict(cows_global,
                               type = 'response',
@@ -200,6 +260,7 @@ head(new_data_bear_typo)
 new_data_bear_typo$pred <- predict(cows_global,
                               type = 'response',
                               newdata = new_data_bear_typo)
+
 # Graphs ----------------------
 
 # create graph with predicted prob x bear abundance
@@ -258,7 +319,7 @@ ggplot(data = new_data_bear_pred, aes(x = bear_abund, y = fit)) +
   # add cow image
   add_phylopic(cows_phylopic, 
                alpha = 1,
-               ysize = 5,
+               ysize = 0.1,
                x = 73,
                y = 0.98)
 
@@ -266,7 +327,7 @@ ggplot(data = new_data_bear_pred, aes(x = bear_abund, y = fit)) +
 
 # models for model selection
 
-# we already ran cows_global but here is the code again
+# we already ran cows_global but here is code again
 cows_global <- glm(damage ~ scale(bear_abund) + 
                      scale(dist_to_forest) + 
                      scale(dist_to_town) +
@@ -319,3 +380,20 @@ model.sel(cows_global,
           cows_2,
           cows_3,
           cows_4)
+
+# plot chosen model
+plot(cows_global)
+
+
+c.roccurve <- roc(cows$damage, 
+                  predict(cows_global, type = 'response'))
+
+auc(c.roccurve)
+
+plot.roc(c.roccurve, main="Area Under the Curve for best model")
+
+summary(cows_global)
+
+# 1 - (Residual Deviance/Null Deviance)
+
+1 - (1629/1822) # you want a high r square so this is not a very good fitting model

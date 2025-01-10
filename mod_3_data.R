@@ -120,7 +120,7 @@ Y < Z
 # Wrong!
 data.df[, 2] = 74     # sets entire second column equal to 74! OOPS WE GOOFED UP!!!
 
-data.df <- read.csv("data/data.csv")  ## correct our mistake in the previous line (revert to the original data)!
+data.df <- read.csv("data/raw/data.csv")  ## correct our mistake in the previous line (revert to the original data)!
 
 # Right
 data.df[, 2] == 74    # tests each element of column to see whether it is equal to 74
@@ -337,6 +337,12 @@ turtles.df <-  turtles.df %>%
 # check structure
 str(turtles.df) 
 
+
+# PRACTICE ON YOUR OWN ----------------------
+
+# Use the code below to read in the data and make changes we covered in the sections above, then in your script add a pipe and use the mutate function to change sex to a factor variable 
+
+
 # read turtle_data.txt in to R using readr
 turtles.df <- read_delim('data/raw/turtle_data.txt',
                          delim = '\t') %>% 
@@ -349,12 +355,49 @@ turtles.df <- read_delim('data/raw/turtle_data.txt',
   # rename columns to shorter names
   rename(tag = tag_number,
          c_length = carapace_length,
-         h_width = head_width) %>% 
+         h_width = head_width)
+# in this example we will specify how we want ALL of the data in the turtle_data.txt file to read in 
+
+turtles.df <- read_delim('data/raw/turtle_data.txt',
+                         delim = '\t',
+                         
+                         # specify variable types 
+                         col_types = cols(Tag_number = col_number(),
+                                          Sex = col_factor(),
+                                          Carapace_length = col_number(),
+                                          Head_width = col_number(),
+                                          Weight = col_number())
+) %>% 
   
-  # change sex to factor
-  mutate(sex = as.factor(sex))
+  # set column names to lowercase
+  set_names(
+    names(.) %>%  
+      tolower()) %>% 
+  
+  # rename columns to shorter names
+  rename(tag = tag_number,
+         c_length = carapace_length,
+         h_width = head_width)
 
+# or even less coding
 
+turtles.df <- read_delim('data/raw/turtle_data.txt',
+                         delim = '\t',
+                         
+                         # specify variable types 
+                         col_types = cols(Sex = col_factor(),
+                                          .default = col_number()) # this sets every variable not specified above to this type
+)%>% 
+  
+  # set column names to lowercase
+  set_names(
+    names(.) %>%  
+      tolower()) %>% 
+  
+  # rename columns to shorter names
+  rename(tag = tag_number,
+         c_length = carapace_length,
+         h_width = head_width)
 
 # read turtle_data.txt in to R using readr
 turtles.df %>% 
