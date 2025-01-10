@@ -101,7 +101,7 @@ turtles_no_na$size_class
 ## 3 Replace values with NA
 In the **turtles_tidy data** (*not the turtles_no_na data*) replace ALL variable values (except the tag column) for tags 104 and 105 with NAs
 
-*Hint you will need to create a vector for the tag numbers you want to replace and use `mutate()`*
+*Hint you will need to create a vector for that identifies the tag numbers you want to replace and use `mutate()` with another function/s to do this*
 ```{r echo=FALSE}
 
 # read data
