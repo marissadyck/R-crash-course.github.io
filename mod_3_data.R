@@ -18,7 +18,8 @@ getwd()          # note: the results from running this command on my machine wil
 # read.table to import text file (if no delim specified, it will try to guess!)
 data.txt.df <- read.table("data/raw/data.txt")  
 
-
+head(data.txt.df)
+tail(data.txt.df)
 
 # Look at data by printing it in the console
 # You can also look at data by using the View() function
@@ -129,6 +130,8 @@ data.df[, 2] < 74 | data.df[, 2] == 91   # use the logical OR operator
 
 
   # Sub-setting data base R----------------------
+
+
 
 # select those rows of data for which second column is less than 74
 data.df[data.df[, "Import"] < 74, ]  

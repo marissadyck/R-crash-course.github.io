@@ -29,7 +29,10 @@ library(tidyverse)
 
 ## Submission
 
-Submit you R script as a .R (or .Rmd if using markdown) file to Brightspace   
+Submit you R script as a .R (or .Rmd if using markdown) file to Brightspace.
+
+> Please make sure your submission includes your name and the assignment number in the filename 
+
 
 ## Grading
 
