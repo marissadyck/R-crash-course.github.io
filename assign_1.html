@@ -513,6 +513,23 @@ performed correctly (there are several ways to do this)</li>
 <p>Create a vector called ‘myvec’ using any of the methods you learned
 with numbers 1 to 10. <em>Note there are multiple ways to do
 this</em>.</p>
+<pre class="r fold-hide"><code># (1 pt)
+
+# answer 1 (the most parsimonious) using : to specify the range of numbers for a vector
+myvec &lt;- 1:10
+
+# answer 2 using the c() function to provide the range of numbers
+myvec &lt;- c(1, 10)
+
+# answer 3 (time consuming) using the c() function to type out all the numbers for the vector
+myvec &lt;- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+# answer 4 (unecessarily complicated for this exercise but works) using the seq() function which is great for many things but probably overkill for this question
+myvec &lt;- seq(1, 10, by = 1)
+
+
+# print the vector
+myvec</code></pre>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
 </div>
 <div id="create-a-matrix-with-rbind" class="section level2">
@@ -523,6 +540,17 @@ three rows/vectors together:</p>
 <pre><code>c(1,4) 
 c(2,5) 
 c(3,6)</code></pre>
+<pre class="r fold-hide"><code># (1 pt)
+
+# create matrix with rbind, using the c() function inside rbind() avoid assigning extra objects to the environemnt
+mymat &lt;- rbind(
+  c(1,4),
+  c(2,5),
+  c(3,6)
+)
+
+# print matrix
+mymat</code></pre>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    4
 ## [2,]    2    5
@@ -534,11 +562,56 @@ c(3,6)</code></pre>
 ‘mydf’. <em>Hint see the R functions to explore data section</em>. Then
 extract all rows for column 5 by name, do the same thing using the
 element position e.g. <code>[]</code></p>
+<pre class="r fold-hide"><code># code to create mydf from the lab script
+
+# create a data.frame object and assign to environemnt as my.data
+my.data &lt;- data.frame(
+  
+  # add observation ids with numbers 1 to 100
+  Obs.Id = 1:100,
+  
+  # add treatment with repeating characters A to E to create 5 treatment groups with 20 observations each
+  Treatment = rep(c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;),
+                  each = 20),
+  
+  # create a block variable with numbers 1:20 that repeats 5 times (1 for each treatemnt group)
+  Block = rep(1:20,
+              times = 5),
+  
+  # create germination variable that is a random number drawn from the poisson distribution with specified means for each group
+  Germination = rpois(100,
+                      # lamda specifies the mean for the draws in this case group 1 mean = 1, group 2 mean =5 etc.
+                      lambda = rep(c(1,5,4,7,1),
+                                   # this specifies the number of draws so 20 random draws from each of the means specified above
+                                   each = 20)),  
+  
+  # create average height variable with 100 draws from the normal distribution
+  AvgHeight = rnorm(100,
+                    
+                    # the mean specifies what the mean of normal distibution will be when it draws numbers from it, here we&#39;ve specified 5 different means for the 5 groups
+                    mean = rep(c(10,30,31,25,35),
+                               # it will do 20 draws from each of the means specified above
+                               each = 20))
+)
+
+# subset data to just rows 21:30 with all columns of data
+mydf &lt;-  my.data[21:30, ]  
+
+# answer for problem 1
+
+# (3 pts)
+
+# print the column names for mydf
+names(mydf)</code></pre>
 <pre><code>## [1] &quot;Obs.Id&quot;      &quot;Treatment&quot;   &quot;Block&quot;       &quot;Germination&quot; &quot;AvgHeight&quot;</code></pre>
-<pre><code>##  [1] 29.24436 30.22515 31.14310 29.09873 30.51630 29.11166 30.17720 31.43883
-##  [9] 27.68191 30.82296</code></pre>
-<pre><code>##  [1] 29.24436 30.22515 31.14310 29.09873 30.51630 29.11166 30.17720 31.43883
-##  [9] 27.68191 30.82296</code></pre>
+<pre class="r fold-hide"><code># get all rows for the average height column using the column name 
+mydf$AvgHeight</code></pre>
+<pre><code>##  [1] 30.30209 27.91465 29.75724 30.17672 29.41516 29.08773 31.55113 31.74733
+##  [9] 28.74467 29.91922</code></pre>
+<pre class="r fold-hide"><code># get all rows for the average height column using the columns position in the data frame (e.g., 5)
+mydf[ , 5]</code></pre>
+<pre><code>##  [1] 30.30209 27.91465 29.75724 30.17672 29.41516 29.08773 31.55113 31.74733
+##  [9] 28.74467 29.91922</code></pre>
 </div>
 <div id="create-a-matrix" class="section level2">
 <h2>4 Create a matrix</h2>
@@ -551,17 +624,24 @@ help files.</em></p>
 <p>Note your values for some columns may be slighly different since the
 code to create mydf uses random number generators.</p>
 </blockquote>
+<pre class="r fold-hide"><code># (1 pt)
+
+# create matrix of all rows for columns 3 to 5 of mydf
+mymat2 &lt;- as.matrix(mydf[ , 3:5])
+
+# print matrix
+mymat2</code></pre>
 <pre><code>##    Block Germination AvgHeight
-## 21     1           4  29.24436
-## 22     2           5  30.22515
-## 23     3           4  31.14310
-## 24     4           5  29.09873
-## 25     5           7  30.51630
-## 26     6           5  29.11166
-## 27     7           5  30.17720
-## 28     8           6  31.43883
-## 29     9           6  27.68191
-## 30    10           5  30.82296</code></pre>
+## 21     1           6  30.30209
+## 22     2           4  27.91465
+## 23     3           7  29.75724
+## 24     4           5  30.17672
+## 25     5           6  29.41516
+## 26     6           5  29.08773
+## 27     7           4  31.55113
+## 28     8           4  31.74733
+## 29     9           3  28.74467
+## 30    10           6  29.91922</code></pre>
 </div>
 <div id="create-a-list" class="section level2">
 <h2>5 Create a list</h2>
@@ -570,6 +650,24 @@ code to create mydf uses random number generators.</p>
 - a matrix: matrix(1:6, nrow = 3, ncol = 2),<br />
 - and a data frame: data.frame(x =c (1, 2, 3), y = c(TRUE, FALSE, TRUE),
 z = c(“a”, “a”, “b”)).</p>
+<pre class="r fold-hide"><code>#create an empty list
+mylist &lt;- list()
+
+# add a vector of 1 to 3 to the list
+mylist[[1]] &lt;- 1:3
+
+# add a matrix to the list
+mylist[[2]] &lt;- matrix(1:6,
+                      nrow = 3,
+                      ncol = 2)
+
+# add a data frame to the list
+mylist[[3]] &lt;- data.frame(x = c(1, 2, 3),
+                          y = c(TRUE, FALSE, TRUE),
+                          z = c(&quot;a&quot;, &quot;a&quot;, &quot;b&quot;))
+
+# print the list
+mylist</code></pre>
 <pre><code>## [[1]]
 ## [1] 1 2 3
 ## 
@@ -589,7 +687,13 @@ z = c(“a”, “a”, “b”)).</p>
 <h2>6 Extracting objects from lists</h2>
 <p>Extract the second and third observation from the 1st column of the
 data frame in ‘mylist’ (the list created above).</p>
+<pre class="r fold-hide"><code># multiple ways to do this
+
+# answer 1 -call mylist then reference the position of the data frame in the list [[3], then the rows and columns you want from that element [2:3, 1]
+mylist[[3]][2:3, 1]</code></pre>
 <pre><code>## [1] 2 3</code></pre>
+<pre class="r fold-hide"><code># answer 2 call mylist then reference the position of the data frame in the list [[3]], then the column in the data frame [[1]], and finally the observations within that columns c(2, 3)
+mylist[[3]][[1]][c(2, 3)]</code></pre>
 <pre><code>## [1] 2 3</code></pre>
 </div>
 

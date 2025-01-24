@@ -40,21 +40,23 @@ To receive full credit for each assignment
 ## 1 Create a vector
 Create a vector called 'myvec' using any of the methods you learned with numbers 1 to 10. *Note there are multiple ways to do this*. 
 
-```{r echo=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide'}
 # (1 pt)
 
-# answer 1 (the most parsimonious)
+# answer 1 (the most parsimonious) using : to specify the range of numbers for a vector
 myvec <- 1:10
 
-# answer 2
+# answer 2 using the c() function to provide the range of numbers
 myvec <- c(1, 10)
 
-# answer 3 (time consuming)
+# answer 3 (time consuming) using the c() function to type out all the numbers for the vector
 myvec <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 
-# answer 4 (unecessarily complicated for this exercise but works)
+# answer 4 (unecessarily complicated for this exercise but works) using the seq() function which is great for many things but probably overkill for this question
 myvec <- seq(1, 10, by = 1)
 
+
+# print the vector
 myvec
 ```
 
@@ -67,47 +69,70 @@ c(2,5)
 c(3,6)
 ```
 
-```{r echo=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide'}
 # (1 pt)
 
+# create matrix with rbind, using the c() function inside rbind() avoid assigning extra objects to the environemnt
 mymat <- rbind(
   c(1,4),
   c(2,5),
   c(3,6)
 )
 
+# print matrix
 mymat
 ```
 
 ## 3 Extracting objects from data
 Get the names of columns in the data frame you created earlier 'mydf'. *Hint see the R functions to explore data section*. Then extract all rows for column 5 by name, do the same thing using the element position e.g. `[]`
 
-```{r echo=FALSE}
-# code to create mydf
+```{r echo=TRUE, class.source = 'fold-hide'}
+# code to create mydf from the lab script
+
+# create a data.frame object and assign to environemnt as my.data
 my.data <- data.frame(
+  
+  # add observation ids with numbers 1 to 100
   Obs.Id = 1:100,
+  
+  # add treatment with repeating characters A to E to create 5 treatment groups with 20 observations each
   Treatment = rep(c("A","B","C","D","E"),
                   each = 20),
+  
+  # create a block variable with numbers 1:20 that repeats 5 times (1 for each treatemnt group)
   Block = rep(1:20,
               times = 5),
+  
+  # create germination variable that is a random number drawn from the poisson distribution with specified means for each group
   Germination = rpois(100,
+                      # lamda specifies the mean for the draws in this case group 1 mean = 1, group 2 mean =5 etc.
                       lambda = rep(c(1,5,4,7,1),
-                                   each = 20)),   # random poisson variable
+                                   # this specifies the number of draws so 20 random draws from each of the means specified above
+                                   each = 20)),  
+  
+  # create average height variable with 100 draws from the normal distribution
   AvgHeight = rnorm(100,
-                    mean = rep(c(10,30,31,25,35,7),
+                    
+                    # the mean specifies what the mean of normal distibution will be when it draws numbers from it, here we've specified 5 different means for the 5 groups
+                    mean = rep(c(10,30,31,25,35),
+                               # it will do 20 draws from each of the means specified above
                                each = 20))
 )
 
-mydf = my.data[21:30, ]  
+# subset data to just rows 21:30 with all columns of data
+mydf <-  my.data[21:30, ]  
 
 # answer for problem 1
 
 # (3 pts)
 
+# print the column names for mydf
 names(mydf)
 
+# get all rows for the average height column using the column name 
 mydf$AvgHeight
 
+# get all rows for the average height column using the columns position in the data frame (e.g., 5)
 mydf[ , 5]
 
 ```
@@ -117,12 +142,14 @@ Create a new matrix called 'mymat2' that includes all the data from columns 3 to
 
 > Note your values for some columns may be slighly different since the code to create mydf uses random number generators. 
 
-```{r echo=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide'}
 
 # (1 pt)
 
+# create matrix of all rows for columns 3 to 5 of mydf
 mymat2 <- as.matrix(mydf[ , 3:5])
 
+# print matrix
 mymat2
 
 ```
@@ -134,7 +161,7 @@ Create a list named 'mylist' that is composed of a
   - a matrix: matrix(1:6, nrow = 3, ncol = 2),      
   - and a data frame: data.frame(x =c (1, 2, 3), y = c(TRUE, FALSE, TRUE), z = c("a", "a", "b")).
   
-```{r echo=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide'}
 
 #create an empty list
 mylist <- list()
@@ -148,7 +175,7 @@ mylist[[2]] <- matrix(1:6,
                       ncol = 2)
 
 # add a data frame to the list
-mylist[[3]] <- data.frame(x = c(1, 2,3 ),
+mylist[[3]] <- data.frame(x = c(1, 2, 3),
                           y = c(TRUE, FALSE, TRUE),
                           z = c("a", "a", "b"))
 
@@ -160,10 +187,10 @@ mylist
 ## 6 Extracting objects from lists
 Extract the second and third observation from the 1st column of the data frame in 'mylist' (the list created above). 
 
-```{r echo=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide'}
 # multiple ways to do this
 
-# answer 1 - reference the element in the list [[3]] then the rows and columns you want from that element [2:3, 1]
+# answer 1 -call mylist then reference the position of the data frame in the list [[3], then the rows and columns you want from that element [2:3, 1]
 mylist[[3]][2:3, 1]
 
 # answer 2 call mylist then reference the position of the data frame in the list [[3]], then the column in the data frame [[1]], and finally the observations within that columns c(2, 3)
