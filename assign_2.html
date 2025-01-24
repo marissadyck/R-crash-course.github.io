@@ -508,6 +508,29 @@ performed correctly (there are several ways to do this)</li>
 <p>Save the altered turtles data as a comma separated file to the
 <em>data/processed</em> folder in your working directory using the
 ‘readr’ package and name it ‘turtles_tidy’</p>
+<pre class="r fold-hide"><code># includes code for altering turtle data from the lab script
+
+# read in turtle data from .txt file using tidyverse read_delim() function
+turtles.df &lt;- read_delim(&#39;data/raw/turtle_data.txt&#39;,
+                         delim = &#39;\t&#39;) %&gt;% 
+  
+   # set column names to lowercase for easier coding later
+  set_names(
+    names(.) %&gt;%  
+      tolower()) %&gt;% 
+  
+  # rename columns to shorter names for easier coding later, code reads (new_name = old_name)
+  rename(tag = tag_number,
+         c_length = carapace_length,
+         h_width = head_width) %&gt;% 
+  
+  # change the sex variable to type factor
+  mutate(sex = as.factor(sex))</code></pre>
+<pre class="r fold-hide"><code># answer 1
+
+# save the new clean data as a csv file using tidyverse write_csv() function. first provide the object name and then the file path (folder and subfolders), name (the file name), and extension (.csv) you want to save it as in quotes
+write_csv(turtles.df,
+          &#39;data/processed/turtles_tidy.csv&#39;)</code></pre>
 </div>
 <div id="import-and-rename-data" class="section level2">
 <h2>2 Import and rename data</h2>
@@ -529,6 +552,15 @@ bear_data.<br />
 <li>Finally, use one of the functions we’ve covered to view/print your
 data to check that it worked.</li>
 </ul>
+<pre class="r fold-hide"><code># read in bear data and assign to env. as bear_data
+bear_data &lt;- read_csv(&#39;data/raw/bear_2008_2016.csv&#39;) %&gt;% 
+  
+  # set column names to lowercase
+  rename_with(tolower) %&gt;% 
+  
+  # rename columns to include units
+  rename(m_to_town = dist_to_town,
+         m_to_forest = dist_to_forest)</code></pre>
 <pre><code>## Rows: 3024 Columns: 25
 ## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
@@ -537,6 +569,45 @@ data to check that it worked.</li>
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r fold-hide"><code># view data to check changes
+head(bear_data)</code></pre>
+<pre><code>## # A tibble: 6 × 25
+##   damage  year month targetspp point_x point_y bear_abund landcover_code
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;          &lt;dbl&gt;
+## 1      0  2008     0 &lt;NA&gt;      542583. 532675.         38            311
+## 2      0  2008     0 &lt;NA&gt;      540963. 528113.         40            311
+## 3      0  2008     0 &lt;NA&gt;      542435. 510385.         38            211
+## 4      0  2008     0 &lt;NA&gt;      541244. 507297.         38            231
+## 5      0  2008     0 &lt;NA&gt;      542791. 497755.         32            211
+## 6      0  2008     0 &lt;NA&gt;      544639. 610454.         32            313
+## # ℹ 17 more variables: altitude &lt;dbl&gt;, human_population &lt;dbl&gt;,
+## #   m_to_forest &lt;dbl&gt;, m_to_town &lt;dbl&gt;, livestock_killed &lt;dbl&gt;,
+## #   numberdamageperplot &lt;dbl&gt;, shannondivindex &lt;dbl&gt;, prop_arable &lt;dbl&gt;,
+## #   prop_orchards &lt;dbl&gt;, prop_pasture &lt;dbl&gt;, prop_ag_mosaic &lt;dbl&gt;,
+## #   prop_seminatural &lt;dbl&gt;, prop_deciduous &lt;dbl&gt;, prop_coniferous &lt;dbl&gt;,
+## #   prop_mixedforest &lt;dbl&gt;, prop_grassland &lt;dbl&gt;, prop_for_regen &lt;dbl&gt;</code></pre>
+<pre class="r fold-hide"><code># OR
+
+bear_data &lt;- read_csv(&#39;data/raw/bear_2008_2016.csv&#39;) %&gt;% 
+  
+  # set column names to lowercase using the example from class which was written for purrr functions (sorry forgot to update)
+  set_names(
+    names(.) %&gt;%  
+      tolower()) %&gt;% 
+  
+  # rename columns to include units
+  rename(m_to_town = dist_to_town,
+         m_to_forest = dist_to_forest)</code></pre>
+<pre><code>## Rows: 3024 Columns: 25
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (1): Targetspp
+## dbl (24): Damage, Year, Month, POINT_X, POINT_Y, Bear_abund, Landcover_code,...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r fold-hide"><code># view data
+head(bear_data) </code></pre>
 <pre><code>## # A tibble: 6 × 25
 ##   damage  year month targetspp point_x point_y bear_abund landcover_code
 ##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;          &lt;dbl&gt;
@@ -566,6 +637,8 @@ previous bear data so the changes are saved for your object<br />
 worked. HINT: Use the help file if you aren’t familiar with
 ‘levels()’</li>
 </ul>
+<pre class="r fold-hide"><code># check how variables read in for the data 
+str(bear_data)</code></pre>
 <pre><code>## spc_tbl_ [3,024 × 25] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
 ##  $ damage             : num [1:3024] 0 0 0 0 0 0 0 0 0 0 ...
 ##  $ year               : num [1:3024] 2008 2008 2008 2008 2008 ...
@@ -621,6 +694,15 @@ worked. HINT: Use the help file if you aren’t familiar with
 ##   ..   prop_for_regen = col_double()
 ##   .. )
 ##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<pre class="r fold-hide"><code># change targetspp to type factor with dplyr and mutate
+bear_data &lt;- bear_data %&gt;% 
+  
+  # change variable to type factor
+  mutate(targetspp = as.factor(targetspp))
+
+
+# check levels of factor variable
+levels(bear_data$targetspp)</code></pre>
 <pre><code>## [1] &quot;alte&quot;   &quot;bovine&quot; &quot;ovine&quot;</code></pre>
 </div>
 <div id="subsetting" class="section level2">
@@ -633,6 +715,22 @@ bear_abund, landcover_code, and altitude</li>
 <li>Save this to your <strong>environment</strong> as
 ‘bear_sheep_data’</li>
 </ul>
+<pre class="r fold-hide"><code>bear_sheep_data &lt;- bear_data %&gt;% 
+  
+  # return only rows for sheep
+  filter(targetspp == &#39;ovine&#39;) %&gt;% 
+  
+  # select specified columns
+  select(damage:month, bear_abund:altitude) # most parsimonious way to do it but you could have also done
+
+
+# select(damage, year, month, bear_abund, landcover_code, altitude)
+
+# or 
+
+# select(1:3, 7:9) I do not prefer this one as it&#39;s easy for someone reading your code to misinterpret and not change the column names if needed
+
+head(bear_sheep_data)</code></pre>
 <pre><code>## # A tibble: 6 × 6
 ##   damage  year month bear_abund landcover_code altitude
 ##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;          &lt;dbl&gt;    &lt;dbl&gt;
@@ -653,10 +751,24 @@ at first but give it a try and remember you can always google things and
 check the ‘help’ files; and if that fails ‘phone a friend or
 me’</em></li>
 </ul>
+<pre class="r fold-hide"><code>bear_sheep_data %&gt;% 
+  
+  # use summarise to calculate some summary statistics from the data, mean, sd, and SE
+  summarise(mean_alt = mean(altitude),
+            sd_alt = sd(altitude),
+            se_alt = sd_alt/sqrt(length(altitude))) </code></pre>
 <pre><code>## # A tibble: 1 × 3
 ##   mean_alt sd_alt se_alt
 ##      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
 ## 1     699.   183.   12.6</code></pre>
+<pre class="r fold-hide"><code># you could also look up the length for altitude in the console and type the number here directly but this is more flexible and readable
+
+# or another possible answer
+
+bear_sheep_data %&gt;% 
+  summarise(mean_alt = mean(altitude),
+            sd_alt = sd(altitude),
+            se_alt = sd_alt/sqrt(n()))</code></pre>
 <pre><code>## # A tibble: 1 × 3
 ##   mean_alt sd_alt se_alt
 ##      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;

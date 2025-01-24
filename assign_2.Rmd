@@ -52,27 +52,31 @@ To receive full credit for each assignment
 ## 1 Export data
 
 Save the altered turtles data as a comma separated file to the *data/processed* folder in your working directory using the 'readr' package and name it 'turtles_tidy'
-```{r echo=FALSE, message=FALSE}
-# code for altering turtle data
+```{r echo=TRUE, class.source = 'fold-hide', message=FALSE}
+# includes code for altering turtle data from the lab script
+
+# read in turtle data from .txt file using tidyverse read_delim() function
 turtles.df <- read_delim('data/raw/turtle_data.txt',
                          delim = '\t') %>% 
   
-   # set column names to lowercase
+   # set column names to lowercase for easier coding later
   set_names(
     names(.) %>%  
       tolower()) %>% 
   
-  # rename columns to shorter names
+  # rename columns to shorter names for easier coding later, code reads (new_name = old_name)
   rename(tag = tag_number,
          c_length = carapace_length,
          h_width = head_width) %>% 
   
-  # change sex to factor
+  # change the sex variable to type factor
   mutate(sex = as.factor(sex))
 ```
 
-```{r echo=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide'}
+# answer 1
 
+# save the new clean data as a csv file using tidyverse write_csv() function. first provide the object name and then the file path (folder and subfolders), name (the file name), and extension (.csv) you want to save it as in quotes
 write_csv(turtles.df,
           'data/processed/turtles_tidy.csv')
 
@@ -90,11 +94,26 @@ write_csv(turtles.df,
 * change dist_to_town to m_to_town and dist_to_forest to m_to_forest (m for meters)    
 * Finally, use one of the functions we've covered to view/print your data to check that it worked.
 
-```{r echo=FALSE}
-
+```{r echo=TRUE, class.source = 'fold-hide'}
+# read in bear data and assign to env. as bear_data
 bear_data <- read_csv('data/raw/bear_2008_2016.csv') %>% 
   
   # set column names to lowercase
+  rename_with(tolower) %>% 
+  
+  # rename columns to include units
+  rename(m_to_town = dist_to_town,
+         m_to_forest = dist_to_forest)
+
+# view data to check changes
+head(bear_data)
+
+
+# OR
+
+bear_data <- read_csv('data/raw/bear_2008_2016.csv') %>% 
+  
+  # set column names to lowercase using the example from class which was written for purrr functions (sorry forgot to update)
   set_names(
     names(.) %>%  
       tolower()) %>% 
@@ -104,6 +123,7 @@ bear_data <- read_csv('data/raw/bear_2008_2016.csv') %>%
          m_to_forest = dist_to_forest)
   
 
+# view data
 head(bear_data) 
 ```
 
@@ -113,14 +133,18 @@ head(bear_data)
 * Change 'targetspp' from **character** to **factor** using *dplyr* make sure to overwrite the previous bear data so the changes are saved for your object    
 * Use the 'levels()' **function** to check if this worked. HINT: Use the help file if you aren't familiar with 'levels()'
 
-```{r echo=FALSE}
-
+```{r echo=TRUE, class.source = 'fold-hide'}
+# check how variables read in for the data 
 str(bear_data)
 
-# change targetspp to factor dplyr
+# change targetspp to type factor with dplyr and mutate
 bear_data <- bear_data %>% 
+  
+  # change variable to type factor
   mutate(targetspp = as.factor(targetspp))
 
+
+# check levels of factor variable
 levels(bear_data$targetspp)
 ```
 
@@ -129,7 +153,7 @@ levels(bear_data$targetspp)
 * Now that we know there are 3 livestock types (groups), subset the data to include only the rows for 'ovine' 
 * In the same code chunk select the columns damage, year, month, bear_abund, landcover_code, and altitude
 * Save this to your **environment** as 'bear_sheep_data'
-```{r echo=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide'}
 
 bear_sheep_data <- bear_data %>% 
   
@@ -144,7 +168,7 @@ bear_sheep_data <- bear_data %>%
 
 # or 
 
-# select(1:3, 7:9)
+# select(1:3, 7:9) I do not prefer this one as it's easy for someone reading your code to misinterpret and not change the column names if needed
 
 head(bear_sheep_data)
 ```
@@ -153,12 +177,16 @@ head(bear_sheep_data)
 
 * Using the bear_sheep_data and the `summarise()` **function**, calculate the mean, sd and SE (the formula for SE is sd / sqrt(n)) for altitude. *This last part might be tricky at first but give it a try and remember you can always google things and check the 'help' files; and if that fails 'phone a friend or me'*
 
-```{r echo=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide'}
 
 bear_sheep_data %>% 
+  
+  # use summarise to calculate some summary statistics from the data, mean, sd, and SE
   summarise(mean_alt = mean(altitude),
             sd_alt = sd(altitude),
-            se_alt = sd_alt/sqrt(length(altitude))) # you could also look up the length for altitude in the console and type the number here directly but this is more flexible and readable
+            se_alt = sd_alt/sqrt(length(altitude))) 
+
+# you could also look up the length for altitude in the console and type the number here directly but this is more flexible and readable
 
 # or another possible answer
 

@@ -464,7 +464,7 @@ my.data <- data.frame(
                       lambda = rep(c(1,5,4,7,1),
                                    each = 20)),   # random poisson variable
   AvgHeight = rnorm(100,
-                    mean = rep(c(10,30,31,25,35,7),
+                    mean = rep(c(10,30,31,25,35),
                                each = 20))
 )
 
