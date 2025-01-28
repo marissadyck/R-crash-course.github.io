@@ -9,13 +9,13 @@ library(tidyverse)
   # import data FILL IN YOUR CODE HERE ----------------------
 
 # read in altered turtles data
-turtles_tidy <- read_csv('data/processed/turtles_tidy.csv')
 
-# print data
-turtles_tidy
+
+
 
 # check internal structure
-str(turtles_tidy)
+
+
 
 # code for altering turtle data
 turtles.df <- read_delim('data/raw/turtle_data.txt',
@@ -139,14 +139,11 @@ str(turtles_tidy)
 
 # first read in data for this section
 
-# read in altered turtles data
-turtles_tidy <- read_csv('data/processed/turtles_tidy.csv') %>% 
-  
-  # change 'sex' to a factor
-  mutate(sex = as.factor(sex))
+
+
 
 # check internal structure
-str(turtles_tidy)
+
 
  
 
@@ -205,7 +202,7 @@ levels(turtles_tidy$sex)
   # import data FILL IN YOUR CODE HERE ----------------------
 
 # read in altered turtles data
-turtles_tidy <- read_csv('data/processed/turtles_tidy.csv')
+
 
 
 head(turtles_tidy)
@@ -214,21 +211,13 @@ str(turtles_tidy)
  # mutate data FILL IN YOUR CODE HERE ----------------------
 
 
-# option 1 - overwrite data
-
-turtles_tidy <- turtles_tidy %>% 
-  
-  # change column types
-  mutate(tag = as.factor(tag),
-         sex = as.factor(sex))
 
 
-# option 2 - mutate when importing data
-turtles_tidy <- read_csv('data/processed/turtles_tidy.csv') %>% 
-  
-  # change column types
-  mutate(tag = as.factor(tag),
-         sex = as.factor(sex))
+
+
+
+
+# col_types example -------------------------------------------------------
 
 
 turtles_tidy <- read_csv('data/processed/turtles_tidy.csv',
@@ -247,10 +236,13 @@ turtles_tidy <- read_csv('data/processed/turtles_tidy.csv',
                                           sex = col_factor(),
                                           .default = col_number()))
 
+
+
   # If else ----------------------
 
 # first learn morn about the diamonds data set
-?diamonds
+
+
 
 # change color to two categories based on worst color diamonds (J)
 diamonds %>% 
@@ -440,36 +432,19 @@ missing.df %>%
   # Replace values with NA ----------------------
 
  # FILL IN YOUR CODE HERE ----------------------
-bobcats <- read_csv('data/raw/Bobcat_necropsy_data.csv') %>% 
-  
-  # set names to lowercase
-  
-  set_names(
-    names(.) %>% 
-      tolower()) %>% 
-  
-  # select specific columns
-  select(necropsy, necropsydate, age, sex)
-  
 
-summary(bobcats)
 
-bobcats %>% 
-  
-  # set age to numeric
-  mutate(age = as.numeric(age))
+
+
+
+
 
 
 # replace 'na' in age using replace function
-bobcats %>% 
-  mutate(age = replace(age,
-                       age == 'na',
-                       NA))
+
 
 # replace na in age using recode
-bobcats %>% 
-  mutate(age = recode(age,
-                      'na' = NA))
+
 
 
 # change multiple entries to NA

@@ -541,10 +541,8 @@ and save the data.</p>
 turtles.df &lt;- read_delim(&#39;data/raw/turtle_data.txt&#39;,
                          delim = &#39;\t&#39;) %&gt;% 
   
-   # set column names to lowercase
-  set_names(
-    names(.) %&gt;%  
-      tolower()) %&gt;% 
+ # set column names to lowercase
+  rename_with(tolower) %&gt;% 
   
   # rename columns to shorter names
   rename(tag = tag_number,
@@ -1834,11 +1832,8 @@ following steps</span></p>
  # FILL IN YOUR CODE HERE ----------------------
 bobcats &lt;- read_csv(&#39;data/raw/Bobcat_necropsy_data.csv&#39;) %&gt;% 
   
-  # set names to lowercase
-  
-  set_names(
-    names(.) %&gt;% 
-      tolower()) %&gt;% 
+  # set column names to lowercase
+  rename_with(tolower) %&gt;%  
   
   # select specific columns
   select(necropsy, necropsydate, age, sex)

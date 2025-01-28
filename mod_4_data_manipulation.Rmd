@@ -68,10 +68,8 @@ If you didn't save the turtles_tidy data, below is the code to alter and save th
 turtles.df <- read_delim('data/raw/turtle_data.txt',
                          delim = '\t') %>% 
   
-   # set column names to lowercase
-  set_names(
-    names(.) %>%  
-      tolower()) %>% 
+ # set column names to lowercase
+  rename_with(tolower) %>% 
   
   # rename columns to shorter names
   rename(tag = tag_number,
@@ -721,11 +719,8 @@ Download the [bobcat necropsy data (Bobcat_necropsy_data.csv)](data/Bobcat_necro
  # FILL IN YOUR CODE HERE ----------------------
 bobcats <- read_csv('data/raw/Bobcat_necropsy_data.csv') %>% 
   
-  # set names to lowercase
-  
-  set_names(
-    names(.) %>% 
-      tolower()) %>% 
+  # set column names to lowercase
+  rename_with(tolower) %>%  
   
   # select specific columns
   select(necropsy, necropsydate, age, sex)
