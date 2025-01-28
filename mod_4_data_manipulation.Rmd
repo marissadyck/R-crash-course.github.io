@@ -343,6 +343,82 @@ This is because all data are different and you will find when working with your 
 
 Rant over, let's move on to other ways we can correct/modify entries in a column.   
 
+### Specify column types
+
+Another handy way to avoid issues with column types is to specify them when we read in the data. We can do this using mutate as shown above, but for larger data sets that may have lots of different columns to read in using the `col_types()` function when we import our data is much more efficient and ensures our variables are.
+
+Here's how we use it, after we specify our file path and a comma and within the `read_csv()` function we will add the `col_types()` function where we can specify any and all variables in our data set and specify what variable type they are (e.g., factor, integer, continuous numerical, ordinal, date time, etc.) 
+
+Here are a few example with the turtles_tidy data
+
+<span style="color: blue;">Read in the data normally and look it over to see what the column are (e.g. what variable type they should be) and how they read in.</span> You should know the code to do this!
+
+```{r class.source = 'fold-hide'}
+  # import data FILL IN YOUR CODE HERE ----------------------
+
+# read in altered turtles data
+turtles_tidy <- read_csv('data/processed/turtles_tidy.csv')
+
+
+head(turtles_tidy)
+     
+str(turtles_tidy)
+```
+
+
+<span style="color: blue;">Now using the mutate function change any columns that didn't read in properly.</span> You can either overwrite the data or just copy the code to read in the data and add the mutate step after, your choice. You also know how to do this as you did it in assignment 2 and above. 
+
+```{r class.source = 'fold-hide'}
+ # mutate data FILL IN YOUR CODE HERE ----------------------
+
+
+# option 1 - overwrite data
+
+turtles_tidy <- turtles_tidy %>% 
+  
+  # change column types
+  mutate(tag = as.factor(tag),
+         sex = as.factor(sex))
+
+
+# option 2 - mutate when importing data
+turtles_tidy <- read_csv('data/processed/turtles_tidy.csv') %>% 
+  
+  # change column types
+  mutate(tag = as.factor(tag),
+         sex = as.factor(sex))
+
+```
+
+
+Now and example with `col_types()` specifying how each column should read in
+
+```{r}
+
+turtles_tidy <- read_csv('data/processed/turtles_tidy.csv',
+                         
+                          # set the column types to read in correctly
+                         col_types = cols(tag = col_factor(),
+                                          sex = col_factor(),
+                                          c_length = col_number(),
+                                          h_width = col_number(),
+                                          weight = col_number()))
+```
+
+
+And a shorthand way using `.default` which will set any unspecified columns to the type you set .default = to.
+```{r}
+
+turtles_tidy <- read_csv('data/processed/turtles_tidy.csv',
+                         
+                          # set the column types to read in correctly
+                         col_types = cols(tag = col_factor(),
+                                          sex = col_factor(),
+                                          .default = col_number()))
+```
+
+>The reason this is helpful code to use as opposed to mutating your data when or after you read it in, is because things like a date and time column are often read in improperly because of excels formatting and misalignment with Rs expectation of what format it will be in and therefore will read in as NA and then can't be mutated back to a date or time. 
+
 
 ### If_else
 
@@ -740,7 +816,7 @@ First, let's get some practice with a few **functions** we learned at the beginn
 turtles_env <- tibble(
   
   # create variable 'tag' ranging from 1 - 105
-  tag = 1:105,
+  tag = as.factor(1:105),
   
   # create variable site with 3 sites that repeat for 35 indv each
   site = rep(c('A', 'B', 'C'), 
@@ -862,6 +938,25 @@ turtles_tidy %>%
 ```
 
 
+### Data checks
+
+Another thing we might want to do when we have multiple data files for one project is to ensure that levels for some of our variables such as site number, or tag ids for individual animals, etc. match between our datasets. If for instance in one dataset someone wrote a site number as 100-A vs 100_a (or any other number of possible minor spelling/typing mistakes) R wouldn't recognize those sites as the same and when you join data one or the other could be dropped or left without matching entries from the other data file. This happens more often than you'd think.
+
+For variables such as site, tag, etc. they are generally treated as a factor and we can look at the unique entries using the `levels()` function which we covered in a previous module. We can use `levels()` with a handy function called `setdiff()` to compare the levels for two variables between data sets
+
+Here's an example with the turtles env and turtles_tidy
+
+```{r}
+# check which tags are in turtles tidy that aren't in turtles env
+setdiff(levels(turtles_tidy$tag),
+        levels(turtles_env$tag))
+
+# and reversed
+setdiff(levels(turtles_env$tag),
+        levels(turtles_tidy$tag))
+```
+
+>Note that the order you supply the data in matters, so in the top code its comparing turtles_env to turtles_tidy and what is printed are any sites that are in turtles_tidy that are not in turtles_env. For the bottom code in which the order is switched it will print any that are in turtles_env that are not in turtles_tidy. So our printout for code one says there are not entries in turtles_tidy that aren't in turtles_env but there are many entries in turtles_env that aren't in turtles_tidy. Does this seem right to you, how do you know. or how could you check?
 
 ## Assignment and next module
 

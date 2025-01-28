@@ -202,6 +202,50 @@ str(turtles_tidy)
 
 levels(turtles_tidy$sex)
 
+  # import data FILL IN YOUR CODE HERE ----------------------
+
+# read in altered turtles data
+turtles_tidy <- read_csv('data/processed/turtles_tidy.csv')
+
+
+head(turtles_tidy)
+     
+str(turtles_tidy)
+ # mutate data FILL IN YOUR CODE HERE ----------------------
+
+
+# option 1 - overwrite data
+
+turtles_tidy <- turtles_tidy %>% 
+  
+  # change column types
+  mutate(tag = as.factor(tag),
+         sex = as.factor(sex))
+
+
+# option 2 - mutate when importing data
+turtles_tidy <- read_csv('data/processed/turtles_tidy.csv') %>% 
+  
+  # change column types
+  mutate(tag = as.factor(tag),
+         sex = as.factor(sex))
+
+
+turtles_tidy <- read_csv('data/processed/turtles_tidy.csv',
+                         
+                          # set the column types to read in correctly
+                         col_types = cols(tag = col_factor(),
+                                          sex = col_factor(),
+                                          c_length = col_number(),
+                                          h_width = col_number(),
+                                          weight = col_number()))
+
+turtles_tidy <- read_csv('data/processed/turtles_tidy.csv',
+                         
+                          # set the column types to read in correctly
+                         col_types = cols(tag = col_factor(),
+                                          sex = col_factor(),
+                                          .default = col_number()))
 
   # If else ----------------------
 
@@ -453,7 +497,7 @@ relig_income %>%
 turtles_env <- tibble(
   
   # create variable 'tag' ranging from 1 - 105
-  tag = 1:105,
+  tag = as.factor(1:105),
   
   # create variable site with 3 sites that repeat for 35 indv each
   site = rep(c('A', 'B', 'C'), 
@@ -542,3 +586,10 @@ names(turtles_env)
 turtles_tidy %>% 
   left_join(turtles_env,
             join_by('tag' == 'tag_number'))
+# check which tags are in turtles tidy that aren't in turtles env
+setdiff(levels(turtles_tidy$tag),
+        levels(turtles_env$tag))
+
+# and reversed
+setdiff(levels(turtles_env$tag),
+        levels(turtles_tidy$tag))

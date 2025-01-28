@@ -365,7 +365,7 @@ div.tocify {
       <a href="mod_2_ggplot.html">Module 2: Basics of ggplot</a>
     </li>
     <li>
-      <a href="mod_3_ggplot_adv.html">Module 3: Advanced ggplot (coming soon)</a>
+      <a href="mod_3_adv_ggplot.html">Module 3: Advanced ggplot (coming soon)</a>
     </li>
     <li>
       <a href="mod_4_beyond_ggplot.html">Module 4: Beyond ggplot</a>
@@ -438,9 +438,6 @@ div.tocify {
 </li>
 <li>
   <a href="links.html">Links</a>
-</li>
-<li>
-  <a href="surveys.html">Surveys</a>
 </li>
 <li>
   <a href="terms.html">Terms</a>
@@ -1040,6 +1037,104 @@ provides a great example of that.</p>
 src="https://i.pinimg.com/originals/96/11/d2/9611d2fde013a9a5fca0d2766b44d09a.jpg" /></p>
 <p>Rant over, let’s move on to other ways we can correct/modify entries
 in a column.</p>
+</div>
+<div id="specify-column-types" class="section level3">
+<h3>Specify column types</h3>
+<p>Another handy way to avoid issues with column types is to specify
+them when we read in the data. We can do this using mutate as shown
+above, but for larger data sets that may have lots of different columns
+to read in using the <code>col_types()</code> function when we import
+our data is much more efficient and ensures our variables are.</p>
+<p>Here’s how we use it, after we specify our file path and a comma and
+within the <code>read_csv()</code> function we will add the
+<code>col_types()</code> function where we can specify any and all
+variables in our data set and specify what variable type they are (e.g.,
+factor, integer, continuous numerical, ordinal, date time, etc.)</p>
+<p>Here are a few example with the turtles_tidy data</p>
+<p><span style="color: blue;">Read in the data normally and look it over
+to see what the column are (e.g. what variable type they should be) and
+how they read in.</span> You should know the code to do this!</p>
+<pre class="r fold-hide"><code>  # import data FILL IN YOUR CODE HERE ----------------------
+
+# read in altered turtles data
+turtles_tidy &lt;- read_csv(&#39;data/processed/turtles_tidy.csv&#39;)
+
+
+head(turtles_tidy)</code></pre>
+<pre><code>## # A tibble: 6 × 5
+##     tag sex    c_length h_width weight
+##   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+## 1    10 male       41      7.15   7.6 
+## 2    11 female     46.4    8.18  11   
+## 3     2 &lt;NA&gt;       24.3    4.42   1.65
+## 4    15 &lt;NA&gt;       28.7    4.89   2.18
+## 5    16 &lt;NA&gt;       32      5.37   3   
+## 6     3 female     42.8    7.32   8.6</code></pre>
+<pre class="r fold-hide"><code>str(turtles_tidy)</code></pre>
+<pre><code>## spc_tbl_ [21 × 5] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ tag     : num [1:21] 10 11 2 15 16 3 4 5 12 13 ...
+##  $ sex     : chr [1:21] &quot;male&quot; &quot;female&quot; NA NA ...
+##  $ c_length: num [1:21] 41 46.4 24.3 28.7 32 42.8 40 45 44 28 ...
+##  $ h_width : num [1:21] 7.15 8.18 4.42 4.89 5.37 7.32 6.6 8.05 7.55 4.85 ...
+##  $ weight  : num [1:21] 7.6 11 1.65 2.18 3 8.6 6.5 10.9 8.9 1.97 ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   tag = col_double(),
+##   ..   sex = col_character(),
+##   ..   c_length = col_double(),
+##   ..   h_width = col_double(),
+##   ..   weight = col_double()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<p><span style="color: blue;">Now using the mutate function change any
+columns that didn’t read in properly.</span> You can either overwrite
+the data or just copy the code to read in the data and add the mutate
+step after, your choice. You also know how to do this as you did it in
+assignment 2 and above.</p>
+<pre class="r fold-hide"><code> # mutate data FILL IN YOUR CODE HERE ----------------------
+
+
+# option 1 - overwrite data
+
+turtles_tidy &lt;- turtles_tidy %&gt;% 
+  
+  # change column types
+  mutate(tag = as.factor(tag),
+         sex = as.factor(sex))
+
+
+# option 2 - mutate when importing data
+turtles_tidy &lt;- read_csv(&#39;data/processed/turtles_tidy.csv&#39;) %&gt;% 
+  
+  # change column types
+  mutate(tag = as.factor(tag),
+         sex = as.factor(sex))</code></pre>
+<p>Now and example with <code>col_types()</code> specifying how each
+column should read in</p>
+<pre class="r"><code>turtles_tidy &lt;- read_csv(&#39;data/processed/turtles_tidy.csv&#39;,
+                         
+                          # set the column types to read in correctly
+                         col_types = cols(tag = col_factor(),
+                                          sex = col_factor(),
+                                          c_length = col_number(),
+                                          h_width = col_number(),
+                                          weight = col_number()))</code></pre>
+<p>And a shorthand way using <code>.default</code> which will set any
+unspecified columns to the type you set .default = to.</p>
+<pre class="r"><code>turtles_tidy &lt;- read_csv(&#39;data/processed/turtles_tidy.csv&#39;,
+                         
+                          # set the column types to read in correctly
+                         col_types = cols(tag = col_factor(),
+                                          sex = col_factor(),
+                                          .default = col_number()))</code></pre>
+<blockquote>
+<p>The reason this is helpful code to use as opposed to mutating your
+data when or after you read it in, is because things like a date and
+time column are often read in improperly because of excels formatting
+and misalignment with Rs expectation of what format it will be in and
+therefore will read in as NA and then can’t be mutated back to a date or
+time.</p>
+</blockquote>
 </div>
 <div id="if_else" class="section level3">
 <h3>If_else</h3>
@@ -1932,7 +2027,7 @@ data for the turtles data set.</p>
 turtles_env &lt;- tibble(
   
   # create variable &#39;tag&#39; ranging from 1 - 105
-  tag = 1:105,
+  tag = as.factor(1:105),
   
   # create variable site with 3 sites that repeat for 35 indv each
   site = rep(c(&#39;A&#39;, &#39;B&#39;, &#39;C&#39;), 
@@ -1952,18 +2047,18 @@ turtles_env &lt;- tibble(
 
 turtles_env</code></pre>
 <pre><code>## # A tibble: 105 × 4
-##      tag site  avg_summer_temp avg_summer_precip
-##    &lt;int&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
-##  1     1 A                24.8             13.4 
-##  2     2 A                26.0             48.4 
-##  3     3 A                21.3             80.5 
-##  4     4 A                23.2            101.  
-##  5     5 A                19.4             87.1 
-##  6     6 A                20.4             51.5 
-##  7     7 A                26.2             23.6 
-##  8     8 A                16.4             22.7 
-##  9     9 A                23.2             88.1 
-## 10    10 A                25.9              7.00
+##    tag   site  avg_summer_temp avg_summer_precip
+##    &lt;fct&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
+##  1 1     A                16.0              65.7
+##  2 2     A                19.8              82.2
+##  3 3     A                23.1              39.1
+##  4 4     A                28.5              47.1
+##  5 5     A                15.8              16.2
+##  6 6     A                18.7              19.4
+##  7 7     A                24.2              49.2
+##  8 8     A                20.1              38.2
+##  9 9     A                25.9              14.6
+## 10 10    A                25.2              26.5
 ## # ℹ 95 more rows</code></pre>
 <p>Now we can join the environmental data we just created with the
 turtle observation data (turtles_tidy) using the <em>tag</em>
@@ -1983,18 +2078,18 @@ turtles_full &lt;- turtles_tidy %&gt;%
 
 turtles_full</code></pre>
 <pre><code>## # A tibble: 21 × 8
-##      tag sex    c_length h_width weight site  avg_summer_temp avg_summer_precip
-##    &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
-##  1    10 male       41      7.15   7.6  A                25.9              7.00
-##  2    11 female     46.4    8.18  11    A                15.1             12.4 
-##  3     2 &lt;NA&gt;       24.3    4.42   1.65 A                26.0             48.4 
-##  4    15 &lt;NA&gt;       28.7    4.89   2.18 A                18.4             76.3 
-##  5    16 &lt;NA&gt;       32      5.37   3    A                18.9             16.2 
-##  6     3 female     42.8    7.32   8.6  A                21.3             80.5 
-##  7     4 male       40      6.6    6.5  A                23.2            101.  
-##  8     5 female     45      8.05  10.9  A                19.4             87.1 
-##  9    12 female     44      7.55   8.9  A                23.0             11.0 
-## 10    13 &lt;NA&gt;       28      4.85   1.97 A                28.4             28.9 
+##    tag   sex    c_length h_width weight site  avg_summer_temp avg_summer_precip
+##    &lt;fct&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
+##  1 10    male       41      7.15   7.6  A                25.2              26.5
+##  2 11    female     46.4    8.18  11    A                23.0              18.4
+##  3 2     &lt;NA&gt;       24.3    4.42   1.65 A                19.8              82.2
+##  4 15    &lt;NA&gt;       28.7    4.89   2.18 A                20.0              18.8
+##  5 16    &lt;NA&gt;       32      5.37   3    A                22.2              34.2
+##  6 3     female     42.8    7.32   8.6  A                23.1              39.1
+##  7 4     male       40      6.6    6.5  A                28.5              47.1
+##  8 5     female     45      8.05  10.9  A                15.8              16.2
+##  9 12    female     44      7.55   8.9  A                24.0              29.6
+## 10 13    &lt;NA&gt;       28      4.85   1.97 A                25.6              52.1
 ## # ℹ 11 more rows</code></pre>
 <p>Notice how are dataset reamins the same length as the turtles_tidy
 dataset and all environmental observations that for <em>tags</em> not in
@@ -2016,18 +2111,18 @@ turtles_tidy %&gt;%
   # reorder by tag number so we can see what happened
   arrange(desc(tag))</code></pre>
 <pre><code>## # A tibble: 105 × 8
-##      tag sex   c_length h_width weight site  avg_summer_temp avg_summer_precip
-##    &lt;dbl&gt; &lt;fct&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
-##  1   105 male        44    7.1       9 C                17.0             22.2 
-##  2   104 male        44    7.35      9 C                17.1             31.9 
-##  3   103 &lt;NA&gt;        NA   NA        NA C                19.5             19.3 
-##  4   102 &lt;NA&gt;        NA   NA        NA C                20.8             60.6 
-##  5   101 &lt;NA&gt;        NA   NA        NA C                29.5             12.5 
-##  6   100 &lt;NA&gt;        NA   NA        NA C                26.4             96.5 
-##  7    99 &lt;NA&gt;        NA   NA        NA C                16.3             42.3 
-##  8    98 &lt;NA&gt;        NA   NA        NA C                15.2             55.8 
-##  9    97 &lt;NA&gt;        NA   NA        NA C                28.0              9.87
-## 10    96 &lt;NA&gt;        NA   NA        NA C                29.6             23.8 
+##    tag   sex   c_length h_width weight site  avg_summer_temp avg_summer_precip
+##    &lt;fct&gt; &lt;fct&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
+##  1 103   &lt;NA&gt;        NA      NA     NA C                16.6             89.1 
+##  2 102   &lt;NA&gt;        NA      NA     NA C                26.5             50.5 
+##  3 101   &lt;NA&gt;        NA      NA     NA C                28.1             22.5 
+##  4 100   &lt;NA&gt;        NA      NA     NA C                24.1             61.6 
+##  5 99    &lt;NA&gt;        NA      NA     NA C                27.9             18.0 
+##  6 98    &lt;NA&gt;        NA      NA     NA C                20.9             16.1 
+##  7 97    &lt;NA&gt;        NA      NA     NA C                22.2             96.3 
+##  8 96    &lt;NA&gt;        NA      NA     NA C                24.8             90.5 
+##  9 95    &lt;NA&gt;        NA      NA     NA C                16.4              6.39
+## 10 94    &lt;NA&gt;        NA      NA     NA C                24.5             70.2 
 ## # ℹ 95 more rows</code></pre>
 <p>Now, wherever we don’t have turtle observation data to match the
 environmental data we get NAs</p>
@@ -2048,18 +2143,18 @@ turtles_tidy %&gt;%
   inner_join(turtles_env,
              by = &#39;tag&#39;)</code></pre>
 <pre><code>## # A tibble: 21 × 8
-##      tag sex    c_length h_width weight site  avg_summer_temp avg_summer_precip
-##    &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
-##  1    10 male       41      7.15   7.6  A                25.9              7.00
-##  2    11 female     46.4    8.18  11    A                15.1             12.4 
-##  3     2 &lt;NA&gt;       24.3    4.42   1.65 A                26.0             48.4 
-##  4    15 &lt;NA&gt;       28.7    4.89   2.18 A                18.4             76.3 
-##  5    16 &lt;NA&gt;       32      5.37   3    A                18.9             16.2 
-##  6     3 female     42.8    7.32   8.6  A                21.3             80.5 
-##  7     4 male       40      6.6    6.5  A                23.2            101.  
-##  8     5 female     45      8.05  10.9  A                19.4             87.1 
-##  9    12 female     44      7.55   8.9  A                23.0             11.0 
-## 10    13 &lt;NA&gt;       28      4.85   1.97 A                28.4             28.9 
+##    tag   sex    c_length h_width weight site  avg_summer_temp avg_summer_precip
+##    &lt;fct&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
+##  1 10    male       41      7.15   7.6  A                25.2              26.5
+##  2 11    female     46.4    8.18  11    A                23.0              18.4
+##  3 2     &lt;NA&gt;       24.3    4.42   1.65 A                19.8              82.2
+##  4 15    &lt;NA&gt;       28.7    4.89   2.18 A                20.0              18.8
+##  5 16    &lt;NA&gt;       32      5.37   3    A                22.2              34.2
+##  6 3     female     42.8    7.32   8.6  A                23.1              39.1
+##  7 4     male       40      6.6    6.5  A                28.5              47.1
+##  8 5     female     45      8.05  10.9  A                15.8              16.2
+##  9 12    female     44      7.55   8.9  A                24.0              29.6
+## 10 13    &lt;NA&gt;       28      4.85   1.97 A                25.6              52.1
 ## # ℹ 11 more rows</code></pre>
 <pre class="r"><code># if we remove some observations (say we didn&#39;t collect environmental data for the first 10 captures) then we can see the diff
 
@@ -2069,35 +2164,18 @@ turtles_env.sub &lt;- turtles_env %&gt;%
   filter(tag &gt; 10)
 
 head(turtles_env.sub)</code></pre>
-<pre><code>## # A tibble: 6 × 4
-##     tag site  avg_summer_temp avg_summer_precip
-##   &lt;int&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
-## 1    11 A                15.1              12.4
-## 2    12 A                23.0              11.0
-## 3    13 A                28.4              28.9
-## 4    14 A                24.0              27.7
-## 5    15 A                18.4              76.3
-## 6    16 A                18.9              16.2</code></pre>
+<pre><code>## # A tibble: 0 × 4
+## # ℹ 4 variables: tag &lt;fct&gt;, site &lt;chr&gt;, avg_summer_temp &lt;dbl&gt;,
+## #   avg_summer_precip &lt;dbl&gt;</code></pre>
 <pre class="r"><code># now join with turtles_tidy
 
 turtles_tidy %&gt;% 
   
   inner_join(turtles_env.sub,
              by = &#39;tag&#39;)</code></pre>
-<pre><code>## # A tibble: 11 × 8
-##      tag sex    c_length h_width weight site  avg_summer_temp avg_summer_precip
-##    &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
-##  1    11 female     46.4    8.18  11    A                15.1             12.4 
-##  2    15 &lt;NA&gt;       28.7    4.89   2.18 A                18.4             76.3 
-##  3    16 &lt;NA&gt;       32      5.37   3    A                18.9             16.2 
-##  4    12 female     44      7.55   8.9  A                23.0             11.0 
-##  5    13 &lt;NA&gt;       28      4.85   1.97 A                28.4             28.9 
-##  6    17 female     35.1    6.04   4.5  A                24.7             11.5 
-##  7    19 male       42.3    6.77   7.8  A                18.1            109.  
-##  8    22 female     48.1    8.55  12.8  A                15.8              1.80
-##  9   105 male       44      7.1    9    C                17.0             22.2 
-## 10    14 male       43      6.6    7.2  A                24.0             27.7 
-## 11   104 male       44      7.35   9    C                17.1             31.9</code></pre>
+<pre><code>## # A tibble: 0 × 8
+## # ℹ 8 variables: tag &lt;fct&gt;, sex &lt;fct&gt;, c_length &lt;dbl&gt;, h_width &lt;dbl&gt;,
+## #   weight &lt;dbl&gt;, site &lt;chr&gt;, avg_summer_temp &lt;dbl&gt;, avg_summer_precip &lt;dbl&gt;</code></pre>
 <pre class="r"><code># notice fewer rows</code></pre>
 </div>
 <div id="full-join" class="section level3">
@@ -2111,18 +2189,18 @@ turtles_tidy %&gt;%
   full_join(turtles_env,
             by = &#39;tag&#39;)</code></pre>
 <pre><code>## # A tibble: 105 × 8
-##      tag sex    c_length h_width weight site  avg_summer_temp avg_summer_precip
-##    &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
-##  1    10 male       41      7.15   7.6  A                25.9              7.00
-##  2    11 female     46.4    8.18  11    A                15.1             12.4 
-##  3     2 &lt;NA&gt;       24.3    4.42   1.65 A                26.0             48.4 
-##  4    15 &lt;NA&gt;       28.7    4.89   2.18 A                18.4             76.3 
-##  5    16 &lt;NA&gt;       32      5.37   3    A                18.9             16.2 
-##  6     3 female     42.8    7.32   8.6  A                21.3             80.5 
-##  7     4 male       40      6.6    6.5  A                23.2            101.  
-##  8     5 female     45      8.05  10.9  A                19.4             87.1 
-##  9    12 female     44      7.55   8.9  A                23.0             11.0 
-## 10    13 &lt;NA&gt;       28      4.85   1.97 A                28.4             28.9 
+##    tag   sex    c_length h_width weight site  avg_summer_temp avg_summer_precip
+##    &lt;fct&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
+##  1 10    male       41      7.15   7.6  A                25.2              26.5
+##  2 11    female     46.4    8.18  11    A                23.0              18.4
+##  3 2     &lt;NA&gt;       24.3    4.42   1.65 A                19.8              82.2
+##  4 15    &lt;NA&gt;       28.7    4.89   2.18 A                20.0              18.8
+##  5 16    &lt;NA&gt;       32      5.37   3    A                22.2              34.2
+##  6 3     female     42.8    7.32   8.6  A                23.1              39.1
+##  7 4     male       40      6.6    6.5  A                28.5              47.1
+##  8 5     female     45      8.05  10.9  A                15.8              16.2
+##  9 12    female     44      7.55   8.9  A                24.0              29.6
+## 10 13    &lt;NA&gt;       28      4.85   1.97 A                25.6              52.1
 ## # ℹ 95 more rows</code></pre>
 <p>But what if you have different variable names for your key (e.g.,
 tag). Well you could change the variable name in one of the datasets so
@@ -2146,19 +2224,57 @@ turtles_tidy %&gt;%
   left_join(turtles_env,
             join_by(&#39;tag&#39; == &#39;tag_number&#39;))</code></pre>
 <pre><code>## # A tibble: 21 × 8
-##      tag sex    c_length h_width weight site  avg_summer_temp avg_summer_precip
-##    &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
-##  1    10 male       41      7.15   7.6  A                25.9              7.00
-##  2    11 female     46.4    8.18  11    A                15.1             12.4 
-##  3     2 &lt;NA&gt;       24.3    4.42   1.65 A                26.0             48.4 
-##  4    15 &lt;NA&gt;       28.7    4.89   2.18 A                18.4             76.3 
-##  5    16 &lt;NA&gt;       32      5.37   3    A                18.9             16.2 
-##  6     3 female     42.8    7.32   8.6  A                21.3             80.5 
-##  7     4 male       40      6.6    6.5  A                23.2            101.  
-##  8     5 female     45      8.05  10.9  A                19.4             87.1 
-##  9    12 female     44      7.55   8.9  A                23.0             11.0 
-## 10    13 &lt;NA&gt;       28      4.85   1.97 A                28.4             28.9 
+##    tag   sex    c_length h_width weight site  avg_summer_temp avg_summer_precip
+##    &lt;fct&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;
+##  1 10    male       41      7.15   7.6  A                25.2              26.5
+##  2 11    female     46.4    8.18  11    A                23.0              18.4
+##  3 2     &lt;NA&gt;       24.3    4.42   1.65 A                19.8              82.2
+##  4 15    &lt;NA&gt;       28.7    4.89   2.18 A                20.0              18.8
+##  5 16    &lt;NA&gt;       32      5.37   3    A                22.2              34.2
+##  6 3     female     42.8    7.32   8.6  A                23.1              39.1
+##  7 4     male       40      6.6    6.5  A                28.5              47.1
+##  8 5     female     45      8.05  10.9  A                15.8              16.2
+##  9 12    female     44      7.55   8.9  A                24.0              29.6
+## 10 13    &lt;NA&gt;       28      4.85   1.97 A                25.6              52.1
 ## # ℹ 11 more rows</code></pre>
+</div>
+<div id="data-checks" class="section level3">
+<h3>Data checks</h3>
+<p>Another thing we might want to do when we have multiple data files
+for one project is to ensure that levels for some of our variables such
+as site number, or tag ids for individual animals, etc. match between
+our datasets. If for instance in one dataset someone wrote a site number
+as 100-A vs 100_a (or any other number of possible minor spelling/typing
+mistakes) R wouldn’t recognize those sites as the same and when you join
+data one or the other could be dropped or left without matching entries
+from the other data file. This happens more often than you’d think.</p>
+<p>For variables such as site, tag, etc. they are generally treated as a
+factor and we can look at the unique entries using the
+<code>levels()</code> function which we covered in a previous module. We
+can use <code>levels()</code> with a handy function called
+<code>setdiff()</code> to compare the levels for two variables between
+data sets</p>
+<p>Here’s an example with the turtles env and turtles_tidy</p>
+<pre class="r"><code># check which tags are in turtles tidy that aren&#39;t in turtles env
+setdiff(levels(turtles_tidy$tag),
+        levels(turtles_env$tag))</code></pre>
+<pre><code>##  [1] &quot;10&quot;  &quot;11&quot;  &quot;2&quot;   &quot;15&quot;  &quot;16&quot;  &quot;3&quot;   &quot;4&quot;   &quot;5&quot;   &quot;12&quot;  &quot;13&quot;  &quot;6&quot;   &quot;8&quot;  
+## [13] &quot;9&quot;   &quot;17&quot;  &quot;19&quot;  &quot;22&quot;  &quot;105&quot; &quot;14&quot;  &quot;7&quot;   &quot;1&quot;   &quot;104&quot;</code></pre>
+<pre class="r"><code># and reversed
+setdiff(levels(turtles_env$tag),
+        levels(turtles_tidy$tag))</code></pre>
+<pre><code>## NULL</code></pre>
+<blockquote>
+<p>Note that the order you supply the data in matters, so in the top
+code its comparing turtles_env to turtles_tidy and what is printed are
+any sites that are in turtles_tidy that are not in turtles_env. For the
+bottom code in which the order is switched it will print any that are in
+turtles_env that are not in turtles_tidy. So our printout for code one
+says there are not entries in turtles_tidy that aren’t in turtles_env
+but there are many entries in turtles_env that aren’t in turtles_tidy.
+Does this seem right to you, how do you know. or how could you
+check?</p>
+</blockquote>
 </div>
 </div>
 <div id="assignment-and-next-module" class="section level2">
