@@ -9,7 +9,7 @@ library(tidyverse)
   # import data FILL IN YOUR CODE HERE ----------------------
 
 # read in altered turtles data
-
+turtles_tidy <- read_csv('data/processed/turtles_tidy.csv')
 
 
 
@@ -59,7 +59,10 @@ turtles_tidy %>%
 # Practice FILL IN YOUR CODE HERE ----------------------
 
 # practice- arrange diamonds data by highest price to lowest price
-
+diamonds %>% 
+  
+  # arrange by descending price
+  arrange(desc(price))
 
 
 # order columns alphabetically with select
@@ -139,11 +142,14 @@ str(turtles_tidy)
 
 # first read in data for this section
 
-
+turtles_tidy <- read_csv('data/processed/turtles_tidy.csv') %>% 
+  
+  # change sex to read in as factor
+  mutate(sex = as.factor(sex))
 
 
 # check internal structure
-
+str(turtles_tidy)
 
  
 
@@ -153,7 +159,9 @@ str(turtles_tidy)
 turtles_tidy <-  turtles_tidy %>% 
   mutate(sex = replace(sex, 
                        sex == "fem",
-                       "female"))
+                       "female"),
+         
+         sex = as.factor(sex))
 
 # print
 turtles_tidy
@@ -161,6 +169,9 @@ turtles_tidy
 levels(turtles_tidy$sex)
 
 # FILL IN YOUR CODE HERE --------------------
+turtles_tidy <- read_csv('data/processed/turtles_tidy.csv')
+
+
 
 # change 'sex' back to a character then try the data manipulation again to see if anything is different. We can do this all in one pipe!
 turtles_tidy <- turtles_tidy %>% 
@@ -246,7 +257,7 @@ turtles_tidy <- read_csv('data/processed/turtles_tidy.csv',
 
 # change color to two categories based on worst color diamonds (J)
 diamonds %>% 
-  mutate(color = if_else(color == 'J', # if color is J 
+  mutate(color_cat = if_else(color == 'J', # if color is J 
                          'worst', # TRUE = worst
                          'not_worst')) # FALSE = not_worst
 
@@ -434,7 +445,13 @@ missing.df %>%
  # FILL IN YOUR CODE HERE ----------------------
 
 
-
+bobcats <- read_csv('data/raw/Bobcat_necropsy_data.csv') %>% 
+  
+  # set column names to lowercase
+  rename_with(tolower) %>% 
+  
+  # select only columns of interest
+  select(necropsy, necropsydate, age, sex) 
 
 
 
@@ -561,10 +578,12 @@ names(turtles_env)
 turtles_tidy %>% 
   left_join(turtles_env,
             join_by('tag' == 'tag_number'))
+
+
 # check which tags are in turtles tidy that aren't in turtles env
 setdiff(levels(turtles_tidy$tag),
-        levels(turtles_env$tag))
+        levels(turtles_env$tag_number))
 
 # and reversed
-setdiff(levels(turtles_env$tag),
+setdiff(levels(turtles_env$tag_number),
         levels(turtles_tidy$tag))

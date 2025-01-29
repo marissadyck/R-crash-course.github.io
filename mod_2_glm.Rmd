@@ -61,7 +61,7 @@ There is a Github repository that shows the full data formatting, statistical an
 
 ### Data
 
-For this module we will work with the cows data from the brown bear conflict data set in Romania we worked with earlier. 
+For this module we will work with the cows data from the brown bear conflict data set in Romania we worked with earlier. We've already done some data manipulation to this data set and saved it to the data/processed folder.
 
 <span style="color: blue;"> Read in the cows data from the data/raw folder. <span style="color: blue;">
 

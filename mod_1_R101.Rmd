@@ -32,6 +32,8 @@ Welcome to the 2025 ES482 R labs!
 
 At the start of each module there will be section to download necessary materials (e.g. scripts, cheat sheets, etc.)
 
+
+
 ### Cheat Sheets
 You will be introduced to a lot of new material very quickly in this course, and you are not expected to remember everything! 'Cheat sheets' can quickly and easily refresh your memory about syntax that can be difficult to remember. So don't worry if you don't memorize everything we do together in this course- the key is that you leave here with comfort working in the RStudio environment, doing some basic data operations in R, working through an analysis in R, and most importantly, learning and trying new things on your own!
 
