@@ -23,3 +23,6 @@ survival
 AER
 broom
 pROC
+ResourceSelection
+ggeffects
+MASS

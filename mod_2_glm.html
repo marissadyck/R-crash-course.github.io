@@ -469,10 +469,10 @@ div.tocify {
 </div>
 
 
-<div id="materials" class="section level2">
-<h2>Materials</h2>
-<div id="scripts" class="section level3">
-<h3>Scripts</h3>
+<div id="materials" class="section level1">
+<h1>Materials</h1>
+<div id="scripts" class="section level2">
+<h2>Scripts</h2>
 <ol style="list-style-type: decimal">
 <li><p>Click <a href="mod_2_glm.R">here</a> to download the script! Save
 the script to the ‘scripts’’ folder in your project directory you set up
@@ -482,13 +482,13 @@ the <strong>files</strong> window and select the scripts folder and then
 this script.</p></li>
 </ol>
 </div>
-<div id="cheat-sheets" class="section level3">
-<h3>Cheat sheets</h3>
+<div id="cheat-sheets" class="section level2">
+<h2>Cheat sheets</h2>
 <p>There are no cheat sheets specific to this module but don’t forget
 the ones you’ve already printed for previous modules!</p>
 </div>
-<div id="github-repository" class="section level3">
-<h3>Github repository</h3>
+<div id="github-repository" class="section level2">
+<h2>Github repository</h2>
 <p>There is a Github repository that shows the full data formatting,
 statistical analysis, and graphics process for the publication
 associated with this data. For more information about the data check out
@@ -497,64 +497,125 @@ the #README file.</p>
 href="https://github.com/marissadyck/Brown_bear_predation_RO">Github -
 Brown_bear_predation_RO</a></p>
 </div>
-<div id="data" class="section level3">
-<h3>Data</h3>
+<div id="data" class="section level2">
+<h2>Data</h2>
 <p>For this module we will work with the cows data from the brown bear
-conflict data set in Romania we worked with earlier. We’ve already done
-some data manipulation to this data set and saved it to the
-data/processed folder.</p>
+conflict data set which should be in the data/raw folder</p>
 <p><span style="color: blue;"> Read in the cows data from the data/raw
-folder. <span style="color: blue;"></p>
+folder and in the same code chunk set the column names to lowercase. And
+then take a look at the structure of the data; you’ll want to go back
+and edit your code to specify the data types for some variables if they
+aren’t reading in properly <span style="color: blue;"></p>
+<p>You can check out this <a href="data/README.html">README file from
+the Githup repository</a> to learn more about the data, the data you are
+working with is <em>slightly</em> different from the data in this
+repository but this will give you a general understanding of the
+variables and practice with reading/interpreting information from a
+README file.</p>
 <pre class="r fold-hide"><code># Data ----------------------
 
+
+# INSERT YOUR CODE HERE ----------------------
 # Read in data for this module
 
-cows &lt;- read.csv(&#39;data/processed/cows.csv&#39;)
+cows &lt;- read_csv(&#39;data/raw/cows.csv&#39;,
+                 
+                 col_types = cols(Damage = col_factor(),
+                                  Year = col_factor(),
+                                  Month = col_factor(),
+                                  Targetspp = col_factor(),
+                                  Hunting = col_factor(),
+                                  .default = col_number())) %&gt;% 
+  
+  rename_with(tolower)
 
 # check data structure
 str(cows)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    1620 obs. of  34 variables:
-##  $ damage          : int  1 1 1 1 1 1 1 1 1 1 ...
-##  $ year            : int  2008 2008 2008 2008 2008 2008 2008 2008 2009 2009 ...
-##  $ month           : int  8 9 8 6 7 9 9 8 6 6 ...
-##  $ targetspp       : chr  &quot;bovine&quot; &quot;bovine&quot; &quot;bovine&quot; &quot;bovine&quot; ...
-##  $ point_x         : num  533138 533138 554377 556053 556019 ...
-##  $ point_y         : num  515800 515498 511973 504669 504694 ...
-##  $ bear_abund      : int  38 38 56 25 25 41 69 25 43 34 ...
-##  $ landcover_2     : chr  &quot;Ag_land&quot; &quot;Open&quot; &quot;Art_surfaces&quot; &quot;Open&quot; ...
-##  $ altitude        : int  558 608 553 709 707 613 644 636 807 943 ...
-##  $ human_population: int  10 0 39 0 0 647 245 0 98 45 ...
-##  $ dist_to_forest  : num  649.3 361.8 751.3 92.9 63.5 ...
-##  $ dist_to_town    : num  613 843 0 1422 1390 ...
-##  $ livestock_killed: int  2 1 2 9 9 3 2 1 1 1 ...
-##  $ shannondivindex : num  1.082 0.935 1.411 1.555 1.555 ...
-##  $ prop_arable     : num  55.33 9.11 48.63 7.7 7.7 ...
-##  $ prop_orchards   : int  0 0 0 0 0 0 0 0 0 0 ...
-##  $ prop_pasture    : num  20.7 44.5 0 35.7 35.7 ...
-##  $ prop_ag_mo      : num  0 0 0 0 0 ...
-##  $ prop_seminatural: num  0 0 19.5 0 0 ...
-##  $ prop_deciduous  : num  21.2 46.4 15.4 30.9 30.9 ...
-##  $ prop_coniferous : num  0 0 5.45 0 0 ...
-##  $ prop_mixedforest: num  0 0 0 8.66 8.66 ...
-##  $ prop_grassland  : num  0 0 0 10.6 10.6 ...
-##  $ prop_for_regen  : num  0 0 2.03 6.49 6.49 ...
-##  $ openhab_10k     : num  0.685 0.802 -1.056 1.283 1.18 ...
-##  $ forest_10k      : num  -1.138 -0.985 -1.108 -0.209 -0.161 ...
-##  $ urban_10k       : num  0.1467 0.0241 0.8297 -0.5364 -0.5364 ...
-##  $ heteroag_10k    : num  0.685 0.802 -1.056 1.283 1.18 ...
-##  $ ag_10k          : num  1.2092 0.968 1.7925 -0.082 -0.0859 ...
-##  $ shdi_10k        : num  0.366 0.454 0.295 0.985 0.935 ...
-##  $ s.bear_abund    : num  -0.0792 -0.0792 0.6814 -0.2503 -0.2503 ...
-##  $ s.altitude      : num  -0.953 -0.813 -0.98 -0.41 -0.443 ...
-##  $ s.dist_to_town  : num  -0.828 -0.781 -1.086 -0.519 -0.519 ...
-##  $ s.dist_to_forest: num  0.227 0.0331 -0.2297 -0.3432 -0.3432 ...</code></pre>
-</div>
+<pre><code>## spc_tbl_ [1,639 × 35] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ ...1               : num [1:1639] 1 2 3 4 5 6 7 8 9 10 ...
+##  $ damage             : Factor w/ 2 levels &quot;1&quot;,&quot;0&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ year               : Factor w/ 9 levels &quot;2012&quot;,&quot;2014&quot;,..: 1 2 1 3 1 2 1 2 1 3 ...
+##  $ month              : Factor w/ 11 levels &quot;10&quot;,&quot;9&quot;,&quot;6&quot;,&quot;8&quot;,..: 1 2 1 3 2 3 4 2 2 3 ...
+##  $ targetspp          : Factor w/ 1 level &quot;bovine&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ point_x            : num [1:1639] 503840 513946 514079 514792 516028 ...
+##  $ point_y            : num [1:1639] 559354 564975 556360 546860 558289 ...
+##  $ ptx                : num [1:1639] 503870 513946 514099 514859 516092 ...
+##  $ pty                : num [1:1639] 559440 565000 556427 546908 558339 ...
+##  $ bear_abund         : num [1:1639] 34 42 34 43 34 32 34 42 34 34 ...
+##  $ landcover_code     : num [1:1639] 243 243 321 211 231 231 231 321 321 242 ...
+##  $ altitude           : num [1:1639] 866 748 799 807 969 ...
+##  $ human_population   : num [1:1639] 0 0 30 98 14 0 0 0 0 45 ...
+##  $ dist_to_forest     : num [1:1639] 319 122 135 590 106 ...
+##  $ dist_to_town       : num [1:1639] 1400 2663 1034 436 733 ...
+##  $ livestock_killed   : num [1:1639] 1 1 1 1 1 1 2 2 1 1 ...
+##  $ numberdamageperplot: num [1:1639] 1 1 1 1 1 1 51 2 1 1 ...
+##  $ shannondivindex    : num [1:1639] 1.278 0.762 1.382 1.449 1.429 ...
+##  $ prop_arable        : num [1:1639] 0 0 5.58 23.78 29.15 ...
+##  $ prop_orchards      : num [1:1639] 0 0 0 0 0 0 0 0 0 0 ...
+##  $ prop_pasture       : num [1:1639] 35.8 2.69 1.14 8.64 10.79 ...
+##  $ prop_ag_mosaic     : num [1:1639] 8.81 0 15.03 0 9.67 ...
+##  $ prop_seminatural   : num [1:1639] 42.2 35.5 29.2 23.8 4.1 ...
+##  $ prop_deciduous     : num [1:1639] 10.55 61.77 5.72 36.81 43.11 ...
+##  $ prop_coniferous    : num [1:1639] 0 0 0 0 0 ...
+##  $ prop_mixedforest   : num [1:1639] 0 0 0 0 0 ...
+##  $ prop_grassland     : num [1:1639] 0 0 43.33 0 3.17 ...
+##  $ prop_for_regen     : num [1:1639] 0 0 0 0 0 ...
+##  $ landcover_2        : num [1:1639] 240 240 231 210 231 231 231 231 231 240 ...
+##  $ prop_natural       : num [1:1639] 42.2 35.5 29.2 23.8 4.1 ...
+##  $ prop_ag            : num [1:1639] 8.81 0 20.61 23.78 38.83 ...
+##  $ prop_gras          : num [1:1639] 35.8 2.69 44.48 8.64 13.96 ...
+##  $ hunting            : Factor w/ 2 levels &quot;1&quot;,&quot;0&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ prop_open          : num [1:1639] 35.8 2.69 44.48 8.64 13.96 ...
+##  $ prop_forest        : num [1:1639] 10.55 61.77 5.72 36.81 43.11 ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   .default = col_number(),
+##   ..   ...1 = col_number(),
+##   ..   Damage = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   Year = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   Month = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   Targetspp = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   POINT_X = col_number(),
+##   ..   POINT_Y = col_number(),
+##   ..   PTX = col_number(),
+##   ..   PTY = col_number(),
+##   ..   Bear_abund = col_number(),
+##   ..   Landcover_code = col_number(),
+##   ..   Altitude = col_number(),
+##   ..   Human_population = col_number(),
+##   ..   Dist_to_forest = col_number(),
+##   ..   Dist_to_town = col_number(),
+##   ..   Livestock_killed = col_number(),
+##   ..   Numberdamageperplot = col_number(),
+##   ..   ShannonDivIndex = col_number(),
+##   ..   prop_arable = col_number(),
+##   ..   prop_orchards = col_number(),
+##   ..   prop_pasture = col_number(),
+##   ..   prop_ag_mosaic = col_number(),
+##   ..   prop_seminatural = col_number(),
+##   ..   prop_deciduous = col_number(),
+##   ..   prop_coniferous = col_number(),
+##   ..   prop_mixedforest = col_number(),
+##   ..   prop_grassland = col_number(),
+##   ..   prop_for_regen = col_number(),
+##   ..   Landcover_2 = col_number(),
+##   ..   Prop_natural = col_number(),
+##   ..   Prop_ag = col_number(),
+##   ..   Prop_gras = col_number(),
+##   ..   Hunting = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   Prop_open = col_number(),
+##   ..   Prop_forest = col_number()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
 </div>
 <div id="basics-of-a-glm" class="section level2">
 <h2>Basics of a GLM</h2>
 <p>A Generalized liner model (GLM) is a variation on a linear regression
 which allows the response variable to have a distribution other than the
-normal (Gaussian) distribution.</p>
+normal (Gaussian) distribution. This is useful because one of the main
+assumptions of a linear regression is that the response variable is
+normally distributed, but ecological data often violates this assumption
+which can lead to unreliable model estimates.</p>
 <div id="steps-of-glm" class="section level3">
 <h3>Steps of GLM</h3>
 <p>When applying a generalized linear model to your data follow the
@@ -563,41 +624,42 @@ steps below</p>
 <li><p>Choose the most appropriate distribution for the response
 variable. e.g., Gaussian, Poisson, negative binomial, gamma, binomial,
 etc.</p></li>
-<li><p>Define the systematic component in terms of explanatory
-variables.</p></li>
+<li><p>Define the systematic component in terms of explanatory variables
+(write out your model!).</p></li>
 <li><p>Specify the link between the mean of the response variable and
 the systematic part.</p></li>
-<li><p>Check model assumptions (check for autocorrelation before running
-models).</p></li>
+<li><p>Check model assumptions (check for multicolinearity before
+running models).</p></li>
 </ol>
 </div>
 </div>
-<div id="distributions" class="section level2">
-<h2>Distributions</h2>
+</div>
+<div id="distributions" class="section level1">
+<h1>Distributions</h1>
 <p><em>Some</em> common non-normal distributions for wildlife data
 include…</p>
-<div id="binomial-distribution" class="section level3">
-<h3>Binomial distribution</h3>
+<div id="binomial-distribution" class="section level2">
+<h2>Binomial distribution</h2>
 <p>The <strong>binomial distribution</strong> represents the probability
 of an outcome given only two options (e.g. 0s and 1s). Presence/absence
 data from remote camera traps is a great example of this.</p>
 <p><img src="images/binomial-distribution-formula.png" /></p>
 </div>
-<div id="poisson-distribution" class="section level3">
-<h3>Poisson distribution</h3>
+<div id="poisson-distribution" class="section level2">
+<h2>Poisson distribution</h2>
 <p>The <strong>poisson distribution</strong> represents how many times
 an event is likely to occur over a specified period. Count data follow
 the poisson distribution.</p>
 <p><img src="images/poisson-distribution-formula.png" /></p>
 </div>
-<div id="negative-binomial-distribution" class="section level3">
-<h3>Negative binomial distribution</h3>
+<div id="negative-binomial-distribution" class="section level2">
+<h2>Negative binomial distribution</h2>
 <p>The negative binomial distribution is also used for count data but
 when the data are also over dispersed. We can check for dispersion using
 a <strong>function</strong> in R after we run our model.</p>
 </div>
-<div id="which-distribution-to-use" class="section level3">
-<h3>Which distribution to use?</h3>
+<div id="which-distribution-to-use" class="section level2">
+<h2>Which distribution to use?</h2>
 <p>Here is a helpful table from <a
 href="https://www.cabidigitallibrary.org/doi/abs/10.1079/PAVSNNR20127016">Thiele
 and Markussen 2012</a> you can use to determine which distribution you
@@ -605,38 +667,48 @@ should use with your data.</p>
 <p><img src="images/glm_distributions.png" style="width:80.0%" /></p>
 <p><span style="color: blue;"> Using some of the
 <strong>functions</strong> we covered in previous modules, take a look
-at the data and determine what distribution you would use given the
+at the data and determine what distribution would you use given the
 response variable is <em>damage</em>. <span style="color: blue;"></p>
 <pre class="r fold-hide"><code># look at full data
 # View(cows) # this is commented out because rMarkdown won&#39;t run the View() function
 
 # check out info on response variable
 summary(cows$damage)</code></pre>
-<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##    0.00    0.00    0.00    0.25    0.25    1.00</code></pre>
-<pre class="r fold-hide"><code># plot the response variable
-hist(cows$damage)</code></pre>
-<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre><code>##    1    0 
+##  410 1229</code></pre>
+<p>We can also plot the data to look at this.</p>
+<p>Normally I would use the histogram function <code>hist()</code> to do
+this but… <span style="color: blue;">try it and see what happens </span>
+remember you can use ?hist() to look up the R documentation if you
+aren’t familiar with this function yet.</p>
+<p>Since this variable is a factor we can visualize it with the
+<code>plot()</code> function instead</p>
+<pre class="r"><code>plot(cows$damage)</code></pre>
+<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>This histogram above should make it fairly clear that the
 <strong>binomial distribution</strong> would be a good fit for this data
-given the response variable contains 1s and 0s.</p>
+given the response variable contains 1s and 0s (a binary response).</p>
 </div>
 </div>
-<div id="assumptions-of-glm" class="section level2">
-<h2>Assumptions of GLM</h2>
-<div id="independence" class="section level3">
-<h3>Independence</h3>
+<div id="assumptions-of-glm" class="section level1">
+<h1>Assumptions of GLM</h1>
+<p>While we don’t have to worry about the assumption of normality for
+our response variable there are still several important assumptions of a
+glm that can lead to unreliable model estimates if violated.</p>
+<div id="independence" class="section level2">
+<h2>Independence</h2>
 <p>The data are independently distributed, i.e., cases are
 independent.</p>
 <p>This assumption is checked in multiple ways. First, this is often
 related to how the data were collected, ensuring that each observation
 is unique and you do not have pseudo-replication in the data. Second,
-you need to check for autocorrelation between variables in your model.
-This can be done by running correlation test or plotting a correlation
-matrix with your explanatory variables.</p>
+you need to check for multicolinearity between variables in your model.
+This can be done by running correlation tests or plotting a correlation
+matrix with your explanatory variables. It is also checked after you’ve
+fit a model by calculating Variance Inflation Factor (VIF).</p>
 </div>
-<div id="homogeneity-of-variance" class="section level3">
-<h3>Homogeneity of variance</h3>
+<div id="homogeneity-of-variance" class="section level2">
+<h2>Homogeneity of variance</h2>
 <p>When you have categorical variables or groups within your data you
 need to check that the variance within groups is equal for all groups.
 This is commonly done with Levene’s test (F test) which tests the null
@@ -644,8 +716,8 @@ hypothesis that the variance is equal across groups. In order to not
 violate this assumption you want to result of this test to yield a
 p-value <em>GREATER</em> than 0.05.</p>
 </div>
-<div id="normality-of-residuals" class="section level3">
-<h3>Normality of residuals</h3>
+<div id="normality-of-residuals" class="section level2">
+<h2>Normality of residuals</h2>
 <p>While the dependent variable does NOT need to be normally
 distributed, because it assumes a different distribution specified in
 the model (e.g. binomial, Poisson, etc.) the residuals should be
@@ -654,10 +726,12 @@ normally distributed without a skew or kurtosis (long tail).</p>
 the Shapiro-Wilk, or the Kolmogorov-Smirnov tests, but is often best
 assessed visually via a qq-plot. (Note that this assumption is generally
 the least important of the set; if it is not met, your beta estimates
-will still be unbiased, but your p-values will be inaccurate.)</p>
+will still be unbiased, but your p-values will be inaccurate, and as
+we’ve covered in this class we shouldn’t rely on p-values as our only or
+primary indicator of variable importance).</p>
 </div>
-<div id="influential-observations" class="section level3">
-<h3>Influential observations</h3>
+<div id="influential-observations" class="section level2">
+<h2>Influential observations</h2>
 <p>If you have a small data set or are concerned about outliers in your
 data. Assessing influence of individual observations may be useful.
 There are several ways to do this, first you can re-run your analysis
@@ -666,77 +740,78 @@ interpretation of said results changes; second, you can calculate Cook’s
 distance which provides and estimate of the influence of a data
 point.</p>
 <blockquote>
-<p>With the exception of autocorrelation, GLM model assumptions are
-checked after you have done your analysis.</p>
+<p>With the exception of multicolinearity, GLM model assumptions are
+generally checked after you have done your analysis (e.g. fit your
+model).</p>
 </blockquote>
 </div>
 </div>
-<div id="run-a-glm" class="section level2">
-<h2>Run a GLM</h2>
-<div id="test-for-autocorrelation" class="section level3">
-<h3>Test for autocorrelation</h3>
+<div id="before-fitting-a-model" class="section level1">
+<h1>Before fitting a model</h1>
+<p>First before we fit a model we want to test for correlation between
+our explanatory variables.</p>
+<div id="test-for-multicolinearity" class="section level2">
+<h2>Test for multicolinearity</h2>
 <p>The cows data has already been checked, cleaned, and formatted for
 analysis using many of the tools and techniques we covered in the intro
 to R modules so we can jump right into exploring potential explanatory
 variables and checking the assumption of independence.</p>
-<p>First let’s make a subset of the data that only includes explanatory
-variables we plan to use in models. <span style="color: blue;"> Using
-<em>dplyr</em> <code>select()</code> subset the cows data to only
-include the following columns and assign this object to the environment
-as <em>cows_cor</em> <span style="color: blue;"></p>
+<p>First let’s make a subset of the data that only includes
+<strong>Numeric</strong> explanatory variables we plan to use in models
+(this is because we can’t quantify correlation between non-numeric and
+numeric variables). <span style="color: blue;"> Using <em>dplyr</em>
+<code>select()</code> subset the cows data to only include the following
+columns and assign this object to the environment as <em>cows_cor</em>
+<span style="color: blue;"></p>
 <ul>
-<li>s.bear_abund<br />
+<li>altitude<br />
 </li>
-<li>s.dist_to_forest<br />
+<li>human_population<br />
 </li>
-<li>s.dist_to_town<br />
+<li>bear_abund<br />
 </li>
-<li>openhab_10k<br />
+<li>dist_to_forest<br />
 </li>
-<li>ag_10k<br />
+<li>dist_to_town<br />
 </li>
-<li>forest_10k<br />
-</li>
-<li>heteroag_10k<br />
-</li>
-<li>urban_10k<br />
-</li>
-<li>shdi_10k</li>
+<li>prop_ag</li>
+<li>prop_gras</li>
+<li>prop_open</li>
+<li>prop_forest</li>
 </ul>
 <p><span style="color: blue;"> Print the first few rows of data to make
 sure it worked <span style="color: blue;"></p>
-<pre class="r fold-hide"><code># Autocorrelation test --------------------
+<pre class="r fold-hide"><code># multicolinearity test --------------------
 
 # first let&#39;s make a subset of the data that only includes explanatory variables we plan to use in models we will assign this to the environment as cows_cor
 
+# INSERT YOUR CODE HERE --------------------
 cows_cor &lt;- 
   cows %&gt;% 
   select(bear_abund,
-         s.dist_to_forest,
-         s.dist_to_town,
-         openhab_10k,
-         ag_10k,
-         heteroag_10k,
-         forest_10k,
-         urban_10k,
-         shdi_10k)
+         altitude,
+         human_population,
+         dist_to_forest,
+         dist_to_town,
+         shannondivindex,
+         prop_ag,
+         prop_gras,
+         prop_open,
+         prop_forest)
 
 # check that this worked by looking at the first few rows of data
 head(cows_cor)</code></pre>
-<pre><code>##   bear_abund s.dist_to_forest s.dist_to_town openhab_10k      ag_10k
-## 1         38       0.22695278     -0.8280168   0.6848230  1.20915282
-## 2         38       0.03307383     -0.7810998   0.8017716  0.96803235
-## 3         56      -0.22973123     -1.0863413  -1.0556468  1.79250878
-## 4         25      -0.34319626     -0.5186037   1.2833245 -0.08200842
-## 5         25      -0.34319626     -0.5186037   1.1801346 -0.08589744
-## 6         41      -0.02447104     -1.0863413  -0.1269376  0.52857086
-##   heteroag_10k forest_10k  urban_10k  shdi_10k
-## 1    0.6848230 -1.1384193  0.1466808 0.3657387
-## 2    0.8017716 -0.9850977  0.0240788 0.4539369
-## 3   -1.0556468 -1.1083563  0.8297489 0.2952228
-## 4    1.2833245 -0.2094707 -0.5363874 0.9854220
-## 5    1.1801346 -0.1613699 -0.5363874 0.9347721
-## 6   -0.1269376 -1.2406337  3.6671088 1.9510456</code></pre>
+<pre><code>## # A tibble: 6 × 10
+##   bear_abund altitude human_population dist_to_forest dist_to_town
+##        &lt;dbl&gt;    &lt;dbl&gt;            &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;
+## 1         34      866                0          319.         1400.
+## 2         42      748                0          122.         2663.
+## 3         34      799               30          135.         1034.
+## 4         43      807               98          590.          436.
+## 5         34      969               14          106.          733.
+## 6         32      596                0           91.1        1748.
+## # ℹ 5 more variables: shannondivindex &lt;dbl&gt;, prop_ag &lt;dbl&gt;, prop_gras &lt;dbl&gt;,
+## #   prop_open &lt;dbl&gt;, prop_forest &lt;dbl&gt;</code></pre>
 <p>Now we will create a correlation chart using the
 <em>PerformanceAnalytics</em> package that provides a correlation
 coefficient (r2) values for pairwise combinations of variables.</p>
@@ -749,13 +824,13 @@ correlation plots for each pariwsie combination of variables.</p>
 chart.Correlation(cows_cor, 
                   histogram = TRUE, 
                   method = &quot;pearson&quot;)</code></pre>
-<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>Do you notice anything about many of the relationships between
 variables?</p>
-<p>They are non-linear. Pearson’s correlation coefficient assesses
-linear relationships between variables, and since these are non-linear
-our results are likely inaccurate. A better test to use would be
-Spearman’s correlation coefficient. We can change the correlation
+<p>Many of them are non-linear. Pearson’s correlation coefficient
+assesses linear relationships between variables, and since these are
+non-linear our results are likely inaccurate. A better test to use would
+be Spearman’s correlation coefficient. We can change the correlation
 coefficient that is computed in the <code>method =</code> argument in
 the <code>chart.Correlation()</code> <strong>function</strong>.</p>
 <pre class="r"><code># there are a number of non-linear relationships so we should use the Spearman method
@@ -764,35 +839,352 @@ the <code>chart.Correlation()</code> <strong>function</strong>.</p>
 chart.Correlation(cows_cor, 
                   histogram = TRUE, 
                   method = &quot;spearman&quot;)</code></pre>
-<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <blockquote>
 <p>Based on these results we should not include the follow variables
 together in a model (r2 &gt; 0.7)</p>
 </blockquote>
 <ul>
-<li>dist_to_town &amp; forest_10k</li>
-<li>dist_to_town &amp; urban_10k<br />
+<li>dist_to_town &amp; prop_forest<br />
 </li>
-<li>dist_to_forest &amp; forest_10k<br />
-</li>
-<li>openhab_10k &amp; heteroag_10k<br />
-</li>
-<li>ag_10k &amp; forest_10k</li>
+<li>prop_ag &amp; prop_forest</li>
+<li>prop_gras &amp; prop_open</li>
 </ul>
+<blockquote>
+<p>And we might be cautious including (r2 &gt; 0.6)</p>
+</blockquote>
+<ul>
+<li>dist_to_forest &amp; prop_ag</li>
+<li>human_population &amp; dist_to_town</li>
+</ul>
+<blockquote>
+<p>Important note, this doesn’t mean you can’t use both variables in
+your analysis, but you can’t include them in the same
+<strong>model</strong>, so if you are interested in the effects of both
+distance to town and proportion of forest you can evaluate both by
+including them in separate models and comparing which model fits the
+data best. We will cover this more when we get to model selection</p>
+</blockquote>
 <p>This process also serves as a great data check step. Do you notice
 anything else odd about the correlation matrix?</p>
 <p>One of the r2 values is 1.00, this means that the data are perfectly
-correlated which should make you question this data as that happens if
-the data are exactly the same. Likely an error was made when extracting
-one of these variables in GIS and it was named as both variables.
-Luckily this isn’t the final version if this data from our manuscript. I
-noticed this issue during the analysis and we re-extracted the landscape
-variables in GIS to correct the issue. A great example of why it’s
-really important to look at your data again, and again, and again….</p>
+correlated which should make you question this data as that happens only
+if the data are <strong>exactly</strong> the same. Likely an error was
+made when extracting one of these variables in GIS and it was named as
+both variables. Luckily this isn’t the final version if this data from
+our manuscript. I noticed this issue during the analysis and we
+re-extracted the landscape variables in GIS to correct the issue. A
+great example of why it’s really important to look at your data again,
+and again, and again….</p>
 </div>
-<div id="model-syntax" class="section level3">
-<h3>Model syntax</h3>
-<p>The syntax for a GLM in the <em>lme4</em> package is as follows</p>
+<div id="explore-explanatory-variables" class="section level2">
+<h2>Explore explanatory variables</h2>
+<p>In addition to plotting your response variable to determine what
+distribution you should use, you should always do some data exploration
+of your explanatory variables as well. This is an important step that is
+often overlooked until you are having issues with your model
+estimates/fit and if you take the time to do it prior to fitting your
+model it can save a a lot of time and headache.</p>
+<p>The main thing you are looking for is that you have enough non-zero
+observations of each variable and enough diversity (range of values)
+that this variable will actually be pertinent to include as a model
+predictor</p>
+<p><em>Note these will print twice for each variable because I’ve
+provided two possible ways to code this</em></p>
+<pre class="r"><code># histograms of explanatory variables --------------------
+
+hist(cows$altitude)</code></pre>
+<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>hist(cows$human_population)</code></pre>
+<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<pre class="r"><code>hist(cows$bear_abund)</code></pre>
+<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
+<pre class="r"><code>hist(cows$dist_to_forest)</code></pre>
+<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-4.png" width="672" /></p>
+<pre class="r"><code>hist(cows$dist_to_town)</code></pre>
+<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-5.png" width="672" /></p>
+<pre class="r"><code>hist(cows$shannondivindex)</code></pre>
+<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-6.png" width="672" /></p>
+<pre class="r"><code>hist(cows$prop_forest)</code></pre>
+<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-7.png" width="672" /></p>
+<pre class="r"><code>hist(cows$prop_ag)</code></pre>
+<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-8.png" width="672" /></p>
+<pre class="r"><code>hist(cows$prop_open)</code></pre>
+<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-9.png" width="672" /></p>
+<pre class="r"><code># or using purrr and the cows.cor data
+
+cows_cor %&gt;% 
+  
+  # use imap which will retain both the data (x) and the variable names (y)
+  imap(~.x %&gt;% 
+        
+         # use the hist function on the data from previous pipe
+        hist(.,
+             
+             # set the main title to y (each variable)
+             main = .y))</code></pre>
+<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-10.png" width="672" /><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-11.png" width="672" /><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-12.png" width="672" /><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-13.png" width="672" /><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-14.png" width="672" /><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-15.png" width="672" /><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-16.png" width="672" /><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-17.png" width="672" /><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-18.png" width="672" /><img src="mod_2_glm_files/figure-html/unnamed-chunk-9-19.png" width="672" /></p>
+<pre><code>## $bear_abund
+## $breaks
+##  [1]  0  5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80
+## 
+## $counts
+##  [1] 189  54  50 183 175 171 219 152 135  72  76 129   0  17   0  17
+## 
+## $density
+##  [1] 0.023062843 0.006589384 0.006101281 0.022330689 0.021354484 0.020866382
+##  [7] 0.026723612 0.018547895 0.016473459 0.008785845 0.009273948 0.015741306
+## [13] 0.000000000 0.002074436 0.000000000 0.002074436
+## 
+## $mids
+##  [1]  2.5  7.5 12.5 17.5 22.5 27.5 32.5 37.5 42.5 47.5 52.5 57.5 62.5 67.5 72.5
+## [16] 77.5
+## 
+## $xname
+## [1] &quot;.&quot;
+## 
+## $equidist
+## [1] TRUE
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;histogram&quot;
+## 
+## $altitude
+## $breaks
+##  [1]  100  200  300  400  500  600  700  800  900 1000 1100 1200 1300 1400 1500
+## [16] 1600 1700 1800
+## 
+## $counts
+##  [1]   4  18  43  82 216 232 219 190 184 151 119  91  57  21   8   3   1
+## 
+## $density
+##  [1] 2.440513e-05 1.098231e-04 2.623551e-04 5.003051e-04 1.317877e-03
+##  [6] 1.415497e-03 1.336181e-03 1.159243e-03 1.122636e-03 9.212935e-04
+## [11] 7.260525e-04 5.552166e-04 3.477730e-04 1.281269e-04 4.881025e-05
+## [16] 1.830384e-05 6.101281e-06
+## 
+## $mids
+##  [1]  150  250  350  450  550  650  750  850  950 1050 1150 1250 1350 1450 1550
+## [16] 1650 1750
+## 
+## $xname
+## [1] &quot;.&quot;
+## 
+## $equidist
+## [1] TRUE
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;histogram&quot;
+## 
+## $human_population
+## $breaks
+##  [1]    0  500 1000 1500 2000 2500 3000 3500 4000 4500 5000 5500 6000
+## 
+## $counts
+##  [1] 1615   20    1    0    2    0    0    0    0    0    0    1
+## 
+## $density
+##  [1] 1.970714e-03 2.440513e-05 1.220256e-06 0.000000e+00 2.440513e-06
+##  [6] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00
+## [11] 0.000000e+00 1.220256e-06
+## 
+## $mids
+##  [1]  250  750 1250 1750 2250 2750 3250 3750 4250 4750 5250 5750
+## 
+## $xname
+## [1] &quot;.&quot;
+## 
+## $equidist
+## [1] TRUE
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;histogram&quot;
+## 
+## $dist_to_forest
+## $breaks
+##  [1]    0  500 1000 1500 2000 2500 3000 3500 4000 4500 5000 5500 6000 6500 7000
+## 
+## $counts
+##  [1] 1357   95   73   33   16   14    9   10    8    7    4    4    4    5
+## 
+## $density
+##  [1] 1.655888e-03 1.159243e-04 8.907871e-05 4.026846e-05 1.952410e-05
+##  [6] 1.708359e-05 1.098231e-05 1.220256e-05 9.762050e-06 8.541794e-06
+## [11] 4.881025e-06 4.881025e-06 4.881025e-06 6.101281e-06
+## 
+## $mids
+##  [1]  250  750 1250 1750 2250 2750 3250 3750 4250 4750 5250 5750 6250 6750
+## 
+## $xname
+## [1] &quot;.&quot;
+## 
+## $equidist
+## [1] TRUE
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;histogram&quot;
+## 
+## $dist_to_town
+## $breaks
+##  [1]     0  1000  2000  3000  4000  5000  6000  7000  8000  9000 10000 11000
+## [13] 12000 13000 14000
+## 
+## $counts
+##  [1] 528 368 269 157 105  76  53  30  19  12  10   5   3   4
+## 
+## $density
+##  [1] 3.221477e-04 2.245272e-04 1.641245e-04 9.579012e-05 6.406345e-05
+##  [6] 4.636974e-05 3.233679e-05 1.830384e-05 1.159243e-05 7.321538e-06
+## [11] 6.101281e-06 3.050641e-06 1.830384e-06 2.440513e-06
+## 
+## $mids
+##  [1]   500  1500  2500  3500  4500  5500  6500  7500  8500  9500 10500 11500
+## [13] 12500 13500
+## 
+## $xname
+## [1] &quot;.&quot;
+## 
+## $equidist
+## [1] TRUE
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;histogram&quot;
+## 
+## $shannondivindex
+## $breaks
+##  [1] 0.0 0.2 0.4 0.6 0.8 1.0 1.2 1.4 1.6 1.8 2.0
+## 
+## $counts
+##  [1]  93  61 171 257 277 293 220 185  68  14
+## 
+## $density
+##  [1] 0.28370958 0.18608908 0.52165955 0.78401464 0.84502746 0.89383771
+##  [7] 0.67114094 0.56436852 0.20744356 0.04270897
+## 
+## $mids
+##  [1] 0.1 0.3 0.5 0.7 0.9 1.1 1.3 1.5 1.7 1.9
+## 
+## $xname
+## [1] &quot;.&quot;
+## 
+## $equidist
+## [1] TRUE
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;histogram&quot;
+## 
+## $prop_ag
+## $breaks
+##  [1]   0  10  20  30  40  50  60  70  80  90 100
+## 
+## $counts
+##  [1] 1126  105   92   51   54   62   39   46   37   27
+## 
+## $density
+##  [1] 0.068700427 0.006406345 0.005613179 0.003111653 0.003294692 0.003782794
+##  [7] 0.002379500 0.002806589 0.002257474 0.001647346
+## 
+## $mids
+##  [1]  5 15 25 35 45 55 65 75 85 95
+## 
+## $xname
+## [1] &quot;.&quot;
+## 
+## $equidist
+## [1] TRUE
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;histogram&quot;
+## 
+## $prop_gras
+## $breaks
+##  [1]   0  10  20  30  40  50  60  70  80  90 100
+## 
+## $counts
+##  [1] 644 304 232 208 138  61  21  22   8   1
+## 
+## $density
+##  [1] 3.929225e-02 1.854790e-02 1.415497e-02 1.269067e-02 8.419768e-03
+##  [6] 3.721782e-03 1.281269e-03 1.342282e-03 4.881025e-04 6.101281e-05
+## 
+## $mids
+##  [1]  5 15 25 35 45 55 65 75 85 95
+## 
+## $xname
+## [1] &quot;.&quot;
+## 
+## $equidist
+## [1] TRUE
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;histogram&quot;
+## 
+## $prop_open
+## $breaks
+##  [1]   0  10  20  30  40  50  60  70  80  90 100
+## 
+## $counts
+##  [1] 644 304 232 208 138  61  21  22   8   1
+## 
+## $density
+##  [1] 3.929225e-02 1.854790e-02 1.415497e-02 1.269067e-02 8.419768e-03
+##  [6] 3.721782e-03 1.281269e-03 1.342282e-03 4.881025e-04 6.101281e-05
+## 
+## $mids
+##  [1]  5 15 25 35 45 55 65 75 85 95
+## 
+## $xname
+## [1] &quot;.&quot;
+## 
+## $equidist
+## [1] TRUE
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;histogram&quot;
+## 
+## $prop_forest
+## $breaks
+##  [1]   0  10  20  30  40  50  60  70  80  90 100 110
+## 
+## $counts
+##  [1] 287  90  95 137 129 165 160 137 161 277   1
+## 
+## $density
+##  [1] 1.751068e-02 5.491153e-03 5.796217e-03 8.358755e-03 7.870653e-03
+##  [6] 1.006711e-02 9.762050e-03 8.358755e-03 9.823063e-03 1.690055e-02
+## [11] 6.101281e-05
+## 
+## $mids
+##  [1]   5  15  25  35  45  55  65  75  85  95 105
+## 
+## $xname
+## [1] &quot;.&quot;
+## 
+## $equidist
+## [1] TRUE
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;histogram&quot;</code></pre>
+<p>You’ll notice from these plots that there are a lot of zeros/very
+small values for the human population variable so we may want to avoid
+using that one. There is no real cutoff for what is too many zeros/too
+little variation in the data. This is up to each person to decide which
+is why it’s important to be familiar with your data and to plot this to
+check. However, if you do find your modeling is returning large std
+error or not fitting properly and you have a variable that is on the
+cusp of having too little data, try removing it and see if the model
+fits better.</p>
+<p>Trial and error is the name of the game with much of statistical
+modeling.</p>
+</div>
+</div>
+<div id="fit-a-glm" class="section level1">
+<h1>Fit a GLM</h1>
+<div id="model-syntax" class="section level2">
+<h2>Model syntax</h2>
+<p>The syntax for a GLM in the <em>lme4</em> package is as follows (not
+there are multiple packages you can use to fit a glm but this is a
+commonly used one in our field).</p>
 <pre class="r"><code># GLM syntax ----------------------
 
 glm(response variable ~ explanatory variable 1 + explanatory variable 2,    
@@ -807,61 +1199,120 @@ covering data formatting/manipulation and visualization; if you can
 become more efficient at these steps it will greatly reduce the amount
 of time needed for an analysis, reduce errors, and ensure that you can
 trust the results of your analysis.</p>
+</div>
+<div id="fitting-a-model" class="section level2">
+<h2>Fitting a model</h2>
 <p>Let’s run a global model (e.g., one with all non-correlated
 variables) with the Romania cows data. Remember <em>damage</em> is our
 response variable which we already determine fits with a
 <strong>binomial distribution</strong> so our family should be set
 <code>family = binomial</code>, and we already tested for
-autocorrelation between our explanatory variables so we should ensure
+multicolinearity between our explanatory variables so we should ensure
 none of the variables that were highly correlated are in the same
 model.</p>
 <pre class="r"><code># GLM ----------------------
 
 # run a global GLM which includes all variables not highly correlated
-cows_global &lt;- glm(damage ~ bear_abund + 
+cows_global &lt;- glm(damage ~ altitude +
+                     bear_abund + 
                      dist_to_forest + 
                      dist_to_town +
-                     openhab_10k +
-                     ag_10k + 
-                     shdi_10k,
+                     prop_ag +
+                     prop_open +
+                     shannondivindex,
                    data = cows, 
                    family = binomial)</code></pre>
 </div>
-<div id="test-assumptions" class="section level3">
-<h3>Test Assumptions</h3>
+<div id="test-assumptions" class="section level2">
+<h2>Test Assumptions</h2>
 <p>Before interpreting any results from our model we need to check that
 our model meets the assumptions of a GLM that we covered earlier.</p>
-<div id="homogeneity-of-variance-1" class="section level4">
-<h4>Homogeneity of variance</h4>
-<p>We don’t have any factor variables (groups) in our model so we
-wouldn’t need to test this assumption but as an example we can set
-<em>year</em> as a factor and run Levene’s test on a model that predicts
-<em>damage</em> as a function of <em>year</em> and interpret the
-result.</p>
-<pre class="r"><code># Test assumptions ----------------------
-
-# Homogeneity of variance
-
-cows &lt;- cows %&gt;% 
-  
-  # change year to a grouped variable (factor)
-  mutate(year = as.factor(year))
-  
-  # run levene test
-leveneTest(damage ~ year,
-                   data = cows)</code></pre>
-<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
-##         Df F value   Pr(&gt;F)   
-## group    8  3.0668 0.001967 **
-##       1611                    
+<div id="model-summary" class="section level3">
+<h3>Model summary</h3>
+<p>Although this won’t indicate if you’ve violated any specific
+assumptions, running the <code>summary()</code> of your model can be a
+quick way to gauge if anything is wonky. If you are getting crazy big
+standard errors or a warning message it may be worth</p>
+<pre class="r"><code>summary(cows_global)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = damage ~ altitude + bear_abund + dist_to_forest + 
+##     dist_to_town + prop_ag + prop_open + shannondivindex, family = binomial, 
+##     data = cows)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.2172  -0.3819   0.5227   0.7873   1.5512  
+## 
+## Coefficients:
+##                   Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)      3.169e+00  3.541e-01   8.951  &lt; 2e-16 ***
+## altitude        -7.631e-04  2.982e-04  -2.559 0.010490 *  
+## bear_abund      -1.525e-02  3.762e-03  -4.053 5.07e-05 ***
+## dist_to_forest   1.138e-03  2.160e-04   5.270 1.36e-07 ***
+## dist_to_town     1.113e-04  4.104e-05   2.711 0.006703 ** 
+## prop_ag         -1.187e-02  4.203e-03  -2.825 0.004734 ** 
+## prop_open       -3.133e-02  3.469e-03  -9.032  &lt; 2e-16 ***
+## shannondivindex -6.034e-01  1.825e-01  -3.307 0.000943 ***
 ## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>With Levene’s test we are testing the null hypothesis that the groups
-have similar variance so we want a p &gt; 0.05, but our value is 0.001
-which would indicate we’ve violated this assumption.</p>
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1843.9  on 1638  degrees of freedom
+## Residual deviance: 1624.0  on 1631  degrees of freedom
+## AIC: 1640
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
 </div>
-<div id="dispersion" class="section level4">
-<h4>Dispersion</h4>
+<div id="multicolinearity" class="section level3">
+<h3>Multicolinearity</h3>
+<p>We checked for colinearity between our variables before fitting our
+model, but because any deviation from 0 technically implies colinearity
+and violates this assumption we’ve used a somewhat arbitraty cutoff of
+0.6 or 0.7 (depending on the person/journal) so to ensure our final
+model doesn’t violate this assumption we calculate the Variance
+Inflation Factor (VIF) of each variable in our models where a value of 1
+indicates no correlation between that variable and other predictors in
+our model, VIF 1-5 is generally acceptable for ecological data, VIF
+&gt;5 is considered problematic.</p>
+<p>Here’s a few lines of code that calculate and print VIF for our model
+AND display it graphically</p>
+<p>Calculating and printing VIF</p>
+<pre class="r"><code># VIF ----------------------
+
+# report VIF
+vif(cows_global)</code></pre>
+<pre><code>##        altitude      bear_abund  dist_to_forest    dist_to_town         prop_ag 
+##        1.511181        1.014579        1.630586        1.767724        1.893675 
+##       prop_open shannondivindex 
+##        1.160267        1.235707</code></pre>
+<p>Plots of each variable with ggplot</p>
+<pre class="r"><code># additional plot of each variable
+# calculate vif
+vif(cows_global) %&gt;%
+  
+  # Converts the named vector returned by vif() into a tidy tibble
+  enframe(name = &#39;Predictor&#39;, 
+          value = &#39;VIF&#39;) %&gt;%
+  
+  # plot with ggplot
+  ggplot(aes(x = reorder(Predictor, VIF), # reorders from smallest VIF to largest (not sure I want like this)
+             y = VIF)) +
+  
+  # plot as bars
+  geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue&#39;) +
+  
+  # add labels
+  labs(x = &#39;Predictor&#39;,
+       y = &#39;VIF&#39;) +
+  
+  # set theme
+  theme_classic()</code></pre>
+<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+<div id="dispersion" class="section level3">
+<h3>Dispersion</h3>
 <p>We should ensure that our data is not over dispersed or we would want
 to use the negative binomial distribution. We can do this with some
 manual calculations using information from the model summary. We want to
@@ -873,43 +1324,92 @@ calculate a chi square approximation of residual deviance which equals
 summary(cows_global)</code></pre>
 <pre><code>## 
 ## Call:
-## glm(formula = damage ~ bear_abund + dist_to_forest + dist_to_town + 
-##     openhab_10k + ag_10k + shdi_10k, family = binomial, data = cows)
+## glm(formula = damage ~ altitude + bear_abund + dist_to_forest + 
+##     dist_to_town + prop_ag + prop_open + shannondivindex, family = binomial, 
+##     data = cows)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
-## -1.5286  -0.7965  -0.5511   0.2031   2.3067  
+## -2.2172  -0.3819   0.5227   0.7873   1.5512  
 ## 
 ## Coefficients:
-##                  Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)    -1.513e+00  1.802e-01  -8.396  &lt; 2e-16 ***
-## bear_abund      1.430e-02  3.966e-03   3.605 0.000313 ***
-## dist_to_forest -9.324e-04  2.078e-04  -4.488 7.19e-06 ***
-## dist_to_town   -2.369e-05  3.858e-05  -0.614 0.539241    
-## openhab_10k     5.497e-01  6.525e-02   8.425  &lt; 2e-16 ***
-## ag_10k          2.092e-01  1.198e-01   1.746 0.080736 .  
-## shdi_10k        3.704e-01  8.474e-02   4.371 1.24e-05 ***
+##                   Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)      3.169e+00  3.541e-01   8.951  &lt; 2e-16 ***
+## altitude        -7.631e-04  2.982e-04  -2.559 0.010490 *  
+## bear_abund      -1.525e-02  3.762e-03  -4.053 5.07e-05 ***
+## dist_to_forest   1.138e-03  2.160e-04   5.270 1.36e-07 ***
+## dist_to_town     1.113e-04  4.104e-05   2.711 0.006703 ** 
+## prop_ag         -1.187e-02  4.203e-03  -2.825 0.004734 ** 
+## prop_open       -3.133e-02  3.469e-03  -9.032  &lt; 2e-16 ***
+## shannondivindex -6.034e-01  1.825e-01  -3.307 0.000943 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## (Dispersion parameter for binomial family taken to be 1)
 ## 
-##     Null deviance: 1822  on 1619  degrees of freedom
-## Residual deviance: 1629  on 1613  degrees of freedom
-## AIC: 1643
+##     Null deviance: 1843.9  on 1638  degrees of freedom
+## Residual deviance: 1624.0  on 1631  degrees of freedom
+## AIC: 1640
 ## 
 ## Number of Fisher Scoring iterations: 6</code></pre>
 <pre class="r"><code># calculate chi square approx. for residual deviance
-1629/1613 # 1.0009 </code></pre>
-<pre><code>## [1] 1.009919</code></pre>
+1624/1631 # 0.99</code></pre>
+<pre><code>## [1] 0.9957082</code></pre>
 <pre class="r"><code># we want a value ~1 so our data is okay
 # value &gt;1 is over dispersed
 # value &lt;1 is under dispersed</code></pre>
+<p>You can also use several packages to do this based on the
+distribution of your response variable</p>
+<p>For our model (binomial) we can use the Hosmer-Lemeshow test in the
+<em>ResourceSelection</em> package</p>
+<pre class="r"><code>hoslem.test(cows$damage, fitted(cows_global))</code></pre>
+<pre><code>## 
+##  Hosmer and Lemeshow goodness of fit (GOF) test
+## 
+## data:  cows$damage, fitted(cows_global)
+## X-squared = 1639, df = 8, p-value &lt; 2.2e-16</code></pre>
+<p>If you have a poisson distribution you can also use a function from
+the <em>AER</em> package if you have a poisson</p>
+<pre class="r"><code>dispersiontest(cows_global)</code></pre>
+</div>
+<div id="model-plots" class="section level3">
+<h3>Model plots</h3>
+<p>Another approach you will see to check for model fit/violation of
+assumptions is to look at the residuals from your model using the
+plot(model) function which returns 4 standard plots. These are most
+often used to assess model fit and violations of model assumptions for
+data which are <strong>normally distributed</strong> e.g. linear
+regression NOT Generalized linear models, but some plots can be
+informative for glms as well.</p>
+<pre class="r"><code>plot(cows_global)</code></pre>
+<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-18-1.png" width="672" /><img src="mod_2_glm_files/figure-html/unnamed-chunk-18-2.png" width="672" /><img src="mod_2_glm_files/figure-html/unnamed-chunk-18-3.png" width="672" /><img src="mod_2_glm_files/figure-html/unnamed-chunk-18-4.png" width="672" />
+Here is a good overview from <a
+href="https://stats.stackexchange.com/questions/121490/interpretation-of-plot-glm-model/139624#139624">stackExchange</a>
+that summarizes what you might be looking for in these plots with
+non-normal data (e.e.g poisson, binomial, negative binomial etc.)</p>
+<ul>
+<li><p>The Residuals vs Fitted plot can help you see, for example, if
+there are curvilinear trends that you missed. But the fit of a logistic
+regression is curvilinear by nature, so you can have odd looking trends
+in the residuals with nothing amiss.</p></li>
+<li><p>The Normal Q-Q plot helps you detect if your residuals are
+normally distributed. But the deviance residuals don’t have to be
+normally distributed for the model to be valid, so the normality /
+non-normality of the residuals doesn’t necessarily tell you
+anything.</p></li>
+<li><p>The Scale-Location plot can help you identify heteroscedasticity.
+But logistic regression models are pretty much heteroscedastic by
+nature.</p></li>
+<li><p>The Residuals vs Leverage can help you identify possible
+outliers. But outliers in logistic regression don’t necessarily manifest
+in the same way as in linear regression, so this plot may or may not be
+helpful in identifying them.</p></li>
+</ul>
 </div>
 </div>
 </div>
-<div id="interpreting-model-output" class="section level2">
-<h2>Interpreting model output</h2>
+<div id="interpreting-model-output" class="section level1">
+<h1>Interpreting model output</h1>
 <p>Printing the summary of our model gives us a lot of useful
 information but it can be overwhelming at first if you don’t know what
 you are looking at so let’s walk through it.</p>
@@ -918,30 +1418,32 @@ you are looking at so let’s walk through it.</p>
 summary(cows_global)</code></pre>
 <pre><code>## 
 ## Call:
-## glm(formula = damage ~ bear_abund + dist_to_forest + dist_to_town + 
-##     openhab_10k + ag_10k + shdi_10k, family = binomial, data = cows)
+## glm(formula = damage ~ altitude + bear_abund + dist_to_forest + 
+##     dist_to_town + prop_ag + prop_open + shannondivindex, family = binomial, 
+##     data = cows)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
-## -1.5286  -0.7965  -0.5511   0.2031   2.3067  
+## -2.2172  -0.3819   0.5227   0.7873   1.5512  
 ## 
 ## Coefficients:
-##                  Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)    -1.513e+00  1.802e-01  -8.396  &lt; 2e-16 ***
-## bear_abund      1.430e-02  3.966e-03   3.605 0.000313 ***
-## dist_to_forest -9.324e-04  2.078e-04  -4.488 7.19e-06 ***
-## dist_to_town   -2.369e-05  3.858e-05  -0.614 0.539241    
-## openhab_10k     5.497e-01  6.525e-02   8.425  &lt; 2e-16 ***
-## ag_10k          2.092e-01  1.198e-01   1.746 0.080736 .  
-## shdi_10k        3.704e-01  8.474e-02   4.371 1.24e-05 ***
+##                   Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)      3.169e+00  3.541e-01   8.951  &lt; 2e-16 ***
+## altitude        -7.631e-04  2.982e-04  -2.559 0.010490 *  
+## bear_abund      -1.525e-02  3.762e-03  -4.053 5.07e-05 ***
+## dist_to_forest   1.138e-03  2.160e-04   5.270 1.36e-07 ***
+## dist_to_town     1.113e-04  4.104e-05   2.711 0.006703 ** 
+## prop_ag         -1.187e-02  4.203e-03  -2.825 0.004734 ** 
+## prop_open       -3.133e-02  3.469e-03  -9.032  &lt; 2e-16 ***
+## shannondivindex -6.034e-01  1.825e-01  -3.307 0.000943 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## (Dispersion parameter for binomial family taken to be 1)
 ## 
-##     Null deviance: 1822  on 1619  degrees of freedom
-## Residual deviance: 1629  on 1613  degrees of freedom
-## AIC: 1643
+##     Null deviance: 1843.9  on 1638  degrees of freedom
+## Residual deviance: 1624.0  on 1631  degrees of freedom
+## AIC: 1640
 ## 
 ## Number of Fisher Scoring iterations: 6</code></pre>
 <p>The Call simply prints the model you’ve run so if you’re scrolling
@@ -953,38 +1455,77 @@ style="width:60.0%" /></p>
 effect for each variable in relation to your response variable. If the
 value is positive then that variable has a positive relationship with
 the response variable.</p>
-<p><img src="images/cows_global_summary_est.png"
-style="width:60.0%" /></p>
-<div id="odds-ratios" class="section level3">
-<h3>Odds ratios</h3>
+<p><img src="images/cows_global_summary_est.png" style="width:60.0%" />
+The p-value indicates statistical significance of an explanatory
+variable where generally p&lt;0.05 indicates a significant predictor,
+but remember we are moving away from significance testing because
+p-values can be inaccurate and biased easily. Recall from papers you
+read in class the a larger sample size (n) is more likely to yield a
+significant p-value based on the equation used to calculate p. Also ANY
+violations of the model assumptions (no matter how minor) can influence
+the p-values and as much as we try to avoid violating assumptions we
+will never have truly independent variables (e.g. r2 = 0) so we will
+always violate this assumption to some degree.</p>
+<p>The information printed at the bottom relates to model fit.</p>
+<p><img src="images/cows_global_summary_dev.png" style="width:60.0%" />
+In mathematical terms:</p>
+<p>Null deviance = 2(loglikelihood(Saturated model)) -
+2(loglikelihood(Null model)) on degrees of freedom = (df saturated - df
+null)</p>
+<p>Residual deviance = 2(loglikelihood(Saturated model)) -
+2(loglikelihood(Proposed model)) on degrees of freedom = (df saturated -
+df proposed)</p>
+<p>Where,</p>
+<p>a saturated model assumes each data point is explained by its own
+parameters (n parameters to estimate)</p>
+<p>The null model assumes that one parameter(intercept term) explains
+all your data points</p>
+<p>The proposed model assumes that p parameters + and intercept explain
+your data.</p>
+<p>Then if the null deviance is small then a null explains the data
+well, if residual deviance is small your proposed model explains the
+data well. *To calculate this we can compute a chi-square statistic
+(chisq = null deviance - residual deviance) and calculate a p-value
+based on the df (parameters in our model) but a general rule of thumb is
+that the residual deviance should be close to the degrees of freedom
+from the summary</p>
+<p>AIC</p>
+<p>This is the Akaike information criterion (AIC) that described the
+model fit</p>
+<p>Recall AIC = 2p - 2ln(L)</p>
+<p>Where p is the model parameters and L is the maximum likelihood
+function. A model with a low AIC is a good fit</p>
+<blockquote>
+<p>but AIC is only useful to compare models fit on the same data! The
+score itself means nothing if not compared to other models</p>
+</blockquote>
+<div id="odds-ratios" class="section level2">
+<h2>Odds ratios</h2>
 <p>To interpret the model coefficients we exponentiate them to get an
 <strong>odds ratio</strong> which represents the odds of an outcome
 occurring given a particular exposure (variable).The function for this
 is <code>exp()</code></p>
 <pre class="r"><code># calculate odds ratio for coefficients
 exp(coefficients(cows_global))</code></pre>
-<pre><code>##    (Intercept)     bear_abund dist_to_forest   dist_to_town    openhab_10k 
-##      0.2202315      1.0143998      0.9990680      0.9999763      1.7327761 
-##         ag_10k       shdi_10k 
-##      1.2326612      1.4482428</code></pre>
+<pre><code>##     (Intercept)        altitude      bear_abund  dist_to_forest    dist_to_town 
+##      23.7905864       0.9992372       0.9848700       1.0011388       1.0001113 
+##         prop_ag       prop_open shannondivindex 
+##       0.9881979       0.9691527       0.5469522</code></pre>
 <p>The interpretation for odds ratios is that odds ratios above 1
 indicate a positive association and odds below 1 indicate a negative
 association, and the value of the exponentiated coefficient represents
 the change in odds of the response outcome given a unit increase in the
 explanatory variable.</p>
 <p>For values less than 1 you subtract them from 1 to get the percent
-change. For distance to town, the odds of bear predation (damage) to
-cows decreases by 1% for each meter increase in distance to town.</p>
-<p>1 - 0.99 = 0.01 * 100 = 1%</p>
-<p>For positive values you calculate a percentage directly from the
-decimal of the odds ratio or you can subtract 1 from the odds ratio. So
-fo open habitat (10k) the odds of bear predation to cows increases by
-73% for each increase in the proportion of open habitat within the
-surrounding 10km2 area.</p>
-<p>1.73 - 1 = 0.73 * 100 = 73%</p>
+change. For distance to forest, the odds of bear predation (damage) to
+cows increases by a factor of 1.001 or 0.11%</p>
+<p>To calculate percentage change</p>
+<p>(odds ratio - 1)*100 = percent change</p>
+<p>For dist_to_forest</p>
+<p>1.0011 - 1 = 0.0011*100 = 0.11%</p>
 </div>
-<div id="scaling" class="section level3">
-<h3>Scaling</h3>
+<div id="scaling" class="section level2">
+<h2>Scaling</h2>
 <p>One issue with interpreting odds ratios with our current model is we
 can’t compare the relative importance of our variables that have
 different units. For example, is a 1% increase per increase of 1 bear
@@ -999,45 +1540,46 @@ and determine which variables have greatest influence.</p>
 <pre class="r"><code># re-run scaled model
 
 # scale variables inside the glm model to get effect sizes when looking at coefficients
-cows_global &lt;- glm(damage ~ scale(bear_abund) + 
+cows_global &lt;- glm(damage ~ scale(altitude) +
+                     scale(bear_abund) + 
                      scale(dist_to_forest) + 
                      scale(dist_to_town) +
-                     
-                     # the rest of the variables were already scaled when extracted in GIS
-                     openhab_10k +
-                     ag_10k + 
-                     shdi_10k,
+                     scale(prop_ag) +
+                     scale(prop_open) +
+                     scale(shannondivindex),
                    data = cows, 
                    family = binomial)
 
 summary(cows_global)</code></pre>
 <pre><code>## 
 ## Call:
-## glm(formula = damage ~ scale(bear_abund) + scale(dist_to_forest) + 
-##     scale(dist_to_town) + openhab_10k + ag_10k + shdi_10k, family = binomial, 
+## glm(formula = damage ~ scale(altitude) + scale(bear_abund) + 
+##     scale(dist_to_forest) + scale(dist_to_town) + scale(prop_ag) + 
+##     scale(prop_open) + scale(shannondivindex), family = binomial, 
 ##     data = cows)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
-## -1.5286  -0.7965  -0.5511   0.2031   2.3067  
+## -2.2172  -0.3819   0.5227   0.7873   1.5512  
 ## 
 ## Coefficients:
-##                       Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)           -1.48007    0.08118 -18.231  &lt; 2e-16 ***
-## scale(bear_abund)      0.23537    0.06530   3.605 0.000313 ***
-## scale(dist_to_forest) -0.88574    0.19736  -4.488 7.19e-06 ***
-## scale(dist_to_town)   -0.05242    0.08539  -0.614 0.539241    
-## openhab_10k            0.54972    0.06525   8.425  &lt; 2e-16 ***
-## ag_10k                 0.20918    0.11977   1.746 0.080736 .  
-## shdi_10k               0.37035    0.08474   4.371 1.24e-05 ***
+##                        Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)             1.39780    0.07691  18.176  &lt; 2e-16 ***
+## scale(altitude)        -0.20926    0.08177  -2.559 0.010490 *  
+## scale(bear_abund)      -0.26539    0.06549  -4.053 5.07e-05 ***
+## scale(dist_to_forest)   1.04995    0.19923   5.270 1.36e-07 ***
+## scale(dist_to_town)     0.25481    0.09398   2.711 0.006703 ** 
+## scale(prop_ag)         -0.29757    0.10535  -2.825 0.004734 ** 
+## scale(prop_open)       -0.58853    0.06516  -9.032  &lt; 2e-16 ***
+## scale(shannondivindex) -0.25262    0.07639  -3.307 0.000943 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## (Dispersion parameter for binomial family taken to be 1)
 ## 
-##     Null deviance: 1822  on 1619  degrees of freedom
-## Residual deviance: 1629  on 1613  degrees of freedom
-## AIC: 1643
+##     Null deviance: 1843.9  on 1638  degrees of freedom
+## Residual deviance: 1624.0  on 1631  degrees of freedom
+## AIC: 1640
 ## 
 ## Number of Fisher Scoring iterations: 6</code></pre>
 <p>When you look at the model summary output you’ll notice the direction
@@ -1049,26 +1591,30 @@ compare the magnitude of effect for different variables even though the
 original units of measurement were different.</p>
 <pre class="r"><code># calculate odds ratio for scaled coefficients
 exp(coefficients(cows_global))</code></pre>
-<pre><code>##           (Intercept)     scale(bear_abund) scale(dist_to_forest) 
-##             0.2276229             1.2653823             0.4124077 
-##   scale(dist_to_town)           openhab_10k                ag_10k 
-##             0.9489265             1.7327761             1.2326612 
-##              shdi_10k 
-##             1.4482428</code></pre>
+<pre><code>##            (Intercept)        scale(altitude)      scale(bear_abund) 
+##              4.0462828              0.8111824              0.7669101 
+##  scale(dist_to_forest)    scale(dist_to_town)         scale(prop_ag) 
+##              2.8575213              1.2902167              0.7426209 
+##       scale(prop_open) scale(shannondivindex) 
+##              0.5551423              0.7767666</code></pre>
 <p>Now the interpretation is a bit less intuitive because we have to
 consider the probability of damage for each standard deviation increase
 in the explanatory variable rather than each unit increase, but we can
-tell that <em>bear_abund</em> has a greater effect size than
-<em>ag_10k</em> which we would not have been able to tell from the
+tell that <em>dist_to_forest</em> has a greater effect size than
+<em>bear_abund</em> which we would not have been able to tell from the
 unscaled data.</p>
+<p>Calculation</p>
+<p>bear_abund 0.75 - 1 = - 0.25 * 100 = -25%</p>
+<p>dist_to_forest 3.11 - 1 = 2.11 * 100 = 211%</p>
 </div>
-<div id="plot-odds-ratios" class="section level3">
-<h3>Plot odds ratios</h3>
+<div id="plot-odds-ratios" class="section level2">
+<h2>Plot odds ratios</h2>
 <p>Plotting the odds ratios for each covariate in the model can be a
 very helpful way to visualize the model results.</p>
-<p>The code below shows one way (myabe not the most elegant but it
-works) to extract the model coefficients and confidence intervals and
-put them into a data frame for plotting</p>
+<p>The code below shows one way to extract the model coefficients and
+confidence intervals and put them into a data frame for plotting,you may
+have to adapt this code if you use a different package or have random
+effects (covered in next module)</p>
 <pre class="r"><code>model_odds &lt;- 
 tidy(cows_global,
      exponentiate = TRUE,
@@ -1083,7 +1629,19 @@ tidy(cows_global,
   rename(lower = &#39;2.5 %&#39;,
          upper = &#39;97.5 %&#39;) %&gt;% 
   
-  filter(term != &#39;(Intercept)&#39;)</code></pre>
+  filter(term != &#39;(Intercept)&#39;)
+
+model_odds</code></pre>
+<pre><code>## # A tibble: 7 × 7
+##   term                   estimate std.error statistic  p.value lower upper
+##   &lt;chr&gt;                     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 scale(altitude)           0.811    0.0818     -2.56 1.05e- 2 0.691 0.952
+## 2 scale(bear_abund)         0.767    0.0655     -4.05 5.07e- 5 0.674 0.872
+## 3 scale(dist_to_forest)     2.86     0.199       5.27 1.36e- 7 1.97  4.30 
+## 4 scale(dist_to_town)       1.29     0.0940      2.71 6.70e- 3 1.08  1.56 
+## 5 scale(prop_ag)            0.743    0.105      -2.82 4.73e- 3 0.605 0.914
+## 6 scale(prop_open)          0.555    0.0652     -9.03 1.69e-19 0.488 0.630
+## 7 scale(shannondivindex)    0.777    0.0764     -3.31 9.43e- 4 0.668 0.901</code></pre>
 <p>Now let’s use ggplot to make a nice graphic of these</p>
 <pre class="r"><code># specify data and mapping asesthetics
 ggplot(data = model_odds,
@@ -1103,12 +1661,13 @@ ggplot(data = model_odds,
              alpha = 0.5) +
   
   # rename the x axis labels
-  scale_x_discrete(labels = c(&#39;Agriculture&#39;,
-                              &#39;Opoen habitat&#39;,
-                              &#39;Bear abundance&#39;,
+  scale_x_discrete(labels = c(&#39;Altitude&#39;,
+                              &#39;Bear abundacne&#39;,
                               &#39;Distance to forest&#39;,
                               &#39;Distance to town&#39;,
-                              &#39;SHDI&#39;)) +
+                              &#39;Agirculture&#39;,
+                              &#39;Open Habitat&#39;,
+                              &#39;Shannon Diversity Index&#39;)) +
   
   # rename y axis title
   ylab(&#39;Odds ratio&#39;) +
@@ -1123,9 +1682,12 @@ ggplot(data = model_odds,
   theme(panel.grid = element_blank(),
         axis.title.y = element_blank())</code></pre>
 <p><img src="mod_2_glm_files/figure-html/plot%20odds-1.png" width="672" /></p>
+<blockquote>
+<p>INSERT CAVEAT NOT ALWAYS LINEAR</p>
+</blockquote>
 </div>
-<div id="predicted-probabilities" class="section level3">
-<h3>Predicted probabilities</h3>
+<div id="predicted-probabilities" class="section level2">
+<h2>Predicted probabilities</h2>
 <p>Recall, that when we choose a distribution to use with our GLM we
 also select a link function which maps the nonlinear relationship so
 that the linear model can be fit. This transformation is applied to the
@@ -1137,18 +1699,20 @@ we need to apply the <em>inverse logit</em> function. The
 <strong>function</strong> for this in R is <code>plogis()</code>.</p>
 <pre class="r"><code># inverse logit of coefficients to get probabilities 
 plogis(coefficients(cows_global))</code></pre>
-<pre><code>##           (Intercept)     scale(bear_abund) scale(dist_to_forest) 
-##             0.1854176             0.5585734             0.2919891 
-##   scale(dist_to_town)           openhab_10k                ag_10k 
-##             0.4868970             0.6340717             0.5521040 
-##              shdi_10k 
-##             0.5915438</code></pre>
+<pre><code>##            (Intercept)        scale(altitude)      scale(bear_abund) 
+##              0.8018343              0.4478745              0.4340403 
+##  scale(dist_to_forest)    scale(dist_to_town)         scale(prop_ag) 
+##              0.7407662              0.5633601              0.4261517 
+##       scale(prop_open) scale(shannondivindex) 
+##              0.3569720              0.4371799</code></pre>
 <p>The <code>predict()</code> <strong>function</strong> is a more
 efficient way to get predicted probabilities from you model. With this
 <strong>function</strong> we can generate a new data frame that shows
 the relationship between our explanatory variables and predicted
 probabilities of our response variable to graph for easier
 interpretation.</p>
+<div id="long-hand-way" class="section level3">
+<h3>Long-hand way</h3>
 <p>First we need to create a new data frame to add the predicted
 probabilities to. For each graph we want to generate we have to select
 one explanatory variable to plot (x-axis) which we will create set of
@@ -1165,21 +1729,29 @@ response)</p>
 new_data_bear &lt;- expand.grid(bear_abund = seq(min(cows$bear_abund), 
                                               max(cows$bear_abund),
                                               by = 0.1),
+                             altitude = mean(cows$altitude),
                              dist_to_forest = mean(cows$dist_to_forest),
                              dist_to_town = mean(cows$dist_to_town),
-                             openhab_10k = mean(cows$openhab_10k),
-                             ag_10k = mean(cows$ag_10k),
-                             shdi_10k = mean(cows$shdi_10k))
+                              prop_ag = mean(cows$prop_ag),
+                            prop_open = mean(cows$prop_open),
+                             shannondivindex = mean(cows$shannondivindex))
 
 # look at what we created
 head(new_data_bear)</code></pre>
-<pre><code>##   bear_abund dist_to_forest dist_to_town openhab_10k      ag_10k shdi_10k
-## 1        0.0       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 2        0.1       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 3        0.2       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 4        0.3       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 5        0.4       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 6        0.5       388.0135     2340.985   0.1395047 -0.07957416 0.138227</code></pre>
+<pre><code>##   bear_abund altitude dist_to_forest dist_to_town  prop_ag prop_open
+## 1        0.0 831.2379       372.9299     2429.512 14.91266  19.79364
+## 2        0.1 831.2379       372.9299     2429.512 14.91266  19.79364
+## 3        0.2 831.2379       372.9299     2429.512 14.91266  19.79364
+## 4        0.3 831.2379       372.9299     2429.512 14.91266  19.79364
+## 5        0.4 831.2379       372.9299     2429.512 14.91266  19.79364
+## 6        0.5 831.2379       372.9299     2429.512 14.91266  19.79364
+##   shannondivindex
+## 1       0.9532954
+## 2       0.9532954
+## 3       0.9532954
+## 4       0.9532954
+## 5       0.9532954
+## 6       0.9532954</code></pre>
 <p>If you examine the new data frame we created you will see that bear
 abundance is the only variable that changes in value and it increase by
 0.1 which is what we set in the <code>seq ()</code>
@@ -1195,20 +1767,20 @@ new_data_bear$pred &lt;- predict(cows_global,
                               newdata = new_data_bear)
 
 head(new_data_bear)</code></pre>
-<pre><code>##   bear_abund dist_to_forest dist_to_town openhab_10k      ag_10k shdi_10k
-## 1        0.0       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 2        0.1       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 3        0.2       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 4        0.3       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 5        0.4       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 6        0.5       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-##        pred
-## 1 0.1395443
-## 2 0.1397161
-## 3 0.1398880
-## 4 0.1400601
-## 5 0.1402324
-## 6 0.1404049</code></pre>
+<pre><code>##   bear_abund altitude dist_to_forest dist_to_town  prop_ag prop_open
+## 1        0.0 831.2379       372.9299     2429.512 14.91266  19.79364
+## 2        0.1 831.2379       372.9299     2429.512 14.91266  19.79364
+## 3        0.2 831.2379       372.9299     2429.512 14.91266  19.79364
+## 4        0.3 831.2379       372.9299     2429.512 14.91266  19.79364
+## 5        0.4 831.2379       372.9299     2429.512 14.91266  19.79364
+## 6        0.5 831.2379       372.9299     2429.512 14.91266  19.79364
+##   shannondivindex      pred
+## 1       0.9532954 0.8649827
+## 2       0.9532954 0.8648045
+## 3       0.9532954 0.8646262
+## 4       0.9532954 0.8644476
+## 5       0.9532954 0.8642689
+## 6       0.9532954 0.8640899</code></pre>
 <p>With a little more coding and finagling of the data we can also get
 the standard error of the predicted values to include in our graph.</p>
 <pre class="r"><code># use predict function to get predicted probabilities of cow damage based on our model
@@ -1220,423 +1792,423 @@ new_data_bear_pred &lt;- predict(cows_global,
 head(new_data_bear_pred)</code></pre>
 <pre><code>## $fit
 ##         1         2         3         4         5         6         7         8 
-## 0.1395443 0.1397161 0.1398880 0.1400601 0.1402324 0.1404049 0.1405775 0.1407503 
+## 0.8649827 0.8648045 0.8646262 0.8644476 0.8642689 0.8640899 0.8639108 0.8637315 
 ##         9        10        11        12        13        14        15        16 
-## 0.1409233 0.1410965 0.1412699 0.1414434 0.1416171 0.1417910 0.1419650 0.1421393 
+## 0.8635519 0.8633722 0.8631922 0.8630121 0.8628318 0.8626512 0.8624705 0.8622896 
 ##        17        18        19        20        21        22        23        24 
-## 0.1423137 0.1424883 0.1426631 0.1428380 0.1430132 0.1431885 0.1433640 0.1435397 
+## 0.8621084 0.8619271 0.8617456 0.8615638 0.8613819 0.8611997 0.8610174 0.8608349 
 ##        25        26        27        28        29        30        31        32 
-## 0.1437155 0.1438915 0.1440678 0.1442442 0.1444207 0.1445975 0.1447744 0.1449515 
+## 0.8606521 0.8604692 0.8602860 0.8601027 0.8599192 0.8597354 0.8595515 0.8593673 
 ##        33        34        35        36        37        38        39        40 
-## 0.1451288 0.1453063 0.1454839 0.1456617 0.1458397 0.1460179 0.1461963 0.1463749 
+## 0.8591830 0.8589984 0.8588136 0.8586287 0.8584435 0.8582582 0.8580726 0.8578868 
 ##        41        42        43        44        45        46        47        48 
-## 0.1465536 0.1467325 0.1469116 0.1470909 0.1472703 0.1474500 0.1476298 0.1478098 
+## 0.8577009 0.8575147 0.8573283 0.8571417 0.8569549 0.8567680 0.8565808 0.8563934 
 ##        49        50        51        52        53        54        55        56 
-## 0.1479900 0.1481703 0.1483509 0.1485316 0.1487125 0.1488936 0.1490748 0.1492563 
+## 0.8562058 0.8560180 0.8558300 0.8556418 0.8554533 0.8552647 0.8550759 0.8548869 
 ##        57        58        59        60        61        62        63        64 
-## 0.1494379 0.1496197 0.1498017 0.1499839 0.1501663 0.1503488 0.1505316 0.1507145 
+## 0.8546976 0.8545082 0.8543186 0.8541287 0.8539387 0.8537484 0.8535579 0.8533673 
 ##        65        66        67        68        69        70        71        72 
-## 0.1508976 0.1510808 0.1512643 0.1514479 0.1516318 0.1518158 0.1520000 0.1521843 
+## 0.8531764 0.8529853 0.8527940 0.8526025 0.8524109 0.8522189 0.8520268 0.8518345 
 ##        73        74        75        76        77        78        79        80 
-## 0.1523689 0.1525536 0.1527386 0.1529237 0.1531090 0.1532944 0.1534801 0.1536659 
+## 0.8516420 0.8514493 0.8512563 0.8510632 0.8508698 0.8506763 0.8504825 0.8502886 
 ##        81        82        83        84        85        86        87        88 
-## 0.1538520 0.1540382 0.1542246 0.1544112 0.1545979 0.1547849 0.1549720 0.1551593 
+## 0.8500944 0.8499000 0.8497054 0.8495106 0.8493156 0.8491204 0.8489250 0.8487293 
 ##        89        90        91        92        93        94        95        96 
-## 0.1553469 0.1555345 0.1557224 0.1559105 0.1560987 0.1562872 0.1564758 0.1566646 
+## 0.8485335 0.8483374 0.8481412 0.8479447 0.8477480 0.8475512 0.8473541 0.8471568 
 ##        97        98        99       100       101       102       103       104 
-## 0.1568536 0.1570427 0.1572321 0.1574216 0.1576114 0.1578013 0.1579914 0.1581817 
+## 0.8469593 0.8467616 0.8465636 0.8463655 0.8461671 0.8459686 0.8457698 0.8455709 
 ##       105       106       107       108       109       110       111       112 
-## 0.1583721 0.1585628 0.1587536 0.1589447 0.1591359 0.1593273 0.1595189 0.1597107 
+## 0.8453717 0.8451723 0.8449727 0.8447729 0.8445728 0.8443726 0.8441722 0.8439715 
 ##       113       114       115       116       117       118       119       120 
-## 0.1599026 0.1600948 0.1602871 0.1604796 0.1606724 0.1608653 0.1610583 0.1612516 
+## 0.8437706 0.8435696 0.8433683 0.8431668 0.8429651 0.8427632 0.8425610 0.8423587 
 ##       121       122       123       124       125       126       127       128 
-## 0.1614451 0.1616387 0.1618326 0.1620266 0.1622208 0.1624152 0.1626098 0.1628045 
+## 0.8421561 0.8419534 0.8417504 0.8415472 0.8413438 0.8411402 0.8409364 0.8407323 
 ##       129       130       131       132       133       134       135       136 
-## 0.1629995 0.1631947 0.1633900 0.1635855 0.1637812 0.1639771 0.1641732 0.1643695 
+## 0.8405281 0.8403236 0.8401190 0.8399141 0.8397090 0.8395037 0.8392981 0.8390924 
 ##       137       138       139       140       141       142       143       144 
-## 0.1645660 0.1647626 0.1649595 0.1651565 0.1653537 0.1655511 0.1657487 0.1659465 
+## 0.8388865 0.8386803 0.8384739 0.8382673 0.8380605 0.8378535 0.8376463 0.8374389 
 ##       145       146       147       148       149       150       151       152 
-## 0.1661445 0.1663427 0.1665410 0.1667396 0.1669383 0.1671372 0.1673363 0.1675356 
+## 0.8372312 0.8370233 0.8368153 0.8366070 0.8363985 0.8361897 0.8359808 0.8357717 
 ##       153       154       155       156       157       158       159       160 
-## 0.1677351 0.1679348 0.1681347 0.1683348 0.1685350 0.1687354 0.1689361 0.1691369 
+## 0.8355623 0.8353527 0.8351429 0.8349329 0.8347227 0.8345123 0.8343016 0.8340907 
 ##       161       162       163       164       165       166       167       168 
-## 0.1693379 0.1695391 0.1697405 0.1699421 0.1701439 0.1703458 0.1705480 0.1707503 
+## 0.8338797 0.8336684 0.8334568 0.8332451 0.8330332 0.8328210 0.8326086 0.8323961 
 ##       169       170       171       172       173       174       175       176 
-## 0.1709529 0.1711556 0.1713585 0.1715616 0.1717649 0.1719684 0.1721721 0.1723759 
+## 0.8321833 0.8319702 0.8317570 0.8315436 0.8313299 0.8311160 0.8309019 0.8306876 
 ##       177       178       179       180       181       182       183       184 
-## 0.1725800 0.1727842 0.1729887 0.1731933 0.1733981 0.1736032 0.1738084 0.1740138 
+## 0.8304731 0.8302583 0.8300433 0.8298282 0.8296128 0.8293972 0.8291813 0.8289653 
 ##       185       186       187       188       189       190       191       192 
-## 0.1742194 0.1744251 0.1746311 0.1748373 0.1750436 0.1752502 0.1754569 0.1756639 
+## 0.8287490 0.8285325 0.8283158 0.8280989 0.8278818 0.8276644 0.8274469 0.8272291 
 ##       193       194       195       196       197       198       199       200 
-## 0.1758710 0.1760783 0.1762858 0.1764935 0.1767014 0.1769095 0.1771178 0.1773263 
+## 0.8270111 0.8267929 0.8265744 0.8263558 0.8261369 0.8259178 0.8256985 0.8254790 
 ##       201       202       203       204       205       206       207       208 
-## 0.1775349 0.1777438 0.1779528 0.1781621 0.1783715 0.1785811 0.1787910 0.1790010 
+## 0.8252593 0.8250393 0.8248191 0.8245987 0.8243781 0.8241573 0.8239362 0.8237149 
 ##       209       210       211       212       213       214       215       216 
-## 0.1792112 0.1794216 0.1796322 0.1798429 0.1800539 0.1802651 0.1804765 0.1806880 
+## 0.8234935 0.8232718 0.8230498 0.8228277 0.8226053 0.8223827 0.8221599 0.8219369 
 ##       217       218       219       220       221       222       223       224 
-## 0.1808998 0.1811117 0.1813238 0.1815362 0.1817487 0.1819614 0.1821743 0.1823874 
+## 0.8217137 0.8214902 0.8212665 0.8210426 0.8208185 0.8205942 0.8203696 0.8201449 
 ##       225       226       227       228       229       230       231       232 
-## 0.1826007 0.1828142 0.1830279 0.1832418 0.1834559 0.1836701 0.1838846 0.1840992 
+## 0.8199199 0.8196947 0.8194692 0.8192436 0.8190177 0.8187916 0.8185653 0.8183388 
 ##       233       234       235       236       237       238       239       240 
-## 0.1843141 0.1845291 0.1847444 0.1849598 0.1851754 0.1853912 0.1856073 0.1858235 
+## 0.8181120 0.8178850 0.8176578 0.8174304 0.8172028 0.8169749 0.8167469 0.8165186 
 ##       241       242       243       244       245       246       247       248 
-## 0.1860399 0.1862565 0.1864733 0.1866902 0.1869074 0.1871248 0.1873424 0.1875601 
+## 0.8162901 0.8160613 0.8158324 0.8156032 0.8153738 0.8151442 0.8149144 0.8146843 
 ##       249       250       251       252       253       254       255       256 
-## 0.1877781 0.1879962 0.1882146 0.1884331 0.1886519 0.1888708 0.1890899 0.1893092 
+## 0.8144540 0.8142235 0.8139928 0.8137619 0.8135307 0.8132993 0.8130677 0.8128359 
 ##       257       258       259       260       261       262       263       264 
-## 0.1895288 0.1897485 0.1899684 0.1901885 0.1904088 0.1906293 0.1908499 0.1910708 
+## 0.8126038 0.8123716 0.8121391 0.8119064 0.8116734 0.8114403 0.8112069 0.8109733 
 ##       265       266       267       268       269       270       271       272 
-## 0.1912919 0.1915132 0.1917346 0.1919563 0.1921782 0.1924002 0.1926225 0.1928449 
+## 0.8107395 0.8105054 0.8102712 0.8100367 0.8098020 0.8095671 0.8093319 0.8090965 
 ##       273       274       275       276       277       278       279       280 
-## 0.1930676 0.1932904 0.1935134 0.1937366 0.1939601 0.1941837 0.1944075 0.1946315 
+## 0.8088609 0.8086251 0.8083891 0.8081528 0.8079163 0.8076796 0.8074427 0.8072056 
 ##       281       282       283       284       285       286       287       288 
-## 0.1948557 0.1950801 0.1953047 0.1955295 0.1957545 0.1959797 0.1962050 0.1964306 
+## 0.8069682 0.8067306 0.8064928 0.8062547 0.8060165 0.8057780 0.8055393 0.8053004 
 ##       289       290       291       292       293       294       295       296 
-## 0.1966564 0.1968824 0.1971085 0.1973349 0.1975614 0.1977882 0.1980151 0.1982423 
+## 0.8050612 0.8048219 0.8045823 0.8043424 0.8041024 0.8038621 0.8036216 0.8033809 
 ##       297       298       299       300       301       302       303       304 
-## 0.1984696 0.1986971 0.1989249 0.1991528 0.1993809 0.1996092 0.1998378 0.2000665 
+## 0.8031400 0.8028989 0.8026575 0.8024159 0.8021741 0.8019320 0.8016897 0.8014473 
 ##       305       306       307       308       309       310       311       312 
-## 0.2002954 0.2005245 0.2007538 0.2009833 0.2012130 0.2014429 0.2016730 0.2019032 
+## 0.8012045 0.8009616 0.8007184 0.8004751 0.8002315 0.7999876 0.7997436 0.7994993 
 ##       313       314       315       316       317       318       319       320 
-## 0.2021337 0.2023644 0.2025953 0.2028263 0.2030576 0.2032891 0.2035207 0.2037526 
+## 0.7992548 0.7990101 0.7987651 0.7985200 0.7982746 0.7980290 0.7977831 0.7975370 
 ##       321       322       323       324       325       326       327       328 
-## 0.2039846 0.2042169 0.2044493 0.2046819 0.2049148 0.2051478 0.2053810 0.2056145 
+## 0.7972908 0.7970443 0.7967975 0.7965506 0.7963034 0.7960560 0.7958084 0.7955605 
 ##       329       330       331       332       333       334       335       336 
-## 0.2058481 0.2060819 0.2063159 0.2065501 0.2067845 0.2070191 0.2072540 0.2074890 
+## 0.7953124 0.7950641 0.7948156 0.7945669 0.7943179 0.7940687 0.7938193 0.7935697 
 ##       337       338       339       340       341       342       343       344 
-## 0.2077241 0.2079595 0.2081951 0.2084309 0.2086669 0.2089031 0.2091394 0.2093760 
+## 0.7933198 0.7930697 0.7928194 0.7925689 0.7923181 0.7920672 0.7918160 0.7915645 
 ##       345       346       347       348       349       350       351       352 
-## 0.2096128 0.2098498 0.2100869 0.2103243 0.2105618 0.2107996 0.2110375 0.2112757 
+## 0.7913129 0.7910610 0.7908089 0.7905566 0.7903040 0.7900513 0.7897983 0.7895451 
 ##       353       354       355       356       357       358       359       360 
-## 0.2115140 0.2117526 0.2119913 0.2122302 0.2124694 0.2127087 0.2129482 0.2131879 
+## 0.7892916 0.7890380 0.7887841 0.7885300 0.7882756 0.7880211 0.7877663 0.7875113 
 ##       361       362       363       364       365       366       367       368 
-## 0.2134278 0.2136679 0.2139083 0.2141488 0.2143895 0.2146304 0.2148715 0.2151127 
+## 0.7872561 0.7870006 0.7867450 0.7864891 0.7862329 0.7859766 0.7857200 0.7854632 
 ##       369       370       371       372       373       374       375       376 
-## 0.2153542 0.2155959 0.2158378 0.2160799 0.2163222 0.2165646 0.2168073 0.2170502 
+## 0.7852062 0.7849490 0.7846915 0.7844338 0.7841759 0.7839178 0.7836594 0.7834008 
 ##       377       378       379       380       381       382       383       384 
-## 0.2172932 0.2175365 0.2177799 0.2180236 0.2182674 0.2185115 0.2187557 0.2190002 
+## 0.7831420 0.7828830 0.7826237 0.7823643 0.7821046 0.7818446 0.7815845 0.7813241 
 ##       385       386       387       388       389       390       391       392 
-## 0.2192448 0.2194896 0.2197347 0.2199799 0.2202253 0.2204709 0.2207167 0.2209627 
+## 0.7810635 0.7808027 0.7805417 0.7802804 0.7800189 0.7797572 0.7794953 0.7792331 
 ##       393       394       395       396       397       398       399       400 
-## 0.2212089 0.2214553 0.2217019 0.2219487 0.2221957 0.2224429 0.2226903 0.2229379 
+## 0.7789707 0.7787081 0.7784453 0.7781823 0.7779190 0.7776555 0.7773918 0.7771278 
 ##       401       402       403       404       405       406       407       408 
-## 0.2231856 0.2234336 0.2236818 0.2239301 0.2241787 0.2244275 0.2246764 0.2249256 
+## 0.7768637 0.7765993 0.7763347 0.7760698 0.7758048 0.7755395 0.7752740 0.7750083 
 ##       409       410       411       412       413       414       415       416 
-## 0.2251749 0.2254245 0.2256742 0.2259241 0.2261742 0.2264246 0.2266751 0.2269258 
+## 0.7747423 0.7744761 0.7742097 0.7739431 0.7736763 0.7734092 0.7731419 0.7728744 
 ##       417       418       419       420       421       422       423       424 
-## 0.2271767 0.2274278 0.2276791 0.2279306 0.2281823 0.2284342 0.2286863 0.2289386 
+## 0.7726067 0.7723387 0.7720706 0.7718022 0.7715335 0.7712647 0.7709956 0.7707263 
 ##       425       426       427       428       429       430       431       432 
-## 0.2291911 0.2294437 0.2296966 0.2299497 0.2302029 0.2304564 0.2307100 0.2309639 
+## 0.7704568 0.7701871 0.7699171 0.7696470 0.7693766 0.7691059 0.7688351 0.7685640 
 ##       433       434       435       436       437       438       439       440 
-## 0.2312179 0.2314722 0.2317266 0.2319812 0.2322360 0.2324911 0.2327463 0.2330017 
+## 0.7682927 0.7680212 0.7677495 0.7674775 0.7672053 0.7669329 0.7666603 0.7663875 
 ##       441       442       443       444       445       446       447       448 
-## 0.2332573 0.2335131 0.2337691 0.2340253 0.2342816 0.2345382 0.2347950 0.2350520 
+## 0.7661144 0.7658411 0.7655676 0.7652939 0.7650199 0.7647458 0.7644714 0.7641968 
 ##       449       450       451       452       453       454       455       456 
-## 0.2353091 0.2355665 0.2358240 0.2360818 0.2363397 0.2365979 0.2368562 0.2371147 
+## 0.7639219 0.7636469 0.7633716 0.7630961 0.7628204 0.7625444 0.7622683 0.7619919 
 ##       457       458       459       460       461       462       463       464 
-## 0.2373734 0.2376323 0.2378914 0.2381507 0.2384102 0.2386699 0.2389298 0.2391899 
+## 0.7617153 0.7614384 0.7611614 0.7608841 0.7606066 0.7603289 0.7600510 0.7597729 
 ##       465       466       467       468       469       470       471       472 
-## 0.2394502 0.2397106 0.2399713 0.2402321 0.2404932 0.2407544 0.2410159 0.2412775 
+## 0.7594945 0.7592159 0.7589371 0.7586580 0.7583788 0.7580993 0.7578196 0.7575397 
 ##       473       474       475       476       477       478       479       480 
-## 0.2415393 0.2418013 0.2420635 0.2423260 0.2425885 0.2428513 0.2431143 0.2433775 
+## 0.7572596 0.7569792 0.7566987 0.7564179 0.7561369 0.7558556 0.7555742 0.7552925 
 ##       481       482       483       484       485       486       487       488 
-## 0.2436409 0.2439044 0.2441682 0.2444321 0.2446963 0.2449606 0.2452251 0.2454899 
+## 0.7550106 0.7547285 0.7544462 0.7541637 0.7538809 0.7535979 0.7533147 0.7530313 
 ##       489       490       491       492       493       494       495       496 
-## 0.2457548 0.2460199 0.2462852 0.2465507 0.2468164 0.2470822 0.2473483 0.2476146 
+## 0.7527476 0.7524638 0.7521797 0.7518954 0.7516109 0.7513262 0.7510412 0.7507560 
 ##       497       498       499       500       501       502       503       504 
-## 0.2478810 0.2481477 0.2484145 0.2486815 0.2489487 0.2492162 0.2494838 0.2497516 
+## 0.7504707 0.7501851 0.7498992 0.7496132 0.7493269 0.7490405 0.7487538 0.7484669 
 ##       505       506       507       508       509       510       511       512 
-## 0.2500195 0.2502877 0.2505561 0.2508247 0.2510934 0.2513624 0.2516315 0.2519008 
+## 0.7481797 0.7478924 0.7476048 0.7473170 0.7470290 0.7467408 0.7464524 0.7461637 
 ##       513       514       515       516       517       518       519       520 
-## 0.2521703 0.2524400 0.2527099 0.2529800 0.2532503 0.2535208 0.2537915 0.2540623 
+## 0.7458749 0.7455858 0.7452965 0.7450070 0.7447172 0.7444273 0.7441371 0.7438468 
 ##       521       522       523       524       525       526       527       528 
-## 0.2543334 0.2546046 0.2548760 0.2551476 0.2554194 0.2556914 0.2559636 0.2562360 
+## 0.7435562 0.7432653 0.7429743 0.7426831 0.7423916 0.7420999 0.7418081 0.7415159 
 ##       529       530       531       532       533       534       535       536 
-## 0.2565086 0.2567813 0.2570543 0.2573274 0.2576007 0.2578743 0.2581480 0.2584219 
+## 0.7412236 0.7409311 0.7406383 0.7403454 0.7400522 0.7397588 0.7394652 0.7391714 
 ##       537       538       539       540       541       542       543       544 
-## 0.2586959 0.2589702 0.2592447 0.2595193 0.2597942 0.2600692 0.2603444 0.2606198 
+## 0.7388773 0.7385831 0.7382886 0.7379939 0.7376990 0.7374039 0.7371086 0.7368131 
 ##       545       546       547       548       549       550       551       552 
-## 0.2608954 0.2611712 0.2614472 0.2617233 0.2619997 0.2622762 0.2625529 0.2628298 
+## 0.7365173 0.7362214 0.7359252 0.7356288 0.7353322 0.7350354 0.7347384 0.7344411 
 ##       553       554       555       556       557       558       559       560 
-## 0.2631069 0.2633842 0.2636617 0.2639394 0.2642172 0.2644953 0.2647735 0.2650519 
+## 0.7341437 0.7338460 0.7335481 0.7332500 0.7329517 0.7326532 0.7323545 0.7320555 
 ##       561       562       563       564       565       566       567       568 
-## 0.2653305 0.2656093 0.2658883 0.2661674 0.2664468 0.2667263 0.2670060 0.2672859 
+## 0.7317564 0.7314570 0.7311575 0.7308577 0.7305577 0.7302575 0.7299571 0.7296564 
 ##       569       570       571       572       573       574       575       576 
-## 0.2675660 0.2678463 0.2681268 0.2684074 0.2686882 0.2689693 0.2692505 0.2695319 
+## 0.7293556 0.7290546 0.7287533 0.7284518 0.7281502 0.7278483 0.7275462 0.7272439 
 ##       577       578       579       580       581       582       583       584 
-## 0.2698134 0.2700952 0.2703772 0.2706593 0.2709416 0.2712241 0.2715068 0.2717897 
+## 0.7269413 0.7266386 0.7263357 0.7260325 0.7257292 0.7254256 0.7251219 0.7248179 
 ##       585       586       587       588       589       590       591       592 
-## 0.2720728 0.2723560 0.2726394 0.2729230 0.2732068 0.2734908 0.2737750 0.2740593 
+## 0.7245137 0.7242093 0.7239047 0.7235999 0.7232948 0.7229896 0.7226842 0.7223785 
 ##       593       594       595       596       597       598       599       600 
-## 0.2743439 0.2746286 0.2749135 0.2751986 0.2754838 0.2757693 0.2760549 0.2763407 
+## 0.7220727 0.7217666 0.7214604 0.7211539 0.7208472 0.7205403 0.7202332 0.7199259 
 ##       601       602       603       604       605       606       607       608 
-## 0.2766267 0.2769129 0.2771993 0.2774858 0.2777726 0.2780595 0.2783466 0.2786338 
+## 0.7196184 0.7193107 0.7190028 0.7186947 0.7183864 0.7180778 0.7177691 0.7174601 
 ##       609       610       611       612       613       614       615       616 
-## 0.2789213 0.2792089 0.2794968 0.2797848 0.2800729 0.2803613 0.2806498 0.2809386 
+## 0.7171510 0.7168416 0.7165321 0.7162223 0.7159124 0.7156022 0.7152918 0.7149812 
 ##       617       618       619       620       621       622       623       624 
-## 0.2812275 0.2815166 0.2818058 0.2820953 0.2823849 0.2826747 0.2829647 0.2832549 
+## 0.7146705 0.7143595 0.7140483 0.7137369 0.7134253 0.7131135 0.7128015 0.7124893 
 ##       625       626       627       628       629       630       631       632 
-## 0.2835452 0.2838358 0.2841265 0.2844174 0.2847084 0.2849997 0.2852911 0.2855827 
+## 0.7121769 0.7118643 0.7115515 0.7112385 0.7109253 0.7106118 0.7102982 0.7099844 
 ##       633       634       635       636       637       638       639       640 
-## 0.2858745 0.2861665 0.2864586 0.2867509 0.2870434 0.2873361 0.2876290 0.2879220 
+## 0.7096704 0.7093562 0.7090417 0.7087271 0.7084123 0.7080973 0.7077821 0.7074667 
 ##       641       642       643       644       645       646       647       648 
-## 0.2882152 0.2885086 0.2888022 0.2890959 0.2893898 0.2896839 0.2899782 0.2902727 
+## 0.7071510 0.7068352 0.7065192 0.7062030 0.7058866 0.7055699 0.7052531 0.7049361 
 ##       649       650       651       652       653       654       655       656 
-## 0.2905673 0.2908621 0.2911571 0.2914522 0.2917476 0.2920431 0.2923388 0.2926346 
+## 0.7046189 0.7043015 0.7039839 0.7036661 0.7033481 0.7030299 0.7027115 0.7023929 
 ##       657       658       659       660       661       662       663       664 
-## 0.2929307 0.2932269 0.2935233 0.2938198 0.2941166 0.2944135 0.2947106 0.2950078 
+## 0.7020741 0.7017551 0.7014360 0.7011166 0.7007970 0.7004772 0.7001573 0.6998371 
 ##       665       666       667       668       669       670       671       672 
-## 0.2953053 0.2956029 0.2959006 0.2961986 0.2964967 0.2967950 0.2970935 0.2973922 
+## 0.6995168 0.6991962 0.6988755 0.6985545 0.6982334 0.6979121 0.6975905 0.6972688 
 ##       673       674       675       676       677       678       679       680 
-## 0.2976910 0.2979900 0.2982892 0.2985885 0.2988880 0.2991877 0.2994876 0.2997876 
+## 0.6969469 0.6966248 0.6963025 0.6959800 0.6956574 0.6953345 0.6950114 0.6946882 
 ##       681       682       683       684       685       686       687       688 
-## 0.3000878 0.3003882 0.3006887 0.3009894 0.3012903 0.3015914 0.3018926 0.3021940 
+## 0.6943647 0.6940411 0.6937172 0.6933932 0.6930690 0.6927446 0.6924200 0.6920952 
 ##       689       690       691       692       693       694       695       696 
-## 0.3024956 0.3027973 0.3030992 0.3034013 0.3037036 0.3040060 0.3043086 0.3046113 
+## 0.6917702 0.6914451 0.6911197 0.6907941 0.6904684 0.6901425 0.6898164 0.6894901 
 ##       697       698       699       700       701       702       703       704 
-## 0.3049143 0.3052174 0.3055206 0.3058241 0.3061277 0.3064314 0.3067354 0.3070395 
+## 0.6891636 0.6888369 0.6885100 0.6881830 0.6878557 0.6875283 0.6872007 0.6868729 
 ##       705       706       707       708       709       710       711       712 
-## 0.3073438 0.3076482 0.3079528 0.3082576 0.3085626 0.3088677 0.3091729 0.3094784 
+## 0.6865449 0.6862167 0.6858883 0.6855598 0.6852310 0.6849021 0.6845730 0.6842437 
 ##       713       714       715       716       717       718       719       720 
-## 0.3097840 0.3100898 0.3103957 0.3107018 0.3110081 0.3113146 0.3116212 0.3119280 
+## 0.6839142 0.6835846 0.6832547 0.6829247 0.6825944 0.6822640 0.6819335 0.6816027 
 ##       721       722       723       724       725       726       727       728 
-## 0.3122349 0.3125420 0.3128493 0.3131567 0.3134643 0.3137721 0.3140800 0.3143881 
+## 0.6812717 0.6809406 0.6806093 0.6802778 0.6799461 0.6796142 0.6792822 0.6789500 
 ##       729       730       731       732       733       734       735       736 
-## 0.3146963 0.3150047 0.3153133 0.3156221 0.3159310 0.3162400 0.3165493 0.3168586 
+## 0.6786176 0.6782850 0.6779522 0.6776192 0.6772861 0.6769528 0.6766193 0.6762856 
 ##       737       738       739       740       741       742       743       744 
-## 0.3171682 0.3174779 0.3177878 0.3180978 0.3184080 0.3187184 0.3190289 0.3193396 
+## 0.6759518 0.6756177 0.6752835 0.6749491 0.6746146 0.6742798 0.6739449 0.6736098 
 ##       745       746       747       748       749       750       751       752 
-## 0.3196504 0.3199614 0.3202726 0.3205839 0.3208954 0.3212071 0.3215189 0.3218308 
+## 0.6732745 0.6729391 0.6726034 0.6722676 0.6719317 0.6715955 0.6712592 0.6709226 
 ##       753       754       755       756       757       758       759       760 
-## 0.3221430 0.3224552 0.3227677 0.3230803 0.3233930 0.3237059 0.3240190 0.3243322 
+## 0.6705859 0.6702491 0.6699120 0.6695748 0.6692374 0.6688999 0.6685621 0.6682242 
 ##       761       762       763       764       765       766       767       768 
-## 0.3246456 0.3249592 0.3252729 0.3255867 0.3259007 0.3262149 0.3265292 0.3268437 
+## 0.6678862 0.6675479 0.6672095 0.6668709 0.6665321 0.6661932 0.6658540 0.6655147 
 ##       769       770       771 
-## 0.3271583 0.3274731 0.3277881 
+## 0.6651753 0.6648357 0.6644959 
 ## 
 ## $se.fit
 ##          1          2          3          4          5          6          7 
-## 0.01848129 0.01845885 0.01843637 0.01841385 0.01839128 0.01836866 0.01834601 
+## 0.01702520 0.01700665 0.01698807 0.01696945 0.01695078 0.01693208 0.01691334 
 ##          8          9         10         11         12         13         14 
-## 0.01832330 0.01830056 0.01827777 0.01825494 0.01823206 0.01820914 0.01818618 
+## 0.01689456 0.01687574 0.01685688 0.01683798 0.01681904 0.01680007 0.01678106 
 ##         15         16         17         18         19         20         21 
-## 0.01816318 0.01814013 0.01811705 0.01809392 0.01807075 0.01804754 0.01802428 
+## 0.01676201 0.01674292 0.01672379 0.01670463 0.01668543 0.01666620 0.01664693 
 ##         22         23         24         25         26         27         28 
-## 0.01800099 0.01797766 0.01795429 0.01793087 0.01790742 0.01788393 0.01786040 
+## 0.01662762 0.01660828 0.01658890 0.01656949 0.01655004 0.01653056 0.01651104 
 ##         29         30         31         32         33         34         35 
-## 0.01783683 0.01781322 0.01778958 0.01776590 0.01774218 0.01771842 0.01769462 
+## 0.01649150 0.01647191 0.01645230 0.01643265 0.01641296 0.01639325 0.01637350 
 ##         36         37         38         39         40         41         42 
-## 0.01767079 0.01764692 0.01762302 0.01759908 0.01757511 0.01755110 0.01752706 
+## 0.01635373 0.01633392 0.01631408 0.01629421 0.01627430 0.01625437 0.01623441 
 ##         43         44         45         46         47         48         49 
-## 0.01750298 0.01747887 0.01745472 0.01743054 0.01740633 0.01738209 0.01735781 
+## 0.01621442 0.01619440 0.01617435 0.01615428 0.01613417 0.01611404 0.01609388 
 ##         50         51         52         53         54         55         56 
-## 0.01733350 0.01730916 0.01728479 0.01726039 0.01723596 0.01721150 0.01718701 
+## 0.01607370 0.01605348 0.01603325 0.01601298 0.01599269 0.01597238 0.01595204 
 ##         57         58         59         60         61         62         63 
-## 0.01716249 0.01713794 0.01711336 0.01708875 0.01706412 0.01703946 0.01701477 
+## 0.01593168 0.01591129 0.01589088 0.01587045 0.01584999 0.01582952 0.01580902 
 ##         64         65         66         67         68         69         70 
-## 0.01699006 0.01696532 0.01694056 0.01691577 0.01689095 0.01686612 0.01684125 
+## 0.01578850 0.01576796 0.01574740 0.01572682 0.01570622 0.01568560 0.01566496 
 ##         71         72         73         74         75         76         77 
-## 0.01681637 0.01679146 0.01676653 0.01674158 0.01671661 0.01669162 0.01666660 
+## 0.01564431 0.01562364 0.01560295 0.01558224 0.01556152 0.01554079 0.01552003 
 ##         78         79         80         81         82         83         84 
-## 0.01664157 0.01661652 0.01659144 0.01656635 0.01654125 0.01651612 0.01649098 
+## 0.01549927 0.01547849 0.01545769 0.01543689 0.01541607 0.01539524 0.01537439 
 ##         85         86         87         88         89         90         91 
-## 0.01646582 0.01644065 0.01641546 0.01639026 0.01636504 0.01633981 0.01631457 
+## 0.01535354 0.01533268 0.01531181 0.01529092 0.01527003 0.01524914 0.01522823 
 ##         92         93         94         95         96         97         98 
-## 0.01628932 0.01626405 0.01623877 0.01621348 0.01618819 0.01616288 0.01613756 
+## 0.01520732 0.01518640 0.01516547 0.01514455 0.01512361 0.01510268 0.01508173 
 ##         99        100        101        102        103        104        105 
-## 0.01611224 0.01608691 0.01606157 0.01603623 0.01601088 0.01598553 0.01596017 
+## 0.01506079 0.01503985 0.01501890 0.01499796 0.01497701 0.01495606 0.01493512 
 ##        106        107        108        109        110        111        112 
-## 0.01593481 0.01590944 0.01588408 0.01585871 0.01583334 0.01580797 0.01578261 
+## 0.01491418 0.01489324 0.01487230 0.01485137 0.01483045 0.01480953 0.01478861 
 ##        113        114        115        116        117        118        119 
-## 0.01575724 0.01573188 0.01570652 0.01568116 0.01565581 0.01563046 0.01560512 
+## 0.01476770 0.01474680 0.01472591 0.01470503 0.01468416 0.01466330 0.01464245 
 ##        120        121        122        123        124        125        126 
-## 0.01557978 0.01555446 0.01552914 0.01550383 0.01547853 0.01545324 0.01542796 
+## 0.01462161 0.01460079 0.01457998 0.01455918 0.01453840 0.01451764 0.01449689 
 ##        127        128        129        130        131        132        133 
-## 0.01540270 0.01537745 0.01535221 0.01532699 0.01530178 0.01527659 0.01525142 
+## 0.01447617 0.01445546 0.01443477 0.01441410 0.01439345 0.01437282 0.01435222 
 ##        134        135        136        137        138        139        140 
-## 0.01522626 0.01520113 0.01517601 0.01515092 0.01512585 0.01510080 0.01507578 
+## 0.01433164 0.01431109 0.01429056 0.01427006 0.01424959 0.01422914 0.01420873 
 ##        141        142        143        144        145        146        147 
-## 0.01505078 0.01502581 0.01500086 0.01497594 0.01495105 0.01492619 0.01490136 
+## 0.01418834 0.01416799 0.01414767 0.01412738 0.01410712 0.01408691 0.01406672 
 ##        148        149        150        151        152        153        154 
-## 0.01487657 0.01485180 0.01482707 0.01480238 0.01477772 0.01475310 0.01472851 
+## 0.01404658 0.01402647 0.01400640 0.01398638 0.01396639 0.01394645 0.01392655 
 ##        155        156        157        158        159        160        161 
-## 0.01470397 0.01467947 0.01465500 0.01463059 0.01460621 0.01458188 0.01455759 
+## 0.01390669 0.01388688 0.01386712 0.01384741 0.01382774 0.01380812 0.01378856 
 ##        162        163        164        165        166        167        168 
-## 0.01453336 0.01450917 0.01448503 0.01446094 0.01443690 0.01441292 0.01438899 
+## 0.01376905 0.01374959 0.01373018 0.01371083 0.01369154 0.01367231 0.01365313 
 ##        169        170        171        172        173        174        175 
-## 0.01436512 0.01434130 0.01431754 0.01429384 0.01427021 0.01424663 0.01422312 
+## 0.01363402 0.01361496 0.01359597 0.01357705 0.01355818 0.01353939 0.01352066 
 ##        176        177        178        179        180        181        182 
-## 0.01419967 0.01417629 0.01415297 0.01412973 0.01410655 0.01408344 0.01406041 
+## 0.01350200 0.01348342 0.01346490 0.01344646 0.01342809 0.01340979 0.01339158 
 ##        183        184        185        186        187        188        189 
-## 0.01403745 0.01401457 0.01399176 0.01396904 0.01394639 0.01392382 0.01390134 
+## 0.01337344 0.01335538 0.01333740 0.01331950 0.01330169 0.01328396 0.01326632 
 ##        190        191        192        193        194        195        196 
-## 0.01387894 0.01385662 0.01383440 0.01381226 0.01379021 0.01376825 0.01374639 
+## 0.01324876 0.01323130 0.01321392 0.01319664 0.01317945 0.01316235 0.01314535 
 ##        197        198        199        200        201        202        203 
-## 0.01372462 0.01370295 0.01368137 0.01365990 0.01363852 0.01361725 0.01359609 
+## 0.01312845 0.01311165 0.01309494 0.01307834 0.01306184 0.01304545 0.01302917 
 ##        204        205        206        207        208        209        210 
-## 0.01357502 0.01355407 0.01353323 0.01351249 0.01349187 0.01347136 0.01345097 
+## 0.01301299 0.01299692 0.01298096 0.01296512 0.01294938 0.01293377 0.01291827 
 ##        211        212        213        214        215        216        217 
-## 0.01343070 0.01341054 0.01339051 0.01337060 0.01335081 0.01333115 0.01331162 
+## 0.01290289 0.01288763 0.01287249 0.01285748 0.01284259 0.01282783 0.01281319 
 ##        218        219        220        221        222        223        224 
-## 0.01329221 0.01327294 0.01325381 0.01323480 0.01321594 0.01319721 0.01317862 
+## 0.01279869 0.01278432 0.01277008 0.01275598 0.01274201 0.01272818 0.01271449 
 ##        225        226        227        228        229        230        231 
-## 0.01316018 0.01314188 0.01312372 0.01310572 0.01308786 0.01307016 0.01305261 
+## 0.01270094 0.01268753 0.01267427 0.01266116 0.01264819 0.01263538 0.01262271 
 ##        232        233        234        235        236        237        238 
-## 0.01303521 0.01301797 0.01300090 0.01298398 0.01296723 0.01295064 0.01293422 
+## 0.01261020 0.01259785 0.01258565 0.01257361 0.01256173 0.01255001 0.01253845 
 ##        239        240        241        242        243        244        245 
-## 0.01291796 0.01290188 0.01288597 0.01287024 0.01285468 0.01283931 0.01282411 
+## 0.01252706 0.01251584 0.01250479 0.01249390 0.01248319 0.01247266 0.01246230 
 ##        246        247        248        249        250        251        252 
-## 0.01280910 0.01279427 0.01277963 0.01276517 0.01275091 0.01273684 0.01272297 
+## 0.01245211 0.01244211 0.01243229 0.01242265 0.01241319 0.01240392 0.01239484 
 ##        253        254        255        256        257        258        259 
-## 0.01270929 0.01269581 0.01268254 0.01266946 0.01265659 0.01264393 0.01263148 
+## 0.01238595 0.01237725 0.01236874 0.01236043 0.01235232 0.01234441 0.01233669 
 ##        260        261        262        263        264        265        266 
-## 0.01261924 0.01260721 0.01259540 0.01258381 0.01257243 0.01256128 0.01255035 
+## 0.01232918 0.01232187 0.01231477 0.01230787 0.01230119 0.01229471 0.01228845 
 ##        267        268        269        270        271        272        273 
-## 0.01253964 0.01252916 0.01251892 0.01250890 0.01249912 0.01248957 0.01248026 
+## 0.01228241 0.01227657 0.01227096 0.01226557 0.01226040 0.01225545 0.01225072 
 ##        274        275        276        277        278        279        280 
-## 0.01247119 0.01246237 0.01245378 0.01244545 0.01243736 0.01242952 0.01242193 
+## 0.01224622 0.01224195 0.01223791 0.01223411 0.01223053 0.01222719 0.01222409 
 ##        281        282        283        284        285        286        287 
-## 0.01241459 0.01240751 0.01240069 0.01239413 0.01238783 0.01238179 0.01237602 
+## 0.01222122 0.01221860 0.01221621 0.01221407 0.01221218 0.01221053 0.01220912 
 ##        288        289        290        291        292        293        294 
-## 0.01237052 0.01236528 0.01236032 0.01235563 0.01235122 0.01234708 0.01234322 
+## 0.01220797 0.01220707 0.01220642 0.01220602 0.01220588 0.01220600 0.01220638 
 ##        295        296        297        298        299        300        301 
-## 0.01233964 0.01233634 0.01233333 0.01233060 0.01232816 0.01232601 0.01232415 
+## 0.01220701 0.01220791 0.01220907 0.01221050 0.01221219 0.01221415 0.01221638 
 ##        302        303        304        305        306        307        308 
-## 0.01232258 0.01232131 0.01232034 0.01231966 0.01231928 0.01231921 0.01231943 
+## 0.01221888 0.01222165 0.01222469 0.01222801 0.01223160 0.01223547 0.01223962 
 ##        309        310        311        312        313        314        315 
-## 0.01231996 0.01232080 0.01232194 0.01232340 0.01232516 0.01232724 0.01232963 
+## 0.01224405 0.01224876 0.01225375 0.01225902 0.01226458 0.01227042 0.01227655 
 ##        316        317        318        319        320        321        322 
-## 0.01233234 0.01233536 0.01233870 0.01234236 0.01234634 0.01235064 0.01235527 
+## 0.01228297 0.01228968 0.01229668 0.01230396 0.01231155 0.01231942 0.01232759 
 ##        323        324        325        326        327        328        329 
-## 0.01236022 0.01236550 0.01237110 0.01237703 0.01238330 0.01238989 0.01239681 
+## 0.01233605 0.01234482 0.01235387 0.01236323 0.01237289 0.01238284 0.01239310 
 ##        330        331        332        333        334        335        336 
-## 0.01240407 0.01241167 0.01241959 0.01242786 0.01243646 0.01244540 0.01245468 
+## 0.01240366 0.01241452 0.01242569 0.01243716 0.01244893 0.01246101 0.01247340 
 ##        337        338        339        340        341        342        343 
-## 0.01246430 0.01247426 0.01248456 0.01249521 0.01250619 0.01251753 0.01252921 
+## 0.01248609 0.01249910 0.01251241 0.01252603 0.01253996 0.01255420 0.01256875 
 ##        344        345        346        347        348        349        350 
-## 0.01254123 0.01255360 0.01256632 0.01257939 0.01259280 0.01260656 0.01262068 
+## 0.01258361 0.01259879 0.01261428 0.01263008 0.01264619 0.01266262 0.01267936 
 ##        351        352        353        354        355        356        357 
-## 0.01263514 0.01264996 0.01266512 0.01268064 0.01269651 0.01271273 0.01272931 
+## 0.01269642 0.01271379 0.01273148 0.01274949 0.01276781 0.01278644 0.01280539 
 ##        358        359        360        361        362        363        364 
-## 0.01274623 0.01276351 0.01278115 0.01279914 0.01281748 0.01283618 0.01285523 
+## 0.01282466 0.01284425 0.01286415 0.01288437 0.01290491 0.01292577 0.01294694 
 ##        365        366        367        368        369        370        371 
-## 0.01287464 0.01289440 0.01291452 0.01293499 0.01295582 0.01297700 0.01299853 
+## 0.01296843 0.01299024 0.01301237 0.01303482 0.01305758 0.01308066 0.01310406 
 ##        372        373        374        375        376        377        378 
-## 0.01302042 0.01304267 0.01306527 0.01308823 0.01311153 0.01313520 0.01315922 
+## 0.01312777 0.01315181 0.01317616 0.01320083 0.01322581 0.01325112 0.01327674 
 ##        379        380        381        382        383        384        385 
-## 0.01318359 0.01320831 0.01323339 0.01325882 0.01328460 0.01331074 0.01333723 
+## 0.01330267 0.01332892 0.01335549 0.01338238 0.01340958 0.01343709 0.01346492 
 ##        386        387        388        389        390        391        392 
-## 0.01336407 0.01339126 0.01341880 0.01344669 0.01347493 0.01350352 0.01353245 
+## 0.01349307 0.01352153 0.01355030 0.01357939 0.01360879 0.01363850 0.01366852 
 ##        393        394        395        396        397        398        399 
-## 0.01356174 0.01359137 0.01362135 0.01365168 0.01368235 0.01371337 0.01374473 
+## 0.01369886 0.01372951 0.01376047 0.01379174 0.01382332 0.01385520 0.01388740 
 ##        400        401        402        403        404        405        406 
-## 0.01377643 0.01380848 0.01384087 0.01387360 0.01390667 0.01394009 0.01397384 
+## 0.01391991 0.01395272 0.01398584 0.01401927 0.01405300 0.01408704 0.01412138 
 ##        407        408        409        410        411        412        413 
-## 0.01400793 0.01404235 0.01407712 0.01411222 0.01414765 0.01418342 0.01421952 
+## 0.01415602 0.01419097 0.01422623 0.01426178 0.01429764 0.01433379 0.01437025 
 ##        414        415        416        417        418        419        420 
-## 0.01425596 0.01429272 0.01432982 0.01436725 0.01440500 0.01444309 0.01448149 
+## 0.01440700 0.01444406 0.01448141 0.01451906 0.01455700 0.01459524 0.01463378 
 ##        421        422        423        424        425        426        427 
-## 0.01452023 0.01455929 0.01459867 0.01463838 0.01467841 0.01471876 0.01475943 
+## 0.01467261 0.01471173 0.01475114 0.01479085 0.01483084 0.01487113 0.01491170 
 ##        428        429        430        431        432        433        434 
-## 0.01480041 0.01484172 0.01488334 0.01492528 0.01496753 0.01501009 0.01505297 
+## 0.01495257 0.01499372 0.01503516 0.01507688 0.01511889 0.01516118 0.01520375 
 ##        435        436        437        438        439        440        441 
-## 0.01509616 0.01513966 0.01518346 0.01522758 0.01527200 0.01531673 0.01536176 
+## 0.01524661 0.01528975 0.01533316 0.01537686 0.01542084 0.01546509 0.01550963 
 ##        442        443        444        445        446        447        448 
-## 0.01540710 0.01545274 0.01549867 0.01554491 0.01559145 0.01563829 0.01568542 
+## 0.01555443 0.01559951 0.01564487 0.01569050 0.01573640 0.01578258 0.01582902 
 ##        449        450        451        452        453        454        455 
-## 0.01573285 0.01578057 0.01582859 0.01587689 0.01592549 0.01597438 0.01602356 
+## 0.01587573 0.01592272 0.01596996 0.01601748 0.01606526 0.01611331 0.01616162 
 ##        456        457        458        459        460        461        462 
-## 0.01607302 0.01612277 0.01617281 0.01622313 0.01627373 0.01632461 0.01637578 
+## 0.01621020 0.01625903 0.01630813 0.01635749 0.01640710 0.01645698 0.01650711 
 ##        463        464        465        466        467        468        469 
-## 0.01642722 0.01647894 0.01653094 0.01658322 0.01663577 0.01668859 0.01674169 
+## 0.01655750 0.01660815 0.01665904 0.01671020 0.01676160 0.01681326 0.01686517 
 ##        470        471        472        473        474        475        476 
-## 0.01679505 0.01684869 0.01690260 0.01695677 0.01701121 0.01706592 0.01712089 
+## 0.01691733 0.01696973 0.01702239 0.01707529 0.01712844 0.01718183 0.01723547 
 ##        477        478        479        480        481        482        483 
-## 0.01717613 0.01723162 0.01728738 0.01734340 0.01739968 0.01745621 0.01751300 
+## 0.01728935 0.01734347 0.01739784 0.01745245 0.01750729 0.01756237 0.01761770 
 ##        484        485        486        487        488        489        490 
-## 0.01757005 0.01762735 0.01768491 0.01774271 0.01780077 0.01785908 0.01791764 
+## 0.01767326 0.01772905 0.01778508 0.01784134 0.01789784 0.01795457 0.01801153 
 ##        491        492        493        494        495        496        497 
-## 0.01797644 0.01803549 0.01809479 0.01815433 0.01821412 0.01827415 0.01833442 
+## 0.01806872 0.01812614 0.01818379 0.01824167 0.01829978 0.01835811 0.01841666 
 ##        498        499        500        501        502        503        504 
-## 0.01839493 0.01845568 0.01851667 0.01857789 0.01863935 0.01870105 0.01876298 
+## 0.01847544 0.01853445 0.01859367 0.01865312 0.01871279 0.01877268 0.01883279 
 ##        505        506        507        508        509        510        511 
-## 0.01882515 0.01888754 0.01895017 0.01901303 0.01907612 0.01913943 0.01920298 
+## 0.01889311 0.01895365 0.01901441 0.01907539 0.01913658 0.01919798 0.01925960 
 ##        512        513        514        515        516        517        518 
-## 0.01926674 0.01933074 0.01939496 0.01945940 0.01952406 0.01958895 0.01965405 
+## 0.01932143 0.01938347 0.01944572 0.01950818 0.01957085 0.01963373 0.01969681 
 ##        519        520        521        522        523        524        525 
-## 0.01971938 0.01978492 0.01985068 0.01991666 0.01998285 0.02004926 0.02011588 
+## 0.01976011 0.01982360 0.01988730 0.01995121 0.02001532 0.02007963 0.02014414 
 ##        526        527        528        529        530        531        532 
-## 0.02018271 0.02024976 0.02031702 0.02038449 0.02045216 0.02052005 0.02058814 
+## 0.02020886 0.02027377 0.02033888 0.02040420 0.02046971 0.02053541 0.02060131 
 ##        533        534        535        536        537        538        539 
-## 0.02065644 0.02072494 0.02079365 0.02086257 0.02093168 0.02100100 0.02107052 
+## 0.02066741 0.02073370 0.02080019 0.02086687 0.02093374 0.02100080 0.02106806 
 ##        540        541        542        543        544        545        546 
-## 0.02114024 0.02121016 0.02128028 0.02135060 0.02142112 0.02149183 0.02156273 
+## 0.02113550 0.02120313 0.02127096 0.02133897 0.02140716 0.02147554 0.02154411 
 ##        547        548        549        550        551        552        553 
-## 0.02163383 0.02170513 0.02177662 0.02184830 0.02192017 0.02199223 0.02206448 
+## 0.02161287 0.02168180 0.02175093 0.02182023 0.02188972 0.02195938 0.02202923 
 ##        554        555        556        557        558        559        560 
-## 0.02213692 0.02220955 0.02228237 0.02235537 0.02242856 0.02250194 0.02257550 
+## 0.02209926 0.02216947 0.02223985 0.02231042 0.02238116 0.02245208 0.02252317 
 ##        561        562        563        564        565        566        567 
-## 0.02264924 0.02272317 0.02279728 0.02287157 0.02294604 0.02302069 0.02309552 
+## 0.02259444 0.02266588 0.02273750 0.02280929 0.02288125 0.02295338 0.02302569 
 ##        568        569        570        571        572        573        574 
-## 0.02317052 0.02324571 0.02332107 0.02339661 0.02347233 0.02354822 0.02362429 
+## 0.02309817 0.02317081 0.02324363 0.02331661 0.02338976 0.02346308 0.02353657 
 ##        575        576        577        578        579        580        581 
-## 0.02370052 0.02377694 0.02385352 0.02393027 0.02400720 0.02408430 0.02416156 
+## 0.02361022 0.02368404 0.02375802 0.02383216 0.02390647 0.02398095 0.02405558 
 ##        582        583        584        585        586        587        588 
-## 0.02423900 0.02431660 0.02439437 0.02447231 0.02455041 0.02462868 0.02470711 
+## 0.02413038 0.02420533 0.02428045 0.02435573 0.02443117 0.02450676 0.02458252 
 ##        589        590        591        592        593        594        595 
-## 0.02478571 0.02486447 0.02494340 0.02502248 0.02510173 0.02518114 0.02526071 
+## 0.02465843 0.02473450 0.02481072 0.02488710 0.02496363 0.02504032 0.02511717 
 ##        596        597        598        599        600        601        602 
-## 0.02534044 0.02542033 0.02550038 0.02558059 0.02566095 0.02574147 0.02582215 
+## 0.02519416 0.02527131 0.02534862 0.02542607 0.02550367 0.02558143 0.02565933 
 ##        603        604        605        606        607        608        609 
-## 0.02590298 0.02598397 0.02606511 0.02614640 0.02622785 0.02630945 0.02639121 
+## 0.02573739 0.02581559 0.02589394 0.02597244 0.02605109 0.02612988 0.02620882 
 ##        610        611        612        613        614        615        616 
-## 0.02647311 0.02655517 0.02663738 0.02671973 0.02680224 0.02688489 0.02696769 
+## 0.02628791 0.02636714 0.02644651 0.02652603 0.02660569 0.02668550 0.02676544 
 ##        617        618        619        620        621        622        623 
-## 0.02705064 0.02713374 0.02721698 0.02730037 0.02738391 0.02746759 0.02755141 
+## 0.02684553 0.02692576 0.02700613 0.02708664 0.02716729 0.02724808 0.02732901 
 ##        624        625        626        627        628        629        630 
-## 0.02763538 0.02771949 0.02780375 0.02788814 0.02797268 0.02805736 0.02814218 
+## 0.02741008 0.02749128 0.02757262 0.02765410 0.02773572 0.02781747 0.02789935 
 ##        631        632        633        634        635        636        637 
-## 0.02822714 0.02831224 0.02839747 0.02848285 0.02856837 0.02865402 0.02873981 
+## 0.02798137 0.02806352 0.02814581 0.02822823 0.02831079 0.02839347 0.02847629 
 ##        638        639        640        641        642        643        644 
-## 0.02882573 0.02891179 0.02899799 0.02908432 0.02917079 0.02925739 0.02934413 
+## 0.02855924 0.02864231 0.02872552 0.02880886 0.02889233 0.02897593 0.02905965 
 ##        645        646        647        648        649        650        651 
-## 0.02943100 0.02951800 0.02960513 0.02969239 0.02977979 0.02986731 0.02995497 
+## 0.02914350 0.02922748 0.02931159 0.02939582 0.02948018 0.02956467 0.02964928 
 ##        652        653        654        655        656        657        658 
-## 0.03004276 0.03013067 0.03021871 0.03030689 0.03039519 0.03048361 0.03057217 
+## 0.02973401 0.02981887 0.02990385 0.02998895 0.03007418 0.03015953 0.03024500 
 ##        659        660        661        662        663        664        665 
-## 0.03066085 0.03074966 0.03083859 0.03092764 0.03101683 0.03110613 0.03119556 
+## 0.03033059 0.03041630 0.03050214 0.03058809 0.03067416 0.03076035 0.03084666 
 ##        666        667        668        669        670        671        672 
-## 0.03128512 0.03137479 0.03146459 0.03155451 0.03164455 0.03173471 0.03182500 
+## 0.03093309 0.03101964 0.03110630 0.03119308 0.03127998 0.03136699 0.03145411 
 ##        673        674        675        676        677        678        679 
-## 0.03191540 0.03200593 0.03209657 0.03218733 0.03227821 0.03236921 0.03246032 
+## 0.03154136 0.03162871 0.03171618 0.03180377 0.03189146 0.03197927 0.03206720 
 ##        680        681        682        683        684        685        686 
-## 0.03255156 0.03264290 0.03273437 0.03282595 0.03291765 0.03300946 0.03310139 
+## 0.03215523 0.03224338 0.03233163 0.03242000 0.03250848 0.03259707 0.03268576 
 ##        687        688        689        690        691        692        693 
-## 0.03319343 0.03328558 0.03337785 0.03347023 0.03356272 0.03365533 0.03374805 
+## 0.03277457 0.03286348 0.03295251 0.03304164 0.03313087 0.03322022 0.03330967 
 ##        694        695        696        697        698        699        700 
-## 0.03384088 0.03393382 0.03402686 0.03412002 0.03421329 0.03430667 0.03440016 
+## 0.03339922 0.03348888 0.03357865 0.03366852 0.03375850 0.03384858 0.03393876 
 ##        701        702        703        704        705        706        707 
-## 0.03449376 0.03458746 0.03468127 0.03477519 0.03486922 0.03496335 0.03505759 
+## 0.03402905 0.03411943 0.03420992 0.03430052 0.03439121 0.03448201 0.03457290 
 ##        708        709        710        711        712        713        714 
-## 0.03515193 0.03524638 0.03534093 0.03543559 0.03553036 0.03562522 0.03572019 
+## 0.03466390 0.03475499 0.03484618 0.03493748 0.03502887 0.03512036 0.03521195 
 ##        715        716        717        718        719        720        721 
-## 0.03581526 0.03591044 0.03600571 0.03610109 0.03619657 0.03629215 0.03638784 
+## 0.03530363 0.03539541 0.03548729 0.03557927 0.03567133 0.03576350 0.03585576 
 ##        722        723        724        725        726        727        728 
-## 0.03648362 0.03657950 0.03667548 0.03677156 0.03686774 0.03696402 0.03706039 
+## 0.03594811 0.03604056 0.03613310 0.03622574 0.03631847 0.03641129 0.03650420 
 ##        729        730        731        732        733        734        735 
-## 0.03715686 0.03725343 0.03735010 0.03744686 0.03754372 0.03764068 0.03773772 
+## 0.03659720 0.03669030 0.03678349 0.03687676 0.03697013 0.03706359 0.03715713 
 ##        736        737        738        739        740        741        742 
-## 0.03783487 0.03793211 0.03802944 0.03812687 0.03822439 0.03832200 0.03841971 
+## 0.03725077 0.03734449 0.03743830 0.03753220 0.03762618 0.03772026 0.03781442 
 ##        743        744        745        746        747        748        749 
-## 0.03851751 0.03861540 0.03871338 0.03881145 0.03890961 0.03900787 0.03910621 
+## 0.03790866 0.03800299 0.03809741 0.03819191 0.03828650 0.03838117 0.03847592 
 ##        750        751        752        753        754        755        756 
-## 0.03920465 0.03930317 0.03940178 0.03950048 0.03959927 0.03969815 0.03979711 
+## 0.03857076 0.03866568 0.03876069 0.03885577 0.03895094 0.03904619 0.03914152 
 ##        757        758        759        760        761        762        763 
-## 0.03989617 0.03999530 0.04009453 0.04019384 0.04029324 0.04039272 0.04049229 
+## 0.03923693 0.03933242 0.03942799 0.03952364 0.03961937 0.03971517 0.03981106 
 ##        764        765        766        767        768        769        770 
-## 0.04059194 0.04069167 0.04079149 0.04089140 0.04099138 0.04109145 0.04119160 
+## 0.03990703 0.04000307 0.04009919 0.04019538 0.04029165 0.04038800 0.04048443 
 ##        771 
-## 0.04129184 
+## 0.04058093 
 ## 
 ## $residual.scale
 ## [1] 1</code></pre>
@@ -1648,20 +2220,27 @@ head(new_data_bear_pred)</code></pre>
          upr = fit + (1.96*se.fit))
 
 head(new_data_bear_pred)</code></pre>
-<pre><code>##   bear_abund dist_to_forest dist_to_town openhab_10k      ag_10k shdi_10k
-## 1        0.0       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 2        0.1       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 3        0.2       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 4        0.3       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 5        0.4       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 6        0.5       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-##        pred       fit     se.fit residual.scale       lwr       upr
-## 1 0.1395443 0.1395443 0.01848129              1 0.1033210 0.1757676
-## 2 0.1397161 0.1397161 0.01845885              1 0.1035367 0.1758954
-## 3 0.1398880 0.1398880 0.01843637              1 0.1037527 0.1760233
-## 4 0.1400601 0.1400601 0.01841385              1 0.1039690 0.1761513
-## 5 0.1402324 0.1402324 0.01839128              1 0.1041855 0.1762793
-## 6 0.1404049 0.1404049 0.01836866              1 0.1044023 0.1764075</code></pre>
+<pre><code>##   bear_abund altitude dist_to_forest dist_to_town  prop_ag prop_open
+## 1        0.0 831.2379       372.9299     2429.512 14.91266  19.79364
+## 2        0.1 831.2379       372.9299     2429.512 14.91266  19.79364
+## 3        0.2 831.2379       372.9299     2429.512 14.91266  19.79364
+## 4        0.3 831.2379       372.9299     2429.512 14.91266  19.79364
+## 5        0.4 831.2379       372.9299     2429.512 14.91266  19.79364
+## 6        0.5 831.2379       372.9299     2429.512 14.91266  19.79364
+##   shannondivindex      pred       fit     se.fit residual.scale       lwr
+## 1       0.9532954 0.8649827 0.8649827 0.01702520              1 0.8316133
+## 2       0.9532954 0.8648045 0.8648045 0.01700665              1 0.8314715
+## 3       0.9532954 0.8646262 0.8646262 0.01698807              1 0.8313296
+## 4       0.9532954 0.8644476 0.8644476 0.01696945              1 0.8311875
+## 5       0.9532954 0.8642689 0.8642689 0.01695078              1 0.8310454
+## 6       0.9532954 0.8640899 0.8640899 0.01693208              1 0.8309031
+##         upr
+## 1 0.8983521
+## 2 0.8981376
+## 3 0.8979228
+## 4 0.8977078
+## 5 0.8974924
+## 6 0.8972768</code></pre>
 <p>If we examine the new data frame again we can see there is an
 additional column of data at the end called pred which our the predicted
 probabilities from our model given each value for bear abundance and the
@@ -1674,23 +2253,31 @@ example of this so you know what to expect.</p>
 </blockquote>
 <pre class="r"><code># generate new data with typo
 new_data_bear_typo &lt;- expand.grid(bear_abund = seq(min(cows$bear_abund), 
-                                              max(cows$bear_abund),
-                                              by = 0.1),
-                             dist_to_forest = mean(cows$dist_to_forest),
-                             dist_to_town = mean(cows$dist_to_town),
-                             open_hab10k = mean(cows$openhab_10k),
-                             ag_10k = mean(cows$ag_10k),
-                             shdi_10k = mean(cows$shdi_10k))
+                                                   max(cows$bear_abund),
+                                                   by = 0.1),
+                                  altitude = mean(cows$altitude),
+                                  dist_to_forest = mean(cows$dist_to_forest),
+                                  dist_to_town = mean(cows$dist_to_town),
+                                  prop_ag = mean(cows$prop_ag),
+                                  prop_ope = mean(cows$prop_open),
+                                  shannondivindex = mean(cows$shannondivindex))
 
 # look at what we created
 head(new_data_bear_typo)</code></pre>
-<pre><code>##   bear_abund dist_to_forest dist_to_town open_hab10k      ag_10k shdi_10k
-## 1        0.0       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 2        0.1       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 3        0.2       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 4        0.3       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 5        0.4       388.0135     2340.985   0.1395047 -0.07957416 0.138227
-## 6        0.5       388.0135     2340.985   0.1395047 -0.07957416 0.138227</code></pre>
+<pre><code>##   bear_abund altitude dist_to_forest dist_to_town  prop_ag prop_ope
+## 1        0.0 831.2379       372.9299     2429.512 14.91266 19.79364
+## 2        0.1 831.2379       372.9299     2429.512 14.91266 19.79364
+## 3        0.2 831.2379       372.9299     2429.512 14.91266 19.79364
+## 4        0.3 831.2379       372.9299     2429.512 14.91266 19.79364
+## 5        0.4 831.2379       372.9299     2429.512 14.91266 19.79364
+## 6        0.5 831.2379       372.9299     2429.512 14.91266 19.79364
+##   shannondivindex
+## 1       0.9532954
+## 2       0.9532954
+## 3       0.9532954
+## 4       0.9532954
+## 5       0.9532954
+## 6       0.9532954</code></pre>
 <p>Now try to add the predicted probabilities to your new data, what
 happens?</p>
 <pre class="r"><code># add predicted probabilities to new data with typo
@@ -1698,7 +2285,7 @@ new_data_bear_typo$pred &lt;- predict(cows_global,
                               type = &#39;response&#39;,
                               newdata = new_data_bear_typo)</code></pre>
 <p>You get this error</p>
-<p>“Error in eval(predvars, data, env) : object ‘openhab_10k’ not
+<p>“Error in eval(predvars, data, env) : object ‘prop_open’ not
 found’</p>
 <p>If this happens while you are coding your first reaction should be to
 check your data, R says it can’t find openhab_10k so may sure your new
@@ -1712,25 +2299,56 @@ can fix the mistake.</p>
 steps, and check your progress as you go rather than trying to type
 everything out and run a bunch of code at once, it’s much harder to find
 an error then.</p>
+<p>Luckily for most models I’ve worked with so far we don’t have to do
+this anymore because the ggeffects package which works well with
+tidyverse has function that will do it for us</p>
 </div>
-<div id="graph-predictions" class="section level3">
-<h3>Graph predictions</h3>
+<div id="tidyverse-way" class="section level3">
+<h3>Tidyverse way</h3>
+<pre class="r"><code>new_data_bear_tidy &lt;- ggpredict(cows_global,
+                                terms = &#39;bear_abund&#39;)
+
+head(new_data_bear_tidy)</code></pre>
+<pre><code>## # Predicted probabilities of damage
+## 
+## bear_abund | Predicted |     95% CI
+## -----------------------------------
+##          0 |      0.86 | 0.83, 0.90
+##          5 |      0.86 | 0.82, 0.88
+##         10 |      0.85 | 0.81, 0.87
+##         15 |      0.84 | 0.81, 0.86
+##         20 |      0.83 | 0.80, 0.85
+##         25 |      0.81 | 0.79, 0.84
+## 
+## Adjusted for:
+## *        altitude =  831.24
+## *  dist_to_forest =  372.93
+## *    dist_to_town = 2429.51
+## *         prop_ag =   14.91
+## *       prop_open =   19.79
+## * shannondivindex =    0.95</code></pre>
+</div>
+</div>
+<div id="graph-predictions" class="section level2">
+<h2>Graph predictions</h2>
 <p>Now that we have predicted probabilities from our model for one of
 our variables we can graph these predictions to aid in interpreting and
 conveying our results.</p>
 <pre class="r"><code># Graphs ----------------------
 
 # create graph with predicted prob x bear abundance
-ggplot(data = new_data_bear_pred, aes(x = bear_abund, y = fit)) +
+ggplot(data = new_data_bear_tidy, 
+       aes(x = x, 
+           y = predicted)) +
   
   # add line for predicted prob
   geom_line() +
   
   # add error bar
-  geom_ribbon(aes(ymin = lwr,
-                  ymax = upr),
+  geom_ribbon(aes(ymin = conf.low,
+                  ymax = conf.high),
               alpha = 0.5) # changes opacity so you can see the main line</code></pre>
-<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <p>Now we have a graphical representation of the relationship between
 bear abundance and the probability of bear predation on cows.</p>
 <p>For practice, make this graph look nicer by</p>
@@ -1740,8 +2358,7 @@ informative axis labels<br />
 - adding ticks on the x-axis at intervals of 10<br />
 - removing the grey background - add border to graph<br />
 - remove spacing between plot and border<br />
-- adding a cow silhouette on the bottom right
-<span style="color: blue;"></p>
+- adding a cow silhouette on the bottom right </span></p>
 <pre class="r fold-hide"><code># save phylopic image for cows
 cows_phylopic &lt;- get_phylopic(&quot;cba95817-8806-49c2-932c-fb69a644c53d&quot;)
 
@@ -1790,11 +2407,10 @@ ggplot(data = new_data_bear_pred, aes(x = bear_abund, y = fit)) +
                ysize = 0.1,
                x = 73,
                y = 0.98)</code></pre>
-<p><img src="mod_2_glm_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 </div>
 </div>
-<div id="model-selection" class="section level2">
-<h2>Model selection</h2>
+<div id="model-selection" class="section level1">
+<h1>Model selection</h1>
 <p>More than likely we will not be running one single model for our data
 but rather we will run several models that represent different
 hypotheses and we will compare them to find the model that fits the data
@@ -1809,12 +2425,13 @@ describing more variation than if no data were included)</p>
 # models for model selection
 
 # we already ran cows_global but here is code again
-cows_global &lt;- glm(damage ~ scale(bear_abund) + 
+cows_global &lt;- glm(damage ~ scale(altitude) +
+                     scale(bear_abund) + 
                      scale(dist_to_forest) + 
                      scale(dist_to_town) +
-                     openhab_10k +
-                     ag_10k + 
-                     shdi_10k,
+                     scale(prop_ag) +
+                     scale(prop_open) +
+                     scale(shannondivindex),
                    data = cows, 
                    family = binomial)
 
@@ -1823,65 +2440,71 @@ cows_null &lt;- glm(damage ~ 1,
                  data = cows,
                  family = binomial)
 
-# bears and broad landscape model
-cows_1 &lt;- glm(damage ~ scale(bear_abund) +
-                openhab_10k +
-                ag_10k +
-                shdi_10k,
-              data = cows, 
-              family = binomial)
+# cows bears
+cows_bears &lt;- glm(damage ~  scale(bear_abund),
+                   data = cows, 
+                   family = binomial)
+
+# broad landscape model
+cows_landscape &lt;- glm(damage ~ scale(altitude) +
+                     scale(prop_ag) +
+                     scale(prop_open),
+                   data = cows, 
+                   family = binomial)
 
 # bears + proximity of grazing cattle to bear habitat
-cows_2 &lt;- glm(damage ~ scale(bear_abund) + 
-                scale(dist_to_forest) +
-                openhab_10k,
+cows_bear_prox &lt;- glm(damage ~ scale(bear_abund) + 
+                scale(dist_to_forest),
               data = cows, 
               family = binomial)
 
 # bears + proximity of grazing cattle to human protection
-cows_3 &lt;- glm(damage ~ scale(bear_abund) + 
+cows_human_prox &lt;- glm(damage ~ scale(bear_abund) + 
                 scale(dist_to_town),
               data = cows, 
               family = binomial)
 
 # bears + proximity to bears and humans and habitat needs for cows and bears
-cows_4 &lt;- glm(damage ~ scale(bear_abund) + 
-                scale(dist_to_town) +
-                scale(dist_to_forest) +
-                openhab_10k +
-                ag_10k,
-              data = cows, 
-              family = binomial)</code></pre>
+cows_alt &lt;- glm(damage ~ scale(altitude),
+                   data = cows, 
+                   family = binomial)</code></pre>
 <p>Now that we have run a few models to compare we can use the
 <code>model.sel()</code> <strong>function</strong> in the <em>MuMIn</em>
 package to generate a model selection table</p>
 <pre class="r"><code># compare models with model.sel
 model.sel(cows_global,
           cows_null,
-          cows_1,
-          cows_2,
-          cows_3,
-          cows_4)</code></pre>
+          cows_bear_prox,
+          cows_bears,
+          cows_alt,
+          cows_human_prox)</code></pre>
 <pre><code>## Model selection table 
-##              (Int)  ag_10k opn_10k scl(ber_abn) scl(dst_to_frs) scl(dst_to_twn)
-## cows_global -1.480  0.2092  0.5497       0.2354         -0.8857        -0.05242
-## cows_4      -1.395  0.2400  0.5972       0.2536         -0.9961        -0.23680
-## cows_1      -1.410 -0.1896  0.4771       0.2497                                
-## cows_2      -1.365          0.5998       0.2245         -0.6461                
-## cows_3      -1.126                       0.2693                        -0.24080
-## cows_null   -1.099                                                             
-##             shd_10k df   logLik   AICc  delta weight
-## cows_global  0.3704  7 -814.481 1643.0   0.00      1
-## cows_4               6 -824.336 1660.7  17.69      0
-## cows_1       0.4606  5 -828.565 1667.2  24.14      0
-## cows_2               4 -834.331 1676.7  33.65      0
-## cows_3               3 -895.392 1796.8 153.77      0
-## cows_null            1 -910.983 1824.0 180.94      0
+##                 (Int) scl(alt) scl(ber_abn) scl(dst_to_frs) scl(dst_to_twn)
+## cows_global     1.398  -0.2093      -0.2654           1.050          0.2548
+## cows_bear_prox  1.181               -0.2887           0.512                
+## cows_human_prox 1.140               -0.3333                          0.2718
+## cows_bears      1.122               -0.3129                                
+## cows_null       1.098                                                      
+## cows_alt        1.099  -0.0726                                             
+##                 scl(prp_ag) scl(prp_opn) scl(shn) df   logLik   AICc  delta
+## cows_global         -0.2976      -0.5885  -0.2526  8 -811.990 1640.1   0.00
+## cows_bear_prox                                     3 -891.446 1788.9 148.84
+## cows_human_prox                                    3 -897.720 1801.5 161.39
+## cows_bears                                         2 -907.151 1818.3 178.24
+## cows_null                                          1 -921.942 1845.9 205.82
+## cows_alt                                           2 -921.127 1846.3 206.19
+##                 weight
+## cows_global          1
+## cows_bear_prox       0
+## cows_human_prox      0
+## cows_bears           0
+## cows_null            0
+## cows_alt             0
 ## Models ranked by AICc(x)</code></pre>
 <p>When comparing models we want to focus on the last 4 columns (LogLik,
 AICc, delta, and weight)</p>
-<div id="log-likelihood" class="section level4">
-<h4>Log likelihood</h4>
+<div id="log-likelihood" class="section level2">
+<h2>Log likelihood</h2>
 <p>The likelihood function tells us the relative probability (range -
 infinity to + infinity) that the given variables in our model generated
 the data we provided. The higher the log likelihood the better the model
@@ -1890,8 +2513,8 @@ indicates a good model fit rather these values are used to compare
 across models from the same data set, and are used to compute AIC
 scores.</p>
 </div>
-<div id="aicc" class="section level4">
-<h4>AICc</h4>
+<div id="aicc" class="section level2">
+<h2>AICc</h2>
 <p>Akaike Information Criterion corrected for small sample size or AICc
 is a mathematical method for evaluating how well a model fits the data
 it was generated from. AICc is used to compare models and determine
@@ -1904,15 +2527,39 @@ variable isn’t explaining enough variation in the data the AICc score
 for that model shouldn’t decrease much when that variable is added to
 the model.</p>
 </div>
-<div id="delta-aicc" class="section level4">
-<h4>Delta AICc</h4>
+<div id="delta-aicc" class="section level2">
+<h2>Delta AICc</h2>
 <p>Delta AICc represents the difference between the top model and each
 following model in the model selection table. Generally a rule-of-thumb
 is if a model has a delta AICc less than 2 from the top model those
-models are considered to perform the same.</p>
+models are considered to perform the same <strong>for nested
+models</strong>.</p>
+<p>Often you will see an explanation that when comparing two models of
+different complexity that a more complex model must have a delta AIC of
+at least 2 (lower) than the simpler model to justify including the
+additional parameter, this is because the formula for calculating AIC
+penalizes models by 2 for each additional parameter</p>
+<p>AIC = 2p - 2ln(L)</p>
+<p>However this is only really valid for models that differ by 1
+parameter (nested models) if they differ by more than 1 or the
+parameters are different then this cutoff isn’t the best evidence for
+differentiating model fit</p>
+<p>In our model set we have a nested model:</p>
+<p>cows_bears = damage ~ bear_abund</p>
+<p>cows_bear_prox = damage ~ bear_abund + dist_to_forest</p>
+<p>So we can directly compare these with the delta 2 AIC
+rule-of-thumb</p>
+<p>Cows_bears AIC = 1818.3 while cows_bear_prox AIC = 1788.9, the
+cows_bear_prox is 29 AIC lower than the other model so including the
+dist_to_forest variable significantly improved the model fit and
+explanatory power</p>
+<blockquote>
+<p>Nested models are a greay way to infer the explanatory power of a
+specific variable of interest</p>
+</blockquote>
 </div>
-<div id="weight" class="section level4">
-<h4>Weight</h4>
+<div id="weight" class="section level2">
+<h2>Weight</h2>
 <p>The AICc weight represents the relatively likelihood of a model
 compared to all other models in the in the table where a value of 1.0 =
 the most likely.</p>
@@ -1921,8 +2568,8 @@ the most likely.</p>
 weight of 1.0.</p>
 </div>
 </div>
-<div id="model-validationfit" class="section level2">
-<h2>Model validation/fit</h2>
+<div id="model-validationfit" class="section level1">
+<h1>Model validation/fit</h1>
 <p>One final step in the process is to make sure you have a well-fit
 model, so not just a model that outperformed the others in your model
 set but one that actually fits the data well and describes a decent
@@ -1930,8 +2577,8 @@ amount of the variance.</p>
 <p>We’ve already done one step of this process, which was including a
 null model in our model set and ensuring that our chosen model performs
 better than a null.</p>
-<div id="plot-model" class="section level3">
-<h3>Plot model</h3>
+<div id="plot-model" class="section level2">
+<h2>Plot model</h2>
 <p>A first initial step after you have chosen your model, is usually to
 plot your model using the <code>plot()</code> function.</p>
 <blockquote>
@@ -1956,12 +2603,16 @@ for one or more variable in your model.</p>
 plot(cows_global)</code></pre>
 <p><img src="mod_2_glm_files/figure-html/plot%20model-1.png" width="672" /><img src="mod_2_glm_files/figure-html/plot%20model-2.png" width="672" /><img src="mod_2_glm_files/figure-html/plot%20model-3.png" width="672" /><img src="mod_2_glm_files/figure-html/plot%20model-4.png" width="672" /></p>
 </div>
-<div id="area-under-the-curve" class="section level3">
-<h3>Area under the curve</h3>
+<div id="area-under-the-curve" class="section level2">
+<h2>Area under the curve</h2>
 <p>For a <strong>binomial</strong> glm we can assess the Area under
 Curve or Receiver operating characteristic (ROC) curve is used to
-evaluate the performance. It measures how wel the model is able to
+evaluate the performance. It measures how well the model is able to
 distinguish between the two classifications of the model.</p>
+<blockquote>
+<p>Note this does not work for models that don’t follow a binomial
+distribution</p>
+</blockquote>
 <pre class="r"><code>c.roccurve &lt;- roc(cows$damage, 
                   predict(cows_global, type = &#39;response&#39;))
 
@@ -1970,51 +2621,717 @@ auc(c.roccurve)</code></pre>
 <pre class="r"><code>plot.roc(c.roccurve, main=&quot;Area Under the Curve for best model&quot;)</code></pre>
 <p><img src="mod_2_glm_files/figure-html/auc-1.png" width="672" /></p>
 </div>
-<div id="r-squared" class="section level3">
-<h3>R squared</h3>
-<p>You can also calculate a pseudo R squared value for your model which
-indicates how much of the variance is explained by the covariates in
-your model.</p>
+<div id="r-squared" class="section level2">
+<h2>R squared</h2>
+<p>You can also calculate a pseudo R squared (McFadden’s R-squared here,
+although there are many that are commonly used) value for your model
+which indicates how much of the variance is explained by the covariates
+in your model.</p>
 <p>To do this we use the null and residual deviance values in the model
 summary</p>
 <pre class="r"><code>summary(cows_global)</code></pre>
 <pre><code>## 
 ## Call:
-## glm(formula = damage ~ scale(bear_abund) + scale(dist_to_forest) + 
-##     scale(dist_to_town) + openhab_10k + ag_10k + shdi_10k, family = binomial, 
+## glm(formula = damage ~ scale(altitude) + scale(bear_abund) + 
+##     scale(dist_to_forest) + scale(dist_to_town) + scale(prop_ag) + 
+##     scale(prop_open) + scale(shannondivindex), family = binomial, 
 ##     data = cows)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
-## -1.5286  -0.7965  -0.5511   0.2031   2.3067  
+## -2.2172  -0.3819   0.5227   0.7873   1.5512  
 ## 
 ## Coefficients:
-##                       Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)           -1.48007    0.08118 -18.231  &lt; 2e-16 ***
-## scale(bear_abund)      0.23537    0.06530   3.605 0.000313 ***
-## scale(dist_to_forest) -0.88574    0.19736  -4.488 7.19e-06 ***
-## scale(dist_to_town)   -0.05242    0.08539  -0.614 0.539241    
-## openhab_10k            0.54972    0.06525   8.425  &lt; 2e-16 ***
-## ag_10k                 0.20918    0.11977   1.746 0.080736 .  
-## shdi_10k               0.37035    0.08474   4.371 1.24e-05 ***
+##                        Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)             1.39780    0.07691  18.176  &lt; 2e-16 ***
+## scale(altitude)        -0.20926    0.08177  -2.559 0.010490 *  
+## scale(bear_abund)      -0.26539    0.06549  -4.053 5.07e-05 ***
+## scale(dist_to_forest)   1.04995    0.19923   5.270 1.36e-07 ***
+## scale(dist_to_town)     0.25481    0.09398   2.711 0.006703 ** 
+## scale(prop_ag)         -0.29757    0.10535  -2.825 0.004734 ** 
+## scale(prop_open)       -0.58853    0.06516  -9.032  &lt; 2e-16 ***
+## scale(shannondivindex) -0.25262    0.07639  -3.307 0.000943 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## (Dispersion parameter for binomial family taken to be 1)
 ## 
-##     Null deviance: 1822  on 1619  degrees of freedom
-## Residual deviance: 1629  on 1613  degrees of freedom
-## AIC: 1643
+##     Null deviance: 1843.9  on 1638  degrees of freedom
+## Residual deviance: 1624.0  on 1631  degrees of freedom
+## AIC: 1640
 ## 
 ## Number of Fisher Scoring iterations: 6</code></pre>
 <pre class="r"><code># 1 - (Residual Deviance/Null Deviance)
 
-1 - (1629/1822) # you want a high r square so this is not a very good fitting model</code></pre>
-<pre><code>## [1] 0.1059276</code></pre>
+1 - (1624/1843.9) # you want a high r square so this is not a very good fitting model</code></pre>
+<pre><code>## [1] 0.1192581</code></pre>
+<pre class="r"><code># or from the model directly
+with(summary(cows_global), 1 - deviance/null.deviance)</code></pre>
+<pre><code>## [1] 0.1192617</code></pre>
 </div>
 </div>
-<div id="assignment-and-next-module" class="section level2">
-<h2>Assignment and next module</h2>
+<div id="including-different-types-of-terms" class="section level1">
+<h1>Including different types of terms</h1>
+<p>In our models above all the explanatory variables were numeric and
+mostly continuous (except for bear abundance which is an integer), which
+makes model interpretations much easier. However you may have
+categorical (grouped) variables you want to include or interaction terms
+you want to assess. We will cover incorporating these types of variables
+below</p>
+<div id="categorical-variables" class="section level2">
+<h2>Categorical variables</h2>
+<p>Categorical variables (factors in R) are variables we want to include
+in our model that aren’t measured numerically and have a limited number
+of possible values. In the cows data we have a couple variables we can
+use for this, year &amp; hunting. Let’s add one of these to our global
+model and see how the output changes</p>
+<p>The code to include a categorical variable is the same as a numeric
+variable, but it is critical that you ensure the variable structure is
+set correctly (e.g. it’s a factor).</p>
+<p><span style="color: blue;"> First check what type of variable year
+and hunting are in the cows data</span></p>
+<pre><code>## spc_tbl_ [1,639 × 35] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ ...1               : num [1:1639] 1 2 3 4 5 6 7 8 9 10 ...
+##  $ damage             : Factor w/ 2 levels &quot;1&quot;,&quot;0&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ year               : Factor w/ 9 levels &quot;2012&quot;,&quot;2014&quot;,..: 1 2 1 3 1 2 1 2 1 3 ...
+##  $ month              : Factor w/ 11 levels &quot;10&quot;,&quot;9&quot;,&quot;6&quot;,&quot;8&quot;,..: 1 2 1 3 2 3 4 2 2 3 ...
+##  $ targetspp          : Factor w/ 1 level &quot;bovine&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ point_x            : num [1:1639] 503840 513946 514079 514792 516028 ...
+##  $ point_y            : num [1:1639] 559354 564975 556360 546860 558289 ...
+##  $ ptx                : num [1:1639] 503870 513946 514099 514859 516092 ...
+##  $ pty                : num [1:1639] 559440 565000 556427 546908 558339 ...
+##  $ bear_abund         : num [1:1639] 34 42 34 43 34 32 34 42 34 34 ...
+##  $ landcover_code     : num [1:1639] 243 243 321 211 231 231 231 321 321 242 ...
+##  $ altitude           : num [1:1639] 866 748 799 807 969 ...
+##  $ human_population   : num [1:1639] 0 0 30 98 14 0 0 0 0 45 ...
+##  $ dist_to_forest     : num [1:1639] 319 122 135 590 106 ...
+##  $ dist_to_town       : num [1:1639] 1400 2663 1034 436 733 ...
+##  $ livestock_killed   : num [1:1639] 1 1 1 1 1 1 2 2 1 1 ...
+##  $ numberdamageperplot: num [1:1639] 1 1 1 1 1 1 51 2 1 1 ...
+##  $ shannondivindex    : num [1:1639] 1.278 0.762 1.382 1.449 1.429 ...
+##  $ prop_arable        : num [1:1639] 0 0 5.58 23.78 29.15 ...
+##  $ prop_orchards      : num [1:1639] 0 0 0 0 0 0 0 0 0 0 ...
+##  $ prop_pasture       : num [1:1639] 35.8 2.69 1.14 8.64 10.79 ...
+##  $ prop_ag_mosaic     : num [1:1639] 8.81 0 15.03 0 9.67 ...
+##  $ prop_seminatural   : num [1:1639] 42.2 35.5 29.2 23.8 4.1 ...
+##  $ prop_deciduous     : num [1:1639] 10.55 61.77 5.72 36.81 43.11 ...
+##  $ prop_coniferous    : num [1:1639] 0 0 0 0 0 ...
+##  $ prop_mixedforest   : num [1:1639] 0 0 0 0 0 ...
+##  $ prop_grassland     : num [1:1639] 0 0 43.33 0 3.17 ...
+##  $ prop_for_regen     : num [1:1639] 0 0 0 0 0 ...
+##  $ landcover_2        : num [1:1639] 240 240 231 210 231 231 231 231 231 240 ...
+##  $ prop_natural       : num [1:1639] 42.2 35.5 29.2 23.8 4.1 ...
+##  $ prop_ag            : num [1:1639] 8.81 0 20.61 23.78 38.83 ...
+##  $ prop_gras          : num [1:1639] 35.8 2.69 44.48 8.64 13.96 ...
+##  $ hunting            : Factor w/ 2 levels &quot;1&quot;,&quot;0&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ prop_open          : num [1:1639] 35.8 2.69 44.48 8.64 13.96 ...
+##  $ prop_forest        : num [1:1639] 10.55 61.77 5.72 36.81 43.11 ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   .default = col_number(),
+##   ..   ...1 = col_number(),
+##   ..   Damage = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   Year = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   Month = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   Targetspp = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   POINT_X = col_number(),
+##   ..   POINT_Y = col_number(),
+##   ..   PTX = col_number(),
+##   ..   PTY = col_number(),
+##   ..   Bear_abund = col_number(),
+##   ..   Landcover_code = col_number(),
+##   ..   Altitude = col_number(),
+##   ..   Human_population = col_number(),
+##   ..   Dist_to_forest = col_number(),
+##   ..   Dist_to_town = col_number(),
+##   ..   Livestock_killed = col_number(),
+##   ..   Numberdamageperplot = col_number(),
+##   ..   ShannonDivIndex = col_number(),
+##   ..   prop_arable = col_number(),
+##   ..   prop_orchards = col_number(),
+##   ..   prop_pasture = col_number(),
+##   ..   prop_ag_mosaic = col_number(),
+##   ..   prop_seminatural = col_number(),
+##   ..   prop_deciduous = col_number(),
+##   ..   prop_coniferous = col_number(),
+##   ..   prop_mixedforest = col_number(),
+##   ..   prop_grassland = col_number(),
+##   ..   prop_for_regen = col_number(),
+##   ..   Landcover_2 = col_number(),
+##   ..   Prop_natural = col_number(),
+##   ..   Prop_ag = col_number(),
+##   ..   Prop_gras = col_number(),
+##   ..   Hunting = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   Prop_open = col_number(),
+##   ..   Prop_forest = col_number()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<p><span style="color: blue;"> if they are not both a factor change them
+to that now, then add hunting to the global model and rename it
+cows_global_hunt, and print the summary of the model</span></p>
+<blockquote>
+<p>What do you notice about the summary?</p>
+</blockquote>
+<pre class="r"><code># YOUR CODE HERE ----------------------
+cows_global_hunt &lt;- glm(damage ~ scale(altitude) +
+                     scale(bear_abund) + 
+                     scale(dist_to_forest) + 
+                     scale(dist_to_town) +
+                     scale(prop_ag) +
+                     scale(prop_open) +
+                     scale(shannondivindex) +
+                      hunting,
+                   data = cows, 
+                   family = binomial)
+
+summary(cows_global_hunt)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = damage ~ scale(altitude) + scale(bear_abund) + 
+##     scale(dist_to_forest) + scale(dist_to_town) + scale(prop_ag) + 
+##     scale(prop_open) + scale(shannondivindex) + hunting, family = binomial, 
+##     data = cows)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.2235  -0.3837   0.5216   0.7883   1.5468  
+## 
+## Coefficients:
+##                        Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)             1.41072    0.08035  17.556  &lt; 2e-16 ***
+## scale(altitude)        -0.21182    0.08189  -2.587 0.009691 ** 
+## scale(bear_abund)      -0.26308    0.06562  -4.009 6.09e-05 ***
+## scale(dist_to_forest)   1.05342    0.19954   5.279 1.30e-07 ***
+## scale(dist_to_town)     0.25915    0.09429   2.748 0.005989 ** 
+## scale(prop_ag)         -0.29765    0.10533  -2.826 0.004717 ** 
+## scale(prop_open)       -0.58853    0.06514  -9.035  &lt; 2e-16 ***
+## scale(shannondivindex) -0.25201    0.07640  -3.299 0.000971 ***
+## hunting0               -0.11222    0.19594  -0.573 0.566847    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1843.9  on 1638  degrees of freedom
+## Residual deviance: 1623.7  on 1630  degrees of freedom
+## AIC: 1641.7
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+<p>Only one of the levels for hunting is showing up (hunting0), that’s
+because by default R picks one level (usually numerically of
+alphabetically first) to compare the others to. If you want to change
+the reference level you can use <code>relevel()</code> during data
+formatting or nested in the model code as shown below.</p>
+<p>Now when you run summary it will compare hunting 1 (presence of
+hunting) to hunting0 (absence of hunting)</p>
+<pre class="r"><code>cows_global_hunt &lt;- glm(damage ~ scale(altitude) +
+                     scale(bear_abund) + 
+                     scale(dist_to_forest) + 
+                     scale(dist_to_town) +
+                     scale(prop_ag) +
+                     scale(prop_open) +
+                     scale(shannondivindex) +
+                      relevel(hunting, ref = &#39;0&#39;),
+                   data = cows, 
+                   family = binomial)
+
+summary(cows_global_hunt)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = damage ~ scale(altitude) + scale(bear_abund) + 
+##     scale(dist_to_forest) + scale(dist_to_town) + scale(prop_ag) + 
+##     scale(prop_open) + scale(shannondivindex) + relevel(hunting, 
+##     ref = &quot;0&quot;), family = binomial, data = cows)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.2235  -0.3837   0.5216   0.7883   1.5468  
+## 
+## Coefficients:
+##                              Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)                   1.29850    0.18914   6.865 6.63e-12 ***
+## scale(altitude)              -0.21182    0.08189  -2.587 0.009691 ** 
+## scale(bear_abund)            -0.26308    0.06562  -4.009 6.09e-05 ***
+## scale(dist_to_forest)         1.05342    0.19954   5.279 1.30e-07 ***
+## scale(dist_to_town)           0.25915    0.09429   2.748 0.005989 ** 
+## scale(prop_ag)               -0.29765    0.10533  -2.826 0.004717 ** 
+## scale(prop_open)             -0.58853    0.06514  -9.035  &lt; 2e-16 ***
+## scale(shannondivindex)       -0.25201    0.07640  -3.299 0.000971 ***
+## relevel(hunting, ref = &quot;0&quot;)1  0.11222    0.19594   0.573 0.566847    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1843.9  on 1638  degrees of freedom
+## Residual deviance: 1623.7  on 1630  degrees of freedom
+## AIC: 1641.7
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+<p>What about including year, <span style="color: blue;">add year to the
+global model (w/o hunting), name it cows_global_yr and print the summary
+</span></p>
+<blockquote>
+<p>What do you notice about this summary?</p>
+</blockquote>
+<pre class="r"><code># YOUR CODE HERE ----------------------
+
+# add year to global model
+cows_global_yr &lt;- glm(damage ~ scale(altitude) +
+                     scale(bear_abund) + 
+                     scale(dist_to_forest) + 
+                     scale(dist_to_town) +
+                     scale(prop_ag) +
+                     scale(prop_open) +
+                     scale(shannondivindex) +
+                      year,
+                   data = cows, 
+                   family = binomial)
+
+summary(cows_global_yr)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = damage ~ scale(altitude) + scale(bear_abund) + 
+##     scale(dist_to_forest) + scale(dist_to_town) + scale(prop_ag) + 
+##     scale(prop_open) + scale(shannondivindex) + year, family = binomial, 
+##     data = cows)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.4404  -0.3459   0.5006   0.7789   1.5686  
+## 
+## Coefficients:
+##                        Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)             1.33057    0.13883   9.584  &lt; 2e-16 ***
+## scale(altitude)        -0.24656    0.08373  -2.945 0.003234 ** 
+## scale(bear_abund)      -0.25385    0.06604  -3.844 0.000121 ***
+## scale(dist_to_forest)   1.06953    0.20468   5.225 1.74e-07 ***
+## scale(dist_to_town)     0.28851    0.09513   3.033 0.002422 ** 
+## scale(prop_ag)         -0.31326    0.10670  -2.936 0.003324 ** 
+## scale(prop_open)       -0.60041    0.06633  -9.052  &lt; 2e-16 ***
+## scale(shannondivindex) -0.26379    0.07735  -3.410 0.000649 ***
+## year2014                0.09166    0.20862   0.439 0.660402    
+## year2009                0.13926    0.21866   0.637 0.524190    
+## year2011                0.69791    0.31892   2.188 0.028645 *  
+## year2013               -0.11661    0.21092  -0.553 0.580363    
+## year2016               -0.02868    0.22542  -0.127 0.898769    
+## year2015               -0.40643    0.21763  -1.868 0.061830 .  
+## year2008                1.52343    0.40099   3.799 0.000145 ***
+## year2010                0.23715    0.30495   0.778 0.436759    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1843.9  on 1638  degrees of freedom
+## Residual deviance: 1588.6  on 1623  degrees of freedom
+## AIC: 1620.6
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+<p>The year that is our reference is 2012 which is counter intuitive,
+there is also a lot of them. Which is one thing to be very careful of
+when including categorical variables the number of groups can quickly
+accumulate and you risk over-parameterizing your model because even
+though year is 1 variable in the model, your model has to estimate a
+coefficient and error for every group (in this case 9)</p>
+<p>To fix the years we could change the reference level like we did
+above for hunting <span style="color: blue;">add code to the model to
+set 2016 as the reference level</span></p>
+<pre class="r"><code># YOUR CODE HERE ----------------------
+
+# add year to global model
+cows_global_yr &lt;- glm(damage ~ scale(altitude) +
+                     scale(bear_abund) + 
+                     scale(dist_to_forest) + 
+                     scale(dist_to_town) +
+                     scale(prop_ag) +
+                     scale(prop_open) +
+                     scale(shannondivindex) +
+                      relevel(year, ref = &#39;2008&#39;),
+                   data = cows, 
+                   family = binomial)
+
+summary(cows_global_yr)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = damage ~ scale(altitude) + scale(bear_abund) + 
+##     scale(dist_to_forest) + scale(dist_to_town) + scale(prop_ag) + 
+##     scale(prop_open) + scale(shannondivindex) + relevel(year, 
+##     ref = &quot;2008&quot;), family = binomial, data = cows)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.4404  -0.3459   0.5006   0.7789   1.5686  
+## 
+## Coefficients:
+##                                 Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)                      2.85400    0.38360   7.440 1.01e-13 ***
+## scale(altitude)                 -0.24656    0.08373  -2.945 0.003234 ** 
+## scale(bear_abund)               -0.25385    0.06604  -3.844 0.000121 ***
+## scale(dist_to_forest)            1.06953    0.20468   5.225 1.74e-07 ***
+## scale(dist_to_town)              0.28851    0.09513   3.033 0.002422 ** 
+## scale(prop_ag)                  -0.31326    0.10670  -2.936 0.003324 ** 
+## scale(prop_open)                -0.60041    0.06633  -9.052  &lt; 2e-16 ***
+## scale(shannondivindex)          -0.26379    0.07735  -3.410 0.000649 ***
+## relevel(year, ref = &quot;2008&quot;)2012 -1.52343    0.40099  -3.799 0.000145 ***
+## relevel(year, ref = &quot;2008&quot;)2014 -1.43177    0.41246  -3.471 0.000518 ***
+## relevel(year, ref = &quot;2008&quot;)2009 -1.38417    0.41814  -3.310 0.000932 ***
+## relevel(year, ref = &quot;2008&quot;)2011 -0.82552    0.47793  -1.727 0.084119 .  
+## relevel(year, ref = &quot;2008&quot;)2013 -1.64004    0.41333  -3.968 7.25e-05 ***
+## relevel(year, ref = &quot;2008&quot;)2016 -1.55211    0.42298  -3.669 0.000243 ***
+## relevel(year, ref = &quot;2008&quot;)2015 -1.92986    0.41841  -4.612 3.98e-06 ***
+## relevel(year, ref = &quot;2008&quot;)2010 -1.28628    0.46866  -2.745 0.006059 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1843.9  on 1638  degrees of freedom
+## Residual deviance: 1588.6  on 1623  degrees of freedom
+## AIC: 1620.6
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+</div>
+<div id="ordinal-variables" class="section level2">
+<h2>Ordinal variables</h2>
+<p>But what is happening here is each year is being compared to 2008,
+when in reality we might expect damage to increase or decrease across
+years and then we would want each year compared to the year prior, not
+2008. To do this we need to set yer as an ordinal variable. We can do
+this by altering the code where we read in the data (or by mutating)</p>
+<pre class="r"><code># re read in data and set year to ordered factor
+cows &lt;- read_csv(&#39;data/raw/cows.csv&#39;,
+                 
+                 col_types = cols(Damage = col_factor(),
+                                  Year = col_factor(levels = c(&#39;2008&#39;,
+                                                               &#39;2009&#39;,
+                                                               &#39;2010&#39;,
+                                                               &#39;2011&#39;,
+                                                               &#39;2012&#39;,
+                                                               &#39;2013&#39;,
+                                                               &#39;2014&#39;,
+                                                               &#39;2015&#39;,
+                                                               &#39;2016&#39;), ordered = TRUE),
+                                  Month = col_factor(),
+                                  Targetspp = col_factor(),
+                                  Hunting = col_factor(),
+                                  .default = col_number())) %&gt;% 
+  
+  rename_with(tolower)
+
+# check data structure
+str(cows)</code></pre>
+<pre><code>## spc_tbl_ [1,639 × 35] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ ...1               : num [1:1639] 1 2 3 4 5 6 7 8 9 10 ...
+##  $ damage             : Factor w/ 2 levels &quot;1&quot;,&quot;0&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ year               : Ord.factor w/ 9 levels &quot;2008&quot;&lt;&quot;2009&quot;&lt;..: 5 7 5 2 5 7 5 7 5 2 ...
+##  $ month              : Factor w/ 11 levels &quot;10&quot;,&quot;9&quot;,&quot;6&quot;,&quot;8&quot;,..: 1 2 1 3 2 3 4 2 2 3 ...
+##  $ targetspp          : Factor w/ 1 level &quot;bovine&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ point_x            : num [1:1639] 503840 513946 514079 514792 516028 ...
+##  $ point_y            : num [1:1639] 559354 564975 556360 546860 558289 ...
+##  $ ptx                : num [1:1639] 503870 513946 514099 514859 516092 ...
+##  $ pty                : num [1:1639] 559440 565000 556427 546908 558339 ...
+##  $ bear_abund         : num [1:1639] 34 42 34 43 34 32 34 42 34 34 ...
+##  $ landcover_code     : num [1:1639] 243 243 321 211 231 231 231 321 321 242 ...
+##  $ altitude           : num [1:1639] 866 748 799 807 969 ...
+##  $ human_population   : num [1:1639] 0 0 30 98 14 0 0 0 0 45 ...
+##  $ dist_to_forest     : num [1:1639] 319 122 135 590 106 ...
+##  $ dist_to_town       : num [1:1639] 1400 2663 1034 436 733 ...
+##  $ livestock_killed   : num [1:1639] 1 1 1 1 1 1 2 2 1 1 ...
+##  $ numberdamageperplot: num [1:1639] 1 1 1 1 1 1 51 2 1 1 ...
+##  $ shannondivindex    : num [1:1639] 1.278 0.762 1.382 1.449 1.429 ...
+##  $ prop_arable        : num [1:1639] 0 0 5.58 23.78 29.15 ...
+##  $ prop_orchards      : num [1:1639] 0 0 0 0 0 0 0 0 0 0 ...
+##  $ prop_pasture       : num [1:1639] 35.8 2.69 1.14 8.64 10.79 ...
+##  $ prop_ag_mosaic     : num [1:1639] 8.81 0 15.03 0 9.67 ...
+##  $ prop_seminatural   : num [1:1639] 42.2 35.5 29.2 23.8 4.1 ...
+##  $ prop_deciduous     : num [1:1639] 10.55 61.77 5.72 36.81 43.11 ...
+##  $ prop_coniferous    : num [1:1639] 0 0 0 0 0 ...
+##  $ prop_mixedforest   : num [1:1639] 0 0 0 0 0 ...
+##  $ prop_grassland     : num [1:1639] 0 0 43.33 0 3.17 ...
+##  $ prop_for_regen     : num [1:1639] 0 0 0 0 0 ...
+##  $ landcover_2        : num [1:1639] 240 240 231 210 231 231 231 231 231 240 ...
+##  $ prop_natural       : num [1:1639] 42.2 35.5 29.2 23.8 4.1 ...
+##  $ prop_ag            : num [1:1639] 8.81 0 20.61 23.78 38.83 ...
+##  $ prop_gras          : num [1:1639] 35.8 2.69 44.48 8.64 13.96 ...
+##  $ hunting            : Factor w/ 2 levels &quot;1&quot;,&quot;0&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ prop_open          : num [1:1639] 35.8 2.69 44.48 8.64 13.96 ...
+##  $ prop_forest        : num [1:1639] 10.55 61.77 5.72 36.81 43.11 ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   .default = col_number(),
+##   ..   ...1 = col_number(),
+##   ..   Damage = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   Year = col_factor(levels = c(&quot;2008&quot;, &quot;2009&quot;, &quot;2010&quot;, &quot;2011&quot;, &quot;2012&quot;, &quot;2013&quot;, &quot;2014&quot;, &quot;2015&quot;, 
+##   ..     &quot;2016&quot;), ordered = TRUE, include_na = FALSE),
+##   ..   Month = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   Targetspp = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   POINT_X = col_number(),
+##   ..   POINT_Y = col_number(),
+##   ..   PTX = col_number(),
+##   ..   PTY = col_number(),
+##   ..   Bear_abund = col_number(),
+##   ..   Landcover_code = col_number(),
+##   ..   Altitude = col_number(),
+##   ..   Human_population = col_number(),
+##   ..   Dist_to_forest = col_number(),
+##   ..   Dist_to_town = col_number(),
+##   ..   Livestock_killed = col_number(),
+##   ..   Numberdamageperplot = col_number(),
+##   ..   ShannonDivIndex = col_number(),
+##   ..   prop_arable = col_number(),
+##   ..   prop_orchards = col_number(),
+##   ..   prop_pasture = col_number(),
+##   ..   prop_ag_mosaic = col_number(),
+##   ..   prop_seminatural = col_number(),
+##   ..   prop_deciduous = col_number(),
+##   ..   prop_coniferous = col_number(),
+##   ..   prop_mixedforest = col_number(),
+##   ..   prop_grassland = col_number(),
+##   ..   prop_for_regen = col_number(),
+##   ..   Landcover_2 = col_number(),
+##   ..   Prop_natural = col_number(),
+##   ..   Prop_ag = col_number(),
+##   ..   Prop_gras = col_number(),
+##   ..   Hunting = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   Prop_open = col_number(),
+##   ..   Prop_forest = col_number()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<p>Now let’s run the year model again</p>
+<pre class="r"><code># add year to global model after set as an ordinal variable
+cows_global_yr_o &lt;- glm(damage ~ scale(altitude) +
+                     scale(bear_abund) + 
+                     scale(dist_to_forest) + 
+                     scale(dist_to_town) +
+                     scale(prop_ag) +
+                     scale(prop_open) +
+                     scale(shannondivindex) +
+                      year,
+                   data = cows, 
+                   family = binomial)
+
+summary(cows_global_yr_o)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = damage ~ scale(altitude) + scale(bear_abund) + 
+##     scale(dist_to_forest) + scale(dist_to_town) + scale(prop_ag) + 
+##     scale(prop_open) + scale(shannondivindex) + year, family = binomial, 
+##     data = cows)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.4404  -0.3459   0.5006   0.7789   1.5686  
+## 
+## Coefficients:
+##                        Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)             1.56810    0.09081  17.269  &lt; 2e-16 ***
+## scale(altitude)        -0.24656    0.08373  -2.945 0.003234 ** 
+## scale(bear_abund)      -0.25385    0.06604  -3.844 0.000121 ***
+## scale(dist_to_forest)   1.06953    0.20468   5.225 1.74e-07 ***
+## scale(dist_to_town)     0.28851    0.09513   3.033 0.002422 ** 
+## scale(prop_ag)         -0.31326    0.10670  -2.936 0.003324 ** 
+## scale(prop_open)       -0.60041    0.06633  -9.052  &lt; 2e-16 ***
+## scale(shannondivindex) -0.26379    0.07735  -3.410 0.000649 ***
+## year.L                 -1.15557    0.25660  -4.503 6.69e-06 ***
+## year.Q                  0.52175    0.26036   2.004 0.045075 *  
+## year.C                 -0.27611    0.25507  -1.082 0.279039    
+## year^4                  0.62918    0.21125   2.978 0.002898 ** 
+## year^5                 -0.37528    0.21173  -1.772 0.076329 .  
+## year^6                  0.41207    0.19878   2.073 0.038170 *  
+## year^7                  0.37855    0.22743   1.664 0.096017 .  
+## year^8                 -0.17377    0.20105  -0.864 0.387398    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1843.9  on 1638  degrees of freedom
+## Residual deviance: 1588.6  on 1623  degrees of freedom
+## AIC: 1620.6
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+<p>This gives a really weird output right? That’s because
+<strong>just</strong> setting it as an ordinal variable doesn’t allow
+year-to-year comparisons, instead what R is doing is using polynomial
+contrasts to model the effects of year, which is not what we want. I’ve
+not used this for my own research but if you’re interested you can dig
+into it, here’s a quick explanation of the summary</p>
+<p>year.L (Linear term): Captures the overall trend (whether damage
+increases or decreases linearly over time). year.Q (Quadratic term):
+Accounts for curvature (e.g., does damage first increase and then
+decrease over time?). year.C (Cubic term): Models more complex trends
+with two bends. year^4 to year^8: Higher-order polynomial terms capture
+increasingly subtle variations in the trend over time.</p>
+<p>Instead we need to apply successive differences coding using the
+<em>MASS</em> package and re-fit our model</p>
+<pre class="r"><code>library(MASS)
+contrasts(cows$year) &lt;- contr.sdif(nlevels(cows$year))
+
+# add year to global model after set as an ordinal variable
+cows_global_yr_o &lt;- glm(damage ~ scale(altitude) +
+                     scale(bear_abund) + 
+                     scale(dist_to_forest) + 
+                     scale(dist_to_town) +
+                     scale(prop_ag) +
+                     scale(prop_open) +
+                     scale(shannondivindex) +
+                      year,
+                   data = cows, 
+                   family = binomial)
+
+summary(cows_global_yr_o)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = damage ~ scale(altitude) + scale(bear_abund) + 
+##     scale(dist_to_forest) + scale(dist_to_town) + scale(prop_ag) + 
+##     scale(prop_open) + scale(shannondivindex) + year, family = binomial, 
+##     data = cows)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.4404  -0.3459   0.5006   0.7789   1.5686  
+## 
+## Coefficients:
+##                        Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)             1.56810    0.09081  17.269  &lt; 2e-16 ***
+## scale(altitude)        -0.24656    0.08373  -2.945 0.003234 ** 
+## scale(bear_abund)      -0.25385    0.06604  -3.844 0.000121 ***
+## scale(dist_to_forest)   1.06953    0.20468   5.225 1.74e-07 ***
+## scale(dist_to_town)     0.28851    0.09513   3.033 0.002422 ** 
+## scale(prop_ag)         -0.31326    0.10670  -2.936 0.003324 ** 
+## scale(prop_open)       -0.60041    0.06633  -9.052  &lt; 2e-16 ***
+## scale(shannondivindex) -0.26379    0.07735  -3.410 0.000649 ***
+## year2-1                -1.38417    0.41814  -3.310 0.000932 ***
+## year3-2                 0.09789    0.32779   0.299 0.765213    
+## year4-3                 0.46076    0.40105   1.149 0.250602    
+## year5-4                -0.69791    0.31892  -2.188 0.028645 *  
+## year6-5                -0.11661    0.21092  -0.553 0.580363    
+## year7-6                 0.20827    0.23275   0.895 0.370891    
+## year8-7                -0.49809    0.24038  -2.072 0.038257 *  
+## year9-8                 0.37775    0.25417   1.486 0.137221    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1843.9  on 1638  degrees of freedom
+## Residual deviance: 1588.6  on 1623  degrees of freedom
+## AIC: 1620.6
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+<p>Now we get the change from year-to-year</p>
+</div>
+<div id="interactions" class="section level2">
+<h2>Interactions</h2>
+<p>Another thing we may be interested in modeling is how our response
+variable changes with x considering y; for example maybe we think that
+the relationship between damage and dist_to_town changes depending on
+whether bears are being hunted or not. Realistically we don’t have a
+great data set to look at this since we have only 1 year of no-hunting
+data but we’ll model an example so you know how to do it</p>
+<p>First we will fit a model where dist_to_town and hunting are included
+as non-interactive independent variables</p>
+<pre class="r"><code># Modeling interactions ----------------------
+
+# model without interactions
+cows_hunt_town &lt;- glm(damage ~ scale(dist_to_town) +
+                   hunting,
+                 data = cows, 
+                   family = binomial)</code></pre>
+<p>And now one where they interact, the only change in our code is
+instead of using a ‘+’ to add each variable we use ’*’ to code for an
+effect between two variables</p>
+<pre class="r"><code> cows_hunt_town_i &lt;- glm(damage ~ scale(dist_to_town)*hunting,
+                 data = cows, 
+                   family = binomial)
+
+summary(cows_hunt_town_i)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = damage ~ scale(dist_to_town) * hunting, family = binomial, 
+##     data = cows)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.0445  -0.5737   0.7383   0.8052   0.8583  
+## 
+## Coefficients:
+##                              Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)                   1.13336    0.06190  18.309  &lt; 2e-16 ***
+## scale(dist_to_town)           0.30584    0.07205   4.245 2.19e-05 ***
+## hunting0                     -0.10495    0.18385  -0.571   0.5681    
+## scale(dist_to_town):hunting0 -0.34466    0.15920  -2.165   0.0304 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1843.9  on 1638  degrees of freedom
+## Residual deviance: 1823.5  on 1635  degrees of freedom
+## AIC: 1831.5
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<p>And we can compare these models to see if including the interaction
+is informative or not</p>
+<pre class="r"><code>model.sel(cows_hunt_town,
+          cows_hunt_town_i)</code></pre>
+<pre><code>## Model selection table 
+##                  (Int) hnt scl(dst_to_twn) hnt:scl(dst_to_twn) df   logLik
+## cows_hunt_town_i 1.133   +          0.3058                   +  4 -911.749
+## cows_hunt_town   1.125   +          0.2446                      3 -913.941
+##                    AICc delta weight
+## cows_hunt_town_i 1831.5  0.00  0.766
+## cows_hunt_town   1833.9  2.37  0.234
+## Models ranked by AICc(x)</code></pre>
+<p>The interaction model performs slightly better and given these models
+are nested the rule-of-thumb of delta 2 AIC would indicate the
+interaction model is more informative</p>
+<blockquote>
+<p>As with any variable you include in the model you want to be careful
+to only add interaction terms you think are biologically relevant,
+especially because it does add model complexitiy, including an
+interaction term is equivalent to a whole new parameter when considering
+how many things your model has to estimate.</p>
+</blockquote>
+</div>
+</div>
+<div id="final-workflow" class="section level1">
+<h1>Final workflow</h1>
+<p>I’ve added this section to clarify what my general workflow looks
+like for a glm since we’ve bounced around a lot in this module to
+iterate the importance of scaling, model selection, etc.</p>
+<ol style="list-style-type: decimal">
+<li>Write out my hypothesis and the model formula for my optimal
+candidate models (I say optimal since you may not always be able to
+include all variables)<br />
+</li>
+<li>Clean and format my data (this takes about 75% of my coding
+time)<br />
+</li>
+<li>Generate histograms of explanatory and response variables to ensure
+I have enough data to fit models</li>
+<li>Run correlation tests to avoid multicolinearity of explanatory
+variables</li>
+<li>Make adjustments to my candidate model set</li>
+<li>Fit models including a null model for comparison</li>
+<li>Check each model for issues (run summary(model))</li>
+<li>Model selection of only models that perform well<br />
+</li>
+<li>Select top model/s and make sure that results make since</li>
+<li>Check model fit and additional assumptions of top model/s<br />
+</li>
+<li>Plot model results (odds and predicted)</li>
+</ol>
+<blockquote>
+<p>If at any point a model isn’t fitting well I will adjust accordingly
+and re-run any prior steps needed</p>
+</blockquote>
+</div>
+<div id="assignment-and-next-module" class="section level1">
+<h1>Assignment and next module</h1>
 <p><a href="assign_4.html">–assignment 4</a></p>
 <p><a href="mod_3_glmm.html">–go to next module–</a></p>
 </div>
