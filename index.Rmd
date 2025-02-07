@@ -85,7 +85,7 @@ Okay, now we're ready to go!
 
 
 ```{r echo=FALSE}
-rmd2rscript <- function(infile="mod_5_purrr.Rmd"){    # function for converting markdown to scripts
+rmd2rscript <- function(infile="mod_2_glm.Rmd"){    # function for converting markdown to scripts
   outfile1 <- gsub(".Rmd",".R",infile)
   outfile2 <- gsub(".Rmd",".txt",infile)
   close( file( outfile1, open="w" ) )   # clear output file
