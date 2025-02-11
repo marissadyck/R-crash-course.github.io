@@ -896,6 +896,31 @@ ggplot(data = new_data_bear_pred, aes(x = bear_abund, y = fit)) +
 
 More than likely we will not be running one single model for our data but rather we will run several models that represent different hypotheses and we will compare them to find the model that fits the data best and explains the most variation and then we will interpret and present the results of this model.
 
+## Number of variables in a model
+
+**Important note when fitting models** - the ability of your model to accurately fit your data and yield reliable estimates is related to sample size. Small data sets do not perform well with complex models. This is called overparameterizing your model (including too many explanatory variables).
+
+> A general rule-of-tumb to follow, is that you should have 10 observations for each variable in your model (so if you have a sample size of 100 you could include up to 10 variables in a single model). However with models that have a binary response you should have 10 observations of the minority case for each variable (that means if your sample size is 100 but only 30 observations of damage you can have up to 3 variables in a model)
+
+Before fitting any more models lets check with the damage data how many observations of our minority case we have 
+
+```{r}
+# Number of variables ----------------------
+
+cows %>% 
+  
+  # subset to just instances of damage
+  filter(damage == '1') %>% 
+  
+  # count observations
+  summarise(n = n())
+```
+
+We have 410 observations of our minority case so we can run fairly complex models if we want.
+
+
+## Model development
+
 Let's run several models for the cows data including a global model (e.g., the one we just ran which includes all variables that are not highly correlated) and a null model (used to ensure data are actually describing more variation than if no data were included)
 
 ```{r}

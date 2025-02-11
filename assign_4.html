@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Base R" />
+<meta name="author" content="GLMs" />
 
 
 <title>Assignment 4</title>
@@ -439,9 +439,6 @@ div.tocify {
   <a href="links.html">Links</a>
 </li>
 <li>
-  <a href="surveys.html">Surveys</a>
-</li>
-<li>
   <a href="terms.html">Terms</a>
 </li>
       </ul>
@@ -465,19 +462,28 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Assignment 4</h1>
-<h4 class="author">Base R</h4>
-<h4 class="date">Due Tuesday February 18th <span
+<h4 class="author">GLMs</h4>
+<h4 class="date">Due Tuesday February 25th <span
 class="citation">@11:59pm</span></h4>
 
 </div>
 
 
-<div id="submission" class="section level2">
-<h2>Submission</h2>
-<p>Brightspace/TBD</p>
+<blockquote>
+<p>NOTE THIS ASSIGNMENT IS STILL UNDER DEVELOPMENT, PLEASE DO NOT BEGIN
+UNTIL AFTER LAB 2/11 IS COMPLETED</p>
+</blockquote>
+<div id="submission" class="section level1">
+<h1>Submission</h1>
+<p>Submit you R script as a .R (or .Rmd if using markdown) file to
+Brightspace.</p>
+<blockquote>
+<p>Please make sure your submission includes your name and the
+assignment number in the filename</p>
+</blockquote>
 </div>
-<div id="grading" class="section level2">
-<h2>Grading</h2>
+<div id="grading" class="section level1">
+<h1>Grading</h1>
 <blockquote>
 <p>You should always be following best coding practices (see Intro to R
 module 1) but especially for assingment submissions.</p>
@@ -499,9 +505,176 @@ data2 are not good names for dataframes you are working with)</em><br />
 did, always check your data/objects to ensure any functions were
 performed correctly (there are several ways to do this)</li>
 </ul>
-<center>
-<img src="images/construction_dog.jpeg" style="width:40.0%" />
-</center>
+</div>
+<div id="before-you-begin" class="section level1">
+<h1>Before you begin</h1>
+<div id="download-data" class="section level2">
+<h2>Download data</h2>
+<p>Make sure you have the <a
+href="data/raw/pagube_2008_2016_spatial.csv">Bear glm example raw data
+(pagube_2008_2016_spatial.csv)</a> downloaded to the data/raw
+folder.</p>
+</div>
+<div id="readme" class="section level2">
+<h2>Readme</h2>
+<p>Open the <a href="data/README.html">README</a> file for this data-set
+which is associated with <a
+href="https://conbio.onlinelibrary.wiley.com/doi/full/10.1111/csp2.12884">Pop
+et al., 2023</a> and included in the full (GitHub repository)[<a
+href="https://github.com/marissadyck/Brown_bear_predation_RO"
+class="uri">https://github.com/marissadyck/Brown_bear_predation_RO</a>]
+and read about the variables in the pagube_2008_2016_spatial.csv.</p>
+<p>Make sure you understand what all the variables are and specifically
+which could be independent (explanatory) and dependent (response)
+variables. <em>HINT: there is more than one possible response
+variable</em></p>
+</div>
+</div>
+<div id="data-import" class="section level1">
+<h1>1 Data import</h1>
+<ul>
+<li>First read in the data as a tibble and save it to the environment
+with a descriptive and tidy name of your choice<br />
+</li>
+<li>In the same code chunk as you read the data in, set the column names
+to lowercase<br />
+</li>
+<li>Also in that code chunk, specify how the variables should be read in
+(e.g. factor, numeric, etc.)<br />
+</li>
+<li>Explore the data and make sure things read in properly, make any
+changes if necessary</li>
+</ul>
+</div>
+<div id="data-cleaning" class="section level1">
+<h1>2 Data cleaning</h1>
+<p>This data has already been cleaned and checked for errors, but to
+give you some practice with data checking and cleaning I will have you
+complete the following steps:</p>
+<ul>
+<li>Check that there isn’t any data for years outside the study
+specifications, if there are remove those observations<br />
+</li>
+<li>Check that all entries appear coded correctly for month, if any are
+not remove those observations (0s are okay as these are associated with
+pseudo-absences)<br />
+</li>
+<li>create a new variable (with an informative and tidy name of your
+choice) that sums all the proportional habitat type observations
+(e.g. prop_arable - prop_for_regen) and check that they all sum to 100,
+<em>if they don’t filter out the observations that don’t sum to 100 and
+assign this data as a new object to the environment with an informative
+and tidy name of your choice</em><br />
+</li>
+<li>also ensure that this new data set is filtered to only observations
+where 10 or fewer livestock were killed in an event</li>
+<li>ensure ALL original and new columns are present in this new data
+set</li>
+<li>when you are done, remove the old data set from the environment, you
+will use this new cleaned one for future analyses</li>
+</ul>
+</div>
+<div id="summary-statistics" class="section level1">
+<h1>3 Summary statistics</h1>
+<p>Using your new data set, please calculate some summary statistics to
+report</p>
+<ul>
+<li>Total number of events AND total number of livestock killed by brown
+bears across the entire study<br />
+</li>
+<li>Total number of events of your response variable per livestock type,
+year, and month <em>provide comments that highlight which type, year,
+and month had the most and least number of events</em><br />
+</li>
+<li>Number of events of your response variable per livestock type for
+each year <em>provide comments that highlight which year had the most
+and least number of events for each livestock type</em></li>
+</ul>
+</div>
+<div id="identify-the-response-variable" class="section level1">
+<h1>4 Identify the response variable</h1>
+<p>Once your data are cleaned and formatted please identify the response
+variable for your models <em>(There are two possible response
+variables)</em></p>
+<p>AND the appropriate distribution for your data <em>You’ll need to
+provide some kind of code to show you looked at the response variable to
+choose the distribution</em></p>
+</div>
+<div id="data-exploration" class="section level1">
+<h1>5 Data exploration</h1>
+<p>Then complete the data exploration steps below</p>
+<ul>
+<li>Generate histograms of your potential explanatory variables and
+determine which are useful (provide annotation of why some are not
+useful)</li>
+<li>From the selected candidate response check for multicolinearity
+between variables and make note of which variables are highly correlated
+and the r2 value.</li>
+</ul>
+</div>
+<div id="data-formatting" class="section level1">
+<h1>6 Data formatting</h1>
+<p>Please add ONE additional variable (column) that is based on one or
+more of the variables already in the data. This must be an ecologically
+relevant variable, for example human_population divided by dist_to_town
+is not an ecologically relevant variable, but the binary hunting
+variable from the cows data where years prior to hunting ban were coded
+as ‘1’ and years after hunting ban ‘0’ is an ecologically relevant
+variable generated from the existing data. <em>You cannot use the
+hunting example as your variable, there are several possibilities here;
+you may want to use the information from your data exploration to inform
+this decision</em></p>
+</div>
+<div id="fit-some-models" class="section level1">
+<h1>7 Fit some models</h1>
+<p>Create a candidate set of 8-10 models that represent hypotheses about
+what variables may explain your chosen response and fit these to a glm
+with the appropriate distribution</p>
+<ul>
+<li>Scale all numeric explanatory variables in your models<br />
+</li>
+<li>One model must be a null model<br />
+</li>
+<li>One model must include an interaction term AND have an appropriate
+analog model without an interaction term to compare the relevance of the
+interaction</li>
+<li>No global models (all non-correlated variables in one model)</li>
+</ul>
+<p><strong>Ensure these don’t include correlated variables and are not
+overparameterized</strong></p>
+<blockquote>
+<p>Check that these models are fitting appropriately before proceeding
+to question 7</p>
+</blockquote>
+</div>
+<div id="model-selection" class="section level1">
+<h1>8 Model selection</h1>
+<p>Perform model selection on your candidate set of models and identify
+the best fit model/s</p>
+</div>
+<div id="interpret-results" class="section level1">
+<h1>9 Interpret results</h1>
+<p>In bullet-point format provide annotations (comments) that answer the
+following questions</p>
+<ul>
+<li>Do you have a singular best-fit model and why or why not?<br />
+</li>
+<li>Was the interaction term useful? How do you know?</li>
+</ul>
+<p>For your best-fit model (if you don’t have an obvious singular model
+pick one of the competitive models) and answer the questions below for
+that model:<br />
+* What variable/s best explain the variation in your response? How do
+you know? * Does your model appear to violate any assumptions of a glm
+and which? Why or why not? * Is this model a good fit to the data? How
+do you know?</p>
+</div>
+<div id="caveats" class="section level1">
+<h1>10 Caveats</h1>
+<p>In bullet-point format provide annotations (comments) that speak to
+possible factors of the data, modeling approach, etc. which could
+contribute to uncertainty with your model selection, fit, and how you
+could improve this analysis</p>
 </div>
 
 

@@ -27,7 +27,16 @@ library(MASS)
 # INSERT YOUR CODE HERE ----------------------
 # Read in data for this module
 
-
+cows <- read_csv('data/raw/cows.csv',
+                 
+                 col_types = cols(Damage = col_factor(),
+                                  Year = col_factor(),
+                                  Month = col_factor(),
+                                  Targetspp = col_factor(),
+                                  Hunting = col_factor(),
+                                  .default = col_number())) %>% 
+  
+  rename_with(tolower)
 
 
 
@@ -35,7 +44,7 @@ library(MASS)
 
 
 # check out info on response variable
-
+str(cows)
 
 
 
@@ -46,12 +55,24 @@ library(MASS)
 # INSERT YOUR CODE HERE --------------------
 
 
+cows_cor <- cows %>% 
+  
+  dplyr::select(bear_abund,
+         altitude,
+         human_population,
+         dist_to_forest,
+         dist_to_town,
+         shannondivindex,
+         prop_ag,
+         prop_gras,
+         prop_open,
+         prop_forest)
 
 
 # check that this worked by looking at the first few rows of data
 head(cows_cor)
 
-# correlation matrix - Pearson
+# correlation matrix - Pearson-
 chart.Correlation(cows_cor, 
                   histogram = TRUE, 
                   method = "pearson")

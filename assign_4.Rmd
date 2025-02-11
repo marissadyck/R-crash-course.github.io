@@ -1,7 +1,7 @@
 ---
 title: "Assignment 4"
-author: "Base R"
-date: "Due Tuesday February 18th @11:59pm"
+author: "GLMs"
+date: "Due Tuesday February 25th @11:59pm"
 output: 
   html_document:
     code_folding: show
@@ -11,18 +11,22 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, 
+knitr::opts_chunk$set(eval = TRUE, 
                       cache = TRUE)
 
 library(tidyverse)
 ```
 
+> NOTE THIS ASSIGNMENT IS STILL UNDER DEVELOPMENT, PLEASE DO NOT BEGIN UNTIL AFTER LAB 2/11 IS COMPLETED
 
-## Submission
+# Submission
 
-Brightspace/TBD   
+Submit you R script as a .R (or .Rmd if using markdown) file to Brightspace.
 
-## Grading
+> Please make sure your submission includes your name and the assignment number in the filename 
+
+
+# Grading
 
 > You should always be following best coding practices (see Intro to R module 1) but especially for assingment submissions.
 
@@ -36,6 +40,280 @@ To receive full credit for each assignment
 
 
 
-<center>
-![](images/construction_dog.jpeg){width=40%}
-</center>
+# Before you begin
+
+## Download data
+
+Make sure you have the [Bear glm example raw data (pagube_2008_2016_spatial.csv)](data/raw/pagube_2008_2016_spatial.csv) downloaded to the data/raw folder.  
+
+
+## Readme
+
+Open the [README](data/README.html) file for this data-set which is associated with [Pop et al., 2023](https://conbio.onlinelibrary.wiley.com/doi/full/10.1111/csp2.12884) and included in the full (GitHub repository)[https://github.com/marissadyck/Brown_bear_predation_RO] and read about the variables in the pagube_2008_2016_spatial.csv. 
+
+Make sure you understand what all the variables are and specifically which could be independent (explanatory) and dependent (response) variables. *HINT: there is more than one possible response variable* 
+
+# 1 Data import
+
+* First read in the data as a tibble and save it to the environment with a descriptive and tidy name of your choice   
+* In the same code chunk as you read the data in, set the column names to lowercase   
+* Also in that code chunk, specify how the variables should be read in (e.g. factor, numeric, etc.)   
+* Explore the data and make sure things read in properly, make any changes if necessary   
+
+
+
+```{r eval=FALSE, echo=FALSE}
+
+bear_damage <- read_csv('data/raw/pagube_2008_2016_spatial.csv',
+                        
+                        col_types = cols(Damage = col_factor(),
+                                         Year = col_factor(),
+                                         Month = col_factor(),
+                                         Targetspp = col_factor(),
+                                         Landcover_code = col_factor(),
+                                         .default = col_number())) %>% 
+  
+  rename_with(tolower)
+
+str(bear_damage)
+
+```
+# 2 Data cleaning
+
+This data has already been cleaned and checked for errors, but to give you some practice with data checking and cleaning I will have you complete the following steps:  
+
+* Check that there isn't any data for years outside the study specifications, if there are remove those observations  
+* Check that all entries appear coded correctly for month, if any are not remove those observations (0s are okay as these are associated with pseudo-absences)  
+* create a new variable (with an informative and tidy name of your choice) that sums all the proportional habitat type observations (e.g. prop_arable - prop_for_regen) and check that they all sum to 100, *if they don't filter out the observations that don't sum to 100 and assign this data as a new object to the environment with an informative and tidy name of your choice*     
+* also ensure that this new data set is filtered to only observations where 10 or fewer livestock were killed in an event 
+* ensure ALL original and new columns are present in this new data set 
+* when you are done, remove the old data set from the environment, you will use this new cleaned one for future analyses  
+
+```{r eval=FALSE, echo=FALSE}
+
+# check that year is correct
+summary(bear_damage$year)
+
+# check that month is correct 
+summary(bear_damage$month)
+
+# create new data with prop_check column and filter out observations that don't sum to 100
+bear_damage_tidy <- bear_damage %>% 
+  
+  mutate(prop_check = rowSums(across(contains('prop')))) %>% 
+  
+  # filter to 100 and only livestock events with 10 or fewer animals
+  filter(prop_check == 100 &
+           livestock_killed <= 10) 
+
+
+# check data
+summary(bear_damage_tidy)
+
+# remove old data
+rm(bear_damage)
+```
+
+
+
+# 3 Summary statistics
+
+Using your new data set, please calculate some summary statistics to report
+
+* Total number of events AND total number of livestock killed by brown bears across the entire study  
+* Total number of events of your response variable per livestock type, year, and month *provide comments that highlight which type, year, and month had the most and least number of events*  
+* Number of events of your response variable per livestock type for each year *provide comments that highlight which year had the most and least number of events for each livestock type*  
+
+
+```{r eval=FALSE, echo=FALSE}
+
+# total number of events 
+bear_damage_tidy %>% 
+  
+  # ensure to only count events of damage
+  filter(damage == '1') %>% 
+  
+  summarise(n = n())
+
+
+# total number of livestock killed
+bear_damage_tidy %>% 
+  
+  # ensure to only count events of damage
+  filter(damage == '1') %>% 
+  
+  summarise(total_killed = sum(livestock_killed))
+  
+  
+# damage per species
+bear_damage_tidy %>% 
+  
+  # ensure to only count events of damage
+  filter(damage == '1') %>% 
+  
+  # group by targetspp to get summaries for each species and year
+  group_by(targetspp) %>% 
+  
+  summarise(n = n())
+  
+
+# damage per year
+bear_damage_tidy %>% 
+  
+  # ensure to only count events of damage
+  filter(damage == '1') %>% 
+  
+  # group by targetspp to get summaries for each species and year
+  group_by(year) %>% 
+  
+  summarise(n = n()) %>% 
+  
+  arrange(desc(n))
+
+
+# damage per month
+bear_damage_tidy %>% 
+  
+  # ensure to only count events of damage
+  filter(damage == '1') %>% 
+  
+  # group by targetspp to get summaries for each species and year
+  group_by(month) %>% 
+  
+  summarise(n = n()) %>% 
+  
+  arrange(desc(n))
+
+
+# damage per livestock type per year
+bear_damage_tidy %>% 
+  
+  # ensure to only count events of damage
+  filter(damage == '1') %>% 
+  
+  # group by targetspp to get summaries for each species and year
+  group_by(targetspp, year) %>% 
+  
+  summarise(n = n()) %>% 
+  
+  arrange(desc(n))
+
+
+# 
+```
+
+
+# 4 Identify the response variable
+
+Once your data are cleaned and formatted please identify the response variable for your models *(There are two possible response variables)* 
+
+AND the appropriate distribution for your data *You'll need to provide some kind of code to show you looked at the response variable to choose the distribution* 
+
+```{r eval=FALSE, echo=FALSE}
+
+# damage is response variable and the appropriate distribution is binomial
+
+plot(bear_damage_tidy$damage)
+```
+
+
+# 5 Data exploration
+
+Then complete the data exploration steps below
+
+* Generate histograms of your potential explanatory variables and determine which are useful (provide annotation of why some are not useful) 
+* From the selected candidate response check for multicolinearity between variables and make note of which variables are highly correlated and the r2 value.  
+
+```{r eval=FALSE, echo=FALSE}
+
+# using purr
+bear_damage_tidy %>% 
+  
+  filter(damage == '1') %>% 
+  
+  select_if(is.numeric) %>% 
+  
+  # use imap which will retain both the data (x) and the variable names (y)
+  imap(~.x %>% 
+        
+         # use the hist function on the data from previous pipe
+        hist(.,
+             
+             # set the main title to y (each variable)
+             main = .y))
+
+
+summary(bear_damage_tidy)
+
+plot(bear_damage_tidy$landcover_code)
+```
+
+# 6 Data formatting
+
+Please add ONE additional variable (column) that is based on one or more of the variables already in the data. This must be an ecologically relevant variable, for example human_population divided by dist_to_town is not an ecologically relevant variable, but the binary hunting variable from the cows data where years prior to hunting ban were coded as '1' and years after hunting ban '0' is an ecologically relevant variable generated from the existing data. *You cannot use the hunting example as your variable, there are several possibilities here; you may want to use the information from your data exploration to inform this decision* 
+
+
+```{r eval=FALSE, echo=FALSE}
+
+bear_damage_tidy <-  bear_damage_tidy %>% 
+  
+  # add new column that groups all forest types 
+  mutate(prop_forest = rowSums(across(c(prop_coniferous, 
+                                      prop_deciduous,
+                                      prop_mixedforest))))
+
+
+summary(bear_damage_tidy$prop_forest)
+
+# view(bear_damage_tidy)
+  
+  
+```
+
+# 7 Fit some models
+
+Create a candidate set of 8-10 models that represent hypotheses about what variables may explain your chosen response and fit these to a glm with the appropriate distribution
+
+* Scale all numeric explanatory variables in your models  
+* One model must be a null model  
+* One model must include an interaction term AND have an appropriate analog model without an interaction term to compare the relevance of the interaction 
+* No global models (all non-correlated variables in one model)  
+
+**Ensure these don't include correlated variables and are not overparameterized**
+
+> Check that these models are fitting appropriately before proceeding to question 7
+
+```{r}
+
+```
+
+
+# 8 Model selection
+
+Perform model selection on your candidate set of models and identify the best fit model/s 
+
+```{r}
+
+```
+
+
+# 9 Interpret results
+
+In bullet-point format provide annotations (comments) that answer the following questions
+
+* Do you have a singular best-fit model and why or why not?  
+* Was the interaction term useful?  How do you know? 
+
+For your best-fit model (if you don't have an obvious singular model pick one of the competitive models) and answer the questions below for that model:   
+* What variable/s best explain the variation in your response? How do you know? 
+* Does your model appear to violate any assumptions of a glm and which? Why or why not? 
+* Is this model a good fit to the data? How do you know? 
+
+
+```{r}
+
+```
+
+# 10 Caveats
+
+In bullet-point format provide annotations (comments) that speak to possible factors of the data, modeling approach, etc. which could contribute to uncertainty with your model selection, fit, and how you could improve this analysis
