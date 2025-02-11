@@ -221,8 +221,8 @@ plot(bear_damage_tidy$damage)
 
 Then complete the data exploration steps below
 
-* Generate histograms of your potential explanatory variables and determine which are useful (provide annotation of why some are not useful) 
-* From the selected candidate response check for multicolinearity between variables and make note of which variables are highly correlated and the r2 value.  
+* Generate plots of your potential explanatory variables and determine which are useful (provide annotation of why some are not useful) 
+* From the selected candidate explanatory variables check for multicolinearity between variables and make note of which variables are highly correlated and the r2 value.  
 
 ```{r eval=FALSE, echo=FALSE}
 
@@ -276,10 +276,10 @@ Create a candidate set of 8-10 models that represent hypotheses about what varia
 
 * Scale all numeric explanatory variables in your models  
 * One model must be a null model  
-* One model must include an interaction term AND have an appropriate analog model without an interaction term to compare the relevance of the interaction 
+* One model must include an interaction term AND have an appropriate analog model without an interaction term to compare the relevance of the interaction  
 * No global models (all non-correlated variables in one model)  
 
-**Ensure these don't include correlated variables and are not overparameterized**
+**Ensure these don't include correlated variables and are not overparameterized** 
 
 > Check that these models are fitting appropriately before proceeding to question 7
 
@@ -296,24 +296,38 @@ Perform model selection on your candidate set of models and identify the best fi
 
 ```
 
+# 9 Check model assumptions
 
-# 9 Interpret results
+This section will vary depending on the response variable you chose, variables you included in your models, etc. So I'm not specifying particular code to run, re-visit the GLM lab and other stats resources if needed to ensure you've answered the following question adequately with both code and a written response
 
-In bullet-point format provide annotations (comments) that answer the following questions
 
-* Do you have a singular best-fit model and why or why not?  
-* Was the interaction term useful?  How do you know? 
+* Check if your model violates any assumptions  
+* For each assumption have a brief annotation explaining what you're testing and the conclusion you've drawn  
 
-For your best-fit model (if you don't have an obvious singular model pick one of the competitive models) and answer the questions below for that model:   
-* What variable/s best explain the variation in your response? How do you know? 
-* Does your model appear to violate any assumptions of a glm and which? Why or why not? 
-* Is this model a good fit to the data? How do you know? 
+> If your model appears to violate any assumptions you don't need to re-run it, just proceed  
+
+```{r}
+
+```
+
+
+# 10 Interpret results
+
+In bullet-point format provide annotations (comments) AND code (where necessary) that answer the following questions
+
+* Do you have a singular best-fit model and why or why not?    
+* Was the interaction term useful?  How do you know?  
+
+For your best-fit model (if you don't have an obvious singular model pick one of the competitive models) and answer the questions below for that model:    
+
+* What variable/s best explain the variation in your response? How do you know?   
+* Is this model a good fit to the data? How do you know?  
 
 
 ```{r}
 
 ```
 
-# 10 Caveats
+# 11 Caveats
 
 In bullet-point format provide annotations (comments) that speak to possible factors of the data, modeling approach, etc. which could contribute to uncertainty with your model selection, fit, and how you could improve this analysis

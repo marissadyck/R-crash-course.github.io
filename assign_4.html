@@ -604,12 +604,11 @@ choose the distribution</em></p>
 <h1>5 Data exploration</h1>
 <p>Then complete the data exploration steps below</p>
 <ul>
-<li>Generate histograms of your potential explanatory variables and
-determine which are useful (provide annotation of why some are not
-useful)</li>
-<li>From the selected candidate response check for multicolinearity
-between variables and make note of which variables are highly correlated
-and the r2 value.</li>
+<li>Generate plots of your potential explanatory variables and determine
+which are useful (provide annotation of why some are not useful)</li>
+<li>From the selected candidate explanatory variables check for
+multicolinearity between variables and make note of which variables are
+highly correlated and the r2 value.</li>
 </ul>
 </div>
 <div id="data-formatting" class="section level1">
@@ -637,7 +636,8 @@ with the appropriate distribution</p>
 </li>
 <li>One model must include an interaction term AND have an appropriate
 analog model without an interaction term to compare the relevance of the
-interaction</li>
+interaction<br />
+</li>
 <li>No global models (all non-correlated variables in one model)</li>
 </ul>
 <p><strong>Ensure these don’t include correlated variables and are not
@@ -652,10 +652,28 @@ to question 7</p>
 <p>Perform model selection on your candidate set of models and identify
 the best fit model/s</p>
 </div>
+<div id="check-model-assumptions" class="section level1">
+<h1>9 Check model assumptions</h1>
+<p>This section will vary depending on the response variable you chose,
+variables you included in your models, etc. So I’m not specifying
+particular code to run, re-visit the GLM lab and other stats resources
+if needed to ensure you’ve answered the following question adequately
+with both code and a written response</p>
+<ul>
+<li>Check if your model violates any assumptions<br />
+</li>
+<li>For each assumption have a brief annotation explaining what you’re
+testing and the conclusion you’ve drawn</li>
+</ul>
+<blockquote>
+<p>If your model appears to violate any assumptions you don’t need to
+re-run it, just proceed</p>
+</blockquote>
+</div>
 <div id="interpret-results" class="section level1">
-<h1>9 Interpret results</h1>
-<p>In bullet-point format provide annotations (comments) that answer the
-following questions</p>
+<h1>10 Interpret results</h1>
+<p>In bullet-point format provide annotations (comments) AND code (where
+necessary) that answer the following questions</p>
 <ul>
 <li>Do you have a singular best-fit model and why or why not?<br />
 </li>
@@ -663,14 +681,16 @@ following questions</p>
 </ul>
 <p>For your best-fit model (if you don’t have an obvious singular model
 pick one of the competitive models) and answer the questions below for
-that model:<br />
-* What variable/s best explain the variation in your response? How do
-you know? * Does your model appear to violate any assumptions of a glm
-and which? Why or why not? * Is this model a good fit to the data? How
-do you know?</p>
+that model:</p>
+<ul>
+<li>What variable/s best explain the variation in your response? How do
+you know?<br />
+</li>
+<li>Is this model a good fit to the data? How do you know?</li>
+</ul>
 </div>
 <div id="caveats" class="section level1">
-<h1>10 Caveats</h1>
+<h1>11 Caveats</h1>
 <p>In bullet-point format provide annotations (comments) that speak to
 possible factors of the data, modeling approach, etc. which could
 contribute to uncertainty with your model selection, fit, and how you
