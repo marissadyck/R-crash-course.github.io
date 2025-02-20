@@ -511,6 +511,18 @@ performed correctly (there are several ways to do this)</li>
 <li>In the same code chunk remove all rows with NAs</li>
 <li>Assign this new data to the environment as “turtles_no_na”</li>
 </ul>
+<pre class="r fold-hide"><code># code to read in turtles data from earlier
+turtles_no_na &lt;- read_csv(&#39;data/processed/turtles_tidy.csv&#39;) %&gt;% 
+  
+  # change sex to a factor
+  mutate(sex = as.factor(sex),
+         sex = recode(sex, 
+                       fem = &#39;female&#39;)) %&gt;% 
+  
+  # remove rows with NAs
+  na.omit()
+
+turtles_no_na</code></pre>
 <pre><code>## # A tibble: 15 × 5
 ##      tag sex    c_length h_width weight
 ##    &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
@@ -542,9 +554,26 @@ whereby</p>
 </ul>
 <p>(There are multiple ways to do this which is why there are multiple
 printouts, but they will yield the same answer)</p>
+<pre class="r fold-hide"><code>turtles_no_na &lt;- turtles_no_na %&gt;% 
+  mutate(size_class = case_when(
+    weight &lt; 4 ~ &#39;juvenile&#39;,
+    weight &gt; 7 ~ &#39;adult&#39;,
+    TRUE  ~ &#39;subadult&#39;
+  ))
+
+turtles_no_na$size_class</code></pre>
 <pre><code>##  [1] &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;    &quot;subadult&quot; &quot;adult&quot;    &quot;adult&quot;   
 ##  [7] &quot;subadult&quot; &quot;juvenile&quot; &quot;subadult&quot; &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;   
 ## [13] &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;</code></pre>
+<pre class="r fold-hide"><code># alternatively
+turtles_no_na &lt;- turtles_no_na %&gt;% 
+  mutate(size_class = case_when(
+    weight &lt; 4 ~ &#39;juvenile&#39;,
+    weight &gt; 7 ~ &#39;adult&#39;,
+    weight &gt;= 4 &amp; weight &lt;= 7 ~ &#39;subadult&#39;
+  ))
+
+turtles_no_na$size_class</code></pre>
 <pre><code>##  [1] &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;    &quot;subadult&quot; &quot;adult&quot;    &quot;adult&quot;   
 ##  [7] &quot;subadult&quot; &quot;juvenile&quot; &quot;subadult&quot; &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;   
 ## [13] &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;</code></pre>
@@ -558,6 +587,8 @@ last few rows only to show the change to tags 104 &amp; 105</em></p>
 <p><em>Hint you will need to create a vector for that identifies the tag
 numbers you want to replace and use <code>mutate()</code> with another
 function/s to do this</em></p>
+<pre class="r fold-hide"><code># read data
+turtles_tidy &lt;- read_csv(&#39;data/processed/turtles_tidy.csv&#39;)</code></pre>
 <pre><code>## Rows: 21 Columns: 5
 ## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
@@ -566,6 +597,25 @@ function/s to do this</em></p>
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r fold-hide"><code># list of tags we do not trust the data for
+bad_tags &lt;- c(104, 105)
+
+turtles_tidy &lt;- turtles_tidy %&gt;% 
+  mutate(
+    sex = replace(sex,
+                  tag %in% bad_tags,
+                  NA),
+    c_length = replace(c_length,
+                       tag %in% bad_tags,
+                       NA),
+    h_width = replace(h_width,
+                      tag %in% bad_tags,
+                      NA),
+    weight = replace(weight,
+                     tag %in% bad_tags,
+                     NA))
+
+tail(turtles_tidy)</code></pre>
 <pre><code>## # A tibble: 6 × 5
 ##     tag sex    c_length h_width weight
 ##   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
@@ -575,6 +625,17 @@ function/s to do this</em></p>
 ## 4     7 female     48      8.67  13.5 
 ## 5     1 &lt;NA&gt;       29.2    5.1    2.38
 ## 6   104 &lt;NA&gt;       NA     NA     NA</code></pre>
+<pre class="r fold-hide"><code># or... use some more tidyverse helper functions and tricks!
+
+
+turtles_tidy &lt;-turtles_tidy %&gt;% 
+  mutate(across(
+    c(&quot;sex&quot;,&quot;c_length&quot;,&quot;h_width&quot;, &quot;weight&quot;),
+    ~replace(.x,
+             tag %in% bad_tags,
+             NA)))
+
+tail(turtles_tidy)</code></pre>
 <pre><code>## # A tibble: 6 × 5
 ##     tag sex    c_length h_width weight
 ##   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
@@ -584,6 +645,37 @@ function/s to do this</em></p>
 ## 4     7 female     48      8.67  13.5 
 ## 5     1 &lt;NA&gt;       29.2    5.1    2.38
 ## 6   104 &lt;NA&gt;       NA     NA     NA</code></pre>
+<pre class="r fold-hide"><code># and without specifying all the columns
+turtles_tidy &lt;-turtles_tidy %&gt;% 
+  mutate(across(
+    .cols = -tag,
+    ~replace(.x,
+             tag %in% bad_tags,
+             NA)))
+
+# and finally without making a vector for the tags
+
+turtles_tidy %&gt;%
+  
+  # mutate across rows, except for the tag column
+  mutate(across(-tag, 
+                
+                # change all variables values for tags 104 and 105 to NAs 
+                ~ if_else(tag %in% c(104, 105), NA, .)))</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##      tag sex    c_length h_width weight
+##    &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+##  1    10 male       41      7.15   7.6 
+##  2    11 female     46.4    8.18  11   
+##  3     2 &lt;NA&gt;       24.3    4.42   1.65
+##  4    15 &lt;NA&gt;       28.7    4.89   2.18
+##  5    16 &lt;NA&gt;       32      5.37   3   
+##  6     3 female     42.8    7.32   8.6 
+##  7     4 male       40      6.6    6.5 
+##  8     5 female     45      8.05  10.9 
+##  9    12 female     44      7.55   8.9 
+## 10    13 &lt;NA&gt;       28      4.85   1.97
+## # ℹ 11 more rows</code></pre>
 </div>
 <div id="pivot-data" class="section level2">
 <h2>4 Pivot data</h2>
@@ -598,6 +690,8 @@ soil &lt;- carData::Soils    # load example data</code></pre>
 column called nutrients (again there are two possible solutions (really
 more than that but two I expect people to use))</p></li>
 </ul>
+<pre class="r fold-hide"><code>#See what variables it contains...
+head(soil)  </code></pre>
 <pre><code>##   Group Contour Depth Gp Block   pH     N Dens   P    Ca   Mg    K   Na Conduc
 ## 1     1     Top  0-10 T0     1 5.40 0.188 0.92 215 16.35 7.65 0.72 1.14   1.09
 ## 2     1     Top  0-10 T0     2 5.65 0.165 1.04 208 12.25 5.15 0.71 0.94   1.35
@@ -605,6 +699,14 @@ more than that but two I expect people to use))</p></li>
 ## 4     1     Top  0-10 T0     4 5.14 0.169 1.10 248 11.92 7.88 1.09 1.01   1.64
 ## 5     2     Top 10-30 T1     1 5.14 0.164 1.12 174 14.17 8.12 0.70 2.17   1.85
 ## 6     2     Top 10-30 T1     2 5.10 0.094 1.22 129  8.55 6.92 0.81 2.67   3.18</code></pre>
+<pre class="r fold-hide"><code># Use &#39;tidyverse&#39; to reshape the data 
+
+soil_nutrient &lt;- pivot_longer(soil, 
+                         cols = c(Ca,Mg,K, Na), 
+                         names_to = &#39;nutrient&#39;,
+                         values_to = &#39;value&#39;)
+
+soil_nutrient</code></pre>
 <pre><code>## # A tibble: 192 × 12
 ##    Group Contour Depth Gp    Block    pH     N  Dens     P Conduc nutrient value
 ##    &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
@@ -619,6 +721,13 @@ more than that but two I expect people to use))</p></li>
 ##  9 1     Top     0-10  T0    3      5.14 0.26   0.95   300   1.41 Ca       13.0 
 ## 10 1     Top     0-10  T0    3      5.14 0.26   0.95   300   1.41 Mg        5.68
 ## # ℹ 182 more rows</code></pre>
+<pre class="r fold-hide"><code># alternatively
+soil_nutrient &lt;- pivot_longer(soil, 
+                         cols = Ca:Na, 
+                         names_to = &#39;nutrient&#39;,
+                         values_to = &#39;value&#39;)
+
+soil_nutrient</code></pre>
 <pre><code>## # A tibble: 192 × 12
 ##    Group Contour Depth Gp    Block    pH     N  Dens     P Conduc nutrient value
 ##    &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
@@ -661,174 +770,82 @@ bobcat_collection_data AND then in the same code chunk join the
 bobcat_age_data as well. Make sure to retain all observations from the
 bobcat_collection_data. <em>You will need to use the bobcat_id column as
 the key when joining</em></p></li>
-<li><p>Print the summary of your data to check that it worked</p></li>
+<li><p>Print the summary of your data to check that it worked<br />
+```{recho=TRUE, class.source = ‘fold-hide’, message=FALSE}</p></li>
 </ul>
-<pre><code>## List of 3
-##  $ : spc_tbl_ [121 × 7] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
-##   ..$ bobcat_id     : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
-##   ..$ county        : chr [1:121] &quot;Athens&quot; &quot;Athens&quot; &quot;Morgan&quot; &quot;Perry&quot; ...
-##   ..$ township      : chr [1:121] &quot;Dover&quot; &quot;Canaan&quot; &quot;Hower&quot; &quot;Reading&quot; ...
-##   ..$ collectiondate: chr [1:121] &quot;12/30/18&quot; &quot;12/14/18&quot; &quot;12/7/18&quot; &quot;2/10/19&quot; ...
-##   ..$ month         : num [1:121] 12 12 12 2 1 3 2 2 2 3 ...
-##   ..$ coordinates_n : num [1:121] 39.4 39.3 39.5 39.8 40.4 ...
-##   ..$ coordinates_w : num [1:121] -82.1 -82 -82 -82.3 -81.2 ...
-##   ..- attr(*, &quot;spec&quot;)=
-##   .. .. cols(
-##   .. ..   `Bobcat_ID#` = col_character(),
-##   .. ..   County = col_character(),
-##   .. ..   Township = col_character(),
-##   .. ..   CollectionDate = col_character(),
-##   .. ..   Month = col_double(),
-##   .. ..   Coordinates_N = col_double(),
-##   .. ..   Coordinates_W = col_double()
-##   .. .. )
-##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
-##  $ : spc_tbl_ [121 × 14] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
-##   ..$ bobcat_id        : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
-##   ..$ necropsy         : num [1:121] 1 2 3 4 5 6 7 8 9 10 ...
-##   ..$ necropsydate     : chr [1:121] &quot;3/6/19&quot; &quot;3/9/19&quot; &quot;3/10/19&quot; &quot;3/13/19&quot; ...
-##   ..$ dissector        : chr [1:121] &quot;SP,_MD&quot; &quot;SP_MD_CH&quot; &quot;MD_CH&quot; &quot;MD_CH_HK&quot; ...
-##   ..$ approxage        : chr [1:121] &quot;Ad&quot; &quot;Ad&quot; &quot;Ad&quot; &quot;Juv&quot; ...
-##   ..$ sex              : chr [1:121] &quot;M&quot; &quot;F&quot; &quot;M&quot; &quot;F&quot; ...
-##   ..$ fecundity_females: chr [1:121] &quot;na&quot; &quot;na&quot; &quot;na&quot; &quot;0&quot; ...
-##   ..$ rearfoot_cm      : chr [1:121] &quot;17.9&quot; &quot;16&quot; &quot;17.1&quot; &quot;14.7&quot; ...
-##   ..$ tail_cm          : chr [1:121] &quot;11.5&quot; &quot;11.5&quot; &quot;11.4&quot; &quot;11.3&quot; ...
-##   ..$ ear_cm           : chr [1:121] &quot;6.5&quot; &quot;6.5&quot; &quot;6.4&quot; &quot;6.5&quot; ...
-##   ..$ body_w/tail_cm   : chr [1:121] &quot;89.5&quot; &quot;82&quot; &quot;92&quot; &quot;71.5&quot; ...
-##   ..$ body             : chr [1:121] &quot;78&quot; &quot;70.5&quot; &quot;80.6&quot; &quot;60.2&quot; ...
-##   ..$ weight_kg        : chr [1:121] &quot;13.6&quot; &quot;6.33&quot; &quot;9.98&quot; &quot;4.62&quot; ...
-##   ..$ condition        : chr [1:121] &quot;17.43589744&quot; &quot;8.978723404&quot; &quot;12.382134&quot; &quot;7.674418605&quot; ...
-##   ..- attr(*, &quot;spec&quot;)=
-##   .. .. cols(
-##   .. ..   `Bobcat_ID#` = col_character(),
-##   .. ..   Necropsy = col_double(),
-##   .. ..   NecropsyDate = col_character(),
-##   .. ..   Dissector = col_character(),
-##   .. ..   ApproxAge = col_character(),
-##   .. ..   Sex = col_character(),
-##   .. ..   Fecundity_Females = col_character(),
-##   .. ..   RearFoot_cm = col_character(),
-##   .. ..   Tail_cm = col_character(),
-##   .. ..   Ear_cm = col_character(),
-##   .. ..   `Body_w/Tail_cm` = col_character(),
-##   .. ..   Body = col_character(),
-##   .. ..   Weight_kg = col_character(),
-##   .. ..   Condition = col_character()
-##   .. .. )
-##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
-##  $ : spc_tbl_ [121 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
-##   ..$ bobcat_id: chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
-##   ..$ age      : chr [1:121] &quot;3&quot; &quot;1&quot; &quot;2&quot; &quot;0&quot; ...
-##   ..- attr(*, &quot;spec&quot;)=
-##   .. .. cols(
-##   .. ..   `Bobcat_ID#` = col_character(),
-##   .. ..   Age = col_character()
-##   .. .. )
-##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
-<pre><code>## List of 3
-##  $ : spc_tbl_ [121 × 7] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
-##   ..$ bobcat_id     : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
-##   ..$ county        : chr [1:121] &quot;Athens&quot; &quot;Athens&quot; &quot;Morgan&quot; &quot;Perry&quot; ...
-##   ..$ township      : chr [1:121] &quot;Dover&quot; &quot;Canaan&quot; &quot;Hower&quot; &quot;Reading&quot; ...
-##   ..$ collectiondate: chr [1:121] &quot;12/30/18&quot; &quot;12/14/18&quot; &quot;12/7/18&quot; &quot;2/10/19&quot; ...
-##   ..$ month         : num [1:121] 12 12 12 2 1 3 2 2 2 3 ...
-##   ..$ coordinates_n : num [1:121] 39.4 39.3 39.5 39.8 40.4 ...
-##   ..$ coordinates_w : num [1:121] -82.1 -82 -82 -82.3 -81.2 ...
-##   ..- attr(*, &quot;spec&quot;)=
-##   .. .. cols(
-##   .. ..   `Bobcat_ID#` = col_character(),
-##   .. ..   County = col_character(),
-##   .. ..   Township = col_character(),
-##   .. ..   CollectionDate = col_character(),
-##   .. ..   Month = col_double(),
-##   .. ..   Coordinates_N = col_double(),
-##   .. ..   Coordinates_W = col_double()
-##   .. .. )
-##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
-##  $ : spc_tbl_ [121 × 14] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
-##   ..$ bobcat_id        : chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
-##   ..$ necropsy         : num [1:121] 1 2 3 4 5 6 7 8 9 10 ...
-##   ..$ necropsydate     : chr [1:121] &quot;3/6/19&quot; &quot;3/9/19&quot; &quot;3/10/19&quot; &quot;3/13/19&quot; ...
-##   ..$ dissector        : chr [1:121] &quot;SP,_MD&quot; &quot;SP_MD_CH&quot; &quot;MD_CH&quot; &quot;MD_CH_HK&quot; ...
-##   ..$ approxage        : chr [1:121] &quot;Ad&quot; &quot;Ad&quot; &quot;Ad&quot; &quot;Juv&quot; ...
-##   ..$ sex              : chr [1:121] &quot;M&quot; &quot;F&quot; &quot;M&quot; &quot;F&quot; ...
-##   ..$ fecundity_females: chr [1:121] &quot;na&quot; &quot;na&quot; &quot;na&quot; &quot;0&quot; ...
-##   ..$ rearfoot_cm      : chr [1:121] &quot;17.9&quot; &quot;16&quot; &quot;17.1&quot; &quot;14.7&quot; ...
-##   ..$ tail_cm          : chr [1:121] &quot;11.5&quot; &quot;11.5&quot; &quot;11.4&quot; &quot;11.3&quot; ...
-##   ..$ ear_cm           : chr [1:121] &quot;6.5&quot; &quot;6.5&quot; &quot;6.4&quot; &quot;6.5&quot; ...
-##   ..$ body_w/tail_cm   : chr [1:121] &quot;89.5&quot; &quot;82&quot; &quot;92&quot; &quot;71.5&quot; ...
-##   ..$ body             : chr [1:121] &quot;78&quot; &quot;70.5&quot; &quot;80.6&quot; &quot;60.2&quot; ...
-##   ..$ weight_kg        : chr [1:121] &quot;13.6&quot; &quot;6.33&quot; &quot;9.98&quot; &quot;4.62&quot; ...
-##   ..$ condition        : chr [1:121] &quot;17.43589744&quot; &quot;8.978723404&quot; &quot;12.382134&quot; &quot;7.674418605&quot; ...
-##   ..- attr(*, &quot;spec&quot;)=
-##   .. .. cols(
-##   .. ..   `Bobcat_ID#` = col_character(),
-##   .. ..   Necropsy = col_double(),
-##   .. ..   NecropsyDate = col_character(),
-##   .. ..   Dissector = col_character(),
-##   .. ..   ApproxAge = col_character(),
-##   .. ..   Sex = col_character(),
-##   .. ..   Fecundity_Females = col_character(),
-##   .. ..   RearFoot_cm = col_character(),
-##   .. ..   Tail_cm = col_character(),
-##   .. ..   Ear_cm = col_character(),
-##   .. ..   `Body_w/Tail_cm` = col_character(),
-##   .. ..   Body = col_character(),
-##   .. ..   Weight_kg = col_character(),
-##   .. ..   Condition = col_character()
-##   .. .. )
-##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
-##  $ : spc_tbl_ [121 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
-##   ..$ bobcat_id: chr [1:121] &quot;5/18/01&quot; &quot;5/18/02&quot; &quot;58-18-03&quot; &quot;64-19-04&quot; ...
-##   ..$ age      : chr [1:121] &quot;3&quot; &quot;1&quot; &quot;2&quot; &quot;0&quot; ...
-##   ..- attr(*, &quot;spec&quot;)=
-##   .. .. cols(
-##   .. ..   `Bobcat_ID#` = col_character(),
-##   .. ..   Age = col_character()
-##   .. .. )
-##   ..- attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
-<pre><code>##   bobcat_id            county            township         collectiondate    
-##  Length:121         Length:121         Length:121         Length:121        
-##  Class :character   Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
-##                                                                             
-##                                                                             
-##                                                                             
-##      month        coordinates_n   coordinates_w       necropsy  
-##  Min.   : 1.000   Min.   :38.25   Min.   :-83.25   Min.   :  1  
-##  1st Qu.: 2.000   1st Qu.:39.25   1st Qu.:-82.38   1st Qu.: 31  
-##  Median : 3.000   Median :39.59   Median :-81.95   Median : 61  
-##  Mean   : 5.826   Mean   :39.58   Mean   :-81.95   Mean   : 61  
-##  3rd Qu.:11.000   3rd Qu.:39.97   3rd Qu.:-81.50   3rd Qu.: 91  
-##  Max.   :12.000   Max.   :40.68   Max.   :-80.89   Max.   :121  
-##  necropsydate        dissector          approxage             sex           
-##  Length:121         Length:121         Length:121         Length:121        
-##  Class :character   Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
-##                                                                             
-##                                                                             
-##                                                                             
-##  fecundity_females  rearfoot_cm          tail_cm             ear_cm         
-##  Length:121         Length:121         Length:121         Length:121        
-##  Class :character   Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
-##                                                                             
-##                                                                             
-##                                                                             
-##  body_w/tail_cm         body            weight_kg          condition        
-##  Length:121         Length:121         Length:121         Length:121        
-##  Class :character   Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
-##                                                                             
-##                                                                             
-##                                                                             
-##      age           
-##  Length:121        
-##  Class :character  
-##  Mode  :character  
-##                    
-##                    
-## </code></pre>
+</div>
+<div id="read-in-data-files" class="section level1">
+<h1>read in data files</h1>
+<p>bobcat_collection_data &lt;-
+read_csv(‘data/raw/bobcat_collection_data.csv’) %&gt;%</p>
+<p># set names to lowercase set_names( names(.) %&gt;% tolower())
+%&gt;%</p>
+<p># change bobcats id# to better name rename(., ‘bobcat_id’ =
+‘bobcat_id#’)</p>
+<p>bobcat_necropsy_only_data &lt;-
+read_csv(‘data/raw/bobcat_necropsy_only_data.csv’) %&gt;%</p>
+<p># set names to lowercase set_names( names(.) %&gt;% tolower())
+%&gt;%</p>
+<pre><code># change bobcats id# to better name
+  rename(.,
+         &#39;bobcat_id&#39; = &#39;bobcat_id#&#39;)</code></pre>
+<p>bobcat_age_data &lt;- read_csv(‘data/raw/bobcat_age_data.csv’)
+%&gt;%</p>
+<p># set names to lowercase set_names( names(.) %&gt;% tolower())
+%&gt;%</p>
+<pre><code># change bobcats id# to better name
+  rename(.,
+         &#39;bobcat_id&#39; = &#39;bobcat_id#&#39;)</code></pre>
+</div>
+<div id="or-simpler-code" class="section level1">
+<h1>or simpler code</h1>
+</div>
+<div id="read-in-data-files-1" class="section level1">
+<h1>read in data files</h1>
+<p>bobcat_collection_data &lt;-
+read_csv(‘data/raw/bobcat_collection_data.csv’) %&gt;%</p>
+<p># set names to lowercase rename_all(tolower) %&gt;%</p>
+<p># change bobcats id# to better name rename(., ‘bobcat_id’ =
+‘bobcat_id#’)</p>
+<p>bobcat_necropsy_only_data &lt;-
+read_csv(‘data/raw/bobcat_necropsy_only_data.csv’) %&gt;%</p>
+<p># set names to lowercase rename_all(tolower) %&gt;%</p>
+<pre><code># change bobcats id# to better name
+  rename(.,
+         &#39;bobcat_id&#39; = &#39;bobcat_id#&#39;)</code></pre>
+<p>bobcat_age_data &lt;- read_csv(‘data/raw/bobcat_age_data.csv’)
+%&gt;%</p>
+<p># set names to lowercase rename_all(tolower) %&gt;%</p>
+<pre><code># change bobcats id# to better name
+  rename(.,
+         &#39;bobcat_id&#39; = &#39;bobcat_id#&#39;)</code></pre>
+</div>
+<div id="make-a-list-and-check-internal-structure"
+class="section level1">
+<h1>make a list and check internal structure</h1>
+</div>
+<div id="option-1---nested-code" class="section level1">
+<h1>option 1 - nested code</h1>
+<p>str(list(bobcat_collection_data, bobcat_necropsy_only_data,
+bobcat_age_data))</p>
+</div>
+<div id="option-2---with-dplyr" class="section level1">
+<h1>option 2 - with dplyr</h1>
+<p>list(bobcat_collection_data, bobcat_necropsy_only_data,
+bobcat_age_data) %&gt;%</p>
+<p>str(.)</p>
+</div>
+<div id="join-data-1" class="section level1">
+<h1>join data</h1>
+<p>bobcat_data_joined &lt;- bobcat_collection_data %&gt;%</p>
+<p># join necropsy data left_join(bobcat_necropsy_only_data, by =
+‘bobcat_id’) %&gt;%</p>
+<p># join age data left_join(bobcat_age_data, by = ‘bobcat_id’)</p>
+</div>
+<div id="print-summary" class="section level1">
+<h1>print summary</h1>
+<p>summary(bobcat_data_joined)</p>
+<p>```</p>
 </div>
 
 

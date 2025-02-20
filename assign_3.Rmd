@@ -52,7 +52,7 @@ To receive full credit for each assignment
 - In the same code chunk remove all rows with NAs
 - Assign this new data to the environment as "turtles_no_na" 
 
-```{r echo=FALSE, message=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide', message=FALSE}
 
 # code to read in turtles data from earlier
 turtles_no_na <- read_csv('data/processed/turtles_tidy.csv') %>% 
@@ -78,7 +78,7 @@ Using the turtles_no_na data, make a new variable called "size_class" based on t
 * weights between 4 and 7 are subadult
 
 (There are multiple ways to do this which is why there are multiple printouts, but they will yield the same answer)
-```{r echo=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide'}
 
 turtles_no_na <- turtles_no_na %>% 
   mutate(size_class = case_when(
@@ -105,7 +105,7 @@ turtles_no_na$size_class
 In the **turtles_tidy data** (*not the turtles_no_na data*) replace ALL variable values (except the tag column) for tags 104 and 105 with NAs. *To compare your answer, I have printed the last few rows only to show the change to tags 104 & 105*  
 
 *Hint you will need to create a vector for that identifies the tag numbers you want to replace and use `mutate()` with another function/s to do this*
-```{r echo=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide'}
 
 # read data
 turtles_tidy <- read_csv('data/processed/turtles_tidy.csv')
@@ -142,6 +142,25 @@ turtles_tidy <-turtles_tidy %>%
 
 tail(turtles_tidy)
 
+
+# and without specifying all the columns
+turtles_tidy <-turtles_tidy %>% 
+  mutate(across(
+    .cols = -tag,
+    ~replace(.x,
+             tag %in% bad_tags,
+             NA)))
+
+# and finally without making a vector for the tags
+
+turtles_tidy %>%
+  
+  # mutate across rows, except for the tag column
+  mutate(across(-tag, 
+                
+                # change all variables values for tags 104 and 105 to NAs 
+                ~ if_else(tag %in% c(104, 105), NA, .)))
+
 ```
 
 ## 4 Pivot data
@@ -155,7 +174,7 @@ soil <- carData::Soils    # load example data
 * print the first few lines of data in "soil"
 
 * Pivot the data so that columns Ca - Na are contained in one column called nutrients (again there are two possible solutions (really more than that but two I expect people to use))
-```{r echo=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide'}
 
 #See what variables it contains...
 head(soil)  
@@ -198,7 +217,7 @@ If you haven't already download the 3 bobcat data files
 - Join the bobcat_necropsy_only_data **to** the bobcat_collection_data AND then in the same code chunk join the bobcat_age_data as well. Make sure to retain all observations from the bobcat_collection_data. *You will need to use the bobcat_id column as the key when joining*   
 
 - Print the summary of your data to check that it worked   
-```{r echo=FALSE, message=FALSE}
+```{recho=TRUE, class.source = 'fold-hide', message=FALSE}
 
 # read in data files
 bobcat_collection_data <- read_csv('data/raw/bobcat_collection_data.csv') %>% 
