@@ -8,3 +8,6 @@ dplyr
 stringr
 forcats
 lubridate
+Matrix
+lme4
+MuMIn

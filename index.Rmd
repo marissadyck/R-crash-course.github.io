@@ -85,7 +85,7 @@ Okay, now we're ready to go!
 
 
 ```{r echo=FALSE}
-rmd2rscript <- function(infile="mod_2_glm.Rmd"){    # function for converting markdown to scripts
+rmd2rscript <- function(infile="mod_3_glmm.Rmd"){    # function for converting markdown to scripts
   outfile1 <- gsub(".Rmd",".R",infile)
   outfile2 <- gsub(".Rmd",".txt",infile)
   close( file( outfile1, open="w" ) )   # clear output file
@@ -151,6 +151,7 @@ rmd2rscript2("mod_1_plots_baseR.Rmd")
 rmd2rscript2("mod_2_ggplot.Rmd")
 
 rmd2rscript2("mod_2_glm.Rmd")
+rmd2rscript2("mod_3_glmm.Rmd")
 rmd2rscript2("mod_5_purrr.Rmd")
 
 ## TODO: make sure there are pdf copies of all the modules... 

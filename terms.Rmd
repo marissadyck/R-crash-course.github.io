@@ -40,9 +40,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 **Files** - You can view, access, rename, delete, etc. files from your computer. This panel by default shows you files in your current working directory. It is also one of multiple panels in the bottom right window.
 
+**Fixed effects** - Are things we have measured that we expect to influence our observations in some predictable way (i.e. independent/explanatory variables).   
+
 **For-loops** - A way to execute a set of statements for multiple objects.
 
 **Function** - Objects that contain multiple interrelated statements that are run together in a predefined order. 
+
+**Generalized linear mixed effects models** - GLMMs or sometimes referred to as hierarchical models, and extension of GLMS that allow you to model dependence among correlated observations through the use of random (mixed) effect terms.  
 
 **Geometric objects** - Are elements that we mark on the plot (e.g., points, lines, bars).  
 
@@ -87,6 +91,8 @@ knitr::opts_chunk$set(echo = TRUE)
 **Plots** - This panel is where you can view plots you have created and export them (although there are better ways). By default this is the second panel in the bottom right window.
 
 **Poisson distribution** - A probability distribution that represents how many times an event is likely to occur over a period of time (discrete data).
+
+**Random effects** - 
 
 **R documentation** - Files that explain the usage, arguments, and include examples for various R functions, packages, and data.
 

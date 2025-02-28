@@ -439,9 +439,6 @@ div.tocify {
   <a href="links.html">Links</a>
 </li>
 <li>
-  <a href="surveys.html">Surveys</a>
-</li>
-<li>
   <a href="terms.html">Terms</a>
 </li>
       </ul>
@@ -470,9 +467,622 @@ div.tocify {
 </div>
 
 
+<div id="materials" class="section level1">
+<h1>Materials</h1>
+<div id="scripts" class="section level2">
+<h2>Scripts</h2>
+<ol style="list-style-type: decimal">
+<li><p>Click <a href="mod_3_glmm.R">here</a> to download the script!
+Save the script to the ‘scripts’’ folder in your project directory you
+set up in the previous module.</p></li>
+<li><p>Load your script in RStudio. To do this, open RStudio and click
+the <strong>files</strong> window and select the scripts folder and then
+this script.</p></li>
+</ol>
+</div>
+<div id="cheat-sheets" class="section level2">
+<h2>Cheat sheets</h2>
+<p>There are no cheat sheets specific to this module but don’t forget
+the ones you’ve already printed for previous modules!</p>
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>For this module we will continue to work with the cows data from the
+brown bear conflict data set which should be in the data/raw folder</p>
+<p>You can check out this <a href="data/README.html">README file from
+the Githup repository</a> to learn more about the data, the data you are
+working with is <em>slightly</em> different from the data in this
+repository but this will give you a general understanding of the
+variables and practice with reading/interpreting information from a
+README file.</p>
+</div>
+</div>
+<div id="overview-of-glmm" class="section level1">
+<h1>Overview of GLMM</h1>
+<p><strong>Generalized linear mixed effects models</strong> (GLMMs) are
+an extension of GLMs that allow you to model dependence among correlated
+observations through the use of random (mixed) effect terms.</p>
+<div id="random-effects" class="section level2">
+<h2>Random effects</h2>
+<p>Recall, with GLMs we model some observed response variable as a
+function of several other measured variables. These are called
+<strong>fixed effects</strong> (e.g., independent/explanatory variables)
+and are things we have measured that we expect to influence our
+observations in some predictable way.</p>
+<p><strong>Random effects</strong> on the other hand, represent a
+variable or potential levels within our population that may cause
+variability between groups but that we often haven’t measured/can’t
+directly. Study design often plays a role in determining the
+need/identifying potential random effects. If you have observations that
+are likely to be more similar to one another than the rest of the
+populations (due to proximity, date of collection, etc) you may want
+to/need to use a <strong>random effect</strong> term to account for this
+variation.</p>
+<p>For example, in the livestock bear damage data, livestock damage was
+collected across years. We might suspect that observations within each
+year are more similar to one another (are correlated) than observations
+in other years. This could be due to year variations in climate,
+wildlife demographics, human influence, etc. but we couldn’t measure all
+of these things so instead we can introduce a <strong>random
+effect</strong> into our models to account for this dependence if it
+exists.</p>
+</div>
+<div id="how-do-random-effects-affect-a-model" class="section level2">
+<h2>How do random effects affect a model</h2>
+<p>When you run a GLM without a <strong>random effect</strong> the only
+source of error for the fixed effects is the random error within a
+study. However, when you add a <strong>random effect</strong> there are
+now more (at least two) sources of error to account for, the
+within-study variability and between-group variability. Thus confidence
+intervals for population-level (the whole study) <strong>fixed
+effects</strong> will generally be wider - representing a more
+conservative estimate of the effect of each variable.</p>
+</div>
+<div id="incorporating-random-effects-into-a-model-framework"
+class="section level2">
+<h2>Incorporating random effects into a model framework</h2>
+<p>There are two ways you can incorporate random effects into your model
+framework,</p>
+<ol style="list-style-type: decimal">
+<li>Random intercept model</li>
+<li>Random slope model</li>
+</ol>
+<div id="random-intercept" class="section level3">
+<h3>Random intercept</h3>
+<p>A random intercept allows the baseline level of the response variable
+to vary across groups.</p>
+</div>
+<div id="random-slope" class="section level3">
+<h3>Random slope</h3>
+<p>A random slope allows the effect of a predictor variable to vary
+across groups.</p>
+<blockquote>
+<p>You can also model both a random slope and random intercept in your
+model</p>
+</blockquote>
+<p>The figure below is quite helfpul to illustrate this, from</p>
+<p>Fernée, Christianne &amp; Trimmis, Konstantinos. (2021). Detecting
+variability: A study on the application of bayesian multilevel modelling
+to archaeological data. Evidence from the Neolithic Adriatic and the
+Bronze Age Aegean. Journal of Archaeological Science. 128.
+10.1016/j.jas.2021.105346.</p>
 <center>
-<img src="images/construction_dog.jpeg" style="width:40.0%" />
-</center>
+<p><img src="images/random_effects.png" /></p>
+</div>
+</div>
+</div>
+<div id="code-for-random-effects" class="section level1">
+<h1>Code for random effects</h1>
+<p>Now let’s look at how we alter the code for a basic glm to include
+<strong>random effect/s</strong>.</p>
+<p>First read in the cows data file</p>
+<pre class="r"><code># Data ----------------------
+
+# Read in data for this module
+
+cows &lt;- read_csv(&#39;data/raw/cows.csv&#39;,
+                 
+                 col_types = cols(Damage = col_factor(),
+                                  Year = col_factor(),
+                                  Month = col_factor(),
+                                  Targetspp = col_factor(),
+                                  Hunting = col_factor(),
+                                  .default = col_number())) %&gt;% 
+  
+  rename_with(tolower)
+
+# check data structure
+str(cows)</code></pre>
+<pre><code>## spc_tbl_ [1,639 × 35] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ ...1               : num [1:1639] 1 2 3 4 5 6 7 8 9 10 ...
+##  $ damage             : Factor w/ 2 levels &quot;1&quot;,&quot;0&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ year               : Factor w/ 9 levels &quot;2012&quot;,&quot;2014&quot;,..: 1 2 1 3 1 2 1 2 1 3 ...
+##  $ month              : Factor w/ 11 levels &quot;10&quot;,&quot;9&quot;,&quot;6&quot;,&quot;8&quot;,..: 1 2 1 3 2 3 4 2 2 3 ...
+##  $ targetspp          : Factor w/ 1 level &quot;bovine&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ point_x            : num [1:1639] 503840 513946 514079 514792 516028 ...
+##  $ point_y            : num [1:1639] 559354 564975 556360 546860 558289 ...
+##  $ ptx                : num [1:1639] 503870 513946 514099 514859 516092 ...
+##  $ pty                : num [1:1639] 559440 565000 556427 546908 558339 ...
+##  $ bear_abund         : num [1:1639] 34 42 34 43 34 32 34 42 34 34 ...
+##  $ landcover_code     : num [1:1639] 243 243 321 211 231 231 231 321 321 242 ...
+##  $ altitude           : num [1:1639] 866 748 799 807 969 ...
+##  $ human_population   : num [1:1639] 0 0 30 98 14 0 0 0 0 45 ...
+##  $ dist_to_forest     : num [1:1639] 319 122 135 590 106 ...
+##  $ dist_to_town       : num [1:1639] 1400 2663 1034 436 733 ...
+##  $ livestock_killed   : num [1:1639] 1 1 1 1 1 1 2 2 1 1 ...
+##  $ numberdamageperplot: num [1:1639] 1 1 1 1 1 1 51 2 1 1 ...
+##  $ shannondivindex    : num [1:1639] 1.278 0.762 1.382 1.449 1.429 ...
+##  $ prop_arable        : num [1:1639] 0 0 5.58 23.78 29.15 ...
+##  $ prop_orchards      : num [1:1639] 0 0 0 0 0 0 0 0 0 0 ...
+##  $ prop_pasture       : num [1:1639] 35.8 2.69 1.14 8.64 10.79 ...
+##  $ prop_ag_mosaic     : num [1:1639] 8.81 0 15.03 0 9.67 ...
+##  $ prop_seminatural   : num [1:1639] 42.2 35.5 29.2 23.8 4.1 ...
+##  $ prop_deciduous     : num [1:1639] 10.55 61.77 5.72 36.81 43.11 ...
+##  $ prop_coniferous    : num [1:1639] 0 0 0 0 0 ...
+##  $ prop_mixedforest   : num [1:1639] 0 0 0 0 0 ...
+##  $ prop_grassland     : num [1:1639] 0 0 43.33 0 3.17 ...
+##  $ prop_for_regen     : num [1:1639] 0 0 0 0 0 ...
+##  $ landcover_2        : num [1:1639] 240 240 231 210 231 231 231 231 231 240 ...
+##  $ prop_natural       : num [1:1639] 42.2 35.5 29.2 23.8 4.1 ...
+##  $ prop_ag            : num [1:1639] 8.81 0 20.61 23.78 38.83 ...
+##  $ prop_gras          : num [1:1639] 35.8 2.69 44.48 8.64 13.96 ...
+##  $ hunting            : Factor w/ 2 levels &quot;1&quot;,&quot;0&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ prop_open          : num [1:1639] 35.8 2.69 44.48 8.64 13.96 ...
+##  $ prop_forest        : num [1:1639] 10.55 61.77 5.72 36.81 43.11 ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   .default = col_number(),
+##   ..   ...1 = col_number(),
+##   ..   Damage = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   Year = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   Month = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   Targetspp = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   POINT_X = col_number(),
+##   ..   POINT_Y = col_number(),
+##   ..   PTX = col_number(),
+##   ..   PTY = col_number(),
+##   ..   Bear_abund = col_number(),
+##   ..   Landcover_code = col_number(),
+##   ..   Altitude = col_number(),
+##   ..   Human_population = col_number(),
+##   ..   Dist_to_forest = col_number(),
+##   ..   Dist_to_town = col_number(),
+##   ..   Livestock_killed = col_number(),
+##   ..   Numberdamageperplot = col_number(),
+##   ..   ShannonDivIndex = col_number(),
+##   ..   prop_arable = col_number(),
+##   ..   prop_orchards = col_number(),
+##   ..   prop_pasture = col_number(),
+##   ..   prop_ag_mosaic = col_number(),
+##   ..   prop_seminatural = col_number(),
+##   ..   prop_deciduous = col_number(),
+##   ..   prop_coniferous = col_number(),
+##   ..   prop_mixedforest = col_number(),
+##   ..   prop_grassland = col_number(),
+##   ..   prop_for_regen = col_number(),
+##   ..   Landcover_2 = col_number(),
+##   ..   Prop_natural = col_number(),
+##   ..   Prop_ag = col_number(),
+##   ..   Prop_gras = col_number(),
+##   ..   Hunting = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+##   ..   Prop_open = col_number(),
+##   ..   Prop_forest = col_number()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<div id="random-intercept-1" class="section level2">
+<h2>Random intercept</h2>
+<p>Now let’s alter the code for the glm in the last module to include a
+random intercept</p>
+<div id="code" class="section level3">
+<h3>Code</h3>
+<p>First we have to use a different function from the <em>lme4</em>
+package, <code>glmer()</code> allows for random effects</p>
+<pre class="r"><code># GLMM ----------------------
+
+# run a global GLM which includes all variables not highly correlated including a random intercept
+cows_global_ri &lt;- glmer(damage ~ altitude +
+                    bear_abund + 
+                     dist_to_forest + 
+                     dist_to_town +
+                     prop_ag +
+                     prop_open +
+                     shannondivindex +
+                     
+                     # random intercept for year
+                   (1|year),
+                   
+                   data = cows, 
+                   family = binomial
+                   )
+
+summary(cows_global_ri)</code></pre>
+<pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace
+##   Approximation) [glmerMod]
+##  Family: binomial  ( logit )
+## Formula: damage ~ altitude + bear_abund + dist_to_forest + dist_to_town +  
+##     prop_ag + prop_open + shannondivindex + (1 | year)
+##    Data: cows
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   1631.6   1680.2   -806.8   1613.6     1630 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.3210 -0.2666  0.3749  0.6006  1.5370 
+## 
+## Random effects:
+##  Groups Name        Variance Std.Dev.
+##  year   (Intercept) 0.1533   0.3916  
+## Number of obs: 1639, groups:  year, 9
+## 
+## Fixed effects:
+##                   Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)      3.353e+00  3.853e-01   8.702  &lt; 2e-16 ***
+## altitude        -8.609e-04  3.042e-04  -2.830 0.004648 ** 
+## bear_abund      -1.481e-02  3.783e-03  -3.916 9.02e-05 ***
+## dist_to_forest   1.154e-03  2.201e-04   5.242 1.59e-07 ***
+## dist_to_town     1.223e-04  4.145e-05   2.950 0.003183 ** 
+## prop_ag         -1.238e-02  4.245e-03  -2.916 0.003549 ** 
+## prop_open       -3.180e-02  3.517e-03  -9.042  &lt; 2e-16 ***
+## shannondivindex -6.246e-01  1.842e-01  -3.390 0.000699 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) altitd br_bnd dst_t_f dst_t_t prop_g prp_pn
+## altitude    -0.575                                            
+## bear_abund  -0.263 -0.018                                     
+## dist_t_frst -0.033 -0.006  0.023                              
+## dist_to_twn -0.112 -0.463 -0.074  0.043                       
+## prop_ag     -0.217  0.159 -0.038 -0.568   0.156               
+## prop_open   -0.238  0.023  0.027 -0.264   0.121   0.321       
+## shannndvndx -0.513 -0.025 -0.067  0.102   0.319  -0.124 -0.121
+## fit warnings:
+## Some predictor variables are on very different scales: consider rescaling
+## optimizer (Nelder_Mead) convergence code: 0 (OK)
+## Model failed to converge with max|grad| = 1.17077 (tol = 0.002, component 1)
+## Model is nearly unidentifiable: very large eigenvalue
+##  - Rescale variables?
+## Model is nearly unidentifiable: large eigenvalue ratio
+##  - Rescale variables?</code></pre>
+<blockquote>
+<p>You will notice we get a warning message, why is this?</p>
+</blockquote>
+</div>
+<div id="scale-variables" class="section level3">
+<h3>Scale variables</h3>
+<p>We didn’t scale are variables, random effects models are more
+sensitive to variables on different scales and recall from GLMs
+interpreting the effect size (importance) of variables on different
+scales isn’t possible.</p>
+<p>So we need to scale our data, we can either do this directly in the
+model or mutate the columns. We caled directly in the model last modeul,
+so I’ll do an example where we scale the data before instead</p>
+<pre class="r"><code># generate new data or overwrite earlier data
+cows_scaled &lt;- cows %&gt;% 
+  
+  mutate_if(is.numeric,
+            scale)
+
+head(cows_scaled)</code></pre>
+<pre><code>## # A tibble: 6 × 35
+##   ...1[,1] damage year  month targetspp point_x[,1] point_y[,1] ptx[,1] pty[,1]
+##      &lt;dbl&gt; &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;           &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1    -1.73 1      2012  10    bovine          -1.73       0.806   -2.15   0.801
+## 2    -1.73 1      2014  9     bovine          -1.47       0.938   -1.76   0.962
+## 3    -1.73 1      2012  10    bovine          -1.47       0.735   -1.76   0.713
+## 4    -1.72 1      2009  6     bovine          -1.45       0.511   -1.73   0.437
+## 5    -1.72 1      2012  9     bovine          -1.42       0.780   -1.68   0.769
+## 6    -1.72 1      2014  6     bovine          -1.40       0.293   -1.65   0.169
+## # ℹ 26 more variables: bear_abund &lt;dbl[,1]&gt;, landcover_code &lt;dbl[,1]&gt;,
+## #   altitude &lt;dbl[,1]&gt;, human_population &lt;dbl[,1]&gt;, dist_to_forest &lt;dbl[,1]&gt;,
+## #   dist_to_town &lt;dbl[,1]&gt;, livestock_killed &lt;dbl[,1]&gt;,
+## #   numberdamageperplot &lt;dbl[,1]&gt;, shannondivindex &lt;dbl[,1]&gt;,
+## #   prop_arable &lt;dbl[,1]&gt;, prop_orchards &lt;dbl[,1]&gt;, prop_pasture &lt;dbl[,1]&gt;,
+## #   prop_ag_mosaic &lt;dbl[,1]&gt;, prop_seminatural &lt;dbl[,1]&gt;,
+## #   prop_deciduous &lt;dbl[,1]&gt;, prop_coniferous &lt;dbl[,1]&gt;, …</code></pre>
+<p>Now we will re-run the code from above</p>
+<pre class="r"><code># run a global GLM which includes all variables not highly correlated including a random intercept
+cows_global_ri &lt;- glmer(damage ~ altitude +
+                    bear_abund + 
+                     dist_to_forest + 
+                     dist_to_town +
+                     prop_ag +
+                     prop_open +
+                     shannondivindex +
+                     
+                     # random intercept for year
+                   (1|year),
+                   
+                   data = cows_scaled, 
+                   family = binomial
+                   )
+
+summary(cows_global_ri)</code></pre>
+<pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace
+##   Approximation) [glmerMod]
+##  Family: binomial  ( logit )
+## Formula: damage ~ altitude + bear_abund + dist_to_forest + dist_to_town +  
+##     prop_ag + prop_open + shannondivindex + (1 | year)
+##    Data: cows_scaled
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   1631.6   1680.2   -806.8   1613.6     1630 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.3210 -0.2666  0.3749  0.6006  1.5370 
+## 
+## Random effects:
+##  Groups Name        Variance Std.Dev.
+##  year   (Intercept) 0.1533   0.3916  
+## Number of obs: 1639, groups:  year, 9
+## 
+## Fixed effects:
+##                 Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)      1.50849    0.15795   9.550  &lt; 2e-16 ***
+## altitude        -0.23609    0.08340  -2.831 0.004644 ** 
+## bear_abund      -0.25788    0.06586  -3.915 9.03e-05 ***
+## dist_to_forest   1.06435    0.20310   5.241 1.60e-07 ***
+## dist_to_town     0.27998    0.09492   2.950 0.003180 ** 
+## prop_ag         -0.31021    0.10633  -2.918 0.003528 ** 
+## prop_open       -0.59738    0.06602  -9.048  &lt; 2e-16 ***
+## shannondivindex -0.26148    0.07704  -3.394 0.000689 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) altitd br_bnd dst_t_f dst_t_t prop_g prp_pn
+## altitude    -0.068                                            
+## bear_abund  -0.062 -0.018                                     
+## dist_t_frst  0.244 -0.006  0.023                              
+## dist_to_twn  0.070 -0.463 -0.075  0.045                       
+## prop_ag     -0.093  0.160 -0.038 -0.567   0.156               
+## prop_open   -0.150  0.025  0.027 -0.265   0.116   0.321       
+## shannndvndx -0.072 -0.023 -0.067  0.102   0.315  -0.124 -0.123</code></pre>
+</div>
+<div id="interpret" class="section level3">
+<h3>Interpret</h3>
+<p>Now let’s look at what information we get from the summary under the
+random effects:</p>
+<p>This will print our random effect term, specify how we modeled that
+random effect (intercept or slope) and some statistics we can
+interpret/report</p>
+<ul>
+<li>Variance : reports the variation in intercepts across year<br />
+</li>
+<li>Std.Dev : standard deviation of the estimate on the log-odds
+scale</li>
+</ul>
+<blockquote>
+<p>High variance means that the response variable varies substantially
+between years - ours is close to 0 so likely not contributing a lot</p>
+</blockquote>
+<p>We can also calculate a pseudo r2 values (some packages may print
+this in the summary) using the <em>MuMIn</em> pacakge.</p>
+<pre class="r"><code>r.squaredGLMM(cows_global_ri)</code></pre>
+<pre><code>##                   R2m       R2c
+## theoretical 0.3271873 0.3571481
+## delta       0.2286465 0.2495839</code></pre>
+<p>This prints two values (marignal and conditional r2) for two
+different calculations of r2 (theoretical and delta)</p>
+<p>The marginal r2 (first value R2m) reports the variance explained by
+fixed effects - in our case 32.7%</p>
+<p>The conditional (second value R2c) reports the variance explained by
+the full model (fixed and random effects) - in our case 35.7%</p>
+<blockquote>
+<p>Since the conditional R2 is not much higher than the marginal, our
+random effect is not explaining much additional variance</p>
+</blockquote>
+<p><em>You can also plot the random effects similar to fixed effects to
+visualize this difference</em></p>
+</div>
+</div>
+<div id="random-slope-1" class="section level2">
+<h2>Random slope</h2>
+<p>To include a random slope we need a numeric variable that we expect
+to differ year-to-year</p>
+<pre class="r"><code># run a global GLM which includes all variables not highly correlated including a random intercept
+cows_global_rs &lt;- glmer(damage ~ 
+                    bear_abund + 
+                     dist_to_forest + 
+                     dist_to_town +
+                     prop_ag +
+                     prop_open +
+                     shannondivindex +
+                     
+                     # random slope each year (0 indicates no random intercept)
+                   (0 + altitude | year),
+                   
+                   data = cows_scaled, 
+                   family = binomial
+                   )
+
+summary(cows_global_rs)</code></pre>
+<pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace
+##   Approximation) [glmerMod]
+##  Family: binomial  ( logit )
+## Formula: damage ~ bear_abund + dist_to_forest + dist_to_town + prop_ag +  
+##     prop_open + shannondivindex + (0 + altitude | year)
+##    Data: cows_scaled
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   1617.3   1660.5   -800.7   1601.3     1631 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.6058 -0.2787  0.3654  0.5877  1.7256 
+## 
+## Random effects:
+##  Groups Name     Variance Std.Dev.
+##  year   altitude 0.4143   0.6436  
+## Number of obs: 1639, groups:  year, 9
+## 
+## Fixed effects:
+##                 Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)      1.43480    0.07989  17.959  &lt; 2e-16 ***
+## bear_abund      -0.25444    0.06729  -3.781 0.000156 ***
+## dist_to_forest   1.09121    0.20282   5.380 7.44e-08 ***
+## dist_to_town     0.28388    0.09412   3.016 0.002560 ** 
+## prop_ag         -0.27387    0.10731  -2.552 0.010710 *  
+## prop_open       -0.58631    0.06627  -8.847  &lt; 2e-16 ***
+## shannondivindex -0.25731    0.07777  -3.309 0.000937 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) br_bnd dst_t_f dst_t_t prop_g prp_pn
+## bear_abund  -0.167                                     
+## dist_t_frst  0.475  0.022                              
+## dist_to_twn  0.100 -0.083  0.046                       
+## prop_ag     -0.173 -0.032 -0.569   0.172               
+## prop_open   -0.284  0.037 -0.260   0.121   0.324       
+## shannndvndx -0.143 -0.060  0.109   0.317  -0.132 -0.127</code></pre>
+<p>Similar terms are reported here</p>
+<ul>
+<li>Variance - how much the effect of altitude on damage varies between
+years, comparison to mean slope (higher variance = more variable across
+years)<br />
+</li>
+<li>Std.Dev - sqrt of variance = how much the slope of altitude varies
+across years in units of the variable (larger standard deviation = more
+variation in the effect of altitude from year to year.)</li>
+</ul>
+</div>
+<div id="random-intercept-and-slope" class="section level2">
+<h2>Random intercept and slope</h2>
+<p>We can also include <strong>both</strong> a random intercept and
+slope if we think this is applicable</p>
+<pre class="r"><code># run a global GLM which includes all variables not highly correlated including a random intercept
+cows_global_r &lt;- glmer(damage ~ 
+                    bear_abund + 
+                     dist_to_forest + 
+                     dist_to_town +
+                     prop_ag +
+                     prop_open +
+                     shannondivindex +
+                     
+                     # random slope each year (1 indicates a random intercept)
+                   (1 + altitude | year),
+                   
+                   data = cows_scaled, 
+                   family = binomial
+                   )
+
+summary(cows_global_r)</code></pre>
+<pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace
+##   Approximation) [glmerMod]
+##  Family: binomial  ( logit )
+## Formula: damage ~ bear_abund + dist_to_forest + dist_to_town + prop_ag +  
+##     prop_open + shannondivindex + (1 + altitude | year)
+##    Data: cows_scaled
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   1600.1   1654.2   -790.1   1580.1     1629 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.4287 -0.2369  0.3455  0.5902  1.8134 
+## 
+## Random effects:
+##  Groups Name        Variance Std.Dev. Corr
+##  year   (Intercept) 0.3118   0.5584       
+##         altitude    0.9327   0.9658   0.97
+## Number of obs: 1639, groups:  year, 9
+## 
+## Fixed effects:
+##                 Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)      1.55252    0.10876  14.275  &lt; 2e-16 ***
+## bear_abund      -0.25354    0.06715  -3.776 0.000160 ***
+## dist_to_forest   1.10007    0.20582   5.345 9.05e-08 ***
+## dist_to_town     0.32498    0.09593   3.388 0.000705 ***
+## prop_ag         -0.28660    0.10790  -2.656 0.007904 ** 
+## prop_open       -0.61050    0.06742  -9.056  &lt; 2e-16 ***
+## shannondivindex -0.25995    0.07847  -3.313 0.000924 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) br_bnd dst_t_f dst_t_t prop_g prp_pn
+## bear_abund  -0.103                                     
+## dist_t_frst  0.354  0.027                              
+## dist_to_twn  0.280 -0.073  0.045                       
+## prop_ag     -0.215 -0.039 -0.564   0.157               
+## prop_open   -0.219  0.031 -0.262   0.111   0.323       
+## shannndvndx -0.106 -0.058  0.099   0.313  -0.124 -0.120</code></pre>
+<p>This will print both pieces of information we covered above</p>
+</div>
+</div>
+<div id="when-to-use-random-effects" class="section level1">
+<h1>When to use random effects</h1>
+<p>Sometimes the study design will dictate whether you are likely to
+need a random effect or not. For example, if you have a nested study
+design whereby individual sites are grouped into broader study areas and
+those study areas differ in some way (e.g. along a rainfall gradient,
+amount of human disturbance, etc)</p>
+<p>Other times, you may expect that there is a grouping variable you
+expect to generate dependence between samples but it’s not necessarily a
+result of your study design (e.g. you sample across an entire year and
+you except seasonal variability might contribute).</p>
+<p>If either are the case or you just want to be sure, you can perform
+model selection on two or more models varying whether random terms are
+included in those models.</p>
+<p><em>There is some debate among statisticians as to how well different
+model types can be compared in this way, but for now this is generally
+an acceptable approach if you aren’t sure</em></p>
+<p>Let’s do this with the models we generated above and our original
+cows_global model without a random term, which we need to paste in and
+run here</p>
+<pre class="r"><code># run glm model
+
+cows_global &lt;- glm(damage ~ 
+                    bear_abund + 
+                     dist_to_forest + 
+                     dist_to_town +
+                     prop_ag +
+                     prop_open +
+                     shannondivindex,
+                   data = cows_scaled, 
+                   family = binomial
+                   )
+
+# perform model selection
+model.sel(cows_global,
+        cows_global_r,
+        cows_global_ri,
+        cows_global_rs)</code></pre>
+<pre><code>## Model selection table 
+##                (Int) ber_abn dst_to_frs dst_to_twn  prp_ag prp_opn     shn
+## cows_global_r  1.553 -0.2535      1.100     0.3250 -0.2866 -0.6105 -0.2599
+## cows_global_rs 1.435 -0.2544      1.091     0.2839 -0.2739 -0.5863 -0.2573
+## cows_global_ri 1.508 -0.2579      1.064     0.2800 -0.3102 -0.5974 -0.2615
+## cows_global    1.388 -0.2710      1.053     0.1452 -0.2565 -0.5879 -0.2588
+##                    alt    class random df   logLik   AICc delta weight
+## cows_global_r          glmerMod  1+a|y 10 -790.072 1600.3  0.00      1
+## cows_global_rs         glmerMod  0+a|y  8 -800.653 1617.4 17.11      0
+## cows_global_ri -0.2361 glmerMod      y  9 -806.816 1631.7 31.46      0
+## cows_global                 glm         7 -815.291 1644.6 44.37      0
+## Models ranked by AICc(x) 
+## Random terms: 
+##  1+a|y: 1 + altitude | year
+##  0+a|y: 0 + altitude | year
+##  y    : 1 | year</code></pre>
+<p>In this case the model with both a random intercept and slope
+performs the best, so if this makes ecological sense, it would be
+justified to include both in our subsequent models.</p>
+<blockquote>
+<p>Model selection of random terms is generally done before model
+selection of fixed effects</p>
+</blockquote>
+</div>
+<div id="next-module" class="section level1">
+<h1>Next module</h1>
+<blockquote>
+<p>No assignment for this module, insead start playing with the data for
+your final report</p>
+</blockquote>
+<p><a href="mod_4_occ.html">–go to next module–</a></p>
+</div>
 
 
 
