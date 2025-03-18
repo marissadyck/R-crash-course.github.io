@@ -217,7 +217,7 @@ If you haven't already download the 3 bobcat data files
 - Join the bobcat_necropsy_only_data **to** the bobcat_collection_data AND then in the same code chunk join the bobcat_age_data as well. Make sure to retain all observations from the bobcat_collection_data. *You will need to use the bobcat_id column as the key when joining*   
 
 - Print the summary of your data to check that it worked   
-```{recho=TRUE, class.source = 'fold-hide', message=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide', message=FALSE}
 
 # read in data files
 bobcat_collection_data <- read_csv('data/raw/bobcat_collection_data.csv') %>% 

@@ -15,9 +15,12 @@ knitr::opts_chunk$set(eval = TRUE,
                       cache = TRUE)
 
 library(tidyverse)
+library(PerformanceAnalytics)
+library(lme4)
+library(car)
+library(MuMIn)
 ```
 
-> NOTE THIS ASSIGNMENT IS STILL UNDER DEVELOPMENT, PLEASE DO NOT BEGIN UNTIL AFTER LAB 2/11 IS COMPLETED
 
 # Submission
 
@@ -62,7 +65,7 @@ Make sure you understand what all the variables are and specifically which could
 
 
 
-```{r eval=FALSE, echo=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide'}
 
 bear_damage <- read_csv('data/raw/pagube_2008_2016_spatial.csv',
                         
@@ -89,7 +92,7 @@ This data has already been cleaned and checked for errors, but to give you some 
 * ensure ALL original and new columns are present in this new data set 
 * when you are done, remove the old data set from the environment, you will use this new cleaned one for future analyses  
 
-```{r eval=FALSE, echo=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide'}
 
 # check that year is correct
 summary(bear_damage$year)
@@ -125,24 +128,17 @@ Using your new data set, please calculate some summary statistics to report
 * Number of events of your response variable per livestock type for each year *provide comments that highlight which year had the most and least number of events for each livestock type*  
 
 
-```{r eval=FALSE, echo=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide'}
 
-# total number of events 
+# total number of events & livestock killed 
 bear_damage_tidy %>% 
   
   # ensure to only count events of damage
   filter(damage == '1') %>% 
   
-  summarise(n = n())
+  summarise(n_events = n(),
+            total_killed = sum(livestock_killed))
 
-
-# total number of livestock killed
-bear_damage_tidy %>% 
-  
-  # ensure to only count events of damage
-  filter(damage == '1') %>% 
-  
-  summarise(total_killed = sum(livestock_killed))
   
   
 # damage per species
@@ -155,7 +151,8 @@ bear_damage_tidy %>%
   group_by(targetspp) %>% 
   
   summarise(n = n())
-  
+
+# bovine highest, alte lowest
 
 # damage per year
 bear_damage_tidy %>% 
@@ -170,6 +167,7 @@ bear_damage_tidy %>%
   
   arrange(desc(n))
 
+# 2012 had highest number of events and 2008 had lowest number of events
 
 # damage per month
 bear_damage_tidy %>% 
@@ -184,6 +182,7 @@ bear_damage_tidy %>%
   
   arrange(desc(n))
 
+# september had the highest number of events and Dec/Jan had lowest with 0
 
 # damage per livestock type per year
 bear_damage_tidy %>% 
@@ -209,11 +208,27 @@ Once your data are cleaned and formatted please identify the response variable f
 
 AND the appropriate distribution for your data *You'll need to provide some kind of code to show you looked at the response variable to choose the distribution* 
 
-```{r eval=FALSE, echo=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide'}
 
 # damage is response variable and the appropriate distribution is binomial
 
 plot(bear_damage_tidy$damage)
+
+# or livestock killed is response variable which is count data so could be poisson or if highly zero-inflated causes overdispersion then negative binomial
+hist(bear_damage_tidy$livestock_killed)
+
+# lots of zeros lets do a quick test for dispersion with a simple glm
+test_glm <- 
+glm(livestock_killed ~ bear_abund,
+    data = bear_damage_tidy,
+    family = 'poisson')
+
+summary(test_glm)
+
+# calculate dispersion
+
+1916.5/1118
+# 1.74 is high so over-dispersed - use negative binomial
 ```
 
 
@@ -224,7 +239,7 @@ Then complete the data exploration steps below
 * Generate plots of your potential explanatory variables and determine which are useful (provide annotation of why some are not useful) 
 * From the selected candidate explanatory variables check for multicolinearity between variables and make note of which variables are highly correlated and the r2 value.  
 
-```{r eval=FALSE, echo=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide'}
 
 # using purr
 bear_damage_tidy %>% 
@@ -253,7 +268,7 @@ plot(bear_damage_tidy$landcover_code)
 Please add ONE additional variable (column) that is based on one or more of the variables already in the data. This must be an ecologically relevant variable, for example human_population divided by dist_to_town is not an ecologically relevant variable, but the binary hunting variable from the cows data where years prior to hunting ban were coded as '1' and years after hunting ban '0' is an ecologically relevant variable generated from the existing data. *You cannot use the hunting example as your variable, there are several possibilities here; you may want to use the information from your data exploration to inform this decision* 
 
 
-```{r eval=FALSE, echo=FALSE}
+```{r echo=TRUE, class.source = 'fold-hide'}
 
 bear_damage_tidy <-  bear_damage_tidy %>% 
   
@@ -283,8 +298,38 @@ Create a candidate set of 8-10 models that represent hypotheses about what varia
 
 > Check that these models are fitting appropriately before proceeding to question 7
 
-```{r}
+```{r echo=TRUE, class.source = 'fold-hide'}
+# going to scale data first for ease of coding
 
+bear_damage_tidy <- bear_damage_tidy %>% 
+  
+  # use mutate to change all numeric variables to scaled
+  mutate_if(is.numeric, 
+            scale)
+
+
+# answers will vary - I've done 3 for demonstration
+
+bear_null <- glm(damage ~ 1,
+                 data = bear_damage_tidy,
+                 family = 'binomial')
+
+# interaction between distance to forest and distance to town (close to both town and forest would have high prob of damage)
+bear_distance_i <- glm(damage ~ dist_to_forest * dist_to_town,
+                       data = bear_damage_tidy,
+                 family = 'binomial')
+
+# quick check that this model fit
+summary(bear_distance_i)
+
+# analog distance model w/o interaction
+bear_distance <- glm(damage ~ dist_to_forest +
+                       dist_to_town,
+                       data = bear_damage_tidy,
+                 family = 'binomial')
+
+# quick check that this model fit
+summary(bear_distance)
 ```
 
 
@@ -292,8 +337,11 @@ Create a candidate set of 8-10 models that represent hypotheses about what varia
 
 Perform model selection on your candidate set of models and identify the best fit model/s 
 
-```{r}
+```{r echo=TRUE, class.source = 'fold-hide'}
 
+model.sel(bear_null,
+          bear_distance,
+          bear_distance_i)
 ```
 
 # 9 Check model assumptions
@@ -306,10 +354,45 @@ This section will vary depending on the response variable you chose, variables y
 
 > If your model appears to violate any assumptions you don't need to re-run it, just proceed  
 
-```{r}
+```{r echo=TRUE, class.source = 'fold-hide'}
+
+# check assumptions for top model
+
+vif(bear_distance_i)
+
+# plot VIF
+vif(bear_distance_i) %>%
+  
+  # Converts the named vector returned by vif() into a tidy tibble
+  enframe(name = 'Predictor', 
+          value = 'VIF') %>%
+  
+  # plot with ggplot
+  ggplot(aes(x = reorder(Predictor, VIF), # reorders from smallest VIF to largest (not sure I want like this)
+             y = VIF)) +
+  
+  # plot as bars
+  geom_bar(stat = 'identity', fill = 'skyblue') +
+  
+  # add labels
+  labs(x = 'Predictor',
+       y = 'VIF') +
+  
+  # set theme
+  theme_classic()
+
+
+# dispersion
+summary(bear_distance_i)
+
+960.37/1116 # 0.86 slightly under dispersed but not a major issue for glm
+
+
+# check for observations with high leverage
+plot(bear_distance_i) # ignore first three
 
 ```
-
+> VIFs are highish for individual terms which could indicate more substantial violation of independence
 
 # 10 Interpret results
 
