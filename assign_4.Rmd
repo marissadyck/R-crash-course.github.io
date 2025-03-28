@@ -129,8 +129,11 @@ Using your new data set, please calculate some summary statistics to report
 
 
 ```{r echo=TRUE, class.source = 'fold-hide'}
+# total number of events & livestock killed
+# with summary 
+summary(bear_predation_tidy$damage)
 
-# total number of events & livestock killed 
+# or with summarise to do both 
 bear_damage_tidy %>% 
   
   # ensure to only count events of damage

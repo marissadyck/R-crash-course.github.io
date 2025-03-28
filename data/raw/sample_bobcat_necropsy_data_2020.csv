@@ -1,0 +1,45 @@
+﻿Bobcat_ID#,Necropsy,NecropsyDate,Dissector,County,Township,CollectionDate,Month,Coordinates_N,Coordinates_W,ApproxAge,Age,Sex,Fecundity_Females,RearFoot_cm,Tail_cm,Ear_cm,Body_w/Tail_cm,Body,Weight_kg,Condition,Notes
+5/20/68,68,1/14/20,"RB, MB",Athens,Troy,12/15/19,12,39.215915,-81.810316,Ad,2,M,na,18.8,13.1,7.9,89.5,76.4,8.94,11.70157068,na
+60-20-69,69,1/14/20,RB,Muskingum,Newton,11/26/19,11,39.837131,-82.133681,Juv,0,F,0,14.6,11.6,6.7,71.5,59.9,4.64,7.74624374,na
+40-20-70,70,1/14/20,"JS, MK",Jackson,Liberty,12/1/19,12,39.105489,-82.673574,Ad,1,M,na,17.8,14,5.4,95.4,81.4,11.42,14.02948403,na
+40-19-71,71,1/27/20,MB,Jackson,Franklin,12/23/19,12,39.0145,-82.6472,Ad,1,M,na,16.5,11.5,5.9,91.4,79.9,9.8,12.26533166,na
+7/20/72,72,1/28/20,"TW, MB, JS",Belmont,Wheeling,1/13/20,1,40.1429,-81.0337,Ad,na,M,na,16.6,12.1,6.1,71.2,59.1,5.48,9.272419628,Not saved
+37-20-73,73,1/29/20,RB,Hocking,Green,1/17/20,1,39.49463,-82.38338,Ad,1,F,0,15,12.2,5.5,81.2,69,6.74,9.768115942,na
+84-20-74,74,1/29/20,"CH, JG",Washington,Aurelius,1/21/20,1,39.58199,-81.456672,Ad,1,na,na,16.7,14.1,5.4,102.7,88.6,6.62,7.471783296,"To mangled to determine sex, may also have caused body measurement to be off"
+61-20-75,75,1/30/20,"RB, HK",Noble,Olive,1/12/20,1,39.74301,-81.49578,Ad,2,M,na,15.6,14.5,6.9,91.5,77,11.29,14.66233766,na
+30-20-76,76,1/30/20,"MB, CC",Guernsey ,Liberty,1/6/20,1,40.14631,-81.54921,Ad,1,M,na,17.5,13.4,6.7,93.1,79.7,10.94,13.72647428,na
+84-20-77,77,2/6/20,RB,Washington,Warren,1/27/20,1,39.383273,-81.493984,Ad,2,F,2,15.4,12.2,7,81.1,68.9,8.34,12.10449927,na
+40-20-78,78,2/7/20,"JS, MK",Jackson,Washington,1/29/20,1,39.1285,-82.5888,Ad,5,M,na,18.3,12.9,5.8,92.1,79.2,12.41,15.66919192,na
+30-20-79,79,2/8/20,"JS, MK",Guernsey ,Richland,2/2/20,2,39.925847,-81.443007,Ad,4,F,na,16.2,9.9,5.2,82.8,72.9,6.57,9.012345679,Get uterus photo from Joe to confirm fecundity
+53-20-80,80,2/9/20,CH,Meigs,Bedford,1/24/20,1,39.163137,-81.984586,Ad,1,M,na,17.4,15,5.8,88.2,73.2,9.6,13.1147541,na
+71-20-81,81,2/10/20,RB,Ross,Huntington,1/8/20,1,39.279012,-83.053749,Ad,1,M,na,17.2,14.8,na,88.2,73.4,8.95,12.19346049,Pre-skinned; measurements taken without skin
+84-20-82,82,2/10/20,MB,Washington,Palmer,1/30/20,1,39.44829,-81.721003,Ad,7,F,na,15,12,6.6,85.9,73.9,8.89,12.02976996,na
+40-20-83,83,2/13/20,MB,Jackson,Jackson,1/28/20,1,39.1972,-82.6691,Ad,1,F,2,15.6,12.5,6.6,83.4,70.9,7.55,10.64880113,na
+60-20-84,84,2/17/20,RB,Muskingum,Hopewell,12/19/19,12,39.5571,-82.9449,Ad,2,M,na,18,15.9,na,93,77.1,10.34,13.41115435,Pre-skinned; measurements taken without skin
+71-20-85,85,2/18/20,RB,Ross,Springfield,1/21/20,1,39.3846,-82.9672,Ad,0,M,na,16.5,13.5,7,83.2,69.7,7.31,10.48780488,na
+16-20-86,86,2/18/20,RB,Coshocton,Oxford,1/13/20,1,40.281996,-81.65051,Ad,1,M,na,15.7,14.7,na,90.4,75.7,9.27,12.24570674,Pre-skinned; measurements taken without skin
+30-20-87,87,3/1/20,"CH, HK",Guernsey ,Wills,2/8/20,2,39.9887,-81.44138,Ad,3,F,na,14.3,11.3,5.3,79.5,68.2,6.11,8.958944282,na
+64-20-88,88,3/3/20,"ML, MP, MB, EW",Perry,Pike,2/3/20,2,39.7105,-82.167,Ad,2,M,na,17.7,12.5,6.5,91.2,78.7,13.77,17.49682338,na
+84-20-89,89,3/3/20,RB,Washington,Marietta,2/10/20,2,39.413949,-81.404073,Juv,0,M,na,17.5,13.9,7.5,83.3,69.4,6.26,9.020172911,na
+53-20-90,90,3/3/20,"JS, TW, M",Meigs,Orange,2/3/20,2,39.15813,-81.861741,Ad,1,M,na,17.7,13.8,6.1,85.2,71.4,8.28,11.59663866,na
+30-20-91,91,3/3/20,RB,Guernsey ,Wheeling,2/4/20,2,40.18608,-81.5312,Ad,2,F,na,15,10.5,4.9,82.9,72.4,7.16,9.889502762,na
+66-20-92,92,3/18/20,RB,Pike,Scioto,2/8/20,2,39.02981,-83.02688,Ad,2,F,1,16.5,14.2,na,79.5,65.3,5.85,8.958652374,Pre-skinned; measurements taken without skin
+44-20-93,93,3/18/20,RB,Lawrence,Fayette,1/20/20,1,38.2505,-82.3406,Ad,1,M,na,16.5,15.1,na,88.9,73.8,7.88,10.67750678,Pre-skinned; measurements taken without skin
+16-20-94,94,3/18/20,RB,Coshocton,White Eyes,12/23/19,12,40.367707,-81.72728,Ad,1,M,na,17.7,14.5,na,91,76.5,9.33,12.19607843,Pre-skinned; measurements taken without skin
+84-20-95,95,3/18/20,RB,Washington,Salem,3/2/20,3,39.545866,-81.397528,Juv,0,M,na,13.8,12.3,5.3,74.2,61.9,4.43,7.156704362,na
+44-20-96,96,3/18/20,RB,Lawrence,Elizabeth,3/6/20,3,38.38101,-82.40795,Ad,2,M,na,18.2,16.1,na,93.5,77.4,8.68,11.21447028,Pre-skinned; measurements taken without skin
+60-20-97,97,3/18/20,RB,Muskingum,Union,2/12/20,2,39.97895,-81.808417,Juv,0,F,0,17,15.7,na,78.9,63.2,5.38,8.512658228,Pre-skinned; measurements taken without skin
+60-20-98,98,6/25/20,RB,Muskingum,Muskingum,2/12/20,2,40.038433,-82.024783,Ad,0,F,0,16.5,15,na,78.5,63.5,4.68,7.37007874,Pre-skinned; measurements taken without skin
+73-20-99,99,6/25/20,RB,Scioto,Clay,1/28/20,1,38.4965,-82.5896,Ad,1,F,na,16,14.5,na,85.5,71,5.8,8.169014085,Pre-skinned; measurements taken without skin
+27-20-100,100,6/25/20,RB,Gallia,Green,3/10/20,3,38.8293,-82.227,Ad,0,F,4,15,11.5,5.5,72,60.5,4.56,7.537190083,"Was classified as juvenile but appears to have banding, confirm age with teeth"
+27-20-101,101,6/28/20,MD,Gallia,Clay,2/28/20,2,38.7438,-82.2469,Ad,1,M,na,16.4,14.2,7.1,90.1,75.9,9.89,13.03030303,na
+16-20-102,102,6/29/20,RB,Coshocton,Adams,1/16/20,1,40.34481,-81.64782,Ad,1,F,na,15.9,14.5,na,84.5,70,6.24,8.914285714,Pre-skinned; measurements taken without skin
+30-20-103,103,7/6/20,RB,Guernsey ,Cambridge,3/7/20,3,40.02847,-81.56121,Ad,0,M,na,16.9,14,6.6,82.5,68.5,4.95,7.226277372,na
+30-20-104,104,7/6/20,RB,Guernsey ,Wills,11/15/19,11,40.05738,-81.41471,Ad,1,F,2,16.5,13.9,6.5,82,68.1,7.46,10.95447871,Cat wet
+60-20-105,105,7/10/20,RB,Muskingum,Cass,3/9/20,3,40.1526,-82.0376,Ad,0,F,3,15.1,14.8,na,80,65.2,4.79,7.346625767,Pre-skinned; measurements taken without skin
+16-20-106,106,7/10/20,RB,Coshocton,New Castle,1/3/20,1,40.38275,-82.137323,Juv,0,F,na,14.2,11.5,na,68.5,57,3.24,5.684210526,Pre-skinned; measurements taken without skin
+30-20-107,107,7/10/20,RB,Guernsey ,Cambridge,3/10/20,3,40.04444,-81.56102,Ad,1,M,na,17.5,13.5,7.4,97.5,84,10.78,12.83333333,na
+61-20-108,108,7/14/20,RB,Noble,Stock,3/9/20,3,39.73907,-81.33068,Ad,6,M,na,17,13.5,6.5,88,74.5,8.18,10.97986577,Partially eaten by vultures
+60-20-109,109,7/14/20,RB,Muskingum,na,na,1,39.953521,-81.954341,Ad,5,F,na,16.9,14.5,6,85,70.5,7.92,11.23404255,na
+44-20-110,110,7/20/20,RB,Lawrence,na,2/25/20,2,38.66131,-82.658803,Ad,0,M,na,16.6,14,na,81,67,5.28,7.880597015,Pre-skinned; measurements taken without skin
+61-20-111,111,7/20/20,RB,Noble,Sharon,3/6/20,3,39.74263,-81.63741,Ad,2,M,na,17.2,13.5,6.5,90,76.5,10.85,14.18300654,na

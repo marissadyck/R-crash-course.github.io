@@ -53,15 +53,102 @@ To apply the same **function/s** to a number of **objects** we use the `map()` *
 
 Let's go through an example WITHOUT using *Purrr* first and then apply the **tidyverse** alternative.
 
+### Intro to purrr
+
+First let's generate a few random objects for us to work with
+```{r}
+test_object_1 <- c(1:10)
+
+test_object_2 <- c(11:20)
+
+test_object_3 <- c(21:30)
+```
+
+We just generated three vectors of 10 numbers each
+
+Now let's say we want to extract the mean from each of these
+
+The non-purrr way would be as follows
+```{r}
+# for first object
+mean(test_object_1)
+
+# object 2
+mean(test_object_2)
+
+# object 3
+mean(test_object_2)
+```
+While relatively easy to do, you can imagine if you had many more objects to work with, copy and pasting this code would get annoying and likely to produce errors the more times you have to do it. 
+
+Instead we can use *Purrr* to calculate the mean of all the objects at once
+
+```{r}
+#first supply all the objects in a list
+list(test_object_1,
+     test_object_2,
+     test_object_3) %>% 
+  
+  # then use the map function with ~.x as a placeholder for all the objects before the last pipe (similar to '.')
+  map(~.x %>% 
+        
+        # then supply the function/s
+        mean())
+```
+Viola!
+
+###The purrr process
+
+Using *Purrr* might seem confusing at first, but it becomes second-hand nature once you have some practice, and by following these simple steps.
+
+1. First, write out the code you would use to perform the desired operation for **A single object** 
+2. Second, ensure that this code is formatted in a dplyr pipe style code chunk (e.g., supply the object first, followed by a pipe for each operation you wish to perform on the supplied object ) *AND* est that this produces the desired outcome with a single object 
+3. Supply a list of objects *AND* transfer all of your piped functions inside of the purrr `map()` function, providing ~.x as a placeholder for your list (If only one operation is being applied you can use ~function(.x) instead. *I'll show you both approaches*
+
+Let's try this process for a simple object manipulation
+
+
+
+
+Step 1
+```{r}
+# code for one object
+mean(test_object_1)
+```
+
+Step 2
+```{r}
+# now let's adjust this code so it's in a dplyr pipe format
+test_object_1 %>% 
+  
+  mean()
+```
+>This step is crucial! If your existing code isn't already in dplyr format it will be much more difficult to transition to purrr
+
+Step 3
+```{r}
+# instead of one object we supply a list
+list(test_object_1,
+     test_object_2,
+     test_object_3) %>% 
+  
+  # then use the map function with ~.x as a placeholder for all the objects before the last pipe (similar to '.')
+  map(~.x %>% 
+        
+        # then supply the function/s
+        mean())
+```
+
+
 ### Import data with Purrr
 
-One of the most common ways I use *Purrr* is when I want to read in multiple data sets for the same analysis. Often times landscape data, weather data, species data, etc. will be entered separately but you need all the data files for an analysis.
+One of the most common ways I use *Purrr* is when I want to read in multiple data sets for the same analysis. Often times landscape data, weather data, species data, etc. will be entered separately but you need all the data files for an analysis. Importing data with purrr isn't as straighforward as other operations because there it isn't intuitive how to accomplish step 2. 
 
 <span style="color: blue;">Start by reading in the 3 bobcat data files for this module, leave them named as they are<span style="color: blue;">
 
 [bobcat_collection_data.csv](data/bobcat_collection_data.csv)
 
-[bobcat_necropsy_only_data.csv](data/bobcat_necropsy_only_data.csv)
+[bobcat_necropsy_data.csv](data/bobcat_necropsy_data.csv)
 
 [bobcat_age_data.csv](data/bobcat_age_data.csv)
 
@@ -69,7 +156,7 @@ One of the most common ways I use *Purrr* is when I want to read in multiple dat
 
 bobcat_collection_data <- read_csv('data/raw/bobcat_collection_data.csv')
 
-bobcat_necropsy_only_data <- read_csv('data/raw/bobcat_necropsy_only_data.csv')
+bobcat_necropsy_data <- read_csv('data/raw/bobcat_necropsy_only_data.csv')
 
 bobcat_age_data <- read_csv('data/raw/bobcat_age_data.csv')
 ```
@@ -96,6 +183,8 @@ bobcat_data <- list('data/raw/bobcat_collection_data.csv',
   
   # use purrr::map to read in all data at once
   purrr::map(
+    
+    # this is alternative syntax you might see when only working with one function where the function is supplied after the '~' and '.x' is included in the function ()
     ~read_csv(.x)
   )
 
@@ -103,8 +192,7 @@ bobcat_data <- list('data/raw/bobcat_collection_data.csv',
 str(bobcat_data)
 ```
 
-
-We can reduce our typing even further since all of the data are stored in the same folder by referencing a file path.
+We can reduce our typing even further from the earlier example since all of the data are stored in the same folder by referencing a file path.
 
 ```{r}
 
@@ -168,9 +256,9 @@ bobcat_data <- file.path('data/raw',
     ~read_csv(.x)) %>% 
   
   # assign names to list objects
-purrr::set_names('bobcat_collection',
-                   'bobcat_necropsy',
-                   'bobcat_age')
+purrr::set_names('collection',
+                   'necropsy',
+                   'age')
 
 str(bobcat_data)
 ```
@@ -180,6 +268,42 @@ Now we can look at each **list** element like by using the `$`
 # look at the structure of the necropsy data
 str(bobcat_data$necropsy)
 ```
+
+Many of the columns read in improperly, we could tackle this individually for each dataframe, or we could include specification for the various column types in our `map()` function. 
+
+```{r warning=FALSE}
+# assign object name to environment and provide file path for the data
+bobcat_data <- file.path('data/raw', 
+  
+  # provide the names of each data frame
+  c('bobcat_collection_data.csv',
+    'bobcat_necropsy_only_data.csv',
+    'bobcat_age_data.csv')) %>% 
+  
+  # use purrr::map to read in all data at once
+  purrr::map(
+    ~read_csv(.x,
+              
+              col_types = cols(RearFoot_cm = col_number(),
+                                  Tail_cm = col_number(),
+                                  Ear_cm = col_number(),
+                                  'Body_w/Tail_cm' = col_number(),
+                                  Body = col_number(),
+                                  Weight_kg = col_number(),
+                                  Condition = col_number(),
+                               Age = col_number(),
+                       .default = col_factor())
+              )) %>% 
+  
+  # assign names to list objects
+purrr::set_names('collection',
+                   'necropsy',
+                   'age')
+
+str(bobcat_data$necropsy)
+```
+If your data frames don't have all the same names of columns, which they usually don't, you will likely get a warning about parsing issues. You can ignore this just be sure to check the structure of each dataframe in your list before proceeding and ensure the variables you need later read in properly. 
+
 
 ### Format/manipulate data with Purrr
 
@@ -200,14 +324,14 @@ bobcat_collection_data <- read_csv('data/raw/bobcat_collection_data.csv') %>%
 
 head(bobcat_collection_data)
 
-bobcat_necropsy_only_data <- read_csv('data/raw/bobcat_necropsy_only_data.csv')%>% 
+bobcat_necropsy_data <- read_csv('data/raw/bobcat_necropsy_only_data.csv')%>% 
   
   # set names to lowercase
   set_names(
     names(.) %>% 
       tolower())
 
-head(bobcat_necropsy_only_data)
+head(bobcat_necropsy_data)
 
 bobcat_age_data <- read_csv('data/raw/bobcat_age_data.csv')%>% 
   
@@ -242,7 +366,16 @@ bobcat_data <- file.path('data/raw',
     ~.x %>% 
       
       # read in list elements   
-      read_csv() %>% 
+      read_csv(col_types = cols(RearFoot_cm = col_number(),
+                                  Tail_cm = col_number(),
+                                  Ear_cm = col_number(),
+                                  'Body_w/Tail_cm' = col_number(),
+                                  Body = col_number(),
+                                  Weight_kg = col_number(),
+                                  Condition = col_number(),
+                               Age = col_number(),
+                       .default = col_factor())
+            ) %>% 
       
       # set names to lower case
       set_names(
@@ -251,9 +384,9 @@ bobcat_data <- file.path('data/raw',
   ) %>% 
   
   # assign names to list objects
-purrr::set_names('bobcat_collection',
-                   'bobcat_necropsy',
-                   'bobcat_age')
+purrr::set_names('collection',
+                   'necropsy',
+                   'age')
 
 head(bobcat_data$bobcat_collection)
 ```
@@ -277,7 +410,16 @@ bobcat_data <- file.path('data/raw',
     ~.x %>% 
       
       # read in list elements   
-      read_csv() %>% 
+      read_csv(col_types = cols(RearFoot_cm = col_number(),
+                                  Tail_cm = col_number(),
+                                  Ear_cm = col_number(),
+                                  'Body_w/Tail_cm' = col_number(),
+                                  Body = col_number(),
+                                  Weight_kg = col_number(),
+                                  Condition = col_number(),
+                               Age = col_number(),
+                       .default = col_factor())
+            ) %>% 
       
       # set names to lower case
       set_names(
@@ -290,15 +432,17 @@ bobcat_data <- file.path('data/raw',
   ) %>% 
   
   # assign names to list objects
-  purrr::set_names('bobcat_collection',
-                   'bobcat_necropsy',
-                   'bobcat_age')
+  purrr::set_names('collection',
+                   'necropsy',
+                   'age')
 
 head(bobcat_data$collection)
 
 ```
 
 Much better! 
+
+
 
 ## Purrr imap
 
@@ -310,13 +454,13 @@ Now that we have tidy data sets we may want to save these to our hard drive so w
 
 ```{r eval=FALSE}
 # save each data set as a csv
-write_csv(bobcat_data$bobcat_collection,
+write_csv(bobcat_data$collection,
           'data/processed/bobcat_collection.csv')
 
-write_csv(bobcat_data$bobcat_age,
+write_csv(bobcat_data$age,
           'data/processed/bobcat_age.csv')
 
-write_csv(bobcat_data$bobcat_necropsy,
+write_csv(bobcat_data$necropsy,
           'data/processed/bobcat_necropsy.csv')
 ```
 
@@ -335,7 +479,121 @@ purrr::imap(
 
 So much less repetition and code if you have a lot of data sets to save
 
-We've only barely scratched the surface of what *Purrr* can do, but given our limited time that is where we will end. Just remember anytime you find yourself repeating the same operations for multiple **objects** of the same type you may want to consider using *Purrr* instead to reduce repetition in your code.
+
+###Figures
+
+If you've done assignment 4, you may have been annoyed with how much code repetition there was to generate all the histograms for your explanatory variables. But not to fear, *Purrr* is here!
+
+We can use *Purrr's* `imap()` function to quickly generate several of the same plot without having to copy and paste a bunch of code.
+
+<span style="color: blue;">In your script attempt to make histograms for all the numeric variables in the necropsy data following the 3 steps I outlined earlier</span>
+
+```{r}
+
+# step 1: code for 1 histogram
+hist(bobcat_data$necropsy$rearfoot_cm)
+
+# step 2: translate code to dplyr pipe format
+bobcat_data$necropsy$rearfoot_cm %>% 
+  
+  hist()
+  
+# step 3: provide list and pipe into `map()`
+bobcat_data$necropsy %>% 
+  
+  # select only numeric vars
+  select(is.numeric) %>% 
+  
+  # apply purrr::map
+  map(~.x %>% 
+        #provide histograms
+        hist()
+  )
+
+```
+
+>Likely your hiistrograms print without the variable name in the title, which we probably want to know what we are looking at
+
+We can accomplish this with imap
+
+
+<span style="color: blue;">First figure out how you would add a main title to a single plot </span>
+
+```{r echo=FALSE}
+?hist()
+
+bobcat_data$necropsy$rearfoot_cm %>% 
+  
+  hist(main = paste('Histogram of', 'rearfoot_cm' ))
+  
+```
+Once you've done that try adapting this for purrr
+```{r}
+
+bobcat_data$necropsy %>% 
+  
+  # select only numeric vars
+  select(is.numeric) %>% 
+  
+  # apply purrr::map
+  imap(~.x %>% 
+        #provide histograms
+        hist(main = paste('Histogram of', .y))
+  )
+```
+
+
+## Purrr Map_dfr and map_dfc
+
+*Purrr* also has a handy function to row-bind and column-bind data when you read it in. This is particularly useful when working with large data sets or data collected over several years.
+
+For example if I had two years of bobcat necropsy data that were entered and saved as separate csv files, I could read them each in individually and then rowbind them together and save this new data frame to my environment to work with later as I've done below
+
+```{r}
+# read 2019 data
+bobcat_necropsy_2019 <- read_csv('data/raw/sample_bobcat_necropsy_data_2019.csv')
+
+# read 2020 data
+bobcat_necropsy_2020 <- read_csv('data/raw/sample_bobcat_necropsy_data_2020.csv')
+
+
+bobcat_necropsy_rbind <- rbind(bobcat_necropsy_2019,
+                               bobcat_necropsy_2020)
+
+head(bobcat_necropsy_rbind)
+```
+As we can see by looking at the objects in our environment or viewing the data this indeed joined the 2019 data with 2020. But there is a much faster way, especially if you have lots of data files.
+
+Here we use the `map_dfr()` function in *Purrr* to simultaneously rbind our data frames when we read them in. This code mimics how you would read in multiple data frames into a list except the function will automatically try to rowbind them instead. 
+
+For this to work the columns in the data frame must have the same column type (e.g., character, number, factor etc.) So I've also added code to specify how to read in the various columns otherwise we will get an error message.
+
+```{r}
+bobcat_data_dfr <- file.path('data/raw', 
+                             
+                             # provide the names of each data frame
+                             c('sample_bobcat_necropsy_data_2019.csv',
+                               'sample_bobcat_necropsy_data_2020.csv')) %>% 
+  
+  # use purrr::map to read in all data at once and rowbind them
+  map_dfr(~.x %>% 
+            read_csv(.,
+                     
+                     col_types = cols(RearFoot_cm = col_number(),
+                                      Tail_cm = col_number(),
+                                      Ear_cm = col_number(),
+                                      'Body_w/Tail_cm' = col_number(),
+                                      Body = col_number(),
+                                      Weight_kg = col_number(),
+                                      Condition = col_number(),
+                                      .default = col_factor())))
+```
+Now instead of individual data frames or a list object that we have to rbind, in one chunk of code we've read in the data and rbdin it so we have a single data frame to work with!
+
+If you have several data files that you want to join via column-bind you can also use `map_dfc()` with similar coding as above to join data frames in this way. **But be careful, this function assumes that the rows in each file are in the same order and nothing is missing or mismatched, so you can easily get errors if that isn't the case**. The *join* functions we covered earlier are a much safer option because you can specify a 'key' to ensure the rows are matched up properly, but it does take more coding.
+
+
+>We've only barely scratched the surface of what *Purrr* can do, but given our limited time that is where we will end. Just remember anytime you find yourself repeating the same operations for multiple **objects** of the same type you may want to consider using *Purrr* instead to reduce repetition in your code.
 
 
 ## Assignment and next module
