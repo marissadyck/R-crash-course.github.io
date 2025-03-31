@@ -51,7 +51,7 @@ Using the built in *PlantGrowth* dataset make a plot that meets the following re
 
 5. No legend
 
-```{r echo=FALSE}
+```{r eecho=TRUE, class.source = 'fold-hide'}
 
 plant_boxplot <- ggplot(PlantGrowth, aes(x = group, y = weight)) +
   
@@ -94,7 +94,7 @@ Using the built in *trees* data make a plot that meets the following requirement
 6. axis with breaks every 5 units starting at a number divisible by 5
 
 7. Gridlines
-```{r echo=FALSE, class.source = 'fold-hide'}
+```{r echo=TRUE, class.source = 'fold-hide'}
 
 # specify data and variables
 trees_scatterplot <- ggplot(trees, aes(x = Height, y = Girth)) +
@@ -138,7 +138,7 @@ Please read in the data according to the following guidelines
 4. Keep only the following columns (damage, year, targetspp, bear_abund, landcover_code, altitude, human_population, disto_to_forest, and dist_to_town)
 
 *You may have to do some other data manipulation later on for each graph
-```{r echo=FALSE, class.source = 'fold-hide'}
+```{r echo=TRUE, class.source = 'fold-hide'}
 
 # read in bear data
 
@@ -180,7 +180,7 @@ Create a plot using the bear data so it meets the following criteria
 
 7. No gridlines and only borders on the left and bottom of graph
 
-```{r echo=FALSE, class.source = 'fold-hide'}
+```{r echo=TRUE, class.source = 'fold-hide'}
 
 # mutate data so year and targetspp are factors
 
@@ -258,7 +258,7 @@ The graphs should all meet the following criteria
 4. Informative and readable axis and text
   
 
-```{r echo=FALSE, class.source = 'fold-hide'}
+```{r echo=TRUE, class.source = 'fold-hide'}
 
 # create vectors for landcover types
 
