@@ -33,7 +33,7 @@ navbar:
           href: mod_1_lm.html
         - text: "Module 2: Generalized linear models (GLMs)"
           href: mod_2_glm.html
-        - text: "Module 3: General mixed effects models (GLMMs) (coming soon)"
+        - text: "Module 3: General mixed effects models (GLMMs)"
           href: mod_3_glmm.html
         - text: "Module 4: Occupancy models (coming soon)"
           href: mod_4_occ.html
