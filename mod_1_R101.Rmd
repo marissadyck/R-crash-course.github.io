@@ -1,6 +1,6 @@
 ---
 title: "Intro to R"
-author: "Module 1: R 101 aka what is R and RStudio? And how to use them most effectively"
+author: "Module 1: R 101 aka what is R and RStudio?"
 date: "7 January 2025"
 output: 
   html_document:
@@ -11,8 +11,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, 
-                      cache = TRUE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r echo=FALSE}
@@ -76,12 +75,13 @@ Place your cursor on your line of code again and press <span style="color: blue;
 
 If you have multiple lines of code that you want to run at once, you can also highlight your code and use either of the aforementioned methods to run it. Let's try this. Type <span style="color: blue;">*4 + 4*</span> in the **source** panel below your previous line of code. Highlight both sections with your mouse and use either method to run your code, check the console.
  
- ```{r results=T, echo=FALSE}
+```{r results=T, echo=FALSE}
 
 2 + 2
 4 + 4
 
 ```
+
 #### 2. Console: 
 The R **console** (what you see if you opened R directly instead of RStudio) is a **command line** interface, and is *your direct connection with R*: you give R a command at the prompt and R executes that command. The **console** is where your code is evaluated by R, it will show the code you have run followed by any output if there is one. Some code will not have an output in this panel (e.g., graphs), which we will cover more later. The **console** can also be used to write and evaluate code you only need to use once and don't want saved in your script. This is useful for looking up help files, checking the structure of your data, and simple math such as what we just did. Delete the lines of code you wrote in the **source** panel and instead type <span style="color: blue;">*2 + 2*</span> in the console and hit enter. You should get the same output as before, but now that code is not in your **R script** so it won't be evaluated every time you run your script. You can clear your **console** by clicking the broom icon in the right corner, I recommend doing this anytime you start a new analysis in R. Let's do this now, <span style="color: blue;">click the broom icon</span> and see what happens.
 

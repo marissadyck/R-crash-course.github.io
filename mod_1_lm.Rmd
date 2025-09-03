@@ -14,8 +14,7 @@ output:
 knitr::opts_chunk$set(
 	echo = TRUE,
 	message = FALSE,
-	warning = FALSE,
-	cache = TRUE
+	warning = FALSE
 )
 ```
 
@@ -36,15 +35,3 @@ library(tidyverse)
 ![](images/construction_dog.jpeg){width=40%}
 </center>
 
-#### Homogeneity of variance
-
-We don't have any factor variables (groups) in our model so we wouldn't need to test this assumption but as an example we can use *year* which is a factor and run Levene's test on a model that predicts *damage* as a function of *year* and interpret the result.
-```{r}
-
-# Test assumptions ----------------------
-
-leveneTest(residuals(glm(damage ~ year, data = cows, family = binomial), type = "deviance") ~ cows$year)
-
-```
-
-With Levene's test we are testing the null hypothesis that the groups have similar variance so we want a p > 0.05, but our value is 0.001 which would indicate we've violated this assumption. 

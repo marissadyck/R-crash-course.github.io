@@ -14,8 +14,7 @@ output:
 knitr::opts_chunk$set(
 	echo = TRUE,
 	message = FALSE,
-	warning = FALSE,
-	cache = TRUE
+	warning = FALSE
 )
 ```
 
@@ -50,6 +49,18 @@ The data visualization package *ggplot2* makes it very easy and straightforward 
 ### Cheat sheets
 
 A good ggplot cheat sheet can be found here: [ggplot cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf)
+
+### Libraries
+
+You will need to install and load the following libraries 
+
+library(cowplot)  
+library(tidyverse)  
+library(leaflet)  
+library(ggpubr) 
+library(RColorBrewer) 
+library(stringr)  
+
 
 Let's get started plotting!
 

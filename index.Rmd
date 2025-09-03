@@ -12,10 +12,10 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
- * **When?** Tuesday's @2:30 - 4:20pm & Friday's @2:30 - 3:20pm       
- * **Where?** Clearihue A312        
+ * **When?** n/a      
+ * **Where?** n/a       
  * **What to prepare?** Please bring your laptop computer! Also, install R and RStudio prior to the course and following the instructions below on 'To do before lab 1'.    
- * **Office hours:** My "office hours" will immediately follow lab each week for 1 hour in Clearihue A312 (assuming there is no class after us). I encourage you to stay and work on the practice problems with your peers and I can answer any questions you have regarding the lab material, assignments, working with your own data etc. during this time.   
+ * **Office hours:** n/a  
  
 ## Facilitators
 [Marissa Dyck](https://github.com/marissadyck)  
@@ -23,13 +23,8 @@ University of Victoria
 School of Environmental Studies     
 Email: [marissadyck@uvic.ca](mailto:marissadyck@uvic.ca)   
 
-[Jason Fisher](http://www.acmelab.ca/the-lab.html)  
-University of Victoria    
-School of Environmental Studies   
-Email: [fisherj@uvic.ca](mailto:fisherj@uvic.ca)   
-
 ## Contributors
-This workshop is based on content from an R Bootcamp run by Dr. Kevin Shoemaker at University of Nevada Reno (https://github.com/kevintshoemaker/R-Bootcamp)
+Initial development of this course was based on content from an R Bootcamp run by Dr. Kevin Shoemaker at University of Nevada Reno (https://github.com/kevintshoemaker/R-Bootcamp)
 
 [Kevin Shoemaker](http://naes.unr.edu/shoemaker/)	
 University of Nevada Reno  
@@ -46,7 +41,7 @@ All code will be available as scripts that you can download from this website (a
 
 ## Course Schedule
 
-See Brightspace for most up-to-date schedule        
+n/a       
 
 ## To do before lab 1
 
@@ -71,7 +66,7 @@ Also, it can be very helpful to print out R 'cheat sheets' and bring that with y
 
 To ensure we maximize time in lab please also download the data files for this course from the [Data](data.html) tab and save this in a folder on your hard drive. *We will move these to a specific folder for the course when we cover folder organization on the first day of lab*
 
-Right click (or command-click for MAcs) each file. The .txt files will open in a viewer window and you will need to right click to save them. The .csv files should download directly in your downloads folder and you can move them where you want to save them. **Important DO NOT change the file names**.
+Right click (or command-click for Macs) each file. The .txt files will open in a viewer window and you will need to right click to save them. The .csv files should download directly in your downloads folder and you can move them where you want to save them. **Important DO NOT change the file names**.
 
 
 ## Go to first lab
